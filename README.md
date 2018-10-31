@@ -2,13 +2,11 @@
 
 原生微信小程序代码编写
 
-### 首页
-
-
-### 登录页
-
-### 我的页面
-
-### 订单页面
-
-### 店铺主页
+ "pages": [
+    "pages/index/index",  
+    "pages/cart/cart",  //购物车
+    "pages/user/user",
+    "pages/checkout/checkout",  //确定订单页
+    "pages/store/store",
+    "pages/login/login"
+  ],

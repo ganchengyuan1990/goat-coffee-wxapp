@@ -1,0 +1,27 @@
+<view class="container">
+    <!-- <text>LeanCloud Login Page</text> -->
+    <view class="head">
+        <view>
+        <view class="weui-media-box weui-media-box_appmsg">
+            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <image class="weui-media-box__thumb head_img" src="https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoq9HjQn1TcZwll6UDqeBcJeHykQDvU4BB6CZU3RwTCDnXr0nosthgKJeicGviaQ4qzUuZnT6neDzHg/132" />
+            </view>
+        </view>
+        </view>
+    </view>
+    <form bindsubmit="formSubmit">
+        <view class="section">
+            <!-- <view >用户名</view> -->
+            <input name="username" placeholder="请输入手机号码" auto-focus/>
+        </view>
+        <view class="section">
+            <!-- <view >密码</view> -->
+            <input password  name="password" placeholder="请输入验证码"/>
+            <view class='getVerify'>获取验证码</view>
+        </view>
+        <view class="btn-area">
+            <button formType="submit">确定</button>
+        </view>
+    </form>
+    <!-- <button type="primary" catchtap="DirectSignUp">注册</button> -->
+</view>

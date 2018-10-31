@@ -3,7 +3,9 @@
     "pages/index/index",
     "pages/cart/cart",
     "pages/user/user",
-    "pages/store/store"
+    "pages/checkout/checkout",
+    "pages/store/store",
+    "pages/login/login"
   ],
   "window": {
     "backgroundTextStyle": "dark",
