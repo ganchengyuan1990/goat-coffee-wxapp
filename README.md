@@ -2,6 +2,8 @@
 
 原生微信小程序代码编写
 
+
+``` javascript
  "pages": [
     "pages/index/index",  
     "pages/cart/cart",  //购物车
@@ -10,3 +12,4 @@
     "pages/store/store",
     "pages/login/login"
   ],
+```
