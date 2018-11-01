@@ -12,7 +12,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.2.1",
-	"appid": "wxaedd5ab20d5e4b92",
+	"appid": "wx74e260b5ae741e0d",
 	"projectname": "%E5%A4%96%E5%8D%96",
 	"isGameTourist": false,
 	"condition": {
@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 3,
 			"list": [
 				{
 					"id": -1,
@@ -50,7 +50,13 @@
 				{
 					"id": -1,
 					"name": "配送方式",
-					"pathName": "pages/transport/transport"
+					"pathName": "pages/transport/transport",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "store",
+					"pathName": "pages/store/store"
 				}
 			]
 		}

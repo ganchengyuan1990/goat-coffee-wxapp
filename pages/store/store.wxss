@@ -1,145 +1,75 @@
 page {
   background-color: #fff;
 }
-
-.head {
-  height: 240rpx;
-  background: #333;
-  color: #fff;
-  display: flex;
-}
-
-.head .head-img {
-  width: 200rpx;
-}
-
-.head .head-img image {
-  margin: 18rpx;
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 20rpx;
-}
-
-.head .head-detail {
-  flex-grow: 1;
-  font-size: 26rpx;
-}
-
-.head .head-detail .info {
-  height: 60rpx;
-  line-height: 60rpx;
-}
-
-.head .head-detail .info text {
-  border-right: 1rpx solid #eee;
-  padding: 0 10rpx;
-}
-
-.head .head-detail .info text:last-child {
-  border: none;
-}
-
-.head .head-detail .publicMsg {
-  width: 500rpx;
-  height: 60rpx;
-  line-height: 60rpx;
+.store-container {
+  /* display: flex; */
+  /* flex-direction: column; */
+  height: 100vh;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
-
-.head .actives {
-  height: 60rpx;
-}
-
-.head .item {
-  width: 500rpx;
-  height: 60rpx;
-  line-height: 60rpx;
+.hd-wrap {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 144rpx;
+  padding-right: 30rpx;
 }
-
-.head .active-icon {
-  width: 40rpx;
-  height: 40rpx;
-  line-height: 40rpx;
-  margin-top: 10rpx;
-  color: #fff;
-  text-align: center;
-  margin-right: 10rpx;
+.img-wrap {
+  width: 100%;
 }
-
-.head .active-text {
-  width: 450rpx;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.img-caption {
+  display: block;
+  width: 100%;
 }
-
-.manjian {
-  background-color: #ff8dc1;
+.store-addr {
+  padding-left: 58rpx;
+  font-size: 24rpx;
+  line-height: 1.4;
 }
-
-.xindian {
-  background-color: #75fb6d;
-}
-
-.zhekou {
-  background-color: #ff111a;
-}
-
-.daijinquan {
-  background-color: #fbd305;
-}
-
-.xinyonghu {
-  background-color: #f93fe9;
-}
-
-.peisong {
-  background-color: #67e1ef;
-}
-
-.lingdaijin {
-  background-color: #56fb43;
-}
-
-.zengsong {
-  background-color: #fd86ed;
-}
-
-.tab {
-  height: 78rpx;
-  border-bottom: 2rpx solid #eee;
-  display: flex;
+.store-addr .tt {
   position: relative;
 }
-
-.tab .tab-item {
-  width: 160rpx;
-  line-height: 78rpx;
-  text-align: center;
-}
-
-.tab .border {
+.store-addr .tt::before {
+  content: "ico";
   position: absolute;
-  width: 100rpx;
-  height: 4rpx;
-  background-color: #ffd161;
-  top: 76rpx;
-  left: 30rpx;
-  transition: all 0.5s;
-}
+  left: 0;
+  top: 50%;
+  transform: translate(-100%, -50%);
 
+}
+.store-addr .distance {
+  color: #999;
+}
+.btn-delivery {
+  flex: none;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 4rpx;
+  border: 2rpx solid #7d7d7d;
+  border-radius: 68rpx;
+  color: #7d7d7d;
+  font-size: 28rpx;
+}
+.btn-delivery .item {
+  padding: 18rpx 24rpx;
+  border-radius: 70rpx;
+  line-height: 1;
+}
+.btn-delivery .item.active {
+  color: #fff;
+  background: #7d7d7d;
+}
 .food {
   display: flex;
   height: 100%;
 }
 
 .food-class {
-  background-color: #eee;
-  width: 180rpx;
+  width: 200rpx;
+  background-color: #f5f5f5;
 }
 
 .food-class .active {
@@ -184,7 +114,7 @@ page {
 
 .food-detail {
   flex-grow: 1;
-  padding: 0 14rpx;
+  padding-left: 20rpx;
   font-size: 26rpx;
 }
 
@@ -215,7 +145,7 @@ page {
 }
 
 .food-info {
-  margin-bottom: 30rpx;
+  margin-bottom: 68rpx;
   display: flex;
 }
 
@@ -224,40 +154,50 @@ page {
 }
 
 .food-info .img {
-  width: 120rpx;
-  text-align: center;
+  margin-right: 24rpx;
 }
 
 .food-info .img image {
-  width: 100rpx;
-  height: 100rpx;
+  display: block;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 8rpx;
 }
 
 .food-info .info {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .info .name {
-  font-size: 36rpx;
-  font-weight: 700;
+  /* line-height: 2; */
+  font-size: 32rpx;
+  font-weight: 400;
 }
 
 .info .note {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-size: 20rpx;
+  line-height: 1.4;
+  color: #c6c6c6;
 }
 
 .price-count {
   display: flex;
-  height: 50rpx;
-  line-height: 50rpx;
+  align-items: center;
+  /* height: 50rpx;
+  line-height: 50rpx; */
 }
 
 .price-count .price {
-  font-size: 36rpx;
+  font-size: 30rpx;
+  line-height: 1;
   flex-grow: 1;
-  color: red;
+  color: #000;
 }
 
 .price-count .count {
@@ -278,10 +218,10 @@ page {
   border-radius: 50%;
   font-size: 40rpx;
   font-weight: 700;
-  color: black;
+  color: #fff;
   text-align: center;
-  line-height: 50rpx;
-  background-color: #ffd161;
+  line-height: 40rpx;
+  background-color: #d8d8d8;
   margin: 0 16rpx;
 }
 
