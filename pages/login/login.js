@@ -17,7 +17,11 @@ Page({
      */
     data: {
         title: "hbchjejh",
-        phoneNum: 15553598117
+        phoneNum: 15553598117,
+        placeOrderNotice: '23232323',
+        placeOrderNoticeShown: true,
+        leftButtonText: '去登录',
+        otherFunctionText: '确定'
     },
 
     /**

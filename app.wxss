@@ -3,7 +3,7 @@
 @import './style/iconfont.wxss';
 
 page {
-  background-color: #f8f8f8;
+  background-color: #fff;
 }
 
 /* .container {

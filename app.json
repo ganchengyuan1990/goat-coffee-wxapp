@@ -4,6 +4,7 @@
     "pages/cart/cart",
     "pages/user/user",
     "pages/checkout/checkout",
+    "pages/transport/transport",
     "pages/store/store",
     "pages/login/login"
   ],

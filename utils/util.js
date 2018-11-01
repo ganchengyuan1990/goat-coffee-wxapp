@@ -14,6 +14,16 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+function wx2promise(fn, params) {
+  params = params || {};
+  return new Promise(function (accept, reject) {
+    params.success = accept;
+    params.fail = reject;
+    fn(params);
+  });
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  wx2promise: wx2promise
 }

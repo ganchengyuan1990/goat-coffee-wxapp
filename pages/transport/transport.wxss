@@ -1,0 +1,183 @@
+.header-tabs-container {
+    height: 90rpx;
+    display: flex;
+    justify-content: center;
+    font-size: 28rpx;
+    background: #f5f5f5;
+    border-bottom: 1rpx solid #D8D8D8
+}
+
+.header-tabs-container .header-tab-item {
+    color: #666;
+    font-weight: 700;
+    width: 70rpx;
+    text-align: center;
+    margin: 0 100rpx;
+    line-height: 86rpx;
+    
+}
+
+.header-tabs-container .tab-item-active {
+    color: #F63;
+    border-bottom: 6rpx solid #F63
+}
+
+.search-find-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    border-top: 2rpx solid #ccc;
+}
+
+
+.suggestListWrap {
+    position: absolute;
+    z-index: 5;
+    top: 280rpx;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-bottom: 30rpx;
+}
+
+.suggestList {
+    background-color: #ffffff;
+    padding-left: 32rpx;
+    overflow: hidden;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.direct-item {
+    display: flex;
+    padding: 20rpx 28rpx 20rpx 0;
+}
+
+.direct-item .direct-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.direct-item .direct-name {
+    display: flex;
+    align-items: center;
+}
+
+.direct-item .direct-name-container {
+    display: flex;
+    flex: 1;
+    white-space: nowrap;
+    width: 560rpx;
+}
+
+.direct-item .direct-name-text {
+    font-family: PingFangSC-Regular;
+    font-size: 30rpx;
+    color: #333333;
+}
+
+.direct-item .text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.direct-item .important-text {
+    font-family: PingFangSC-Regular;
+    font-size: 30rpx;
+    color: #FF6633;
+}
+
+.direct-item .direct-middle {
+    display: flex;
+    align-items: center;
+    height: 24rpx;
+    padding: 4rpx 0;
+}
+
+.direct-item .direct-reviewcount-text {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #999999;
+}
+
+.direct-item .direct-bottom {
+    display: flex;
+    align-items: center;
+}
+
+.direct-item .direct-category {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #999999;
+    flex-shrink: 0;
+}
+
+.direct-item .split-line {
+    font-family: PingFangSC-Regular;
+    font-size: 20rpx;
+    color: #3F3F3F;
+    line-height: 33rpx;
+    width: 20rpx;
+    text-align: center;
+}
+
+.direct-item .direct-address {
+    display: flex;
+}
+
+.direct-item .direct-address-region {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #999999;
+}
+
+.direct-item .direct-address-text {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #999999;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    max-width: 520rpx;
+}
+
+.direct-item .direct-distance {
+    display: flex;
+}
+
+.direct-item .direct-distance-text {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #999999;
+}
+
+
+.searchEntry {
+    display: flex;
+    flex: 1;
+    border: 1rpx solid #979797;
+    border-radius: 20rpx;
+    background-color: #fff;
+    position: relative;
+    height: 64rpx;
+    margin: 10rpx 20rpx;
+    color: #111111;
+    font-size: 24rpx;
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50rpx;
+    margin-bottom: 50rpx;
+
+}
+
+.searchIcon {
+    position: absolute;
+    left: 0;
+    width: 150rpx;
+    text-align: center;
+    border-right: 1rpx solid #d8d8d8;
+}

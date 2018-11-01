@@ -20,8 +20,12 @@
             <view class='getVerify'>获取验证码</view>
         </view>
         <view class="btn-area">
-            <button formType="submit">确定</button>
+            <view class='button' formType="submit">确定</view>
         </view>
     </form>
+
+    <view class='mention'>点击确认即表示同意《山羊咖啡会员服务条款》</view>
+    <modal bindcustomevent="dealModalFunction" title="{{placeOrderNotice}}" shown="{{placeOrderNoticeShown}}" ok-text="{{leftButtonText}}" other-function="{{modalFunction}}" other-function-type="{{modalFunctionType}}" left-button-function-type="{{modalLeftFunctionType}}" other-text="{{otherFunctionText}}"></modal>
+
     <!-- <button type="primary" catchtap="DirectSignUp">注册</button> -->
 </view>
