@@ -11,6 +11,8 @@ Page({
     listHeight: 300,
     activeIndex: 0,
     tabIndex: 0,
+    isCatePanelShow: false,
+    isCartPanelShow: false,
     showCart: false,
     heigthArr: [],
     cart: [],
@@ -18,531 +20,222 @@ Page({
     storeInfo: {
       //服务端获取信息
       storeId: 1,
-      storeName: "竹林香米线",
+      storeName: "美式咖啡",
       storeImgUrl: "/images/store.png",
-      saleMonth: 835,
-      delPrice: 5,
-      averagePrice: 15,
-      service: ["支持自取"],
-      actives: [{
-          activeId: 1,
-          acticeText: "满20减10；满200减20；满1000减50；满1000减50；满1000减50"
-        },
-        {
-          activeId: 2,
-          acticeText: "本店新用户立减1元"
-        },
-        {
-          activeId: 3,
-          acticeText: "折扣商品9折起"
-        }
-      ],
-      publicMsg: "欢迎光临本店,欢迎光临本店欢迎光临本店欢迎光临本店欢迎光临本店欢迎光临本店欢迎光临本店欢迎光临本店欢迎光临本店"
     },
     food: [{
-        titleId: "title1",
-        title: "热销",
-        foodCount: 0,
-        items: [{
-            foodId: 1,
-            name: "糖醋里脊",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 2,
-            name: "回锅肉",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 3,
-            name: "东坡肉",
-            price: 23,
-            monthNum: 34,
-            note: "味道很好,欢迎品尝",
-            zan: 34,
-            count: 0,
-            classify: [{
-                describe: "大份",
-                price: 30
-              },
-              {
-                describe: "中份",
-                price: 23
-              },
-              {
-                describe: "小份",
-                price: 15
-              }
-            ]
-          }
-        ]
+      titleId: "title1",
+      title: "大师咖啡",
+      foodCount: 0,
+      items: [{
+        foodId: 1,
+        name: '美式咖啡',
+        ename: 'Americano',
+        price: 23,
+        note: '规格/糖/奶/温度',
+        count: 0,
+        classify: []
       },
       {
-        titleId: "title2",
-        title: "大菜",
-        foodCount: 0,
-        items: [{
-            foodId: 4,
-            name: "水煮牛肉",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 5,
-            name: "红烧肉",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 6,
-            name: "清蒸鱼",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: [{
-                describe: "大份",
-                price: 30
-              },
-              {
-                describe: "中份",
-                price: 23
-              },
-              {
-                describe: "小份",
-                price: 15
-              }
-            ]
-          }
-        ]
+        foodId: 2,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        note: '规格/糖/奶/温度',
+        zan: 34,
+        count: 0,
+        classify: []
       },
       {
-        titleId: "title3",
-        title: "小菜",
-        foodCount: 0,
-        items: [{
-            foodId: 7,
-            name: "鱼香肉丝",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 8,
-            name: "土豆丝",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 9,
-            name: "拍黄瓜",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          }
-        ]
-      },
-      {
-        titleId: "title4",
-        title: "饮料",
-        foodCount: 0,
-        items: [{
-            foodId: 10,
-            name: "可乐",
-            price: 3,
-            monthNum: 34,
-            note: "",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 11,
-            name: "雪碧",
-            price: 3,
-            monthNum: 34,
-            note: "",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 12,
-            name: "美年达",
-            price: 3,
-            monthNum: 34,
-            note: "",
-            zan: 34,
-            count: 0,
-            classify: []
-          }
-        ]
-      },
-      {
-        titleId: "title5",
-        title: "主食",
-        foodCount: 0,
-        items: [{
-            foodId: 13,
-            name: "馒头",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 14,
-            name: "米饭",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 15,
-            name: "煎饼",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: [{
-                describe: "大份",
-                price: 30
-              },
-              {
-                describe: "中份",
-                price: 23
-              },
-              {
-                describe: "小份",
-                price: 15
-              }
-            ]
-          }
-        ]
-      },
-      {
-        titleId: "title6",
-        title: "凉菜",
-        foodCount: 0,
-        items: [{
-            foodId: 16,
-            name: "馒头",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 17,
-            name: "米饭",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 18,
-            name: "煎饼",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: [{
-                describe: "大份",
-                price: 30
-              },
-              {
-                describe: "中份",
-                price: 23
-              },
-              {
-                describe: "小份",
-                price: 15
-              }
-            ]
-          }
-        ]
-      },
-      {
-        titleId: "title7",
-        title: "凉拌菜",
-        foodCount: 0,
-        items: [{
-            foodId: 19,
-            name: "馒头",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 20,
-            name: "米饭",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 21,
-            name: "煎饼",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: [{
-                describe: "大份",
-                price: 30
-              },
-              {
-                describe: "中份",
-                price: 23
-              },
-              {
-                describe: "小份",
-                price: 15
-              }
-            ]
-          }
-        ]
-      },
-      {
-        titleId: "title8",
-        title: "黄焖鸡",
-        foodCount: 0,
-        items: [{
-            foodId: 22,
-            name: "馒头",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 23,
-            name: "米饭",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 24,
-            name: "煎饼",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: [{
-                describe: "大份",
-                price: 30
-              },
-              {
-                describe: "中份",
-                price: 23
-              },
-              {
-                describe: "小份",
-                price: 15
-              }
-            ]
-          }
-        ]
-      },
-      {
-        titleId: "title9",
-        title: "糕点",
-        foodCount: 0,
-        items: [{
-            foodId: 25,
-            name: "馒头",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 26,
-            name: "米饭",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 27,
-            name: "煎饼",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: [{
-                describe: "大份",
-                price: 30
-              },
-              {
-                describe: "中份",
-                price: 23
-              },
-              {
-                describe: "小份",
-                price: 15
-              }
-            ]
-          }
-        ]
-      },
-      {
-        titleId: "title10",
-        title: "零食甜点",
-        foodCount: 0,
-        items: [{
-            foodId: 28,
-            name: "馒头",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 29,
-            name: "米饭",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 30,
-            name: "煎饼",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: [{
-                describe: "大份",
-                price: 30
-              },
-              {
-                describe: "中份",
-                price: 23
-              },
-              {
-                describe: "小份",
-                price: 15
-              }
-            ]
-          }
-        ]
-      },
-      {
-        titleId: "title11",
-        title: "美丽的鲜花",
-        foodCount: 0,
-        items: [{
-            foodId: 31,
-            name: "馒头",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 32,
-            name: "米饭",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: []
-          },
-          {
-            foodId: 33,
-            name: "煎饼",
-            price: 23,
-            monthNum: 34,
-            note: "狠辣",
-            zan: 34,
-            count: 0,
-            classify: [{
-                describe: "大份",
-                price: 30
-              },
-              {
-                describe: "中份",
-                price: 23
-              },
-              {
-                describe: "小份",
-                price: 15
-              }
-            ]
-          }
+        foodId: 3,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        count: 0,
+        classify: [{
+          describe: "大份",
+          price: 30
+        },
+        {
+          describe: "中份",
+          price: 23
+        },
+        {
+          describe: "小份",
+          price: 15
+        }
         ]
       }
+      ]
+    },
+    {
+      titleId: "title2",
+      title: "大师咖啡",
+      foodCount: 0,
+      items: [{
+        foodId: 4,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        note: '规格/糖/奶/温度',
+        zan: 34,
+        count: 0,
+        classify: []
+      },
+      {
+        foodId: 5,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        note: '规格/糖/奶/温度',
+        zan: 34,
+        count: 0,
+        classify: []
+      },
+      {
+        foodId: 6,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        note: '规格/糖/奶/温度',
+        zan: 34,
+        count: 0,
+        classify: [{
+          describe: "大份",
+          price: 30
+        },
+        {
+          describe: "中份",
+          price: 23
+        },
+        {
+          describe: "小份",
+          price: 15
+        }
+        ]
+      }
+      ]
+    },
+    {
+      titleId: "title3",
+      title: "大师咖啡",
+      foodCount: 0,
+      items: [{
+        foodId: 7,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        note: '规格/糖/奶/温度',
+        zan: 34,
+        count: 0,
+        classify: []
+      },
+      {
+        foodId: 8,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        note: '规格/糖/奶/温度',
+        zan: 34,
+        count: 0,
+        classify: []
+      },
+      {
+        foodId: 9,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        note: '规格/糖/奶/温度',
+        zan: 34,
+        count: 0,
+        classify: []
+      }
+      ]
+    },
+    {
+      titleId: "title4",
+      title: "大师咖啡",
+      foodCount: 0,
+      items: [{
+        foodId: 10,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 3,
+        note: "",
+        zan: 34,
+        count: 0,
+        classify: []
+      },
+      {
+        foodId: 11,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 3,
+        note: "",
+        zan: 34,
+        count: 0,
+        classify: []
+      },
+      {
+        foodId: 12,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 3,
+        note: "",
+        zan: 34,
+        count: 0,
+        classify: []
+      }
+      ]
+    },
+    {
+      titleId: "title5",
+      title: "大师咖啡",
+      foodCount: 0,
+      items: [{
+        foodId: 13,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        note: "美式咖啡",
+        zan: 34,
+        count: 0,
+        classify: []
+      },
+      {
+        foodId: 14,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        note: '规格/糖/奶/温度',
+        zan: 34,
+        count: 0,
+        classify: []
+      },
+      {
+        foodId: 15,
+        name: "美式咖啡",
+        ename: 'Americano',
+        price: 23,
+        note: '规格/糖/奶/温度',
+        zan: 34,
+        count: 0,
+        classify: [{
+          describe: "大份",
+          price: 30
+        },
+        {
+          describe: "中份",
+          price: 23
+        },
+        {
+          describe: "小份",
+          price: 15
+        }
+        ]
+      }
+      ]
+    }
     ]
   },
 
@@ -581,32 +274,32 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {},
+  onShow: function () { },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {},
+  onHide: function () { },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {},
+  onUnload: function () { },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {},
+  onPullDownRefresh: function () { },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {},
+  onReachBottom: function () { },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {},
+  onShareAppMessage: function () { },
   selectFood(e) {
     this.setData({
       activeIndex: e.target.dataset.index,
@@ -692,7 +385,8 @@ Page({
     if (hasCart) {
       cart[i].count++;
     } else {
-      cart.push({ ...this.data.food[groupindex].items[index],
+      cart.push({
+        ...this.data.food[groupindex].items[index],
         groupindex
       });
     }
@@ -748,13 +442,6 @@ Page({
       totalMoney: totalMoney
     });
   },
-  listCart() {
-    if (this.data.cart.length > 0) {
-      this.setData({
-        showCart: !this.data.showCart
-      })
-    }
-  },
   selectTabItem(e) {
     if (e.target.dataset.index) {
       this.setData({
@@ -765,9 +452,38 @@ Page({
   preventScrollSwiper() {
     return false;
   },
-  closeModal(e) {
+  toggleSpec() {
+    let isShow = this.data.isCatePanelShow
+    console.log(isShow)
     this.setData({
-      showModal: false
+      isCatePanelShow: !isShow
     });
+  },
+  toggleCart() {
+    let isShow = this.data.isCartPanelShow
+    if (!isShow) {
+      wx.hideTabBar({
+        animation: false,
+        success() {
+
+        },
+        fail() {
+
+        }
+      })
+    } else {
+      wx.hideTabBar({
+        animation: false,
+        success() {
+
+        },
+        fail() {
+
+        }
+      })
+    }
+    this.setData({
+      isCartPanelShow: !isShow
+    })
   }
 });
