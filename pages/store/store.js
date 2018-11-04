@@ -11,57 +11,18 @@ Page({
     listHeight: 300,
     activeIndex: 0,
     tabIndex: 0,
-    showModal: false,
     showCart: false,
     heigthArr: [],
     cart: [],
     totalMoney: 0,
-    activesInfo: {
-      1: {
-        class: "manjian",
-        text: "减"
-      },
-      2: {
-        class: "xindian",
-        text: "新"
-      },
-      3: {
-        class: "zhekou",
-        text: "折"
-      },
-      4: {
-        class: "daijinquan",
-        text: "券"
-      },
-      5: {
-        class: "xinyonghu",
-        text: "新"
-      },
-      6: {
-        class: "peisong",
-        text: "配"
-      },
-      7: {
-        class: "lingdaijin",
-        text: "领"
-      },
-      8: {
-        class: "zengsong",
-        text: "赠"
-      }
-    },
     storeInfo: {
       //服务端获取信息
       storeId: 1,
       storeName: "竹林香米线",
       storeImgUrl: "/images/store.png",
-      score: 4.4,
       saleMonth: 835,
-      minDelPrice: 2,
       delPrice: 5,
       averagePrice: 15,
-      delTime: 30,
-      distance: 3.2,
       service: ["支持自取"],
       actives: [{
           activeId: 1,
@@ -602,11 +563,11 @@ Page({
     let res = wx.getSystemInfoSync();
     let winHeight = res.windowHeight;
     let query = wx.createSelectorQuery();
-    query.select(".head").boundingClientRect();
+    query.select(".hd-wrap").boundingClientRect();
     query.exec(res => {
       height1 = res[0].height;
       let query1 = wx.createSelectorQuery();
-      query1.select(".tab").boundingClientRect();
+      query1.select(".img-caption").boundingClientRect();
       query1.exec(res => {
         height2 = res[0].height;
         this.setData({
@@ -803,11 +764,6 @@ Page({
   },
   preventScrollSwiper() {
     return false;
-  },
-  showStoreDetail() {
-    this.setData({
-      showModal: true
-    });
   },
   closeModal(e) {
     this.setData({

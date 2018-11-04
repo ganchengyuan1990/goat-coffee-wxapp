@@ -12,7 +12,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.2.1",
-	"appid": "wxaedd5ab20d5e4b92",
+	"appid": "wx74e260b5ae741e0d",
 	"projectname": "%E5%A4%96%E5%8D%96",
 	"isGameTourist": false,
 	"condition": {
@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 6,
+			"current": 3,
 			"list": [
 				{
 					"id": -1,
@@ -42,9 +42,9 @@
 					"query": ""
 				},
 				{
-					"id": 1,
+					"id": -1,
 					"name": "checkout",
-					"pathName": "pages/pay/checkout/checkout",
+					"pathName": "pages/checkout/checkout",
 					"query": ""
 				},
 				{
@@ -58,24 +58,25 @@
 					"name": "promotion-list",
 					"pathName": "pages/promotion-list/promotion-list",
 					"query": "array=[]"
-				},
-				{
+				}, {
 					"id": -1,
 					"name": "coupon",
 					"pathName": "pages/coupon/coupon",
 					"query": ""
-				},
-				{
+				}, {
 					"id": -1,
 					"name": "pay_success",
 					"pathName": "pages/pay/pay_success/pay_success",
 					"query": ""
-				},
-				{
+				}, {
 					"id": -1,
 					"name": "share_success",
 					"pathName": "pages/pay/share_success/share_success",
 					"query": ""
+				}, {
+					"id": -1,
+					"name": "store",
+					"pathName": "pages/store/store"
 				}
 			]
 		}
