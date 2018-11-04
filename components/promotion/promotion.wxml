@@ -1,0 +1,13 @@
+
+<checkbox-group class="radio-group" bindchange="radioChange">
+  <label wx:for="{{promotions}}" wx:key="idx" class="list-item">
+    <view class="list-item-name">
+      <text class="promotion-description">{{item.name}}</text>
+      <text class="promotion-limit-tip">不可以与抵用券共同使用</text>
+    </view>
+    <view class="list-item-deal">
+      <label class="deal-icon">- ¥</label><label class="deal-num">{{item.value}}</label>
+    </view>
+    <checkbox class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" value="{{item.value}}" checked="{{item.checked}}"/>
+  </label>
+</checkbox-group>

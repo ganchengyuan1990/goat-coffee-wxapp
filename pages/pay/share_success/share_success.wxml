@@ -1,0 +1,27 @@
+<view class="container">
+  <view class="success-container">
+    <view class="success-form">
+      <view class="coupon-sn">支付成功</view>
+      <view class="coupon-sn">￥47.74</view>
+    </view>
+  </view>
+
+  <view class="share-list">
+    <view class="user-info">
+      <view class="avatar">sdsd</view>
+      <view class="nickname">123</view>
+    </view>
+    <view class="coupon-info">
+      <view class="coupon-sn">10元券</view>
+    </view>
+  </view>
+  <view class="share-list">
+    <view class="user-info">
+      <view class="avatar">sdsd</view>
+      <view class="nickname">123</view>
+    </view>
+    <view class="coupon-info">
+      <view class="coupon-sn">10元券</view>
+    </view>
+  </view>
+</view>

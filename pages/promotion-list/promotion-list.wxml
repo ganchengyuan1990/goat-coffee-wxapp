@@ -1,0 +1,38 @@
+<view class="wrapper">
+  <view class="promotion-tip">已为您计算可用促销在本单中具体可减金额</view>
+  <view class="group-wrapper">
+    <view class="group">
+      <view class="title-box" wx:if="{{activedItems.length > 0}}">
+        <view class="line"></view>
+        <text class="title">可用促销优惠（{{activedItems.length}}）</text>
+      </view>
+      <checkbox-group class="radio-group" bindchange="onMyEvent">
+        <label wx:for="{{activedItems}}" wx:for-index="idx" wx:for-item="item" class="list-item">
+          <view class="list-item-name">
+            <text class="promotion-description">{{item.title}}</text>
+            <text class="promotion-limit-tip">{{item.subtitle}}</text>
+          </view>
+          <view class="list-item-deal">
+            <label class="deal-icon">- ¥</label><label class="deal-num">{{item.discountMoney}}</label>
+          </view>
+          <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
+        </label>
+      </checkbox-group>
+      <!-- <promotion promotions="{{array}}" category="promotion" bind:myevent="onMyEvent"></promotion> -->
+    </view>
+    <view class="group">
+      <view class="title-box">
+        <view class="line"></view>
+        <text class="title" wx:if="{{unActivedItems.length > 0}}">不可用促销优惠（{{unActivedItems.length}}）</text>
+      </view>
+      <view>
+        <view wx:for="{{unActivedItems}}" wx:key="idx" class="list-item">
+          <view class="list-item-name">
+            <text class="promotion-description disable-promotion">{{item.title}}</text>
+            <text class="promotion-limit-tip">该活动不可以与抵用券共同使用</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

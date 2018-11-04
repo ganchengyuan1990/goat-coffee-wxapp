@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 6,
 			"list": [
 				{
 					"id": -1,
@@ -42,15 +42,40 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 1,
 					"name": "checkout",
-					"pathName": "pages/checkout/checkout",
+					"pathName": "pages/pay/checkout/checkout",
 					"query": ""
 				},
 				{
 					"id": -1,
 					"name": "配送方式",
-					"pathName": "pages/transport/transport"
+					"pathName": "pages/transport/transport",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "promotion-list",
+					"pathName": "pages/promotion-list/promotion-list",
+					"query": "array=[]"
+				},
+				{
+					"id": -1,
+					"name": "coupon",
+					"pathName": "pages/coupon/coupon",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "pay_success",
+					"pathName": "pages/pay/pay_success/pay_success",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "share_success",
+					"pathName": "pages/pay/share_success/share_success",
+					"query": ""
 				}
 			]
 		}

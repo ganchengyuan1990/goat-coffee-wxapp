@@ -1,0 +1,119 @@
+page{
+    background: #fff;
+    min-height: 100%;
+}
+
+.container{
+    background: #fff;
+    min-height: 100%;
+    padding-top: 30rpx;
+}
+
+.success-form {
+  height: 310rpx;
+  /* width: 100%; */
+  background: #fff;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  padding-top: 20rpx;
+  display: flex;
+  text-align: center;
+  flex-direction:column;
+
+}
+
+.input-box{
+  flex: 1;
+  height: 70rpx;
+  color: #333;
+  font-size: 24rpx;
+  background: #fff;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4rpx;
+  margin-right: 30rpx;
+}
+
+.coupon-sn{
+  height: 50rpx;
+  margin: 50rpx;
+  color: #000;
+  line-height: 50rpx;
+  font-size: 34rpx;
+}
+
+.clear-icon{
+  position: absolute;
+  top: 21rpx;
+  right: 30rpx;
+  width: 28rpx;
+  height: 28rpx;
+}
+
+.add-btn{
+  height: 70rpx;
+  border:none;
+  width: 168rpx;
+  background: #b4282d;
+  border-radius: 0;
+  line-height: 70rpx;
+  color: #fff;
+  font-size: 28rpx;
+}
+
+.add-btn.disabled{
+  background: #ccc;
+}
+
+.help{
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: right;
+  padding-right: 30rpx;
+  background: url(https://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/couponHelp-4768607555.png) 590rpx center no-repeat;
+  background-size: 28rpx;
+  color: #999;
+  font-size: 24rpx;
+}
+
+.coupon-list{
+  /* width: 100%; */
+  height: auto;
+  overflow: hidden;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+}
+
+.item{
+  position: relative;
+  height: 290rpx;
+  width: 100%;
+  background: linear-gradient(to right,#cfa568,#e3bf79);
+  margin-bottom: 30rpx;
+  padding-top: 52rpx;
+}
+
+
+
+
+.share-list {
+  display: flex;
+  height: 100rpx;
+  line-height: 100rpx;
+  justify-content:center;
+
+}
+
+.coupon-info {
+  text-align: right;
+  flex: 1;
+  height: 100rpx;
+  line-height: 100rpx;
+}
+
+.user-info view {
+  display: inline-block;
+  height: 100rpx;
+  line-height: 100rpx;
+  margin: 25rpx;
+}

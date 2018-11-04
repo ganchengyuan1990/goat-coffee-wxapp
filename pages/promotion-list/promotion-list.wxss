@@ -1,0 +1,105 @@
+.wrapper {
+  background: #f6f6f6;
+}
+.promotion-tip {
+  width: 100%;
+  height: 72rpx;
+  line-height: 72rpx;
+  background-color: #ffe0d6;
+  color: #ff6633;
+  font-size: 26rpx;
+  text-align: center;
+}
+.group-wrapper {
+  padding: 0 30rpx 0 30rpx;
+}
+.title-box {
+  position: relative;
+  height: 74rpx;
+}
+.line {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border-bottom: 1rpx solid #e5e5e5;
+}
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-left: 35rpx;
+  padding-right: 20rpx;
+  background: #f6f6f6;
+  display: block;
+  height: 74rpx;
+  line-height: 74rpx;
+}
+.list-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 8rpx;
+  background: #fff;
+  margin-bottom: 20rpx;
+  padding: 36rpx 15rpx 36rpx 30rpx;
+  align-items: center;
+}
+.list-item-name {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 5;
+}
+.promotion-description {
+  font-size: 28rpx;
+  font-weight: normol;
+  color: #a26a1a;
+  margin-bottom: 10rpx;
+  max-width:400rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.disable-promotion {
+  color: #999999;
+}
+.promotion-limit-tip {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+checkbox {
+  display: flex;
+  margin-top: 2rpx;
+}
+checkbox .wx-checkbox-input{
+  border-radius: 50%;
+  width: 42rpx;
+  height: 42rpx;
+  background: #f6f6f6;
+}
+checkbox .wx-checkbox-input.wx-checkbox-input-checked{
+  border: none;
+  background: #ff6633;
+}
+checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
+  border-radius: 50%;
+  width: 42rpx;
+  height: 42rpx;
+  line-height: 42rpx;
+  text-align: center;
+  font-size: 21rpx;
+  color: #ffffff;
+  background: transparent;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.list-item-deal {
+  color: #ff6633;
+  font-size: 28rpx;
+  margin-right: 0.5rem;
+}
+
+.list-item-deal .deal-num {
+  font-size: 48rpx;
+}

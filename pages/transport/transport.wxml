@@ -1,7 +1,7 @@
 <view class="container">
     <view class="header-tabs-container">
-        <view bindtap="toDpPageMovie" class="header-tab-item">电影</view>
-        <view class="header-tab-item tab-item-active">演出</view>
+        <view bindtap="goSelfGet" class="header-tab-item {{showSelfGet ? 'tab-item-active' : ''}}">自取</view>
+        <view bindtap="goExpress" class="header-tab-item {{showExpress ? 'tab-item-active' : ''}}">外送</view>
     </view>
 
     <view class="searchEntry" bindtap="onSearchShow" data-source="0">
@@ -74,5 +74,9 @@
                 </view>
             </scroll-view>
         </view>
+    </view>
+
+     <view class="addNewAddress" bindtap="onSearchShow" data-source="0">
+        <view class="text"> + 添加新的收货地址</view>
     </view>
 </view>
