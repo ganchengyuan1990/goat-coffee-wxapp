@@ -1,7 +1,7 @@
 <view class="store-container">
   <view class="hd-wrap">
     <view class="store-addr">
-      <view class="tt">店铺名称店铺名称店铺名称</view>
+      <view class="tt">{{storeInfo.storeName}}</view>
       <view class="distance">距您2.7km</view>
     </view>
     <view class="delivery">
@@ -12,13 +12,23 @@
     </view>
   </view>
   <view class="img-wrap">
-    <image src="/images/store.png" class="img-caption"></image>
+    <image src="/images/holder.jpg" mode="widthFix" class="img-caption"></image>
   </view>
   <view class="food">
     <view class="food-class" style="height:{{listHeight}}px">
       <scroll-view scroll-y scroll-with-animation scroll-into-view="{{viewToLeft}}" style="height:{{listHeight}}px">
-        <view class="food-class-item {{activeIndex==index?'active':''}}" wx:for="{{food}}" wx:key="item.title" bindtap="selectFood" data-index="{{index}}" data-titleId="{{item.titleId}}" id="{{item.titleId+'left'}}">
-          <view class="text" data-index="{{index}}" data-titleId="{{item.titleId}}">{{item.title}}</view>
+        <view 
+          class="food-class-item {{activeIndex==index?'active':''}}" 
+          wx:for="{{menuList}}" 
+          wx:key="item.id" 
+          bindtap="selectFood" 
+          data-index="{{index}}" 
+          data-titleId="{{item.id}}" 
+          id="{{'left'+item.titleId}}">
+          <view class="text" data-index="{{index}}" data-titleId="{{item.id}}">
+            <view class="icon-crown"></view>
+            {{item.name}}
+          </view>
           <view class="dot" wx:if="{{item.foodCount>0}}">{{item.foodCount}}</view>
         </view>
       </scroll-view>
