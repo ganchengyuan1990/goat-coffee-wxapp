@@ -300,6 +300,45 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () { },
+    /**
+   * 获取商品列表
+   * 
+   */ 
+  checkAuth() {
+    wx.getSetting({
+      success(res) {
+        const {authSetting} = res
+        if (!authSetting.scope.userLocation) {
+          // console.log('need auth')
+        }
+      },
+      fail() {
+
+      }
+    })
+  },
+  fetchLoaction() {
+    wx.getLocation({
+      type: 'wgs84',
+      success(res) {
+        const {latitude, longitude} = res
+        this.setData({
+          geo: {
+            lng: longitude,
+            lat: latitude
+          }
+        })
+      },
+      fail() {
+        this.checkAuth()
+      }
+    })
+  },
+  fetchProductAll() {
+    wx.request({
+      url: 'http://47.100.233.24:6688/api/v1/server/home/product/all?storeId=29'
+    })
+  },
   selectFood(e) {
     this.setData({
       activeIndex: e.target.dataset.index,
@@ -442,16 +481,6 @@ Page({
       totalMoney: totalMoney
     });
   },
-  selectTabItem(e) {
-    if (e.target.dataset.index) {
-      this.setData({
-        tabIndex: e.target.dataset.index
-      });
-    }
-  },
-  preventScrollSwiper() {
-    return false;
-  },
   toggleSpec() {
     let isShow = this.data.isCatePanelShow
     console.log(isShow)
@@ -464,22 +493,14 @@ Page({
     if (!isShow) {
       wx.hideTabBar({
         animation: false,
-        success() {
-
-        },
-        fail() {
-
-        }
+        success() {},
+        fail() {}
       })
     } else {
       wx.hideTabBar({
         animation: false,
-        success() {
-
-        },
-        fail() {
-
-        }
+        success() {},
+        fail() {}
       })
     }
     this.setData({
