@@ -1,0 +1,40 @@
+.list-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 8rpx;
+  background: #fff;
+  margin-bottom: 20rpx;
+  padding: 36rpx 30rpx;
+}
+.list-item-name {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 5;
+}
+.promotion-description {
+  font-size: 28rpx;
+  font-weight: normol;
+  color: #a26a1a;
+  margin-bottom: 10rpx;
+}
+.list-item-deal {
+  color: #ff6633;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-grow: 1;
+}
+.deal-icon {
+  font-size: 28rpx;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.deal-num {
+  font-size: 48rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

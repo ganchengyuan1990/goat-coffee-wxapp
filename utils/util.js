@@ -23,7 +23,31 @@ function wx2promise(fn, params) {
   });
 }
 
+function daojishi (timeRemain) {
+  var interval = setInterval(() => {
+    if (timeRemain > 1) {
+      timeRemain--;
+    } else {
+      clearInterval(interval);
+    }
+  }, 1000);
+  return interval;
+}
+
+function calcLeftTime (time) {
+  var timeStr = parseFloat(time) - new Date().getTime();
+  var left = parseInt((timeStr % 864e5) / 1000);
+  var hours = parseInt(left / 3600);
+  var minutes = parseInt((left - hours * 3600) / 60);
+  var seconds = parseInt((left - hours * 3600 - minutes * 60));
+  return {
+    left: left,
+    time: `${hours}小时${minutes}分${seconds}秒`
+  };
+}
+
 module.exports = {
   formatTime: formatTime,
-  wx2promise: wx2promise
+  wx2promise: wx2promise,
+  calcLeftTime: calcLeftTime
 }

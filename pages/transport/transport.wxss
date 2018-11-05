@@ -8,7 +8,7 @@
 }
 
 .header-tabs-container .header-tab-item {
-    color: #666;
+    color: #999;
     font-weight: 700;
     width: 70rpx;
     text-align: center;
@@ -18,8 +18,8 @@
 }
 
 .header-tabs-container .tab-item-active {
-    color: #F63;
-    border-bottom: 6rpx solid #F63
+    color: #333;
+    border-bottom: 6rpx solid #333
 }
 
 .search-find-container {
@@ -42,7 +42,7 @@
 
 .suggestList {
     background-color: #ffffff;
-    padding-left: 32rpx;
+    /* margin-left: 32rpx; */
     overflow: hidden;
     box-sizing: border-box;
     height: 100%;
@@ -50,7 +50,7 @@
 
 .direct-item {
     display: flex;
-    padding: 20rpx 28rpx 20rpx 0;
+    padding: 20rpx 28rpx 20rpx 20rpx;
 }
 
 .direct-item .direct-content {
@@ -99,7 +99,7 @@
 .direct-item .direct-reviewcount-text {
     font-family: PingFangSC-Regular;
     font-size: 24rpx;
-    color: #999999;
+    color: #c6c6c6;
 }
 
 .direct-item .direct-bottom {
@@ -110,14 +110,14 @@
 .direct-item .direct-category {
     font-family: PingFangSC-Regular;
     font-size: 24rpx;
-    color: #999999;
+    color: #c6c6c6;
     flex-shrink: 0;
 }
 
 .direct-item .split-line {
     font-family: PingFangSC-Regular;
     font-size: 20rpx;
-    color: #3F3F3F;
+    color: #c6c6c6;
     line-height: 33rpx;
     width: 20rpx;
     text-align: center;
@@ -130,13 +130,13 @@
 .direct-item .direct-address-region {
     font-family: PingFangSC-Regular;
     font-size: 24rpx;
-    color: #999999;
+    color: #c6c6c6;
 }
 
 .direct-item .direct-address-text {
     font-family: PingFangSC-Regular;
     font-size: 24rpx;
-    color: #999999;
+    color: #c6c6c6;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -151,7 +151,7 @@
 .direct-item .direct-distance-text {
     font-family: PingFangSC-Regular;
     font-size: 24rpx;
-    color: #999999;
+    color: #c6c6c6;
 }
 
 
@@ -181,3 +181,21 @@
     text-align: center;
     border-right: 1rpx solid #d8d8d8;
 }
+
+.addNewAddress {
+    position: fixed;
+    bottom: 0;
+    height: 140rpx;
+    line-height: 140rpx;
+    text-align: center;
+    font-size: 32rpx;
+    width: 100%;
+    z-index:10000;
+    border-top: 1rpx solid #ccc; 
+}
+
+.suggest-container {
+    border-top:2rpx solid #ccc;
+
+}
+

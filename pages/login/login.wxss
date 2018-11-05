@@ -9,29 +9,37 @@
 }
 
 .section {
-    height: 100rpx;
-    line-height: 100rpx;
+    height: 60rpx;
+    line-height: 60rpx;
     border-bottom: 1rpx solid #eee;
     width: 570rpx;
     position: relative;
+    color: #999;
+    margin-bottom: 50rpx;
 }
+
+.tapped {
+    border-bottom: 1rpx solid #333;
+}
+
 
 .section input {
     display: inline-block;
-    height: 100rpx;
+    height: 60rpx;
     font-size: 28rpx;
     margin-left: 20rpx;
+    color: #333;
 }
 .getVerify {
     position: absolute;
-    right: 40rpx;
-    height: 60rpx;
-    line-height: 60rpx;
-    top: 20rpx;
+    right: 0rpx;
+    height: 40rpx;
+    line-height: 40rpx;
+    bottom: 20rpx;
     font-size: 26rpx;
-    border: 1rpx solid #eee;
+    border-left: 1rpx solid #eee;
     /* padding: 10rpx; */
-    width: 228rpx;
+    width: 188rpx;
     text-align: center;
 }
 

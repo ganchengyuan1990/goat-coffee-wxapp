@@ -3,9 +3,13 @@
     "pages/index/index",
     "pages/cart/cart",
     "pages/user/user",
-    "pages/checkout/checkout",
+    "pages/pay/checkout/checkout",
+    "pages/pay/pay_success/pay_success",
+    "pages/pay/share_success/share_success",
     "pages/transport/transport",
+    "pages/promotion-list/promotion-list",
     "pages/store/store",
+    "pages/coupon/coupon",
     "pages/login/login"
   ],
   "window": {

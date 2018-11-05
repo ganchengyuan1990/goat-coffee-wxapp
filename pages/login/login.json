@@ -1,6 +1,7 @@
 {
     "navigationBarTitleText": "注册登录",
     "usingComponents": {
-        "modal": "/components/modal/modal"
+        "modal": "/components/modal/modal",
+        "toast": "../../components/toast/toast"
     }
 }

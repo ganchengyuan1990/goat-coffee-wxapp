@@ -1,7 +1,7 @@
 // var util = require('../../../utils/util.js');
 // var api = require('../../../config/api.js');
 // const pay = require('../../../services/pay.js');
-import {wx2promise, showErrorToast} from '../../utils/util';
+import {wx2promise, showErrorToast} from '../../../utils/util';
 
 var app = getApp();
 

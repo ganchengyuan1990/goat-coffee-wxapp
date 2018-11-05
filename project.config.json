@@ -55,6 +55,26 @@
 				},
 				{
 					"id": -1,
+					"name": "promotion-list",
+					"pathName": "pages/promotion-list/promotion-list",
+					"query": "array=[]"
+				}, {
+					"id": -1,
+					"name": "coupon",
+					"pathName": "pages/coupon/coupon",
+					"query": ""
+				}, {
+					"id": -1,
+					"name": "pay_success",
+					"pathName": "pages/pay/pay_success/pay_success",
+					"query": ""
+				}, {
+					"id": -1,
+					"name": "share_success",
+					"pathName": "pages/pay/share_success/share_success",
+					"query": ""
+				}, {
+					"id": -1,
 					"name": "store",
 					"pathName": "pages/store/store"
 				}

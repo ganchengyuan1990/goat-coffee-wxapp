@@ -31,7 +31,9 @@ Page({
       "shopPower": 45,
       "url": "/pages/detail/detail?shopUuid=1860781&from=search_banner",
       "eventtype": "direct_poi"
-    }]
+    }],
+    showSelfGet: true,
+    showExpress: false
   },
   onLoad: function (options) {
 
@@ -71,21 +73,22 @@ Page({
     return Math.ceil(total);
   },
 
+  goSelfGet () {
+    this.setData({
+      showSelfGet: true,
+      showExpress: false
+    })
+  },
+
+  goExpress() {
+    this.setData({
+      showExpress: true,
+      showSelfGet: false
+    })
+  },
+
   getCheckoutInfo: function () {
     let that = this;
-
-
-    that.setData({
-      checkedGoodsList: wx.getStorageSync('chooseCartInfo'),
-      // checkedAddress: res.data.checkedAddress,
-      // actualPrice: res.data.actualPrice,
-      // checkedCoupon: res.data.checkedCoupon,
-      // couponList: res.data.couponList,
-      // couponPrice: res.data.couponPrice,
-      // freightPrice: res.data.freightPrice,
-      // goodsTotalPrice: res.data.goodsTotalPrice,
-      // orderTotalPrice: res.data.orderTotalPrice
-    });
 
     wx.hideLoading();
     wx2promise(wx.request, {
@@ -115,28 +118,6 @@ Page({
           // goodsTotalPrice: res.data.goodsTotalPrice,
           // orderTotalPrice: res.data.orderTotalPrice
         });
-        wx2promise(wx.request, {
-            url: 'https://www.jasongan.cn/getTransportFee',
-            method: 'GET',
-            // data:  'appid=1256596722&url=https://www.jasongan.cn/img/fengli.jpeg',
-            data: {
-                weight: that.calcTotalWeight(),
-                destionation: that.data.checkedAddress.region.split(',')[0]
-            },
-            header: {
-                //设置参数内容类型为x-www-form-urlencoded
-                'Content-Type': 'application/json',
-                'Authorization': 'tdpeGHT2XVFmQOVci+vDhRFG6XZhPTEyNTY1OTY3MjImaz1BS0lEUmhpVUZ2b2FjUjFMUUZvQUc2a0FMSzdnejJwTFpZR2gmZT0xNTI5MTM2MTE1JnQ9MTUyOTA0OTcxNSZyPTM0Nzg0ODEwNzMmdT0wJmY9',
-                'Host': 'recognition.image.myqcloud.com'
-            },
-        }).then(function (innerRes) {
-            that.setData({
-              goodsTotalPrice: that.data.goodsTotalPrice,
-              freightPrice: innerRes.data.totalFee,
-              actualPrice: that.data.goodsTotalPrice + innerRes.data.totalFee
-            })
-            wx.hideLoading();
-        }); 
       }
     });
     // util.request(`https://www.jasongan.cn/getAddressByOpenId?openid=${wx.getStorageSync('openid')}`).then(function (res) {
@@ -157,16 +138,6 @@ Page({
     //   wx.hideLoading();
     // });
   },
-  selectAddress() {
-    wx.navigateTo({
-      url: '/pages/address/address',
-    })
-  },
-  addAddress() {
-    wx.navigateTo({
-      url: '/pages/shopping/addressAdd/addressAdd',
-    })
-  },
   onReady: function () {
     // 页面渲染完成
 
@@ -186,22 +157,5 @@ Page({
   onUnload: function () {
     // 页面关闭
 
-  },
-  submitOrder: function () {
-    // if (this.data.checkedAddress.name) {
-    //   showErrorToast('请选择收货地址');
-    //   return false;
-    // }
-    let product = [];
-    this.data.checkedGoodsList.forEach(element => {
-      product.push({
-        id: element.id,
-        number: element.number
-      })
-    });
-    wx.setStorageSync('martProduct', product);
-    wx.redirectTo({
-      url: `/pages/normalPay/normalPay?isMart=1&price=${this.data.actualPrice}&init=1`
-    });
-}
+  }
 })

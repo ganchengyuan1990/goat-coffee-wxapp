@@ -1,6 +1,8 @@
 // pages/user/user.js
 const app = getApp();
 Page({
+
+
     getPhoneNum: function () {
         wx.showActionSheet({
             itemList: ['客服电话：101-097-77'],
@@ -9,6 +11,20 @@ Page({
                     phoneNumber: '101-097-77',
                 })
             }
+        })
+    },
+
+    dealTapName() {
+        this.setData({
+            showButtonLineName: true,
+            showButtonLinePhone: false
+        })
+    },
+
+    dealTapPhone() {
+        this.setData({
+            showButtonLineName: false,
+            showButtonLinePhone: true
         })
     },
 
@@ -21,7 +37,12 @@ Page({
         placeOrderNotice: '23232323',
         placeOrderNoticeShown: true,
         leftButtonText: '去登录',
-        otherFunctionText: '确定'
+        otherFunctionText: '确定',
+        leftSeconds: 60,
+        errorToastShown: true,
+        errorInfo: 'sdsdsds',
+        showButtonLineName: false,
+        showButtonLinePhone: false
     },
 
     /**
@@ -34,6 +55,17 @@ Page({
                 hasUserInfo: true
             })
         }
+        let timeRemain = this.data.leftSeconds;
+        var interval = setInterval(() => {
+            if (timeRemain > 1) {
+                timeRemain--;
+                this.setData({
+                    leftSeconds: timeRemain
+                })
+            } else {
+                clearInterval(interval);
+            }
+        }, 1000);
     },
 
     /**

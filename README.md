@@ -11,6 +11,7 @@
     "pages/checkout/checkout",  //确定订单页
     "pages/store/store",
     "pages/transport/transport", // 配送方式选择页
-    "pages/login/login"
+    "pages/login/login",
+    "pages/promotion-list/promotion-list", //促销
   ],
 ```
