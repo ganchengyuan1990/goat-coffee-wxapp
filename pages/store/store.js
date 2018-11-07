@@ -7,8 +7,9 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		viewTo: "",
-		viewToLeft: "",
+		viewToList: "",
+		viewToNav: "",
+		// scrollview 设定高度
 		listHeight: 300,
 		activeIndex: 0,
 		tabIndex: 0,
@@ -20,8 +21,8 @@ Page({
 		totalMoney: 0,
 		storeInfo: {
 			//服务端获取信息
-			storeId: 1,
-			storeName: "美式咖啡",
+			// storeId: 1,
+			// storeName: "美式咖啡",
 			storeImgUrl: "/images/store.png",
 		},
 		menuList: [],
@@ -245,32 +246,27 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		wx.setNavigationBarTitle({
-			title: this.data.storeInfo.storeName
-		});
-
 		this.fetchLoaction()
 	},
-
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
-	onReady: function () {
+	onReady() {
 		let height1, height2;
 		let res = wx.getSystemInfoSync();
 		let winHeight = res.windowHeight;
 		let query = wx.createSelectorQuery();
-		query.select(".hd-wrap").boundingClientRect();
+		query.select(".J_hd_wrap").boundingClientRect();
 		query.exec(res => {
 			height1 = res[0].height;
 			let query1 = wx.createSelectorQuery();
-			query1.select(".img-caption").boundingClientRect();
+			query1.select(".J_img_wrap").boundingClientRect();
 			query1.exec(res => {
 				height2 = res[0].height;
 				this.setData({
 					listHeight: winHeight - height1 - height2
 				});
-				this.calculateHeight();
+				// this.calculateHeight();
 			});
 		});
 	},
@@ -294,13 +290,13 @@ Page({
 	 * 用户点击右上角分享
 	 */
 	onShareAppMessage() {},
-
+	/**
+	 * 验证是否获得授权
+	 */
 	checkAuth() {
 		wx.getSetting({
 			success(res) {
-				const {
-					authSetting
-				} = res
+				const { authSetting } = res
 				if (!authSetting.scope.userLocation) {
 					// console.log('need auth')
 					wx.showModal({
@@ -320,15 +316,12 @@ Page({
 		wx.getLocation({
 			type: 'wgs84',
 			success(res) {
-				const {
-					latitude,
-					longitude
-				} = res
-					let geo = {
-						lng: longitude,
-						lat: latitude
-					}
-					self.fetchStore(geo)
+				const { latitude, longitude } = res
+				let geo = {
+					lng: longitude,
+					lat: latitude
+				}
+				self.fetchStore(geo)
 			},
 			fail() {
 				self.checkAuth()
@@ -340,20 +333,27 @@ Page({
 	 * 
 	 */
 	fetchStore(geo) {
-		model('home/lbs/getStoreByLocation', {
+		model('home/lbs/getStoreListByLocation', {
 			// lng: geo.lng,
 			// lat: geo.lat,
-			lng: 121.463364,
-			lat: 31.247538,
-			type: 1
+			lng: 121.468532,
+			lat: 31.244450,
+			page: 1
 		}).then(res => {
 			console.log(res, 'location')
 			const {data} = res
-
-			this.setData({
-				storeInfo: data
-			})
-			this.fetchProduct()
+			if (data && data.length > 0) {
+				let storeInfo = data[0]
+				let distance = storeInfo.distance
+				if (distance) {
+					distance = distance > 1 ? `${distance}km` : `${Math.round(distance * 1000)}m`
+				}
+				storeInfo.distance = distance
+				this.setData({
+					storeInfo: storeInfo
+				})
+				this.fetchProduct()
+			}
 		}).catch(e => {
 
 		})
@@ -365,30 +365,25 @@ Page({
 		model('home/product/all', {
 			storeId: storeId 
 		}).then(res => {
-			console.log(res, 'location')
+			console.log(res, 'detail')
 			const {data} = res
 			const list = data.classify_list
 			this.setData({
 				menuList: list
 			})
-
+			this.calculateHeight()
 		}).catch(e => {
 
 		})
-	},
-	selectFood(e) {
-		this.setData({
-			activeIndex: e.target.dataset.index,
-			viewTo: e.target.dataset.titleid
-		});
 	},
 	calculateHeight() {
 		let heigthArr = [];
 		let height = 0;
 		heigthArr.push(height);
 		var query = wx.createSelectorQuery();
-		query.selectAll(".title-group").boundingClientRect();
+		query.selectAll(".J_group").boundingClientRect();
 		query.exec(res => {
+			console.log(res, 'res')
 			for (let i = 0; i < res[0].length; i++) {
 				console.log(res[0][i])
 				height += parseInt(res[0][i].height);
@@ -397,10 +392,22 @@ Page({
 			this.setData({
 				heigthArr: heigthArr
 			});
+			console.log(heigthArr, 'heightarr');
+		});
+		
+	},
+	selectNav(e) {
+		console.log(e.currentTarget.dataset.index, e.currentTarget.dataset.navid)
+		this.setData({
+			activeIndex: e.currentTarget.dataset.index,
+			viewToList: e.currentTarget.dataset.navid
 		});
 	},
+
 	// 手机端有延迟 节流函数效果不好 用防抖函数凑合
 	scroll(e) {
+		// console.log(e);
+		
 		clearTimeout(timer);
 		timer = setTimeout(() => {
 			let srollTop = e.detail.scrollTop;
@@ -415,11 +422,11 @@ Page({
 					});
 					if (i < 3) {
 						this.setData({
-							viewToLeft: 'title1left'
+							viewToNav: 'nav1'
 						})
 					} else {
 						this.setData({
-							viewToLeft: 'title' + (i - 2) + 'left'
+							viewToNav: 'nav' + (i - 2)
 						})
 					}
 					return;
@@ -525,23 +532,32 @@ Page({
 			isCatePanelShow: !isShow
 		});
 	},
+	/**
+	 * 
+	 */  
 	toggleCart() {
 		let isShow = this.data.isCartPanelShow
+		let self = this
 		if (!isShow) {
 			wx.hideTabBar({
 				animation: false,
-				success() {},
+				success() {
+					self.setData({
+						isCartPanelShow: !isShow
+					})
+				},
 				fail() {}
 			})
 		} else {
-			wx.hideTabBar({
+			wx.showTabBar({
 				animation: false,
 				success() {},
 				fail() {}
 			})
+			self.setData({
+				isCartPanelShow: !isShow
+			})
 		}
-		this.setData({
-			isCartPanelShow: !isShow
-		})
+
 	}
 });

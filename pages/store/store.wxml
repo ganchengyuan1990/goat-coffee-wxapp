@@ -1,8 +1,8 @@
 <view class="store-container">
-  <view class="hd-wrap">
+  <view class="hd-wrap J_hd_wrap">
     <view class="store-addr">
       <view class="tt">{{storeInfo.storeName}}</view>
-      <view class="distance">距您2.7km</view>
+      <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
     </view>
     <view class="delivery">
       <view class="btn-delivery">
@@ -11,46 +11,45 @@
       </view>
     </view>
   </view>
-  <view class="img-wrap">
+  <view class="img-wrap J_img_wrap">
     <image src="/images/holder.jpg" mode="widthFix" class="img-caption"></image>
   </view>
-  <view class="food">
-    <view class="food-class" style="height:{{listHeight}}px">
-      <scroll-view scroll-y scroll-with-animation scroll-into-view="{{viewToLeft}}" style="height:{{listHeight}}px">
+  <view class="list-wrap" style="height:{{listHeight}}px">
+    <view class="list-nav">
+      <scroll-view scroll-y scroll-with-animation scroll-into-view="{{viewToNav}}" style="height:{{listHeight}}px">
         <view 
-          class="food-class-item {{activeIndex==index?'active':''}}" 
+          class="list-nav-item {{activeIndex==index?'active':''}}" 
           wx:for="{{menuList}}" 
           wx:key="item.id" 
-          bindtap="selectFood" 
+          bindtap="selectNav" 
           data-index="{{index}}" 
-          data-titleId="{{item.id}}" 
-          id="{{'left'+item.titleId}}">
-          <view class="text" data-index="{{index}}" data-titleId="{{item.id}}">
+          data-navid="{{'list'+item.id}}" 
+          id="{{'nav'+item.id}}">
+          <view class="tt">
             <view class="icon-crown"></view>
             {{item.name}}
           </view>
-          <view class="dot" wx:if="{{item.foodCount>0}}">{{item.foodCount}}</view>
         </view>
       </scroll-view>
     </view>
-    <view class="food-detail">
-      <scroll-view scroll-y scroll-with-animation style="height:{{listHeight}}px" scroll-into-view="{{viewTo}}" bindscroll="scroll">
-        <view wx:for="{{food}}" wx:key="item.title" class="title-group" wx:for-index="groupindex">
-          <view class="title" id="{{item.titleId}}">{{item.title}}</view>
-          <view wx:for="{{item.items}}" wx:key="item.goodId" class="food-info" wx:for-index="index">
+    <view class="list-cnt">
+      <scroll-view scroll-y scroll-with-animation style="height:{{listHeight}}px" scroll-into-view="{{viewToList}}" bindscroll="scroll">
+        <view wx:for="{{menuList}}" wx:key="item.id" class="title-group J_group" wx:for-index="idx" id="{{'list'+item.id}}">
+          <view class="title">{{item.name}}</view>
+          <view wx:for="{{item.product_list}}" wx:for-item="product" wx:key="product.id" class="list-detail" wx:for-index="index">
             <view class="img">
-              <image src="/images/store.png"></image>
+              <image src="{{product.icon}}"></image>
             </view>
             <view class="info">
               <view>
-                <view class="name">{{item.name}}</view>
-                <view class="note">{{item.ename}}</view>
-                <view class="note">默认：{{item.note}}</view>
+                <view class="name">{{product.productName}}</view>
+                <view class="note">{{product.productEnName}}</view>
+                <view class="note">默认：{{product.note}}</view>
               </view>
               <view class="price-count">
-                <view class="price">￥{{item.price}}</view>
+                <view class="price">￥{{product.price}}</view>
                 <view class="count">
-                  <view class="add btn" bindtap="add" data-item="{{item}}" data-groupindex="{{groupindex}}" data-index="{{index}}" bindtap="toggleSpec">+</view>
+                  <view class="add btn" bindtap="add" data-item="{{item}}" data-groupindex="{{idx}}" data-index="{{index}}" bindtap="toggleSpec">+</view>
                 </view>
               </view>
             </view>
@@ -59,6 +58,7 @@
       </scroll-view>
     </view>
   </view>
+
   <view class="cart-wrap">
     <view class="cart-entry" bindtap="toggleCart">
       <view class="tt">去结算</view>
