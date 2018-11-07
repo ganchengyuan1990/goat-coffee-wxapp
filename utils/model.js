@@ -1,39 +1,41 @@
-import {
-    wx2promise
-} from './util.js';
-
-export function apiGet(url, param) {
-    // let realParam = param;
-    // let keys = Object.keys(param);
-    // debugger
-    return wx2promise(wx.request, {
-        url: url,
-        method: 'GET',
-        // data:  'appid=1256596722&url=https://www.jasongan.cn/img/fengli.jpeg',
-        data: param,
-        header: {
-            //设置参数内容类型为x-www-form-urlencoded
-            'Content-Type': 'application/json',
-            'Authorization': 'tdpeGHT2XVFmQOVci+vDhRFG6XZhPTEyNTY1OTY3MjImaz1BS0lEUmhpVUZ2b2FjUjFMUUZvQUc2a0FMSzdnejJwTFpZR2gmZT0xNTI5MTM2MTE1JnQ9MTUyOTA0OTcxNSZyPTM0Nzg0ODEwNzMmdT0wJmY9',
-            'Host': 'recognition.image.myqcloud.com'
-        },
+/** 
+ * 生产： prod
+ * 测试： test
+ * 开发： dev
+ */
+const CONFIG = {
+    env: 'dev',
+    version: 'v1'
+}
+const BASE_URL = (() => {
+    let url = {
+        prod: '',
+        test: '',
+        dev: `http://47.100.233.24:6688/api/${CONFIG.version}/server/`
+    }
+    return url[CONFIG.env]
+})()
+const model = (name = '', data = {}, method) => {
+    const url = `${BASE_URL}${name}`
+    return new Promise((resolve, reject) => {
+        wx.request({
+            url: url,
+            data: data,
+            method: method || 'GET',
+            success(res) {
+                const { statusCode, errMsg, data} = res
+                if (statusCode === 200 && data.code === 'suc') {
+                    resolve(data)
+                } else {
+                    console.log(`[interface]: ${name}\n` + errMsg)
+                    console.log(`[interface]: ${name}\n` + data.msg)
+                    reject(data.msg)
+                }
+            },
+            fail(err) {
+                reject(err)
+            }
+        })
     })
 }
-
-export function apiPost(url, param) {
-    // let realParam = param;
-    // let keys = Object.keys(param);
-    // debugger
-    return wx2promise(wx.request, {
-        url: url,
-        method: 'POST',
-        // data:  'appid=1256596722&url=https://www.jasongan.cn/img/fengli.jpeg',
-        data: param,
-        header: {
-            //设置参数内容类型为x-www-form-urlencoded
-            'Content-Type': 'application/json',
-            'Authorization': 'tdpeGHT2XVFmQOVci+vDhRFG6XZhPTEyNTY1OTY3MjImaz1BS0lEUmhpVUZ2b2FjUjFMUUZvQUc2a0FMSzdnejJwTFpZR2gmZT0xNTI5MTM2MTE1JnQ9MTUyOTA0OTcxNSZyPTM0Nzg0ODEwNzMmdT0wJmY9',
-            'Host': 'recognition.image.myqcloud.com'
-        },
-    })
-}
+module.exports = model

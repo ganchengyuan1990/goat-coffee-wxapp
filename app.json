@@ -31,6 +31,12 @@
     "selectedColor": "#ffd161",
     "list": [
       {
+        "pagePath": "pages/store/store",
+        "text": "点单",
+        "iconPath": "./icons/index.png",
+        "selectedIconPath": "./icons/index_select.png"
+      },
+      {
         "pagePath": "pages/index/index",
         "text": "首页",
         "iconPath": "./icons/index.png",

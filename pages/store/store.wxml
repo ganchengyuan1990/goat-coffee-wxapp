@@ -1,7 +1,7 @@
 <view class="store-container">
   <view class="hd-wrap">
     <view class="store-addr">
-      <view class="tt">店铺名称店铺名称店铺名称</view>
+      <view class="tt">{{storeInfo.storeName}}</view>
       <view class="distance">距您2.7km</view>
     </view>
     <view class="delivery">
@@ -11,14 +11,24 @@
       </view>
     </view>
   </view>
-   <view class="img-wrap"> 
-    <image src="/images/store.png" class="img-caption"></image>
-   </view> 
+  <view class="img-wrap">
+    <image src="/images/holder.jpg" mode="widthFix" class="img-caption"></image>
+  </view>
   <view class="food">
     <view class="food-class" style="height:{{listHeight}}px">
       <scroll-view scroll-y scroll-with-animation scroll-into-view="{{viewToLeft}}" style="height:{{listHeight}}px">
-        <view class="food-class-item {{activeIndex==index?'active':''}}" wx:for="{{food}}" wx:key="item.title" bindtap="selectFood" data-index="{{index}}" data-titleId="{{item.titleId}}" id="{{item.titleId+'left'}}">
-          <view class="text" data-index="{{index}}" data-titleId="{{item.titleId}}">{{item.title}}</view>
+        <view 
+          class="food-class-item {{activeIndex==index?'active':''}}" 
+          wx:for="{{menuList}}" 
+          wx:key="item.id" 
+          bindtap="selectFood" 
+          data-index="{{index}}" 
+          data-titleId="{{item.id}}" 
+          id="{{'left'+item.titleId}}">
+          <view class="text" data-index="{{index}}" data-titleId="{{item.id}}">
+            <view class="icon-crown"></view>
+            {{item.name}}
+          </view>
           <view class="dot" wx:if="{{item.foodCount>0}}">{{item.foodCount}}</view>
         </view>
       </scroll-view>
@@ -34,21 +44,108 @@
             <view class="info">
               <view>
                 <view class="name">{{item.name}}</view>
-                <view class="note">{{item.note}}</view>
-                <view class="note">{{item.note}}</view>
+                <view class="note">{{item.ename}}</view>
+                <view class="note">默认：{{item.note}}</view>
               </view>
               <view class="price-count">
                 <view class="price">￥{{item.price}}</view>
                 <view class="count">
-                  <view class="add btn" bindtap="add" data-item="{{item}}" data-groupindex="{{groupindex}}" data-index="{{index}}">+</view>
-                   <view class="num">{{item.count}}</view> 
-                   <view class="ruduce btn" bindtap="reduce" data-item="{{item}}" wx:if="{{item.count>0?true:false}}" data-groupindex="{{groupindex}}" data-index="{{index}}">-</view> 
+                  <view class="add btn" bindtap="add" data-item="{{item}}" data-groupindex="{{groupindex}}" data-index="{{index}}" bindtap="toggleSpec">+</view>
                 </view>
               </view>
             </view>
           </view>
         </view>
       </scroll-view>
+    </view>
+  </view>
+  <view class="cart-wrap">
+    <view class="cart-entry" bindtap="toggleCart">
+      <view class="tt">去结算</view>
+      <view class="price">￥23</view>
+    </view>
+    <view class="panel cart-panel" wx:if="{{isCartPanelShow}}">
+      <view class="top" bindtap="toggleCart"></view>
+      <view class="bottom">
+        <view class="hd">
+          <view>您有一张满19减10优惠券，还差2元可用</view>
+          <view class="btn-more">去凑单></view>
+        </view>
+        <view class="bd">
+          <view class="overview">
+            <view class="">已选商品<text>(4杯)</text></view>
+            <view class="btn-clear">清空购物车</view>
+          </view>
+          <view></view>
+          <view class="fee">配送费</view>
+        </view>
+        <view class="ft">
+          <view class="total">合计<text class="price">￥39</text></view>
+          <view class="btn-check">去结算</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="panel cate-panel" wx:if="{{isCatePanelShow}}">
+    <view class="top" bindtap="toggleSpec"></view>
+    <view class="bottom">
+      <view class="hd">
+        <view class="tt">
+          <view class="cn">美式咖啡</view>
+          <view class="en">Americano</view>
+        </view>
+        <view class="fig"></view>
+      </view>
+      <view class="bd">
+        <view class="opt-group">
+          <view class="opt-tt">规格</view>
+          <view class="opt-bd">
+            <view class="item">大杯</view>
+            <view class="item">大杯</view>
+            <view class="item">大杯</view>
+            <view class="item">大杯</view>
+          </view>
+        </view>
+        <view class="opt-group">
+          <view class="opt-tt">规格</view>
+          <view class="opt-bd">
+            <view class="item">大杯</view>
+            <view class="item">大杯</view>
+            <view class="item">大杯</view>
+          </view>
+        </view>
+        <view class="opt-group">
+          <view class="opt-tt">规格</view>
+          <view class="opt-bd">
+            <view class="item">大杯</view>
+            <view class="item">大杯</view>
+            <view class="item">大杯</view>
+          </view>
+        </view>
+        <view class="opt-group">
+          <view class="opt-tt">规格</view>
+          <view class="opt-bd">
+            <view class="item active">大杯</view>
+            <view class="item">大杯</view>
+            <view class="item">大杯</view>
+            <view class="item">大杯</view>
+          </view>
+        </view>
+      </view>
+      <view class="ft">
+        <view class="counter-wrap">
+          <view class="price-wrap">
+            <view class="price">￥21</view>
+            <view class="desc">大杯/热/无糖/双份奶</view>
+          </view>
+          <view class="counter">
+            <view class="ico ico-minus">-</view>
+            <view class="num">00</view>
+            <view class="ico ico-plus">+</view>
+          </view>
+        </view>
+        <view class="btn-confirm">确定</view>
+      </view>
     </view>
   </view>
 </view>

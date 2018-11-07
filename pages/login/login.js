@@ -1,9 +1,7 @@
 // pages/user/user.js
 const app = getApp();
 
-import {
-    apiGet
-} from '../../utils/model';
+import model from '../../utils/model';
 
 import apiObject from '../../utils/api';
 Page({
@@ -39,10 +37,10 @@ Page({
         wx.login({
             success: function (res) {
                 if (res.code) {
-                    apiGet(apiObject.getOpenid, {
+                    model('my/user/getOpenId', {
                         code: res.code
                     }).then(res => {
-                        wx.setStorageSync('openid', res.data.data);
+                        wx.setStorageSync('openid', res.data);
                     })
                 } else {
                     console.log('登录失败！' + res.errMsg)
