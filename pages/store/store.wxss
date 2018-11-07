@@ -276,9 +276,7 @@ page {
   justify-content: space-between;
   font-size: 20rpx;
 }
-.cart-panel .bd .overview .btn-clear {
 
-}
 .cart-panel .bd .fee {
   font-size: 24rpx;
 }

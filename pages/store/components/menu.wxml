@@ -1,0 +1,62 @@
+  <view class="panel cate-panel">
+      <view class="top" bindtap="toggleSpec"></view>
+      <view class="bottom">
+          <view class="hd">
+              <view class="tt">
+                  <view class="cn">美式咖啡</view>
+                  <view class="en">Americano</view>
+              </view>
+              <view class="fig"></view>
+          </view>
+          <view class="bd">
+              <view class="opt-group">
+                  <view class="opt-tt">规格</view>
+                  <view class="opt-bd">
+                      <view class="item">大杯</view>
+                      <view class="item">大杯</view>
+                      <view class="item">大杯</view>
+                      <view class="item">大杯</view>
+                  </view>
+              </view>
+              <view class="opt-group">
+                  <view class="opt-tt">规格</view>
+                  <view class="opt-bd">
+                      <view class="item">大杯</view>
+                      <view class="item">大杯</view>
+                      <view class="item">大杯</view>
+                  </view>
+              </view>
+              <view class="opt-group">
+                  <view class="opt-tt">规格</view>
+                  <view class="opt-bd">
+                      <view class="item">大杯</view>
+                      <view class="item">大杯</view>
+                      <view class="item">大杯</view>
+                  </view>
+              </view>
+              <view class="opt-group">
+                  <view class="opt-tt">规格</view>
+                  <view class="opt-bd">
+                      <view class="item active">大杯</view>
+                      <view class="item">大杯</view>
+                      <view class="item">大杯</view>
+                      <view class="item">大杯</view>
+                  </view>
+              </view>
+          </view>
+          <view class="ft">
+              <view class="counter-wrap">
+                  <view class="price-wrap">
+                      <view class="price">￥21</view>
+                      <view class="desc">大杯/热/无糖/双份奶</view>
+                  </view>
+                  <view class="counter">
+                      <view class="ico ico-minus">-</view>
+                      <view class="num">00</view>
+                      <view class="ico ico-plus">+</view>
+                  </view>
+              </view>
+              <view class="btn-confirm">确定</view>
+          </view>
+      </view>
+  </view>
