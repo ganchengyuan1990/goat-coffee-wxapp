@@ -1,0 +1,63 @@
+.picker  {
+    display: inline-block;
+}
+
+.flex {
+    display: flex;
+}
+
+.title {
+    margin-right: 30rpx;
+    display: inline-block;
+    min-width: 150rpx;
+    text-align: right;
+    font-size: 28rpx;
+}
+
+.section {
+    margin: 30rpx;
+    padding-bottom: 15rpx;
+    font-size: 28rpx;
+    height:1.4rem;
+    line-height: 1.4rem;
+}
+
+.section input {
+    width:70%;
+}
+
+.selected {
+    border-bottom: 1rpx solid #f63;
+}
+
+button {
+    position: fixed;
+    bottom: 76rpx;
+    /* width: 100%; */
+    left: 40rpx;
+    right: 40rpx;
+    border-radius: 10rpx;
+    background: #000;
+    color: #fff;
+}
+
+.protocol {
+    background: #fff;
+    height: 80rpx;
+    line-height: 80rpx;
+    padding: 30rpx;
+    font-size: 24rpx;
+    margin-left: 110rpx;
+}
+
+.protocol image {
+    width: 25rpx;
+    height: 25rpx;
+    position: relative;
+    top: 3rpx;
+    left: 5rpx;
+}
+
+.protocol .name {
+    margin-left: 10rpx;
+}

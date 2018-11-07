@@ -1,0 +1,22 @@
+<view>
+
+    <!-- <view class="line">
+        <text>您的订单</text>
+    </view> -->
+    <view class="list_wrapper" wx:if="{{!loading}}" wx:for="{{addressList}}" wx:key="index">
+        <!-- <view class="item">
+            <text>收货人： {{item.contact}}</text>
+            <text>手机号： {{item.tel}}</text>
+            <view>
+                <text>区域： {{item.region}}</text>
+            </view>
+            <view>
+                <text>具体地址： {{item.address}}</text>
+            </view>
+            <button data-index="{{index}}" type="warn" class='goPay' catchtap="changeAddress">修改</button>  
+        </view> -->
+        <view class="item">
+            <address-item item="{{item}}"></address-item>
+        </view>
+    </view>
+</view>

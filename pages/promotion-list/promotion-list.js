@@ -4,7 +4,11 @@
 Page({
     data: {
         array: [],
-        activedItems: [],
+        activedItems: [{
+            title: 'ssds',
+            subtitle: 'ssss',
+            discountMoney: 50
+        }],
         unActivedItems: [],
         chosenId: -1,
         canUseRedPacketMeanwhile: false
@@ -77,22 +81,22 @@ Page({
         let chosenId = option.chosenId;
         let activedItems = [];
         let unActivedItems = [];
-        array.forEach(item => {
-            item.discountMoney = Utils.setDataForm(parseFloat(item.discountMoney / 100), 1);
-            if (item.checked === undefined) {
-                item.checked = item.defaultCheck;
-            }
-            if (item.active) {
-                activedItems.push(item);
-            } else {
-                unActivedItems.push(item);
-            }
-        });
-        this.setData({
-            array: array,
-            chosenId: chosenId,
-            activedItems: activedItems,
-            unActivedItems: unActivedItems
-        });
+        // array.forEach(item => {
+        //     item.discountMoney = Utils.setDataForm(parseFloat(item.discountMoney / 100), 1);
+        //     if (item.checked === undefined) {
+        //         item.checked = item.defaultCheck;
+        //     }
+        //     if (item.active) {
+        //         activedItems.push(item);
+        //     } else {
+        //         unActivedItems.push(item);
+        //     }
+        // });
+        // this.setData({
+        //     array: array,
+        //     chosenId: chosenId,
+        //     activedItems: activedItems,
+        //     unActivedItems: unActivedItems
+        // });
     }
 });

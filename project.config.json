@@ -12,8 +12,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.2.1",
-	"appid": "wx74e260b5ae741e0d",
-	"projectname": "%E5%A4%96%E5%8D%96",
+	"appid": "wx95a4dca674b223e1",
+	"projectname": "%E5%B1%B1%E7%BE%8A%E5%92%96%E5%95%A1",
 	"isGameTourist": false,
 	"condition": {
 		"search": {
@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 12,
 			"list": [
 				{
 					"id": -1,
@@ -42,9 +42,9 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 1,
 					"name": "checkout",
-					"pathName": "pages/checkout/checkout",
+					"pathName": "pages/pay/checkout/checkout",
 					"query": ""
 				},
 				{
@@ -58,25 +58,59 @@
 					"name": "promotion-list",
 					"pathName": "pages/promotion-list/promotion-list",
 					"query": "array=[]"
-				}, {
+				},
+				{
 					"id": -1,
 					"name": "coupon",
 					"pathName": "pages/coupon/coupon",
 					"query": ""
-				}, {
+				},
+				{
 					"id": -1,
 					"name": "pay_success",
 					"pathName": "pages/pay/pay_success/pay_success",
 					"query": ""
-				}, {
+				},
+				{
 					"id": -1,
 					"name": "share_success",
 					"pathName": "pages/pay/share_success/share_success",
 					"query": ""
-				}, {
+				},
+				{
 					"id": -1,
 					"name": "store",
-					"pathName": "pages/store/store"
+					"pathName": "pages/store/store",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "address_list",
+					"pathName": "pages/my/address_list/address_list",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "share_coupon",
+					"pathName": "pages/pay/share_coupon/share_coupon",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "address",
+					"pathName": "pages/my/address/address",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "拼图checkout",
+					"pathName": "pages/pin/checkout/checkout",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "拼图pay_success",
+					"pathName": "pages/pin/pay_success/pay_success"
 				}
 			]
 		}

@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "我参与的拼团列表",
+    "usingComponents": {
+        "address-item": "../../../components/address-item/address-item"
+    }
+}

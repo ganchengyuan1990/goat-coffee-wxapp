@@ -1,0 +1,54 @@
+<view class="container">
+  <view class="success-container">
+    <view class="success-form">
+      <view class="coupon-sn">
+        <image src="../../../images/chenggong_2@2x.png" />
+      </view>
+      <view class="coupon-sn">您有9份咖啡券待领取</view>
+    </view>
+    <!-- <view class="go-button">
+      邀请好友共享优惠
+    </view> -->
+  </view>
+
+  <view class="pin_wrapper">
+      <view class="title">三人团，仅剩1个名额</view>
+      <view class="time_left">距离结束还剩</view>
+
+      <view class="clock">
+        <view class="time_hour">16</view>
+        <view class="">:</view>
+        <view class="time_minute">32</view>
+        <view class="">:</view>
+        <view class="time_second">07</view>
+      </view>
+  </view>
+
+  <view class="team">
+      <view class="member" wx:for="{{teamMembers}}" wx:for-item="item" wx:for-index="index">
+          <view class="owner" wx:if="{{index === 0}}">
+              <text>团长</text>
+          </view>
+          <image src="{{item.avatal}}" wx:if="{{!item.empty}}" lazy-load='true'/>
+
+          <image src='../../../images/pin_empty.png' wx:if="{{item.empty}}" />
+
+          <text class='text' wx:if="{{item.empty}}">?</text>
+      </view>
+  </view>
+
+  <view class="mention">快去邀请好友一起拼团吧</view>
+
+  <view class="rule_wrapper">
+      <view class="title">拼团流程</view>
+      <view class="time_left">距离结束还剩</view>
+
+      <view class="rule">1.此处展示参与流程</view>
+      <view class="rule">1.此处展示参与流程</view>
+      <view class="rule">1.此处展示参与流程</view>
+      <view class="rule">1.此处展示参与流程</view>
+
+  </view>
+
+
+</view>

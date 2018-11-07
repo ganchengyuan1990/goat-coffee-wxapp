@@ -1,28 +1,45 @@
 <view class="wrapper">
-  <view class="promotion-tip">已为您计算可用促销在本单中具体可减金额</view>
+  <view class="promotion-tip">
+    <view class='radio' color="#ccc"></view>
+    <text>不使用优惠券</text>
+  </view>
   <view class="group-wrapper">
     <view class="group">
-      <view class="title-box" wx:if="{{activedItems.length > 0}}">
+      <!-- <view class="title-box" wx:if="{{activedItems.length > 0}}">
         <view class="line"></view>
         <text class="title">可用促销优惠（{{activedItems.length}}）</text>
-      </view>
+      </view> -->
       <checkbox-group class="radio-group" bindchange="onMyEvent">
         <label wx:for="{{activedItems}}" wx:for-index="idx" wx:for-item="item" class="list-item">
-          <view class="list-item-name">
-            <text class="promotion-description">{{item.title}}</text>
-            <text class="promotion-limit-tip">{{item.subtitle}}</text>
+
+          <view class='cover-top'></view>
+          <view class='cover-bottom'></view>
+
+          <view class='left-part'>
+            <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
+
+            <view class="list-item-deal">
+              <label class="deal-icon">- ¥</label><label class="deal-num">{{item.discountMoney}}</label>
+            </view>
           </view>
-          <view class="list-item-deal">
-            <label class="deal-icon">- ¥</label><label class="deal-num">{{item.discountMoney}}</label>
+
+          <view class='right-part'>
+            <view class="list-item-name">
+              <text class="promotion-description">{{item.title}}</text>
+              <text class="promotion-limit-tip">{{item.subtitle}}</text>
+            </view>
           </view>
-          <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
+
+          <view class="coupon-right">
+            <image src="../../images/coffee_cup_2@2x.png" />
+          </view>
+          
         </label>
       </checkbox-group>
       <!-- <promotion promotions="{{array}}" category="promotion" bind:myevent="onMyEvent"></promotion> -->
     </view>
-    <view class="group">
+    <!-- <view class="group">
       <view class="title-box">
-        <view class="line"></view>
         <text class="title" wx:if="{{unActivedItems.length > 0}}">不可用促销优惠（{{unActivedItems.length}}）</text>
       </view>
       <view>
@@ -33,6 +50,6 @@
           </view>
         </view>
       </view>
-    </view>
+    </view> -->
   </view>
 </view>

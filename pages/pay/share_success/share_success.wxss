@@ -8,8 +8,10 @@ page{
     min-height: 100%;
     padding-top: 30rpx;
 }
-
 .success-form {
+  display: flex;
+}
+.coupon-left {
   height: 310rpx;
   /* width: 100%; */
   background: #fff;
@@ -17,7 +19,7 @@ page{
   padding-right: 30rpx;
   padding-top: 20rpx;
   display: flex;
-  text-align: center;
+  /* text-align: center; */
   flex-direction:column;
 
 }
@@ -37,9 +39,44 @@ page{
 .coupon-sn{
   height: 50rpx;
   margin: 50rpx;
+  margin-left: 68rpx;
   color: #000;
   line-height: 50rpx;
-  font-size: 34rpx;
+  font-size: 36rpx;
+}
+
+.gray {
+  font-size: 28rpx;
+  color: #999999;
+  margin-top: -20rpx;
+}
+
+.coupon-right image {
+  width: 108rpx;
+  height: 130rpx;
+  margin-top: 70rpx;
+}
+.go-button {
+  background: #333;
+  text-align: center;
+  color: #fff;
+  margin: 0 90rpx 80rpx 90rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+}
+
+.coupon-title {
+  margin: 30rpx;
+  color: #999999;
+  font-size: 26rpx;
+  position: relative;
+}
+.title-right {
+  position: absolute;
+  right: 30rpx;
+  top: 0;
+  color: #333;
 }
 
 .clear-icon{
