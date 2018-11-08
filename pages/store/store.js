@@ -12,13 +12,9 @@ Page({
 		// scrollview 设定高度
 		listHeight: 300,
 		activeIndex: 0,
-		tabIndex: 0,
 		isCatePanelShow: false,
 		isCartPanelShow: false,
-		showCart: false,
 		heigthArr: [],
-		cart: [],
-		totalMoney: 0,
 		currentSpecific: {},
 		storeInfo: {
 			//服务端获取信息
@@ -27,220 +23,7 @@ Page({
 			storeImgUrl: "/images/store.png",
 		},
 		menuList: [],
-		food: [{
-				titleId: "title1",
-				title: "大师咖啡",
-				foodCount: 0,
-				items: [{
-						foodId: 1,
-						name: '美式咖啡',
-						ename: 'Americano',
-						price: 23,
-						note: '规格/糖/奶/温度',
-						count: 0,
-						classify: []
-					},
-					{
-						foodId: 2,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						note: '规格/糖/奶/温度',
-						zan: 34,
-						count: 0,
-						classify: []
-					},
-					{
-						foodId: 3,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						count: 0,
-						classify: [{
-								describe: "大份",
-								price: 30
-							},
-							{
-								describe: "中份",
-								price: 23
-							},
-							{
-								describe: "小份",
-								price: 15
-							}
-						]
-					}
-				]
-			},
-			{
-				titleId: "title2",
-				title: "大师咖啡",
-				foodCount: 0,
-				items: [{
-						foodId: 4,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						note: '规格/糖/奶/温度',
-						zan: 34,
-						count: 0,
-						classify: []
-					},
-					{
-						foodId: 5,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						note: '规格/糖/奶/温度',
-						zan: 34,
-						count: 0,
-						classify: []
-					},
-					{
-						foodId: 6,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						note: '规格/糖/奶/温度',
-						zan: 34,
-						count: 0,
-						classify: [{
-								describe: "大份",
-								price: 30
-							},
-							{
-								describe: "中份",
-								price: 23
-							},
-							{
-								describe: "小份",
-								price: 15
-							}
-						]
-					}
-				]
-			},
-			{
-				titleId: "title3",
-				title: "大师咖啡",
-				foodCount: 0,
-				items: [{
-						foodId: 7,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						note: '规格/糖/奶/温度',
-						zan: 34,
-						count: 0,
-						classify: []
-					},
-					{
-						foodId: 8,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						note: '规格/糖/奶/温度',
-						zan: 34,
-						count: 0,
-						classify: []
-					},
-					{
-						foodId: 9,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						note: '规格/糖/奶/温度',
-						zan: 34,
-						count: 0,
-						classify: []
-					}
-				]
-			},
-			{
-				titleId: "title4",
-				title: "大师咖啡",
-				foodCount: 0,
-				items: [{
-						foodId: 10,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 3,
-						note: "",
-						zan: 34,
-						count: 0,
-						classify: []
-					},
-					{
-						foodId: 11,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 3,
-						note: "",
-						zan: 34,
-						count: 0,
-						classify: []
-					},
-					{
-						foodId: 12,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 3,
-						note: "",
-						zan: 34,
-						count: 0,
-						classify: []
-					}
-				]
-			},
-			{
-				titleId: "title5",
-				title: "大师咖啡",
-				foodCount: 0,
-				items: [{
-						foodId: 13,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						note: "美式咖啡",
-						zan: 34,
-						count: 0,
-						classify: []
-					},
-					{
-						foodId: 14,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						note: '规格/糖/奶/温度',
-						zan: 34,
-						count: 0,
-						classify: []
-					},
-					{
-						foodId: 15,
-						name: "美式咖啡",
-						ename: 'Americano',
-						price: 23,
-						note: '规格/糖/奶/温度',
-						zan: 34,
-						count: 0,
-						classify: [{
-								describe: "大份",
-								price: 30
-							},
-							{
-								describe: "中份",
-								price: 23
-							},
-							{
-								describe: "小份",
-								price: 15
-							}
-						]
-					}
-				]
-			}
-		]
+		cartList: []
 	},
 
 	/**
@@ -374,7 +157,7 @@ Page({
 			})
 			this.calculateHeight()
 		}).catch(e => {
-
+			console.log(e)
 		})
 	},
 	calculateHeight() {
@@ -434,134 +217,148 @@ Page({
 			}
 		}, 100)
 	},
-	orderProduct() {
-
+	orderProduct(e) {
+		let groupIdx = e.target.dataset.groupidx
+		let productIdx = e.target.dataset.productidx
+		// let detail = `menuList[${groupIdx}].product_list[${productIdx}]`
+		let detail = this.data.menuList[groupIdx].product_list[productIdx]
+		this.setData({
+			currentSpecific: detail
+		})
+		console.log(detail, 'prodde')
+		this.toggleSpecific()
 	},
-	toggleSpec() {
+	toggleSpecific() {
 		let isShow = this.data.isCatePanelShow
-		console.log(isShow)
 		this.setData({
 			isCatePanelShow: !isShow
-		});
-	},
-	add(e) {
-		let groupindex = e.target.dataset.groupindex;
-		let index = e.target.dataset.index;
-		let countMsg =
-			"food[" +
-			groupindex +
-			"].items[" +
-			index +
-			"].count";
-		let count = this.data.food[groupindex].items[
-			index
-		].count;
-		let foodCountMsg = "food[" + groupindex + "].foodCount";
-		let foodCount = this.data.food[groupindex].foodCount;
-		let foodId = this.data.food[groupindex].items[
-			index
-		].foodId;
-		count += 1;
-		foodCount += 1;
-		this.setData({
-			[countMsg]: count, //数据的局部更新
-			[foodCountMsg]: foodCount
-		});
-		let cart = this.data.cart;
-		let hasCart = false;
-		for (var i = 0; i < cart.length; i++) {
-			if (cart[i].foodId == foodId) {
-				hasCart = true;
-				break;
-			}
-		}
-		if (hasCart) {
-			cart[i].count++;
+		})
+		if (isShow) {
+			this.toggleTabBar(true)
+			this.setData({
+				isCatePanelShow: !isShow
+			})
 		} else {
-			cart.push({
-				...this.data.food[groupindex].items[index],
-				groupindex
-			});
+			this.toggleTabBar(false, () => {
+				this.setData({
+					isCatePanelShow: !isShow
+				})
+			})
 		}
-		let totalMoney = this.data.totalMoney;
-		totalMoney += this.data.food[groupindex].items[
-			index
-		].price;
-		this.setData({
-			cart: cart,
-			totalMoney: totalMoney
-		});
 	},
-	reduce(e) {
-		let groupindex = e.target.dataset.groupindex;
-		let index = e.target.dataset.index;
-		let countMsg =
-			"food[" +
-			groupindex +
-			"].items[" +
-			index +
-			"].count";
-		let count = this.data.food[groupindex].items[
-			index
-		].count;
-		let foodCountMsg = "food[" + groupindex + "].foodCount";
-		let foodCount = this.data.food[groupindex].foodCount;
-		let foodId = this.data.food[groupindex].items[
-			index
-		].foodId;
-		count -= 1;
-		foodCount -= 1;
-		this.setData({
-			[countMsg]: count,
-			[foodCountMsg]: foodCount
-		});
-		let cart = this.data.cart;
-		for (var i = 0; i < cart.length; i++) {
-			if (cart[i].foodId == foodId) {
-				if (cart[i].count == 1) {
-					cart.splice(i, 1);
-				} else {
-					cart[i].count--;
-				}
-				break;
-			}
-		}
-		let totalMoney = this.data.totalMoney;
-		totalMoney -= this.data.food[groupindex].items[
-			index
-		].price;
-		this.setData({
-			cart: cart,
-			totalMoney: totalMoney
-		});
-	},
+	// add(e) {
+	// 	let groupindex = e.target.dataset.groupindex;
+	// 	let index = e.target.dataset.index;
+	// 	let countMsg =
+	// 		"food[" +
+	// 		groupindex +
+	// 		"].items[" +
+	// 		index +
+	// 		"].count";
+	// 	let count = this.data.food[groupindex].items[
+	// 		index
+	// 	].count;
+	// 	let foodCountMsg = "food[" + groupindex + "].foodCount";
+	// 	let foodCount = this.data.food[groupindex].foodCount;
+	// 	let foodId = this.data.food[groupindex].items[
+	// 		index
+	// 	].foodId;
+	// 	count += 1;
+	// 	foodCount += 1;
+	// 	this.setData({
+	// 		[countMsg]: count, //数据的局部更新
+	// 		[foodCountMsg]: foodCount
+	// 	});
+	// 	let cart = this.data.cart;
+	// 	let hasCart = false;
+	// 	for (var i = 0; i < cart.length; i++) {
+	// 		if (cart[i].foodId == foodId) {
+	// 			hasCart = true;
+	// 			break;
+	// 		}
+	// 	}
+	// 	if (hasCart) {
+	// 		cart[i].count++;
+	// 	} else {
+	// 		cart.push({
+	// 			...this.data.food[groupindex].items[index],
+	// 			groupindex
+	// 		});
+	// 	}
+	// 	let totalMoney = this.data.totalMoney;
+	// 	totalMoney += this.data.food[groupindex].items[
+	// 		index
+	// 	].price;
+	// 	this.setData({
+	// 		cart: cart,
+	// 		totalMoney: totalMoney
+	// 	});
+	// },
+	// reduce(e) {
+	// 	let groupindex = e.target.dataset.groupindex;
+	// 	let index = e.target.dataset.index;
+	// 	let countMsg =
+	// 		"food[" +
+	// 		groupindex +
+	// 		"].items[" +
+	// 		index +
+	// 		"].count";
+	// 	let count = this.data.food[groupindex].items[
+	// 		index
+	// 	].count;
+	// 	let foodCountMsg = "food[" + groupindex + "].foodCount";
+	// 	let foodCount = this.data.food[groupindex].foodCount;
+	// 	let foodId = this.data.food[groupindex].items[
+	// 		index
+	// 	].foodId;
+	// 	count -= 1;
+	// 	foodCount -= 1;
+	// 	this.setData({
+	// 		[countMsg]: count,
+	// 		[foodCountMsg]: foodCount
+	// 	});
+	// 	let cart = this.data.cart;
+	// 	for (var i = 0; i < cart.length; i++) {
+	// 		if (cart[i].foodId == foodId) {
+	// 			if (cart[i].count == 1) {
+	// 				cart.splice(i, 1);
+	// 			} else {
+	// 				cart[i].count--;
+	// 			}
+	// 			break;
+	// 		}
+	// 	}
+	// 	let totalMoney = this.data.totalMoney;
+	// 	totalMoney -= this.data.food[groupindex].items[
+	// 		index
+	// 	].price;
+	// 	this.setData({
+	// 		cart: cart,
+	// 		totalMoney: totalMoney
+	// 	});
+	// },
 
 	/**
 	 * 
 	 */  
-	toggleCart() {
-		let isShow = this.data.isCartPanelShow
-		let self = this
+
+	toggleTabBar(isShow, callback) {
 		if (!isShow) {
 			wx.hideTabBar({
 				animation: false,
 				success() {
-					self.setData({
-						isCartPanelShow: !isShow
-					})
+					callback && callback()
 				},
 				fail() {}
 			})
 		} else {
 			wx.showTabBar({
 				animation: false,
-				success() {},
+				success() {
+					callback && callback()
+				},
 				fail() {}
 			})
-			self.setData({
-				isCartPanelShow: !isShow
-			})
 		}
-
 	}
 });

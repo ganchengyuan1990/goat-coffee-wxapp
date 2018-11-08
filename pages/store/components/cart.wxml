@@ -1,11 +1,10 @@
   <view class="cart-wrap">
-      <!-- <view class="cart-entry" bindtap="toggleCart"> -->
-      <view class="cart-entry">
+      <view class="cart-entry" bindtap="toggleCart">
           <view class="tt">去结算</view>
-          <view class="price">￥23</view>
+          <view class="price">￥{{totalPrice}}</view>
       </view>
       <!-- <view class="panel cart-panel" wx:if="{{isCartPanelShow}}"> -->
-      <view class="panel cart-panel">
+      <view class="panel cart-panel {{isCartPanelShow ? 'active' : ''}}">
           <view class="top" bindtap="toggleCart"></view>
           <view class="bottom">
               <view class="hd">
@@ -20,7 +19,19 @@
                       </view>
                       <view class="btn-clear">清空购物车</view>
                   </view>
-                  <view></view>
+                  <view class="list-wrap">
+                      <view class="list-item">
+                            <view class="cnt">
+                                <view class="tt">美式咖啡￥21</view>
+                                <view class="desc">规格</view>
+                            </view>
+                            <view class="counter">
+                                <view class="ico ico-minus">-</view>
+                                <view class="num">{{count < 10 ? '0'+count:count}}</view>
+                                <view class="ico ico-plus">+</view>
+                            </view>
+                      </view>
+                  </view>
                   <view class="fee">配送费</view>
               </view>
               <view class="ft">

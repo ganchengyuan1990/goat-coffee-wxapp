@@ -43,7 +43,7 @@
                 <view class="price-count">
                   <view class="price">￥{{product.price}}</view>
                   <view class="count">
-                    <view class="add btn" bindtap="orderProduct" data-item="{{item}}" data-groupindex="{{idx}}" data-index="{{index}}" bindtap="toggleSpec">
+                    <view class="add btn" bindtap="orderProduct" data-item="{{item}}" data-groupidx="{{idx}}" data-productidx="{{index}}" bindtap="orderProduct">
                       +
                     </view>
                   </view>
@@ -55,10 +55,10 @@
       </scroll-view>
     </view>
   </view>
-  <view class="cart-entry">
+  <!-- <view class="cart-entry">
     <view class="tt">去结算</view>
     <view class="price">￥23</view>
-  </view>
-  <cart class="cart"></cart>
-  <menu-wrap></menu-wrap>
+  </view> -->
+  <cart isShow="{{isCatePanelShow}}" info="{{cartList}}"></cart>
+  <menu-wrap info="{{currentSpecific}}" isShow="{{isCatePanelShow}}" bind:togglemenu="toggleSpecific"></menu-wrap>
 </view>
