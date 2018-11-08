@@ -1,0 +1,21 @@
+.item {
+    height: 150rpx;
+    /* line-height: 70rpx; */
+    padding: 0rpx 20rpx;
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    color: #383838;
+}
+text {
+    margin-right: 30rpx;
+    font-size: 30rpx;
+}
+
+.goPay {
+    display: inline-block;
+    width: 120rpx;
+    font-size: 30rpx;
+    position: absolute;
+    right: 30rpx;
+    bottom: 10rpx;
+}

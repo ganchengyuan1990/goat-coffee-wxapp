@@ -1,7 +1,9 @@
 <view class="container">
   <view class="success-container">
     <view class="success-form">
-      <view class="coupon-sn">支付成功</view>
+      <view class="coupon-sn">
+        <image src="../../../images/chenggong_2@2x.png" />
+      </view>
       <view class="coupon-sn">￥47.74</view>
     </view>
     <button class="add-btn disabled">兑换</button>

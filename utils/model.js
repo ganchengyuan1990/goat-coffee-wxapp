@@ -15,12 +15,13 @@ const BASE_URL = (() => {
     }
     return url[CONFIG.env]
 })()
-const model = (name = '', data = {}) => {
+const model = (name = '', data = {}, method = 'GET') => {
     const url = `${BASE_URL}${name}`
     return new Promise((resolve, reject) => {
         wx.request({
             url: url,
             data: data,
+            method: method,
             success(res) {
                 const { statusCode, errMsg, data} = res
                 if (statusCode === 200 && data.code === 'suc') {

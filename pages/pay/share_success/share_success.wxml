@@ -1,8 +1,29 @@
 <view class="container">
   <view class="success-container">
     <view class="success-form">
-      <view class="coupon-sn">支付成功</view>
-      <view class="coupon-sn">￥47.74</view>
+      <view class="coupon-left">
+        <view class="coupon-sn">恭喜你获得一张咖啡券</view>
+        <view class="coupon-sn gray">满25减10</view>
+      </view>
+
+      <view class="coupon-right">
+        <image src="../../../images/coffee_cup_2@2x.png" />
+      </view>
+    </view>
+  </view>
+
+  <view class="success-container">
+    <view class="go-button">
+      去喝一杯
+    </view>
+  </view>
+
+  <view class="coupon-title">
+    <view>
+      共9份，已领取2份
+    </view>
+    <view class='title-right'>
+      邀请好友一起领券
     </view>
   </view>
 

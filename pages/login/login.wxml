@@ -23,6 +23,11 @@
         <view class="btn-area">
             <view class='button' formType="submit">确定</view>
         </view>
+
+        <button style="width:80%;margin-left: 10%;margin-top: 55%;" class='button blue' open-type="getUserInfo"
+            bindgetuserinfo="getUserInfo" >
+            点击授权，开始使用！
+        </button>
     </form>
 
     <view class='mention'>点击确认即表示同意《山羊咖啡会员服务条款》</view>

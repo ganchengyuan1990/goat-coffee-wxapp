@@ -6,6 +6,14 @@
     "pages/pay/checkout/checkout",
     "pages/pay/pay_success/pay_success",
     "pages/pay/share_success/share_success",
+    "pages/pay/share_coupon/share_coupon",
+
+    "pages/pin/checkout/checkout",
+    "pages/pin/pay_success/pay_success",
+
+    
+    "pages/my/address_list/address_list",
+    "pages/my/address/address",
     "pages/transport/transport",
     "pages/promotion-list/promotion-list",
     "pages/store/store",

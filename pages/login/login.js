@@ -1,5 +1,9 @@
 // pages/user/user.js
 const app = getApp();
+
+import model from '../../utils/model';
+
+import apiObject from '../../utils/api';
 Page({
 
 
@@ -26,6 +30,23 @@ Page({
             showButtonLineName: false,
             showButtonLinePhone: true
         })
+    },
+
+    getUserInfo() {
+        let self = this;
+        wx.login({
+            success: function (res) {
+                if (res.code) {
+                    model('my/user/getOpenId', {
+                        code: res.code
+                    }).then(res => {
+                        wx.setStorageSync('openid', res.data);
+                    })
+                } else {
+                    console.log('登录失败！' + res.errMsg)
+                }
+            }
+        });
     },
 
     /**
