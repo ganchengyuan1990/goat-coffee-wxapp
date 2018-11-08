@@ -17,14 +17,7 @@
   <view class="list-wrap" style="height:{{listHeight}}px">
     <view class="list-nav">
       <scroll-view scroll-y scroll-with-animation scroll-into-view="{{viewToNav}}" style="height:{{listHeight}}px">
-        <view 
-          class="list-nav-item {{activeIndex==index?'active':''}}" 
-          wx:for="{{menuList}}" 
-          wx:key="item.id" 
-          bindtap="selectNav" 
-          data-index="{{index}}" 
-          data-navid="{{'list'+item.id}}" 
-          id="{{'nav'+item.id}}">
+        <view class="list-nav-item {{activeIndex==index?'active':''}}" wx:for="{{menuList}}" wx:key="item.id" bindtap="selectNav" data-index="{{index}}" data-navid="{{'list'+item.id}}" id="{{'nav'+item.id}}">
           <view class="tt">
             <view class="icon-crown"></view>
             {{item.name}}
@@ -34,22 +27,26 @@
     </view>
     <view class="list-cnt">
       <scroll-view scroll-y scroll-with-animation style="height:{{listHeight}}px" scroll-into-view="{{viewToList}}" bindscroll="scroll">
-        <view wx:for="{{menuList}}" wx:key="item.id" class="title-group J_group" wx:for-index="idx" id="{{'list'+item.id}}">
-          <view class="title">{{item.name}}</view>
-          <view wx:for="{{item.product_list}}" wx:for-item="product" wx:key="product.id" class="list-detail" wx:for-index="index">
-            <view class="img">
-              <image src="{{product.icon}}"></image>
-            </view>
-            <view class="info">
-              <view>
-                <view class="name">{{product.productName}}</view>
-                <view class="note">{{product.productEnName}}</view>
-                <view class="note">默认：{{product.note}}</view>
+        <view style="padding-bottom: 50rpx">
+          <view wx:for="{{menuList}}" wx:key="item.id" class="title-group J_group" wx:for-index="idx" id="{{'list'+item.id}}">
+            <view class="title">{{item.name}}</view>
+            <view wx:for="{{item.product_list}}" wx:for-item="product" wx:key="product.id" class="list-detail" wx:for-index="index">
+              <view class="img">
+                <image src="{{product.icon}}"></image>
               </view>
-              <view class="price-count">
-                <view class="price">￥{{product.price}}</view>
-                <view class="count">
-                  <view class="add btn" bindtap="add" data-item="{{item}}" data-groupindex="{{idx}}" data-index="{{index}}" bindtap="toggleSpec">+</view>
+              <view class="info">
+                <view>
+                  <view class="name">{{product.productName}}</view>
+                  <view class="note">{{product.productEnName}}</view>
+                  <view class="note">默认：{{product.note}}</view>
+                </view>
+                <view class="price-count">
+                  <view class="price">￥{{product.price}}</view>
+                  <view class="count">
+                    <view class="add btn" bindtap="orderProduct" data-item="{{item}}" data-groupindex="{{idx}}" data-index="{{index}}" bindtap="toggleSpec">
+                      +
+                    </view>
+                  </view>
                 </view>
               </view>
             </view>
@@ -58,4 +55,10 @@
       </scroll-view>
     </view>
   </view>
+  <view class="cart-entry">
+    <view class="tt">去结算</view>
+    <view class="price">￥23</view>
+  </view>
+  <cart class="cart"></cart>
+  <menu-wrap></menu-wrap>
 </view>

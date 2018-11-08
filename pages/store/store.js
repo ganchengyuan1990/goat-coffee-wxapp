@@ -19,6 +19,7 @@ Page({
 		heigthArr: [],
 		cart: [],
 		totalMoney: 0,
+		currentSpecific: {},
 		storeInfo: {
 			//服务端获取信息
 			// storeId: 1,
@@ -407,7 +408,6 @@ Page({
 	// 手机端有延迟 节流函数效果不好 用防抖函数凑合
 	scroll(e) {
 		// console.log(e);
-		
 		clearTimeout(timer);
 		timer = setTimeout(() => {
 			let srollTop = e.detail.scrollTop;
@@ -433,6 +433,16 @@ Page({
 				}
 			}
 		}, 100)
+	},
+	orderProduct() {
+
+	},
+	toggleSpec() {
+		let isShow = this.data.isCatePanelShow
+		console.log(isShow)
+		this.setData({
+			isCatePanelShow: !isShow
+		});
 	},
 	add(e) {
 		let groupindex = e.target.dataset.groupindex;
@@ -525,13 +535,7 @@ Page({
 			totalMoney: totalMoney
 		});
 	},
-	toggleSpec() {
-		let isShow = this.data.isCatePanelShow
-		console.log(isShow)
-		this.setData({
-			isCatePanelShow: !isShow
-		});
-	},
+
 	/**
 	 * 
 	 */  
