@@ -15,7 +15,6 @@ Page({
 		isCatePanelShow: false,
 		isCartPanelShow: false,
 		heigthArr: [],
-		currentSpecific: {},
 		storeInfo: {
 			//服务端获取信息
 			// storeId: 1,
@@ -23,7 +22,9 @@ Page({
 			storeImgUrl: "/images/store.png",
 		},
 		menuList: [],
-		cartList: []
+		cartList: [],
+		// 当前选中产品定制化
+		currentSpecific: {},
 	},
 
 	/**
@@ -246,102 +247,17 @@ Page({
 			})
 		}
 	},
-	// add(e) {
-	// 	let groupindex = e.target.dataset.groupindex;
-	// 	let index = e.target.dataset.index;
-	// 	let countMsg =
-	// 		"food[" +
-	// 		groupindex +
-	// 		"].items[" +
-	// 		index +
-	// 		"].count";
-	// 	let count = this.data.food[groupindex].items[
-	// 		index
-	// 	].count;
-	// 	let foodCountMsg = "food[" + groupindex + "].foodCount";
-	// 	let foodCount = this.data.food[groupindex].foodCount;
-	// 	let foodId = this.data.food[groupindex].items[
-	// 		index
-	// 	].foodId;
-	// 	count += 1;
-	// 	foodCount += 1;
-	// 	this.setData({
-	// 		[countMsg]: count, //数据的局部更新
-	// 		[foodCountMsg]: foodCount
-	// 	});
-	// 	let cart = this.data.cart;
-	// 	let hasCart = false;
-	// 	for (var i = 0; i < cart.length; i++) {
-	// 		if (cart[i].foodId == foodId) {
-	// 			hasCart = true;
-	// 			break;
-	// 		}
-	// 	}
-	// 	if (hasCart) {
-	// 		cart[i].count++;
-	// 	} else {
-	// 		cart.push({
-	// 			...this.data.food[groupindex].items[index],
-	// 			groupindex
-	// 		});
-	// 	}
-	// 	let totalMoney = this.data.totalMoney;
-	// 	totalMoney += this.data.food[groupindex].items[
-	// 		index
-	// 	].price;
-	// 	this.setData({
-	// 		cart: cart,
-	// 		totalMoney: totalMoney
-	// 	});
-	// },
-	// reduce(e) {
-	// 	let groupindex = e.target.dataset.groupindex;
-	// 	let index = e.target.dataset.index;
-	// 	let countMsg =
-	// 		"food[" +
-	// 		groupindex +
-	// 		"].items[" +
-	// 		index +
-	// 		"].count";
-	// 	let count = this.data.food[groupindex].items[
-	// 		index
-	// 	].count;
-	// 	let foodCountMsg = "food[" + groupindex + "].foodCount";
-	// 	let foodCount = this.data.food[groupindex].foodCount;
-	// 	let foodId = this.data.food[groupindex].items[
-	// 		index
-	// 	].foodId;
-	// 	count -= 1;
-	// 	foodCount -= 1;
-	// 	this.setData({
-	// 		[countMsg]: count,
-	// 		[foodCountMsg]: foodCount
-	// 	});
-	// 	let cart = this.data.cart;
-	// 	for (var i = 0; i < cart.length; i++) {
-	// 		if (cart[i].foodId == foodId) {
-	// 			if (cart[i].count == 1) {
-	// 				cart.splice(i, 1);
-	// 			} else {
-	// 				cart[i].count--;
-	// 			}
-	// 			break;
-	// 		}
-	// 	}
-	// 	let totalMoney = this.data.totalMoney;
-	// 	totalMoney -= this.data.food[groupindex].items[
-	// 		index
-	// 	].price;
-	// 	this.setData({
-	// 		cart: cart,
-	// 		totalMoney: totalMoney
-	// 	});
-	// },
-
 	/**
-	 * 
-	 */  
+	 * 添加到购物车 
+	 */
+	saveCart(e) {
+		let cart = this.data.cartList
 
+		cart.push(e.detail)
+		this.setData({
+			cartList: cart
+		})
+	},
 	toggleTabBar(isShow, callback) {
 		if (!isShow) {
 			wx.hideTabBar({

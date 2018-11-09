@@ -1,4 +1,5 @@
 // pages/store/components/cart.js
+import util from '../../../utils/util.js'
 Component({
   /**
    * 组件的属性列表
@@ -6,7 +7,12 @@ Component({
   properties: {
     info: {
       type: Array,
-      value: []
+      value: [],
+      observer(newVal, oldVal) {
+        if (Array.isArray(newVal)) {
+          this.setTotalResult()
+        }
+      }
     }
   },
 
@@ -18,7 +24,9 @@ Component({
     totalPrice: 0,
     count: 1
   },
-
+  attached() {
+    
+  },
   /**
    * 组件的方法列表
    */
@@ -58,6 +66,59 @@ Component({
           fail() {}
         })
       }
+    },
+    /**
+     * TODOS, 待优化
+     *
+     */ 
+    increase(e) {
+      let idx = e.currentTarget.dataset.idx
+      let count = this.data.info[idx].count
+      let price = this.data.info[idx].price
+      count++
+      console.log(idx, count, 'count')
+      let path = `info[${idx}]`
+      this.setData({
+        [`${path}.count`]: count,
+        [`${path}.totalPrice`]: util.mul(price, count)
+      })
+      this.setTotalResult()
+    },
+    decrease(e) {
+      let idx = e.currentTarget.dataset.idx
+      let count = this.data.info[idx].count
+      let price = this.data.info[idx].price
+      let path = `info[${idx}]`
+      count--
+      if (count > 0) {
+        this.setData({
+          [`${path}.count`]: count,
+          [`${path}.totalPrice`]: util.mul(price, count)
+        })
+        this.setTotalResult()
+      }
+    },
+    clearCart() {
+      this.setData({
+        totalPrice: 0,
+        count: 0,
+        info: []
+      })
+    },
+    setTotalResult() {
+      let val = this.data.info
+      if (!val) {
+        return
+      }
+      console.log(val, 'val')
+      let count = val.length
+      let totalPrice = val.reduce((total, item) => {
+        return util.add(total, item.totalPrice)
+      }, 0)
+      this.setData({
+        count: count,
+        totalPrice: totalPrice
+      })
     }
   }
 })

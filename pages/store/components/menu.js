@@ -1,4 +1,4 @@
-// pages/store/components/menu.js
+import util from '../../../utils/util.js'
 Component({
   /**
    * 组件的属性列表
@@ -20,11 +20,20 @@ Component({
   },
   /**
    * 组件的初始数据
+   * skuid, keyid, number, productid
    */
   data: {
+    // 展示规格
     customed: '',
+    // 展示价格
     price: 0,
-    count: 1
+    totalPrice: 0,
+    count: 1,
+    currentSku: {},
+    currentProp: []
+  },
+  attached() {
+
   },
   /**
    * 组件的方法列表
@@ -36,10 +45,12 @@ Component({
         let obj = this.data.info.sku_list.find(item => {
           return item.isdefault === 1
         })
-        
+        let price = obj.price || '暂无报价'
         this.setData({
-          price: obj.price || '暂无报价'
+          price: price,
+          count: 1
         })
+        this.setPrice()
       } catch (e) {
         this.setData({
           price: '暂无报价'
@@ -52,9 +63,17 @@ Component({
       this.triggerEvent('togglemenu', 'abc')
     },
     save() {
-
+      let info = this.data.info
+      this.triggerEvent('save', Object.assign({}, info, {
+        count: this.data.count,
+        totalPrice: this.data.totalPrice,
+        price: this.data.price
+      }))
+      this.toggleMenu()
     },
-    // 选择规格
+    /**
+     * 选择规格
+    */
     select(e) {
       let group = e.target.dataset.group
       let idx = e.target.dataset.tagidx
@@ -68,19 +87,26 @@ Component({
         })
         this.setData({
           [skuKey]: skuList,
-          price: currentSku.price
+          price: currentSku.price,
+          currentSku: currentSku
         })
+        this.setPrice()
       }
-      // 其他选项
+      // 其他属性
       if (group === 'opt') {
         let groupIdx = e.target.dataset.groupidx
         let optKey = `info.key_list[${groupIdx}]`
         try {
-          let optList = this.data.info.key_list[groupIdx]
+          // 全部属性
+          let propList = this.data.info.key_list
+          // 当前属性组
+          let optList = propList[groupIdx]
+          // 属性id
           let selectedIdx = optList.val_list[idx].id
           optList.default_val_id = selectedIdx
           this.setData({
-            [optKey]: optList
+            [optKey]: optList,
+            currentProp: propList
           })
         } catch(e) {
           console.log(e)
@@ -88,20 +114,43 @@ Component({
       }
       this.getCustomed()
     },
+    /**
+     * 增加数量
+    */
     increase() {
       let count = this.data.count
       this.setData({
-        count: count+1
+        count: count + 1,
       })
+      this.setPrice()
     },
+    /**
+     * 减少数量
+    */
     decrease() {
       let count = this.data.count
       if (count > 1) {
         this.setData({
-          count: count-1
+          count: count - 1,
+        })
+        this.setPrice()
+      }
+    },
+    /**
+     * 计算价格
+    */
+    setPrice() {
+      let count = this.data.count
+      let price = Number(this.data.price)
+      if (!isNaN(price)) {
+        this.setData({
+          totalPrice: util.mul(count, price)
         })
       }
     },
+    /**
+     * 获取默认规格
+    */
     getCustomed() {
       const query = wx.createSelectorQuery().in(this);
       query.selectAll(".J_opt_item.active").fields({

@@ -24,8 +24,9 @@
     position: fixed;
     bottom: 30rpx;
     right: 38rpx;
-    min-width: 276rpx;
+    min-width: 256rpx;
     height: 94rpx;
+    padding: 0 20rpx;
     border-radius: 100rpx;
     z-index: 99;
     background: #fff;
@@ -130,10 +131,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 24rpx 0;
     font-size: 32rpx;
     line-height: 44rpx;
 }
 .list-wrap .list-item .desc {
+    margin-top: 8rpx;
     font-size: 20rpx;
     line-height: 28rpx;
     color: #666;
@@ -144,8 +147,10 @@
 }
 
 .list-wrap .counter .num {
+    min-width: 20rpx;
     padding: 0 20rpx;
     font-size: 22rpx;
+    text-align: center;
 }
 
 .list-wrap .counter .ico {

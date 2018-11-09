@@ -1,3 +1,18 @@
+<wxs module="filter">
+  var getSpecific = function(product) {
+    var arr = []
+    var size =   product.default_sku ? product.default_sku.name : ''
+    var props =  product.default_prop ? product.default_prop.val : ''
+    if (size) {
+      arr.push(size)
+    }
+    if (props) {
+      arr = arr.concat(props.toString().split(','))
+    }
+    return arr.join('/')
+  }
+  module.exports.getSpecific = getSpecific
+</wxs>
 <view class="store-container">
   <view class="hd-wrap J_hd_wrap">
     <view class="store-addr">
@@ -38,10 +53,10 @@
                 <view>
                   <view class="name">{{product.productName}}</view>
                   <view class="note">{{product.productEnName}}</view>
-                  <view class="note">默认：{{product.note}}</view>
+                  <view class="note">默认：{{filter.getSpecific(product)}}</view>
                 </view>
                 <view class="price-count">
-                  <view class="price">￥{{product.price}}</view>
+                  <view class="price">{{product.default_sku.price > 0 ? '￥'+product.default_sku.price:'暂无价格'}}</view>
                   <view class="count">
                     <view class="add btn" bindtap="orderProduct" data-item="{{item}}" data-groupidx="{{idx}}" data-productidx="{{index}}" bindtap="orderProduct">
                       +
@@ -55,10 +70,10 @@
       </scroll-view>
     </view>
   </view>
-  <!-- <view class="cart-entry">
-    <view class="tt">去结算</view>
-    <view class="price">￥23</view>
-  </view> -->
   <cart isShow="{{isCatePanelShow}}" info="{{cartList}}"></cart>
-  <menu-wrap info="{{currentSpecific}}" isShow="{{isCatePanelShow}}" bind:togglemenu="toggleSpecific"></menu-wrap>
+  <menu-wrap 
+    info="{{currentSpecific}}" 
+    isShow="{{isCatePanelShow}}" 
+    bind:togglemenu="toggleSpecific"
+    bind:save="saveCart"></menu-wrap>
 </view>

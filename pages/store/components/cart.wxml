@@ -1,3 +1,6 @@
+  <wxs module="filter">
+
+  </wxs>
   <view class="cart-wrap">
       <view class="cart-entry" bindtap="toggleCart">
           <view class="tt">去结算</view>
@@ -15,20 +18,20 @@
                   <view class="overview">
                       <view class="">
                           已选商品
-                          <text>(4杯)</text>
+                          <text>({{count}}杯)</text>
                       </view>
-                      <view class="btn-clear">清空购物车</view>
+                      <view class="btn-clear" bind:tap="clearCart">清空购物车</view>
                   </view>
                   <view class="list-wrap">
-                      <view class="list-item">
+                      <view class="list-item" wx:for="{{info}}" wx:key="{{index}}">
                             <view class="cnt">
-                                <view class="tt">美式咖啡￥21</view>
+                                <view class="tt">{{item.productName}}￥{{item.totalPrice}}</view>
                                 <view class="desc">规格</view>
                             </view>
                             <view class="counter">
-                                <view class="ico ico-minus">-</view>
-                                <view class="num">{{count < 10 ? '0'+count:count}}</view>
-                                <view class="ico ico-plus">+</view>
+                                <view class="ico ico-minus" bind:tap="decrease" data-idx="{{index}}">-</view>
+                                <view class="num">{{item.count}}</view>
+                                <view class="ico ico-plus" bind:tap="increase" data-idx="{{index}}">+</view>
                             </view>
                       </view>
                   </view>
@@ -37,7 +40,7 @@
               <view class="ft">
                   <view class="total">
                       合计
-                      <text class="price">￥39</text>
+                      <text class="price">￥{{totalPrice}}</text>
                   </view>
                   <view class="btn-check">去结算</view>
               </view>
