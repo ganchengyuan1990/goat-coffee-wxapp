@@ -1,4 +1,7 @@
 // pages/aboutus/aboutus.js
+
+import model from '../../../utils/model';
+
 Page({
 
   /**
@@ -12,39 +15,37 @@ Page({
       addline1: false,
       addline2: false,
       addline3: false,
-      addline4: false
+      addline4: false,
+      newAdd: true,
+      toastShown: false,
+      toastInfo: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-      let self = this;
-    // wx.downloadFile({
-    wx.request({
-        url: 'https://www.jasongan.cn/getAddressByOpenId',
-        method: 'GET',
-        data: {
-            openid: wx.getStorageSync('openid')
-        },
-        header: {
-        //设置参数内容类型为x-www-form-urlencoded
-            'content-type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json'
-        },
-        success: function (res) {
-            let address = res.data.resultLists[0].address;
-            if (address) {
-                address = JSON.parse(address);
-                self.setData({
-                    name: address.name,
-                    address: address.address,
-                    phone: address.phone,
-                    region: address.region.split(',')
-                })
-            }
+    let self = this;
+    let chosenAddress = wx.getStorageSync('chosenAddress');
+    
+    if (!options.id) {
+        this.setData({
+            newAdd: false
+        })
+    } else {
+        if (chosenAddress) {
+            this.setData({
+                name: chosenAddress.contact,
+                phone: chosenAddress.tel,
+                address: chosenAddress.address,
+                region: [chosenAddress.prov, chosenAddress.city, chosenAddress.area],
+                id: parseInt(options.id)
+            })
+            wx.removeStorageSync({
+                key: 'chosenAddress'
+            });
         }
-    })
+    }
   },
 
   /**
@@ -58,7 +59,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    
   },
 
   /**
@@ -74,46 +75,74 @@ Page({
     })
   },
 
+  addUserAddress () {
+    if (this.data.name && this.data.phone && this.data.name && this.data.region && this.data.address) {
+        model('my/address/add', {
+            userId: 1,
+            prov: this.data.region[0],
+            city: this.data.region[1],
+            area: this.data.region[2],
+            address: this.data.address,
+            isdefault: 1
+        }, 'POST').then(res => {
+            if (res.code === 'suc') {
+                this.setData({
+                    toastShown: true,
+                    toastInfo: '添加成功'
+                })
+                setTimeout(() => {
+                    wx.navigateBack({
+                        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    });
+                }, 2000);
+                this.setPrevPage();
+            }
+        })
+    }
+  },
+
   updateUserAddress () {
       let self = this;
-      if (this.data.name && this.data.phone && this.data.name && this.data.region && this.data.address) {
-          wx.request({
-                url: 'https://www.jasongan.cn/updateUserAddress',
-                method: 'GET',
-                data: {
-                    region: this.data.region.join(','),
-                    phone: this.data.phone,
-                    name: this.data.name,
-                    address: this.data.address,
-                    openid: wx.getStorageSync('openid')
-                },
-                header: {
-                //设置参数内容类型为x-www-form-urlencoded
-                    'content-type': 'application/x-www-form-urlencoded',
-                    'Accept': 'application/json'
-                },
-                success: function (res) {
-                    let pages = getCurrentPages();
-                    let currPage = pages[pages.length - 1];   //当前页面
-                    let prevPage = pages[pages.length - 2];  //上一个页面
-                    prevPage.setData({
-                        address: `${self.data.region.join(' ')} ${self.data.address}`,
-                        receiver: `联系人：${self.data.name}，联系电话：${self.data.phone}`,
-                        isFromAddress: true,
-                        addressObj: {
-                            region: self.data.region.join(','),
-                            phone: self.data.phone,
-                            name: self.data.name,
-                            address: self.data.address,
-                        }
-                    })
-                    wx.navigateBack({
-                        delta: 1
+      if (this.data.newAdd) {
+        if (this.data.name && this.data.phone && this.data.name && this.data.region && this.data.address) {
+            model('my/address/edit', {
+                contact: this.data.name,
+                tel: this.data.phone,
+                userId: 1,
+                id: this.data.id,
+                prov: this.data.region[0],
+                city: this.data.region[1],
+                area: this.data.region[2],
+                address: this.data.address,
+                isdefault: 1
+            }, 'POST').then(res => {
+                if (res.code === 'suc') {
+                    this.setData({
+                        toastShown: true,
+                        toastInfo: '更新成功'
                     })
                 }
+                setTimeout(() => {
+                    wx.navigateBack({
+                      delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    });
+                }, 2000);
+                this.setPrevPage();
             })
+        }
+      } else {
+          this.addUserAddress();
       }
       
+      
+  },
+
+  setPrevPage () {
+    let pages = getCurrentPages();
+    let prevPage = pages[pages.length - 2];
+    prevPage.setData({
+        fromAddress: true
+    });
   },
 
   dealName: function (e) {

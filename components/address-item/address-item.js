@@ -19,6 +19,13 @@ Component({
     detached: function () {},
 
     methods: {
+        goAddress (e) {
+            let id = e.currentTarget.dataset.id;
+            wx.setStorageSync('chosenAddress', e.currentTarget.dataset.info)
+            wx.navigateTo({
+                url: `/pages/my/address/address?id=${id}`
+            });
+        }
     }
 
 });
