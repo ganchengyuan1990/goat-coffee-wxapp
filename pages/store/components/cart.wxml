@@ -1,0 +1,49 @@
+  <wxs module="filter">
+
+  </wxs>
+  <view class="cart-wrap">
+      <view class="cart-entry" bindtap="toggleCart">
+          <view class="tt">去结算</view>
+          <view class="price">￥{{totalPrice}}</view>
+      </view>
+      <!-- <view class="panel cart-panel" wx:if="{{isCartPanelShow}}"> -->
+      <view class="panel cart-panel {{isCartPanelShow ? 'active' : ''}}">
+          <view class="top" bindtap="toggleCart"></view>
+          <view class="bottom">
+              <view class="hd">
+                  <view>您有一张满19减10优惠券，还差2元可用</view>
+                  <view class="btn-more">去凑单></view>
+              </view>
+              <view class="bd">
+                  <view class="overview">
+                      <view class="">
+                          已选商品
+                          <text>({{count}}杯)</text>
+                      </view>
+                      <view class="btn-clear" bind:tap="clearCart">清空购物车</view>
+                  </view>
+                  <view class="list-wrap">
+                      <view class="list-item" wx:for="{{info}}" wx:key="{{index}}">
+                            <view class="cnt">
+                                <view class="tt">{{item.productName}}￥{{item.totalPrice}}</view>
+                                <view class="desc">规格</view>
+                            </view>
+                            <view class="counter">
+                                <view class="ico ico-minus" bind:tap="decrease" data-idx="{{index}}">-</view>
+                                <view class="num">{{item.count}}</view>
+                                <view class="ico ico-plus" bind:tap="increase" data-idx="{{index}}">+</view>
+                            </view>
+                      </view>
+                  </view>
+                  <view class="fee">配送费</view>
+              </view>
+              <view class="ft">
+                  <view class="total">
+                      合计
+                      <text class="price">￥{{totalPrice}}</text>
+                  </view>
+                  <view class="btn-check">去结算</view>
+              </view>
+          </view>
+      </view>
+  </view>

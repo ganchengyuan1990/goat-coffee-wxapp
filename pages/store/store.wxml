@@ -1,8 +1,23 @@
+<wxs module="filter">
+  var getSpecific = function(product) {
+    var arr = []
+    var size =   product.default_sku ? product.default_sku.name : ''
+    var props =  product.default_prop ? product.default_prop.val : ''
+    if (size) {
+      arr.push(size)
+    }
+    if (props) {
+      arr = arr.concat(props.toString().split(','))
+    }
+    return arr.join('/')
+  }
+  module.exports.getSpecific = getSpecific
+</wxs>
 <view class="store-container">
-  <view class="hd-wrap">
+  <view class="hd-wrap J_hd_wrap">
     <view class="store-addr">
       <view class="tt">{{storeInfo.storeName}}</view>
-      <view class="distance">距您2.7km</view>
+      <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
     </view>
     <view class="delivery">
       <view class="btn-delivery">
@@ -11,46 +26,42 @@
       </view>
     </view>
   </view>
-  <view class="img-wrap">
+  <view class="img-wrap J_img_wrap">
     <image src="/images/holder.jpg" mode="widthFix" class="img-caption"></image>
   </view>
-  <view class="food">
-    <view class="food-class" style="height:{{listHeight}}px">
-      <scroll-view scroll-y scroll-with-animation scroll-into-view="{{viewToLeft}}" style="height:{{listHeight}}px">
-        <view 
-          class="food-class-item {{activeIndex==index?'active':''}}" 
-          wx:for="{{menuList}}" 
-          wx:key="item.id" 
-          bindtap="selectFood" 
-          data-index="{{index}}" 
-          data-titleId="{{item.id}}" 
-          id="{{'left'+item.titleId}}">
-          <view class="text" data-index="{{index}}" data-titleId="{{item.id}}">
+  <view class="list-wrap" style="height:{{listHeight}}px">
+    <view class="list-nav">
+      <scroll-view scroll-y scroll-with-animation scroll-into-view="{{viewToNav}}" style="height:{{listHeight}}px">
+        <view class="list-nav-item {{activeIndex==index?'active':''}}" wx:for="{{menuList}}" wx:key="item.id" bindtap="selectNav" data-index="{{index}}" data-navid="{{'list'+item.id}}" id="{{'nav'+item.id}}">
+          <view class="tt">
             <view class="icon-crown"></view>
             {{item.name}}
           </view>
-          <view class="dot" wx:if="{{item.foodCount>0}}">{{item.foodCount}}</view>
         </view>
       </scroll-view>
     </view>
-    <view class="food-detail">
-      <scroll-view scroll-y scroll-with-animation style="height:{{listHeight}}px" scroll-into-view="{{viewTo}}" bindscroll="scroll">
-        <view wx:for="{{food}}" wx:key="item.title" class="title-group" wx:for-index="groupindex">
-          <view class="title" id="{{item.titleId}}">{{item.title}}</view>
-          <view wx:for="{{item.items}}" wx:key="item.goodId" class="food-info" wx:for-index="index">
-            <view class="img">
-              <image src="/images/store.png"></image>
-            </view>
-            <view class="info">
-              <view>
-                <view class="name">{{item.name}}</view>
-                <view class="note">{{item.ename}}</view>
-                <view class="note">默认：{{item.note}}</view>
+    <view class="list-cnt">
+      <scroll-view scroll-y scroll-with-animation style="height:{{listHeight}}px" scroll-into-view="{{viewToList}}" bindscroll="scroll">
+        <view style="padding-bottom: 50rpx">
+          <view wx:for="{{menuList}}" wx:key="item.id" class="title-group J_group" wx:for-index="idx" id="{{'list'+item.id}}">
+            <view class="title">{{item.name}}</view>
+            <view wx:for="{{item.product_list}}" wx:for-item="product" wx:key="product.id" class="list-detail" wx:for-index="index">
+              <view class="img">
+                <image src="{{product.icon}}"></image>
               </view>
-              <view class="price-count">
-                <view class="price">￥{{item.price}}</view>
-                <view class="count">
-                  <view class="add btn" bindtap="add" data-item="{{item}}" data-groupindex="{{groupindex}}" data-index="{{index}}" bindtap="toggleSpec">+</view>
+              <view class="info">
+                <view>
+                  <view class="name">{{product.productName}}</view>
+                  <view class="note">{{product.productEnName}}</view>
+                  <view class="note">默认：{{filter.getSpecific(product)}}</view>
+                </view>
+                <view class="price-count">
+                  <view class="price">{{product.default_sku.price > 0 ? '￥'+product.default_sku.price:'暂无价格'}}</view>
+                  <view class="count">
+                    <view class="add btn" bindtap="orderProduct" data-item="{{item}}" data-groupidx="{{idx}}" data-productidx="{{index}}" bindtap="orderProduct">
+                      +
+                    </view>
+                  </view>
                 </view>
               </view>
             </view>
@@ -59,93 +70,10 @@
       </scroll-view>
     </view>
   </view>
-  <view class="cart-wrap">
-    <view class="cart-entry" bindtap="toggleCart">
-      <view class="tt">去结算</view>
-      <view class="price">￥23</view>
-    </view>
-    <view class="panel cart-panel" wx:if="{{isCartPanelShow}}">
-      <view class="top" bindtap="toggleCart"></view>
-      <view class="bottom">
-        <view class="hd">
-          <view>您有一张满19减10优惠券，还差2元可用</view>
-          <view class="btn-more">去凑单></view>
-        </view>
-        <view class="bd">
-          <view class="overview">
-            <view class="">已选商品<text>(4杯)</text></view>
-            <view class="btn-clear">清空购物车</view>
-          </view>
-          <view></view>
-          <view class="fee">配送费</view>
-        </view>
-        <view class="ft">
-          <view class="total">合计<text class="price">￥39</text></view>
-          <view class="btn-check">去结算</view>
-        </view>
-      </view>
-    </view>
-  </view>
-  <view class="panel cate-panel" wx:if="{{isCatePanelShow}}">
-    <view class="top" bindtap="toggleSpec"></view>
-    <view class="bottom">
-      <view class="hd">
-        <view class="tt">
-          <view class="cn">美式咖啡</view>
-          <view class="en">Americano</view>
-        </view>
-        <view class="fig"></view>
-      </view>
-      <view class="bd">
-        <view class="opt-group">
-          <view class="opt-tt">规格</view>
-          <view class="opt-bd">
-            <view class="item">大杯</view>
-            <view class="item">大杯</view>
-            <view class="item">大杯</view>
-            <view class="item">大杯</view>
-          </view>
-        </view>
-        <view class="opt-group">
-          <view class="opt-tt">规格</view>
-          <view class="opt-bd">
-            <view class="item">大杯</view>
-            <view class="item">大杯</view>
-            <view class="item">大杯</view>
-          </view>
-        </view>
-        <view class="opt-group">
-          <view class="opt-tt">规格</view>
-          <view class="opt-bd">
-            <view class="item">大杯</view>
-            <view class="item">大杯</view>
-            <view class="item">大杯</view>
-          </view>
-        </view>
-        <view class="opt-group">
-          <view class="opt-tt">规格</view>
-          <view class="opt-bd">
-            <view class="item active">大杯</view>
-            <view class="item">大杯</view>
-            <view class="item">大杯</view>
-            <view class="item">大杯</view>
-          </view>
-        </view>
-      </view>
-      <view class="ft">
-        <view class="counter-wrap">
-          <view class="price-wrap">
-            <view class="price">￥21</view>
-            <view class="desc">大杯/热/无糖/双份奶</view>
-          </view>
-          <view class="counter">
-            <view class="ico ico-minus">-</view>
-            <view class="num">00</view>
-            <view class="ico ico-plus">+</view>
-          </view>
-        </view>
-        <view class="btn-confirm">确定</view>
-      </view>
-    </view>
-  </view>
+  <cart isShow="{{isCatePanelShow}}" info="{{cartList}}"></cart>
+  <menu-wrap 
+    info="{{currentSpecific}}" 
+    isShow="{{isCatePanelShow}}" 
+    bind:togglemenu="toggleSpecific"
+    bind:save="saveCart"></menu-wrap>
 </view>

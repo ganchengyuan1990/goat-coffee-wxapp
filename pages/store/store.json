@@ -1,5 +1,10 @@
 {
+  "navigationBarTitleText": "活力咖啡",
   "navigationBarBackgroundColor": "#fff",
   "navigationBarTextStyle": "black",
-  "enablePullDownRefresh": false
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "cart": "./components/cart",
+    "menu-wrap": "./components/menu"
+  }
 }
