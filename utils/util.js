@@ -42,7 +42,7 @@ function calcLeftTime (time) {
   var seconds = parseInt((left - hours * 3600 - minutes * 60));
   return {
     left: left,
-    time: `${hours}小时${minutes}分${seconds}秒`
+    time: `${hours}:${minutes}:${seconds}`
   };
 }
 

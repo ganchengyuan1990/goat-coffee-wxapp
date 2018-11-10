@@ -12,6 +12,7 @@
     "pages/pin/checkout/checkout",
     "pages/pin/pay_success/pay_success",
     "pages/pin/pin_list/pin_list",
+    "pages/pin/pin_detail/pin_detail",
 
     "pages/my/address_list/address_list",
     "pages/my/address/address",

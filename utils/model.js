@@ -15,16 +15,20 @@ const BASE_URL = (() => {
     }
     return url[CONFIG.env]
 })()
-const model = (name = '', data = {}, method = 'GET') => {
+const model = (name = '', data = {}, method = 'GET', header) => {
     const url = `${BASE_URL}${name}`
+    // if (wx.getStorageSync('token')) {
+    //     data.token = wx.getStorageSync('token');
+    // }
     return new Promise((resolve, reject) => {
         wx.request({
             url: url,
             data: data,
             method: method,
-            header: {
+            header: header  || {
                 'content-type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'authorization': 'Bearer ' + wx.getStorageSync('token')
             },
             success(res) {
                 const { statusCode, errMsg, data} = res
