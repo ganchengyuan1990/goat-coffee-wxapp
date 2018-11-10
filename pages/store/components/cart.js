@@ -113,7 +113,6 @@ Component({
       if (!val) {
         return
       }
-      console.log(val, 'val')
       let count = 0
       let totalPrice = 0
       val.forEach((item) => {
@@ -123,6 +122,12 @@ Component({
       this.setData({
         count: count,
         totalPrice: totalPrice
+      })
+    },
+    checkout() {
+      this.triggerEvent('checkout', {
+        totalPrice: this.data.totalPrice,
+        cart: this.data.info
       })
     }
   }

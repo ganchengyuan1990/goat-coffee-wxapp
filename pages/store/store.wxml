@@ -21,8 +21,8 @@
     </view>
     <view class="delivery">
       <view class="btn-delivery">
-        <view class="item active">自提</view>
-        <view class="item">外送</view>
+        <view class="item {{isSelfTaking ? 'active':''}}" bind:tap="selectAddress">自提</view>
+        <view class="item {{!isSelfTaking ? 'active':''}}">外送</view>
       </view>
     </view>
   </view>
@@ -70,7 +70,10 @@
       </scroll-view>
     </view>
   </view>
-  <cart isShow="{{isCatePanelShow}}" info="{{cartList}}"></cart>
+  <cart 
+    isShow="{{isCatePanelShow}}" 
+    info="{{cartList}}"
+    bind:checkout="checkout"></cart>
   <menu-wrap 
     info="{{currentSpecific}}" 
     isShow="{{isCatePanelShow}}" 
