@@ -102,14 +102,14 @@ Page({
 		wx.getSetting({
 			success(res) {
 				const { authSetting } = res
-				if (!authSetting.scope.userLocation) {
-					// console.log('need auth')
-					wx.showModal({
-						title: '提示',
-						content: '需要您的授权才能推荐附近的店铺信息',
-						showCancel: false
-					})
-				}
+				// if (!authSetting.scope.userLocation) {
+				// 	// console.log('need auth')
+				// 	wx.showModal({
+				// 		title: '提示',
+				// 		content: '需要您的授权才能推荐附近的店铺信息',
+				// 		showCancel: false
+				// 	})
+				// }
 			}
 		})
 	},

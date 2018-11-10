@@ -11,9 +11,15 @@ Page({
         addressList: [],
         noPayIndex: -1,
         loading: true,
-        fromAddress: false
+        fromAddress: false,
+        goBack: ''
     },
     onLoad(option) {
+        if (option.from === 'store') {
+            this.setData({
+                goBack: '/pages/store/store'
+            })
+        }
         wx.showLoading({
           title: 'Loading...', //提示的内容,
           mask: true, //显示透明蒙层，防止触摸穿透,
@@ -32,7 +38,7 @@ Page({
     getAddressList () {
         model('my/address/list', {
             userId: 1,
-            openid: wx.getStorageSync('openid')
+            // openid: wx.getStorageSync('openid')
         }).then(data => {
             if (data.data) {
                 let list = data.data;

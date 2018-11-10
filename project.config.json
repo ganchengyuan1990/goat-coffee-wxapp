@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.2.1",
+	"libVersion": "2.4.0",
 	"appid": "wx95a4dca674b223e1",
 	"projectname": "%E5%B1%B1%E7%BE%8A%E5%92%96%E5%95%A1",
 	"isGameTourist": false,
@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 13,
+			"current": 14,
 			"list": [
 				{
 					"id": -1,
@@ -116,7 +116,14 @@
 				{
 					"id": -1,
 					"name": "pin_order_list",
-					"pathName": "pages/pin/pin_list/pin_list"
+					"pathName": "pages/pin/pin_list/pin_list",
+					"query": ""
+				},
+				{
+					"id": 14,
+					"name": "pin_detail",
+					"pathName": "pages/pin/pin_detail/pin_detail",
+					"query": "lesson_id=27"
 				}
 			]
 		}

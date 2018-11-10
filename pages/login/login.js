@@ -43,12 +43,29 @@ Page({
     },
 
     register () {
-        model('my/user/login', {
-            phoneNum: this.data.phoneNum,
-            sms_code: this.data.phoneCode,
-            openId: wx.getStorageSync('openid'),
+        // model('my/user/login', {
+        //     phoneNum: this.data.phoneNum,
+        //     sms_code: this.data.phoneCode,
+        //     openId: wx.getStorageSync('openid'),
+        //     user_name: wx.getStorageSync('personal_info').nickName,
+        //     sysinfo: JSON.stringify(this.data.sysinfo)
+        // }, 'POST', {
+        //     'Accept': 'application/json'
+        // }).then(data => {
+        //     this.setData({
+        //         token: data.data
+        //     })
+        //     wx.setStorageSync('token', data.data);
+        // })
+        model(`my/user/login?phoneNum=${this.data.phoneNum}&sms_code=${this.data.phoneCode}&openId=${wx.getStorageSync('openid')}&user_name=${wx.getStorageSync('personal_info').nickName}`, {
+            // phoneNum: this.data.phoneNum,
+            // sms_code: this.data.phoneCode,
+            // openId: wx.getStorageSync('openid'),
+            // user_name: wx.getStorageSync('personal_info').nickName,
             sysinfo: JSON.stringify(this.data.sysinfo)
-        }, 'POST').then(data => {
+        }, 'POST', {
+            'Accept': 'application/json'
+        }).then(data => {
             this.setData({
                 token: data.data
             })
@@ -65,6 +82,19 @@ Page({
                         code: res.code
                     }).then(res => {
                         wx.setStorageSync('openid', res.data);
+                        wx.getUserInfo({
+                            success: function (res) {
+                                var userInfo = res.userInfo
+                                wx.setStorageSync('personal_info', {
+                                    nickName: userInfo.nickName,
+                                    avatarUrl: userInfo.avatarUrl,
+                                    gender: userInfo.gender,
+                                    province: userInfo.province,
+                                    city: userInfo.city,
+                                    country: userInfo.country
+                                });
+                            }
+                        })
                     })
                 } else {
                     console.log('登录失败！' + res.errMsg)
@@ -84,7 +114,7 @@ Page({
         leftButtonText: '去登录',
         otherFunctionText: '确定',
         leftSeconds: 60,
-        errorToastShown: true,
+        errorToastShown: false,
         errorInfo: 'sdsdsds',
         showButtonLineName: false,
         showButtonLinePhone: false,

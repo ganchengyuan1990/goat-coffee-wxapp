@@ -1,0 +1,122 @@
+<view class="index-container">
+    <!-- <view class='img_wrapper'>
+        <image src="{{lesson.img}}" class="image"/>
+    </view> -->
+    <view class="{{showToast ? 'mask' : ''}}" catchtap="closeMask">
+    </view>
+    <swiper style="height:400rpx;" indicator-dots="{{indicatorDots}}"
+        autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+        <block wx:for="{{poiInfo.img}}" wx:key="idx" class='img_wrapper'>
+            <swiper-item>
+                <image src="{{item}}" class="image" lazy-load='true'/>
+            </swiper-item>
+        </block>
+    </swiper>
+
+
+    <!-- <form bindsubmit="sendMessage" report-submit='true' >
+        <button form-type="submit" type="default" size="mini">提交</button>
+    </form> -->
+
+    <view class='info'>
+        <view class='word'>
+            <view class='title'>
+                <text>¥ 21</text>
+                <text>¥ 36</text>
+                <text>三人团</text>
+            </view>
+            <view class='title'>标准美式咖啡3杯，限50份</view>
+            <view class='title_content'>标准美式咖啡3杯，限50份</view>
+        </view>
+
+        <view class='pin_list' wx:if="{{pinOrders.length > 0}}">
+            <view class="pin_list_title">    
+                {{pinOrders.length}}人正在发起拼团
+            </view>
+            <view wx:for="{{pinOrders}}" wx:key="index" class="pin_order">
+                <image class="avatar" src="{{item.owner_avatar}}" lazy-load='true'/>
+                <view class='go_pin'>
+                    <text class="normal">{{item.owner_name}}</text>
+                </view>
+                <view class='go_pin righter'>
+                    <text class="normal left_time}}">还差一人</text>
+                    <text class='left_time smaller' wx:if="{{item.leftTime}}">剩余{{item.leftTime}}</text>
+                </view>
+                <view data-index="{{index}}" type="warn" class='goPay' catchtap="goAttendPin" >参加拼团</view>  
+            </view>
+        </view>
+
+        <view class='intro'>
+            <view class="subtitle">课程简介：</view>
+            <view class='intro_detail'>商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情</view>
+        </view>
+
+    </view>
+
+    <view class='function_bar'>
+        <!-- <button class='item share' open-type="share">
+            分享
+        </button> -->
+        <view class="bar_item" wx:if="{{!poiInfo.isMart}}">
+            <view class='item apply alone' bindtap="goCreate">
+                <text class='pin-title'>￥{{poiInfo.price}}</text>
+                <text class='sub-title'>单独购买</text>
+            </view>
+            <view class='item apply' bindtap="goPin" wx:if="{{poiInfo.isGroup > 0 && poiInfo.amount >= poiInfo.groupMember}}">
+                <text class='pin-title'>￥{{poiInfo.pinPrice}}</text>
+                <text class='sub-title'>发起{{poiInfo.groupMember}}人拼团</text>
+            </view>
+            <view class='item apply gray' wx:if="{{poiInfo.isGroup > 0 && poiInfo.amount < poiInfo.groupMember}}">
+                <text class='pin-title'>活动已结束</text>
+                <text class='sub-title'>客官，下回请早</text>
+            </view>
+        </view>
+    </view>
+
+    
+    
+    <view class="tool_content" wx:if="{{showToast}}">
+        <view class='line flex'>
+            <view class='label max'>购买数量：
+            </view>
+            <view class="content">
+                <!-- <label class="btn btn-minus"
+                bindtap="decreaseRoomCount"></label> -->
+                <input class="count" bindinput="countChange" bindconfirm="countChange"
+                type="text" value="{{count}}" disabled='true' placeholder='请输入购买数量'/>
+                <!-- <label class="btn btn-plus}}"
+                bindtap="increaseRoomCount"></label> -->
+            </view>
+        </view>
+        
+        <view class='line double' wx:if="{{address}}">
+            <text class='shenglve'>送货地址：{{address}}</text>
+            <view class=''>{{receiver}}</view>
+        </view>
+        <view class='line' wx:else bindtap="goToAddAddress">
+            送货地址：
+            <text class='red'>请点击输入送货地址</text>
+        </view>
+        <view class='line'>
+            <text  class='label'> 净重：</text>
+            <text class=''>{{poiInfo.weight}}公斤</text>
+            <text  class='label red' wx:if="{{transFee === 0}}"> （包邮）</text>
+        </view>
+        <view class='line' wx:if="{{transFee > 0}}">
+            <text  class='label'>运费：</text>
+            <text class=''>{{transFee}}元</text>
+        </view>
+        <view class='button'>
+            <view class='button_item' wx:if="{{transFee > -1}}">
+                总价：{{totalPrice}} 元（加运费）
+            </view>
+            <view class='button_item' wx:else>
+                总价：未知
+            </view>
+            <view class="button_item {{transFee > -1 ? '' : 'disabled'}}" bindtap='goOrder'>
+                下一步
+            </view>
+        </view>
+    </view>
+</view>
+
