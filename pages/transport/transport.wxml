@@ -76,7 +76,7 @@
         </view>
     </view>
 
-     <view class="addNewAddress" bindtap="onSearchShow" data-source="0">
+     <view class="addNewAddress" bindtap="goAddAddress" data-source="0">
         <view class="text"> + 添加新的收货地址</view>
     </view>
 </view>

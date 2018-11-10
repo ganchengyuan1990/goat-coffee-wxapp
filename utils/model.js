@@ -22,6 +22,10 @@ const model = (name = '', data = {}, method = 'GET') => {
             url: url,
             data: data,
             method: method,
+            header: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
             success(res) {
                 const { statusCode, errMsg, data} = res
                 if (statusCode === 200 && data.code === 'suc') {

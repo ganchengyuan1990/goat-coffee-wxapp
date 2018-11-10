@@ -1,5 +1,4 @@
 "use strict";
-import model from '../../utils/model';
 
 
 Page({
@@ -82,12 +81,22 @@ Page({
         let chosenId = option.chosenId;
         let activedItems = [];
         let unActivedItems = [];
-        model('my/coupon/list', {
-            userId: 1
-        }).then(data => {
-            this.setData({
-                activedItems: data.data
-            })
-        })
+        // array.forEach(item => {
+        //     item.discountMoney = Utils.setDataForm(parseFloat(item.discountMoney / 100), 1);
+        //     if (item.checked === undefined) {
+        //         item.checked = item.defaultCheck;
+        //     }
+        //     if (item.active) {
+        //         activedItems.push(item);
+        //     } else {
+        //         unActivedItems.push(item);
+        //     }
+        // });
+        // this.setData({
+        //     array: array,
+        //     chosenId: chosenId,
+        //     activedItems: activedItems,
+        //     unActivedItems: unActivedItems
+        // });
     }
 });

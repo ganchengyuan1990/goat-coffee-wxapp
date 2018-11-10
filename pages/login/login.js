@@ -32,6 +32,30 @@ Page({
         })
     },
 
+    getMessage () {
+        model('my/sms/sendPhoneCode', {
+            phoneNum: 17602183915
+        }, 'POST').then(data => {
+            this.setData({
+                phoneCode: data.data
+            })
+        })
+    },
+
+    register () {
+        model('my/user/login', {
+            phoneNum: this.data.phoneNum,
+            sms_code: this.data.phoneCode,
+            openId: wx.getStorageSync('openid'),
+            sysinfo: JSON.stringify(this.data.sysinfo)
+        }, 'POST').then(data => {
+            this.setData({
+                token: data.data
+            })
+            wx.setStorageSync('token', data.data);
+        })
+    },
+
     getUserInfo() {
         let self = this;
         wx.login({
@@ -54,7 +78,7 @@ Page({
      */
     data: {
         title: "hbchjejh",
-        phoneNum: 15553598117,
+        phoneNum: 17602183915,
         placeOrderNotice: '23232323',
         placeOrderNoticeShown: true,
         leftButtonText: '去登录',
@@ -63,13 +87,39 @@ Page({
         errorToastShown: true,
         errorInfo: 'sdsdsds',
         showButtonLineName: false,
-        showButtonLinePhone: false
+        showButtonLinePhone: false,
+        phoneCode: '',
+        token: '',
+        sysinfo: {}
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        let self = this;
+        wx.getSystemInfo({
+            success(res) {
+                self.setData({
+                    sysinfo: {
+                        brand: res.brand,
+                        model: res.model,
+                        pixelRatio: res.pixelRatio,
+                        screenWidth: res.screenWidth,
+                        screenHeight: res.screenHeight,
+                        statusBarHeight: res.statusBarHeight,
+                        windowWidth: res.windowWidth,
+                        windowHeight: res.windowHeight,
+                        language: res.language,
+                        version: res.version,
+                        platform: res.platform,
+                        fontSizeSetting: res.fontSizeSetting,
+                        SDKVersion: res.SDKVersion
+                    }
+                });
+                console.log(self.data.sysinfo);
+            }
+        })
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,

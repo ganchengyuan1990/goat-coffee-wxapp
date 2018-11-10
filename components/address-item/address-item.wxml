@@ -1,4 +1,4 @@
-<view class="direct-item" catchtap="navURL" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
+<view class="direct-item" catchtap="goAddress" data-id="{{item.id}}" data-info="{{item}}">
     <view class="suggest-icon point-icon"></view>
     <view class="direct-content">
         <view class="direct-name">

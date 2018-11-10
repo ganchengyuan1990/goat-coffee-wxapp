@@ -87,6 +87,12 @@ Page({
     })
   },
 
+  goAddAddress () {
+    wx.navigateTo({
+      url: `/pages/my/address/address`
+    });
+  },
+
   getCheckoutInfo: function () {
     let that = this;
 

@@ -16,7 +16,7 @@
             <button data-index="{{index}}" type="warn" class='goPay' catchtap="changeAddress">修改</button>  
         </view> -->
         <view class="item">
-            <address-item item="{{item}}"></address-item>
+            <address-item item="{{item}}" data-id="{{item.id}}"></address-item>
         </view>
     </view>
 </view>
