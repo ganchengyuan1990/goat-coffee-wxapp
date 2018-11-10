@@ -73,6 +73,7 @@
   <cart 
     isShow="{{isCatePanelShow}}" 
     info="{{cartList}}"
+    fee="{{storeInfo.deliverFee}}"
     bind:checkout="checkout"></cart>
   <menu-wrap 
     info="{{currentSpecific}}" 

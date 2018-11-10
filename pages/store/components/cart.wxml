@@ -35,7 +35,7 @@
                             </view>
                       </view>
                   </view>
-                  <view class="fee">配送费</view>
+                  <view class="fee">配送费￥{{fee}}</view>
               </view>
               <view class="ft">
                   <view class="total">

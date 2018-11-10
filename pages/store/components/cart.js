@@ -13,6 +13,10 @@ Component({
           this.setTotalResult()
         }
       }
+    },
+    fee: {
+      type: String,
+      value: ''
     }
   },
 
