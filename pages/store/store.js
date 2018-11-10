@@ -337,7 +337,6 @@ Page({
 		}
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
 		console.log(obj);
-		return
 		wx.navigateTo({
 			url: url
 		})
