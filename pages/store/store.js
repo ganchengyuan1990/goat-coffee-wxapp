@@ -25,6 +25,10 @@ Page({
 		cartList: [],
 		// 当前选中产品定制化
 		currentSpecific: {},
+		// 配送地址id
+		userAddressId: '',
+		// 是否自提
+		isSelfTaking: true
 	},
 
 	/**
@@ -32,6 +36,13 @@ Page({
 	 */
 	onLoad(options) {
 		this.fetchLoaction()
+		let addrId = options.userAddressId
+		if (addrId) {
+			this.setData({
+				userAddressId: addrId,
+				isSelfTaking: false
+			})	
+		}
 	},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -129,6 +140,8 @@ Page({
 			const {data} = res
 			if (data && data.length > 0) {
 				let storeInfo = data[0]
+				console.log(storeInfo, 'storeInfo');
+				
 				let distance = storeInfo.distance
 				if (distance) {
 					distance = distance > 1 ? `${distance}km` : `${Math.round(distance * 1000)}m`
@@ -276,5 +289,50 @@ Page({
 				fail() {}
 			})
 		}
+	},
+	checkout(e) {
+		let info = this.data
+		
+		let cartList = e.detail.cart
+		let totalPrice = e.detail.totalPrice
+		console.log(cartList, 'cartList')
+		if (cartList.length === 0) {
+			return
+		}
+		let products = cartList.map(item => {
+			let skuList = item.sku_list
+			let skuId = ''
+			if (Array.isArray(skuList)) {
+				let obj = skuList.find(item => item.isdefault === 1)
+				if (obj) {
+					skuId = item.skuId
+				}
+			}
+			
+			return {
+				productId: item.id,
+				skuId: skuId,
+				number: item.count
+			}
+		})
+		let obj = {
+			storeId: info.storeInfo.storeId,
+			userAddressId: info.userAddressId,
+			deliverFee: info.storeInfo.deliverFee,
+			payAmount: totalPrice,
+			orderType: info.isSelfTaking ? 2 : 1,
+			product: products
+		}
+		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
+		console.log(url);
+		
+		wx.navigateTo({
+			url: url
+		})
+	},
+	selectAddress() {
+		wx.navigateTo({
+			url: '/pages/my/address_list/address_list?from=store'
+		})
 	}
 });

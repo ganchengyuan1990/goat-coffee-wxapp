@@ -25,7 +25,10 @@ Component({
     count: 1
   },
   attached() {
-    
+    wx.setStorage({
+      key: "key",
+      data: "value"
+    })
   },
   /**
    * 组件的方法列表
@@ -110,14 +113,21 @@ Component({
       if (!val) {
         return
       }
-      console.log(val, 'val')
-      let count = val.length
-      let totalPrice = val.reduce((total, item) => {
-        return util.add(total, item.totalPrice)
+      let count = 0
+      let totalPrice = 0
+      val.forEach((item) => {
+        totalPrice = util.add(totalPrice, item.totalPrice)
+        count = util.add(count, item.count)
       }, 0)
       this.setData({
         count: count,
         totalPrice: totalPrice
+      })
+    },
+    checkout() {
+      this.triggerEvent('checkout', {
+        totalPrice: this.data.totalPrice,
+        cart: this.data.info
       })
     }
   }
