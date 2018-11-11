@@ -32,7 +32,7 @@
     background: #fff;
     color: #999;
     font-size: 28rpx;
-    box-shadow: 0 0 20rpx 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 15rpx 0 rgba(0, 0, 0, 0.5);
 }
 
 .cart-entry .tt {
@@ -75,6 +75,9 @@
 
 .cart-panel .hd .btn-more {
     color: #333;
+}
+.cart-panel .hd .btn-more text {
+    padding-left: 20rpx;
 }
 
 .cart-panel .bd {

@@ -153,7 +153,7 @@ Page({
 				
 				let distance = storeInfo.distance
 				if (distance) {
-					distance = distance > 1 ? `${distance}km` : `${Math.round(distance * 1000)}m`
+					distance = distance > 1 ? `${distance.toFixed(1)}km` : `${Math.round(distance * 1000)}m`
 				}
 				storeInfo.distance = distance
 				this.setData({
@@ -162,7 +162,7 @@ Page({
 				this.fetchProduct()
 			}
 		}).catch(e => {
-
+			console.log(e)
 		})
 	},
 	/**
@@ -192,14 +192,12 @@ Page({
 		query.exec(res => {
 			console.log(res, 'res')
 			for (let i = 0; i < res[0].length; i++) {
-				console.log(res[0][i])
 				height += parseInt(res[0][i].height);
 				heigthArr.push(height);
 			}
 			this.setData({
 				heigthArr: heigthArr
 			});
-			console.log(heigthArr, 'heightarr');
 		});
 		
 	},
@@ -274,8 +272,9 @@ Page({
 	 */
 	saveCart(e) {
 		let cart = this.data.cartList
-
-		cart.push(e.detail)
+		if (e.detail) {
+			cart.push(e.detail)
+		}
 		this.setData({
 			cartList: cart
 		})

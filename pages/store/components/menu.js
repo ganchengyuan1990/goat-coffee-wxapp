@@ -64,7 +64,7 @@ Component({
     },
     save() {
       let info = this.data.info
-      let spec = this.getCustomed()
+      let spec = this.data.customed
       console.log(spec, 'spec')
       this.triggerEvent('save', Object.assign({}, info, {
         count: this.data.count,
@@ -74,23 +74,6 @@ Component({
       }))
       this.toggleMenu()
     },
-    /** 
-     * 获取规格
-     */ 
-    // getSpecific(list){
-    //   console.log(list, 'list list')
-    //   let skuList = list.sku_list
-    //   let propList = list.key_list
-    //   let propArr = []
-    //   let skuObj = skuList.find(item => item.isdefault === 1)
-    //   propArr.push(skuObj.skuName)
-    //   propList.forEach(item => {
-    //     let arr = item.val_list
-    //     let obj = arr.find(i => i.isdefault === 1)
-    //     propArr.push(obj.val)
-    //   })
-    //   return propArr.join('/')
-    // },
     /**
      * 选择规格
      */

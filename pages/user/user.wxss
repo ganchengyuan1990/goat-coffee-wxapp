@@ -1,8 +1,66 @@
-/* pages/user/user.wxss */
-
-.head {
-  background-color: #ffd161;
+.user-container .head-wrap {
+  height: 450rpx;
 }
-.head .head_img{
+.head-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.head-wrap .avatar {
+  flex: none;
+  width: 168rpx;
+  height: 168rpx;
   border-radius: 50%;
+  overflow: hidden;
+}
+.head-wrap .avatar image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.head-wrap .nick {
+  margin-top: 20rpx;
+  font-size: 32rpx;
+  line-height: 44rpx;
+  color: #333;
+}
+.head-wrap .name {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  line-height: 32rpx;
+  color: #999;
+}
+.list-wrap {
+  padding: 0 30rpx;
+}
+.list-wrap .item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 112rpx;
+  border-bottom: 2rpx solid #f2f2f2;
+  line-height: 112rpx;
+}
+.list-wrap .item .tt {
+  position: relative;
+  height: 100%;
+  padding-left: 56rpx;
+  font-size: 32rpx;
+}
+.icon {
+  position: absolute;
+  left: 0rpx;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.icon.icon-addr {
+  width: 36rpx;
+}
+.icon.icon-discount {
+  width: 36rpx;
+}
+.icon.icon-coupon {
+  width: 32rpx;
 }
