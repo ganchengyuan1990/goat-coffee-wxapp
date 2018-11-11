@@ -22,7 +22,7 @@ page {
 .img-caption {
   display: block;
   width: 100%;
-  height: auto;
+  height: 245rpx;
 }
 
 .store-addr {
@@ -66,7 +66,7 @@ page {
 }
 
 .btn-delivery .item {
-  padding: 18rpx 24rpx;
+  padding: 15rpx 24rpx;
   border-radius: 70rpx;
   line-height: 1;
 }
@@ -116,8 +116,11 @@ page {
   max-height: 80rpx;
   overflow: hidden;
   line-height: 1;
+  color: #787878;
 }
-
+.list-nav .list-nav-item.active .tt {
+  color: #000;
+}
 .list-cnt {
   flex-grow: 1;
   padding-left: 20rpx;
@@ -135,9 +138,9 @@ page {
   text-overflow: ellipsis;
 }
 
-.list-cnt .title-group {
+/* .list-cnt .title-group {
   padding-bottom: 30rpx;
-}
+} */
 
 .list-cnt .title-group:last-child {
   margin-bottom: 120rpx;
@@ -150,13 +153,13 @@ page {
 }
 
 .list-detail {
-  margin-bottom: 68rpx;
+  margin-top: 58rpx;
   display: flex;
 }
 
-.list-detail:last-child {
+/* .list-detail:last-child {
   margin-bottom: 0;
-}
+} */
 
 .list-detail .img {
   margin-right: 24rpx;
