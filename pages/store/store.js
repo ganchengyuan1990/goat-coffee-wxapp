@@ -319,7 +319,7 @@ Page({
 			return Object.assign({},{
 				productName: item.productName,
 				productId: item.id,
-				skuId: obj.skuId,
+				skuId: obj.id,
 				skuName: obj.skuName,
 				number: item.count,
 				price: obj.price,
