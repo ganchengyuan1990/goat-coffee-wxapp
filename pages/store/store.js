@@ -37,12 +37,21 @@ Page({
 	onLoad(options) {
 		this.fetchLoaction()
 		let addrId = options.userAddressId
+		let self = this
 		if (addrId) {
 			this.setData({
 				userAddressId: addrId,
 				isSelfTaking: false
 			})	
 		}
+		// wx.getStorage({
+		// 	key: 'CART_LIST',
+		// 	success(res) {
+		// 		console.log(res, 'storage');
+		// 		let data = JSON.parse(res.data)
+		// 		self.mergeCart(data)
+		// 	}
+		// })
 	},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -270,6 +279,10 @@ Page({
 		this.setData({
 			cartList: cart
 		})
+		wx.setStorage({
+			key: 'CART_LIST',
+			data: JSON.stringify(cart)
+		})
 	},
 	toggleTabBar(isShow, callback) {
 		if (!isShow) {
@@ -302,21 +315,20 @@ Page({
 		let products = cartList.map(item => {
 			let skuList = item.sku_list
 			let skuId = ''
-			if (Array.isArray(skuList)) {
-				let obj = skuList.find(item => item.isdefault === 1)
-				if (obj) {
-					skuId = item.skuId
-				}
-			}
+			let obj = skuList.find(item => item.isdefault === 1) || {}
+			console.log(obj, 'obj');
 			
-			return {
+			return Object.assign({},{
+				productName: item.productName,
 				productId: item.id,
-				skuId: skuId,
-				number: item.count
-			}
+				skuId: obj.skuId,
+				skuName: obj.skuName,
+				number: item.count,
+				price: obj.price
+			})
 		})
 		let obj = {
-			storeId: info.storeInfo.storeId,
+			storeId: info.storeInfo.id,
 			userAddressId: info.userAddressId,
 			deliverFee: info.storeInfo.deliverFee,
 			payAmount: totalPrice,
@@ -324,8 +336,7 @@ Page({
 			product: products
 		}
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
-		console.log(url);
-		
+		console.log(obj);
 		wx.navigateTo({
 			url: url
 		})
@@ -333,6 +344,17 @@ Page({
 	selectAddress() {
 		wx.navigateTo({
 			url: '/pages/my/address_list/address_list?from=store'
+		})
+	},
+	// TODOS 合并相同品类
+	mergeCart(list) {
+		if (!Array.isArray(list)) {
+			return 
+		}
+		let cartList = this.data.cartList
+		let arr = cartList.concat(list)
+		this.setData({
+			cartList: arr
 		})
 	}
 });

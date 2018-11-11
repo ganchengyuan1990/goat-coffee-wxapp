@@ -155,12 +155,17 @@
 
 .list-wrap .counter .ico {
     flex: none;
-    width: 46rpx;
-    height: 46rpx;
-    border: 1rpx solid #000;
+    width: 36rpx;
+    height: 36rpx;
+    border: 1rpx solid #a3a3a3;
     border-radius: 50%;
-    line-height: 38rpx;
+    line-height: 30rpx;
     text-align: center;
-    font-size: 44rpx;
+    font-size: 36rpx;
+    color: #a3a3a3;
 }
-
+.list-wrap .counter .ico.ico-plus {
+    border-color: #d8d8d8;
+    color: #fff;
+    background: #d8d8d8;
+}
