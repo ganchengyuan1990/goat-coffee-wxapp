@@ -13,7 +13,11 @@
             约10:24送达
         </view>
     </view>
-    <view class="address-box">
+    <view class="address-box" bindtap="goAddressList">
+
+        <view class="right_arrow">
+            <image class="arrow" src="../../../images/arrow.png"/>
+        </view>
         
         <view class="address-item" bindtap="selectAddress" wx:if="{{checkedAddress}}">
             <view class="address">
@@ -91,6 +95,7 @@
             </view>
             <view class="r">
                 <text class="txt">无可用</text>
+                <image class="arrow" src="../../../images/arrow.png"/>
                 <!-- <image class="txt" src="../../../images/arrow.png"/> -->
             </view>
         </view>
@@ -101,6 +106,7 @@
             </view>
             <view class="r">
                 <text class="txt"> - ￥{{couponMoney}}</text>
+                <image class="arrow" src="../../../images/arrow.png"/>
                 <!-- <image class="txt" src="../../../images/arrow.png"/> -->
             </view>
         </view>
@@ -111,7 +117,7 @@
                 <text class="name">备注特殊要求</text>
             </view>
             <view class="r">
-                <image class="txt" src="../../../images/arrow.png"/>
+                <image class="arrow" src="../../../images/arrow.png"/>
             </view>
         </view>
         

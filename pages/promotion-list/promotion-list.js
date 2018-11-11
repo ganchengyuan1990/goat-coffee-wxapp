@@ -91,6 +91,11 @@ Page({
             model('my/coupon/list', {
                 userId: 1
             }).then(data => {
+                let result = data.data;
+                result.forEach(element => {
+                    element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0]
+                    element.coupon.availabileEndTime = element.coupon.availabileEndTime.split('.')[0]
+                });
                 this.setData({
                     activedItems: data.data
                 })
@@ -100,6 +105,11 @@ Page({
             model('my/voucher/list', {
                 userId: 1
             }).then(data => {
+                let result = data.data;
+                result.forEach(element => {
+                    element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0]
+                    element.coupon.availabileEndTime = element.coupon.availabileEndTime.split('.')[0]
+                });
                 this.setData({
                     activedItems: data.data
                 })

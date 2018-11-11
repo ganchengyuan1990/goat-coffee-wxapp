@@ -157,9 +157,9 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
 }
 
 .list-item-deal {
-  color: #ff6633;
+  color: #333;
   font-size: 28rpx;
-  margin-left: 0.5rem;
+  margin-left: 0.3rem;
 }
 
 .list-item-deal .deal-num {

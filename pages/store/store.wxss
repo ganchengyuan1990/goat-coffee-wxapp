@@ -147,6 +147,12 @@ page {
   margin-bottom: 120rpx;
 }
 
+.list-cover {
+  height: 12rpx;
+  position: relative;
+  z-index: 1000;
+}
+
 ::-webkit-scrollbar {
   width: 0;
   height: 0;

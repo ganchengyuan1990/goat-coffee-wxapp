@@ -4,10 +4,10 @@
         <input model="name" value="{{name}}" bindtap="addLine1" bindinput="dealName"></input>
     </view>
 
-    <view class="section flex {{addline2 ? 'selected' : ''}}">
+    <!-- <view class="section flex {{addline2 ? 'selected' : ''}}">
         <view class="title">性别:</view>
         <input model="gender" value="{{gender}}" bindtap="addLine2" bindinput="dealGender"></input>
-    </view>
+    </view> -->
     <view class="section flex {{addline2 ? 'selected' : ''}}">
         <view class="title">手机号码:</view>
         <input model="phone" value="{{phone}}" bindtap="addLine2" bindinput="dealPhone"></input>

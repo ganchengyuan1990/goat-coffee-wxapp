@@ -19,15 +19,15 @@
             <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
 
             <view class="list-item-deal">
-              <label class="deal-icon">- ¥</label><label class="deal-num">{{item.discount}}</label>
+              <label class="deal-icon"></label><label class="deal-num">{{item.coupon.discount}}折</label>
             </view>
           </view>
 
           <view class='right-part'>
             <view class="list-item-name">
-              <text class="promotion-description">{{item.couponName}}</text>
+              <text class="promotion-description">{{item.coupon.couponName}}</text>
               <text class="promotion-limit-tip">{{item.couponBref}}</text>
-              <text class="promotion-limit-tip">{{item.availabileStartTime}} - {{item.availabileEndTime}}</text>
+              <text class="promotion-limit-tip">{{item.coupon.availabileStartTime}} - {{item.coupon.availabileEndTime}}</text>
             </view>
           </view>
 

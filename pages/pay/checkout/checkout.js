@@ -136,6 +136,12 @@ Page({
     })
   },
 
+  goAddressList () {
+    wx.navigateTo({
+      url: '/pages/my/address_list/address_list',
+    })
+  },
+
   goCoupon () {
     wx.navigateTo({
       url: '/pages/promotion-list/promotion-list?type=1',
@@ -177,12 +183,12 @@ Page({
       storeId: this.data.options.storeId,
       userAddressId: 3,
       userId: 1,
-      discountType: 2,
+      discountType: 0,
       deliverFee: this.data.options.deliverFee,
       payAmount: this.data.options.payAmount,
       orderType: 1,
       payType: 1,
-      discountIds: '1,2,3'
+      // discountIds: '1,2,3'
     }
     let paramStr = '';
     let keys = Object.keys(param);
@@ -203,20 +209,10 @@ Page({
       }
     })
 
+    debugger
+
     // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
-    model(`order/detail/submit?${paramStr}`, [{
-          "skuId": 24,
-          "productPropIds": "33",
-          "productId": 12,
-          "number": 1
-        },
-        {
-          "skuId": 26,
-          "productPropIds": "37",
-          "productId": 13,
-          "number": 1
-        }
-      ], 'POST', {
+    model(`order/detail/submit?${paramStr}`, this.data.options.product, 'POST', {
       'authorization': 'Bearer ' + wx.getStorageSync('token').token,
       'Accept': 'application/json'
     }).then(data => {

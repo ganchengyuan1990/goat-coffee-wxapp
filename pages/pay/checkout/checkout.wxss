@@ -95,6 +95,7 @@ checkbox {
 .address-box{
     width: 100%;
     height: 166.55rpx;
+    position: relative;
     /* background: url('http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/address-bg-bd30f2bfeb.png') 0 0 repeat-x; */
     /* background-size: 62.5rpx 10.5rpx; */
     margin-bottom: 20rpx;
@@ -292,11 +293,20 @@ checkbox {
     /* margin: 30rpx; */
 }
 
-.special-item .r .txt {
+.right_arrow {
+    position: absolute;
+    right: 20rpx;
+    top: 80rpx;
+    width:9px;
+    height:14px;
+}
+.arrow {
     width:9px;
     height:14px;
     /* background:rgba(125, 125, 125, 1); */
     color: #7D7D7D;
+    position: relative;
+    top: 5rpx;
 }
 
 .order-box .order-item{

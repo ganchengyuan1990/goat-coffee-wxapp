@@ -27,7 +27,7 @@
     </view>
   </view>
   <view class="img-wrap J_img_wrap">
-    <image src="/images/holder.jpg" class="img-caption"></image>
+    <image src="/images/holder.jpeg" class="img-caption"></image>
   </view>
   <view class="list-wrap" style="height:{{listHeight}}px">
     <view class="list-nav">
@@ -40,7 +40,9 @@
         </view>
       </scroll-view>
     </view>
-    <view class="list-cnt">
+    <view class="list-cnt"> 
+      <view class="list-cover"> 
+      </view> 
       <scroll-view scroll-y scroll-with-animation style="height:{{listHeight}}px" scroll-into-view="{{viewToList}}" bindscroll="scroll">
         <view style="padding-bottom: 50rpx">
           <view wx:for="{{menuList}}" wx:key="item.id" class="title-group J_group" wx:for-index="idx" id="{{'list'+item.id}}">
