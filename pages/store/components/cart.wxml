@@ -12,7 +12,7 @@
           <view class="bottom">
               <view class="hd">
                   <view>您有一张满19减10优惠券，还差2元可用</view>
-                  <view class="btn-more">去凑单></view>
+                  <view class="btn-more">去凑单<text>></text></view>
               </view>
               <view class="bd">
                   <view class="overview">
@@ -26,7 +26,7 @@
                       <view class="list-item" wx:for="{{info}}" wx:key="{{index}}">
                             <view class="cnt">
                                 <view class="tt">{{item.productName}}￥{{item.totalPrice}}</view>
-                                <view class="desc">规格</view>
+                                <view class="desc">{{item.spec}}</view>
                             </view>
                             <view class="counter">
                                 <view class="ico ico-minus" bind:tap="decrease" data-idx="{{index}}">-</view>

@@ -64,16 +64,19 @@ Component({
     },
     save() {
       let info = this.data.info
+      let spec = this.data.customed
+      console.log(spec, 'spec')
       this.triggerEvent('save', Object.assign({}, info, {
         count: this.data.count,
         totalPrice: this.data.totalPrice,
-        price: this.data.price
+        price: this.data.price,
+        spec: spec
       }))
       this.toggleMenu()
     },
     /**
      * 选择规格
-    */
+     */
     select(e) {
       let group = e.target.dataset.group
       let idx = e.target.dataset.tagidx

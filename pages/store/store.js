@@ -141,8 +141,8 @@ Page({
 		model('home/lbs/getStoreListByLocation', {
 			// lng: geo.lng,
 			// lat: geo.lat,
-			lng: 121.468532,
-			lat: 31.244450,
+			lng: 121.483821,
+			lat: 31.265335,
 			page: 1
 		}).then(res => {
 			console.log(res, 'location')
@@ -153,7 +153,7 @@ Page({
 				
 				let distance = storeInfo.distance
 				if (distance) {
-					distance = distance > 1 ? `${distance}km` : `${Math.round(distance * 1000)}m`
+					distance = distance > 1 ? `${distance.toFixed(1)}km` : `${Math.round(distance * 1000)}m`
 				}
 				storeInfo.distance = distance
 				this.setData({
@@ -162,7 +162,7 @@ Page({
 				this.fetchProduct()
 			}
 		}).catch(e => {
-
+			console.log(e)
 		})
 	},
 	/**
@@ -192,14 +192,12 @@ Page({
 		query.exec(res => {
 			console.log(res, 'res')
 			for (let i = 0; i < res[0].length; i++) {
-				console.log(res[0][i])
 				height += parseInt(res[0][i].height);
 				heigthArr.push(height);
 			}
 			this.setData({
 				heigthArr: heigthArr
 			});
-			console.log(heigthArr, 'heightarr');
 		});
 		
 	},
@@ -274,8 +272,9 @@ Page({
 	 */
 	saveCart(e) {
 		let cart = this.data.cartList
-
-		cart.push(e.detail)
+		if (e.detail) {
+			cart.push(e.detail)
+		}
 		this.setData({
 			cartList: cart
 		})
@@ -314,9 +313,8 @@ Page({
 		}
 		let products = cartList.map(item => {
 			let skuList = item.sku_list
-			let skuId = ''
 			let obj = skuList.find(item => item.isdefault === 1) || {}
-			console.log(obj, 'obj');
+			console.log(obj, 'obj obj');
 			
 			return Object.assign({},{
 				productName: item.productName,
@@ -324,7 +322,7 @@ Page({
 				skuId: obj.skuId,
 				skuName: obj.skuName,
 				number: item.count,
-				price: obj.price
+				price: obj.price,
 			})
 		})
 		let obj = {
@@ -336,7 +334,7 @@ Page({
 			product: products
 		}
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
-		console.log(obj);
+
 		wx.navigateTo({
 			url: url
 		})
