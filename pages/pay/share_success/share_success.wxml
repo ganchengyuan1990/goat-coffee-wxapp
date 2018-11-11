@@ -13,7 +13,7 @@
   </view>
 
   <view class="success-container">
-    <view class="go-button">
+    <view class="go-button" bindtap="goStore">
       去喝一杯
     </view>
   </view>

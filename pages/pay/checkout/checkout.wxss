@@ -283,6 +283,13 @@ checkbox {
     /* margin: 30rpx; */
 }
 
+.special-item .r .txt {
+    width:9px;
+    height:14px;
+    /* background:rgba(125, 125, 125, 1); */
+    color: #7D7D7D;
+}
+
 .order-box .order-item{
     /* height: 104.3rpx; */
     overflow: hidden;
@@ -444,7 +451,7 @@ checkbox {
     width: 333rpx;
     height: 100rpx;
     background: #333;
-    border: 1px solid #b4282d;
+    /* border: 1px solid #b4282d; */
     line-height: 100rpx;
     text-align: center;
     color: #fff;

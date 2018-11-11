@@ -39,8 +39,8 @@
         "selectedIconPath": "./icons/index_select.png"
       },
       {
-        "pagePath": "pages/index/index",
-        "text": "首页",
+        "pagePath": "pages/pin/pin_list/pin_list",
+        "text": "拼团",
         "iconPath": "./icons/index.png",
         "selectedIconPath": "./icons/index_select.png"
       },

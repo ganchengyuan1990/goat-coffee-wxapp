@@ -58,10 +58,6 @@ Page({
         //     wx.setStorageSync('token', data.data);
         // })
         model(`my/user/login?phoneNum=${this.data.phoneNum}&sms_code=${this.data.phoneCode}&openId=${wx.getStorageSync('openid')}&user_name=${wx.getStorageSync('personal_info').nickName}`, {
-            // phoneNum: this.data.phoneNum,
-            // sms_code: this.data.phoneCode,
-            // openId: wx.getStorageSync('openid'),
-            // user_name: wx.getStorageSync('personal_info').nickName,
             sysinfo: JSON.stringify(this.data.sysinfo)
         }, 'POST', {
             'Accept': 'application/json'
@@ -70,7 +66,12 @@ Page({
                 token: data.data
             })
             wx.setStorageSync('token', data.data);
+            wx.switchTab({
+                url: '/pages/store/store'
+            });
+            
         })
+        
     },
 
     getUserInfo() {
@@ -93,6 +94,9 @@ Page({
                                     city: userInfo.city,
                                     country: userInfo.country
                                 });
+                                self.setData({
+                                    auth: true
+                                })
                             }
                         })
                     })
@@ -120,7 +124,8 @@ Page({
         showButtonLinePhone: false,
         phoneCode: '',
         token: '',
-        sysinfo: {}
+        sysinfo: {},
+        auth: false
     },
 
     /**
@@ -167,6 +172,10 @@ Page({
                 clearInterval(interval);
             }
         }, 1000);
+        let openid = wx.getStorageSync('openid')
+        this.setData({
+            auth: openid
+        })
     },
 
     /**
