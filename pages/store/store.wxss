@@ -22,7 +22,7 @@ page {
 .img-caption {
   display: block;
   width: 100%;
-  height: 245rpx;
+  height: 240rpx;
 }
 
 .store-addr {
@@ -174,7 +174,7 @@ page {
 }
 
 .list-detail .info {
-  width: 100%;
+  width: 170rpx;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -182,15 +182,16 @@ page {
 }
 
 .info .name {
+  height: 50rpx;
   /* line-height: 2; */
   font-size: 32rpx;
   font-weight: 400;
 }
 
 .info .note {
-  width: 100%;
+  height: 28rpx;
   overflow: hidden;
-  /* white-space: nowrap; */
+  white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 20rpx;
   line-height: 1.4;
