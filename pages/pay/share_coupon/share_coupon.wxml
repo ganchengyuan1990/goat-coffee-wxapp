@@ -7,7 +7,7 @@
       <view class="coupon-sn">您有9份咖啡券待领取</view>
       <view class="coupon-text">请TA一起喝咖啡，共享咖啡券</view>
     </view>
-    <view class="go-button">
+    <view class="go-button" bindtap="goShareSuccess">
       邀请好友共享优惠
     </view>
     <view class="coupon-sn closer">好友领取后，你将获得一张咖啡券</view>

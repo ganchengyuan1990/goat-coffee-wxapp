@@ -22,5 +22,8 @@ Page({
     },
     onUnload: function () {
         // 页面关闭
+    },
+    goStore () {
+        wx.switchTab({ url: '/pages/store/store' });
     }
 })

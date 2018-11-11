@@ -22,5 +22,11 @@ Page({
     },
     onUnload: function () {
         // 页面关闭
+    },
+
+    goShareSuccess () {
+        wx.navigateTo({
+            url: '/pages/pay/share_success/share_success'
+        });
     }
 })

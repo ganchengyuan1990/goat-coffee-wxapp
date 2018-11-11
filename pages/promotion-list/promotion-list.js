@@ -78,7 +78,7 @@ Page({
         });
     },
     onLoad: function (option) {
-        let array = JSON.parse(option.array);
+        // let array = JSON.parse(option.array);
         let chosenId = option.chosenId;
         let activedItems = [];
         let unActivedItems = [];

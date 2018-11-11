@@ -3,6 +3,9 @@
 // const pay = require('../../../services/pay.js');
 import {wx2promise, showErrorToast} from '../../../utils/util';
 
+import model from '../../../utils/model';
+
+
 var app = getApp();
 
 Page({
@@ -25,11 +28,14 @@ Page({
     couponId: 0,
     chooseSelf: true,
     chooseExpress: false,
-    options: {}
+    options: {},
+    transportFee: 0
   },
   onLoad: function (options) {
 
     this.dealOptions(options);
+
+    this.getBestCouponByProduct();
 
 
     // this.setData({
@@ -59,11 +65,39 @@ Page({
 
   },
 
+  getBestCouponByProduct () {
+
+    let product = this.data.options.product;
+    product.forEach(item => {
+      item.pid = item.productId;
+      item.skuid = item.skuId;
+      item.num = item.number;
+      delete item.productId;
+      delete item.skuId;
+      delete item.number;
+      delete item.price;
+      delete item.skuName;
+      delete item.productName;
+    });
+    
+    model(`home/coupon/getBestCouponByProduct`, {
+      uid: 1,
+      list: product
+    }).then(data => {
+
+    })
+  },
+
   dealOptions (items) {
     if (items.data) {
       let options = JSON.parse(decodeURIComponent(items.data));
+      // let transportFee = 0;
+      // options.product.forEach(item => {
+      //   transportFee += item.transportFee;
+      // })
       this.setData({
-        options: options
+        options: options,
+        actualPrice: options.deliverFee + options.payAmount
       });
     }
   },
@@ -182,6 +216,12 @@ Page({
       url: '/pages/address/address',
     })
   },
+
+  goCoupon () {
+    wx.navigateTo({
+      url: '/pages/promotion-list/promotion-list',
+    })
+  },
   addAddress() {
     wx.navigateTo({
       url: '/pages/shopping/addressAdd/addressAdd',
@@ -193,10 +233,10 @@ Page({
   },
   onShow: function () {
     // 页面显示
-    wx.showLoading({
-      title: '加载中...',
-    })
-    this.getCheckoutInfo();
+    // wx.showLoading({
+    //   title: '加载中...',
+    // })
+    // this.getCheckoutInfo();
 
   },
   onHide: function () {
@@ -208,20 +248,58 @@ Page({
 
   },
   submitOrder: function () {
-    // if (this.data.checkedAddress.name) {
-    //   showErrorToast('请选择收货地址');
-    //   return false;
-    // }
-    let product = [];
-    this.data.checkedGoodsList.forEach(element => {
-      product.push({
-        id: element.id,
-        number: element.number
-      })
+    let param = {
+      storeId: this.data.options.storeId,
+      userAddressId: 3,
+      userId: 1,
+      discountType: 2,
+      deliverFee: this.data.options.deliverFee,
+      payAmount: this.data.options.payAmount,
+      orderType: 1,
+      payType: 1,
+      discountIds: '1,2,3'
+    }
+    let paramStr = '';
+    let keys = Object.keys(param);
+    keys.forEach((item, index) => {
+      if (item === 'storeId') {
+        param[item] = 29;
+      }
+      if (item === 'deliverFee') {
+        param[item] = 6;
+      }
+      if (item === 'payAmount') {
+        param[item] = 45;
+      }
+      if (index !== keys.length - 1) {
+        paramStr += item + '=' + param[item] + '&';
+      } else {
+        paramStr += item + '=' + param[item];
+      }
+    })
+
+    // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
+    model(`order/detail/submit?${paramStr}`, [{
+          "skuId": 24,
+          "productPropIds": "33",
+          "productId": 12,
+          "number": 1
+        },
+        {
+          "skuId": 26,
+          "productPropIds": "37",
+          "productId": 13,
+          "number": 1
+        }
+      ], 'POST', {
+      'authorization': 'Bearer ' + wx.getStorageSync('token'),
+      'Accept': 'application/json'
+    }, 1).then(data => {
+      
+    })
+    wx.navigateTo({
+      url: '/pages/pay/pay_success/pay_success'
     });
-    wx.setStorageSync('martProduct', product);
-    wx.redirectTo({
-      url: `/pages/normalPay/normalPay?isMart=1&price=${this.data.actualPrice}&init=1`
-    });
+
 }
 })
