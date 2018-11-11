@@ -314,9 +314,8 @@ Page({
 		}
 		let products = cartList.map(item => {
 			let skuList = item.sku_list
-			let skuId = ''
 			let obj = skuList.find(item => item.isdefault === 1) || {}
-			console.log(obj, 'obj');
+			console.log(obj, 'obj obj');
 			
 			return Object.assign({},{
 				productName: item.productName,
@@ -324,7 +323,7 @@ Page({
 				skuId: obj.skuId,
 				skuName: obj.skuName,
 				number: item.count,
-				price: obj.price
+				price: obj.price,
 			})
 		})
 		let obj = {
@@ -337,6 +336,7 @@ Page({
 		}
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
 		console.log(obj);
+		return
 		wx.navigateTo({
 			url: url
 		})

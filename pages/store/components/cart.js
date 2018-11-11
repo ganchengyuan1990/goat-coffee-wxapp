@@ -29,10 +29,7 @@ Component({
     count: 1
   },
   attached() {
-    wx.setStorage({
-      key: "key",
-      data: "value"
-    })
+
   },
   /**
    * 组件的方法列表
@@ -105,11 +102,17 @@ Component({
         this.setTotalResult()
       }
     },
+    /** 
+     * 清空购物车
+    */
     clearCart() {
       this.setData({
         totalPrice: 0,
         count: 0,
         info: []
+      })
+      wx.removeStorage({
+        key: 'CART_LIST'
       })
     },
     setTotalResult() {
@@ -128,6 +131,9 @@ Component({
         totalPrice: totalPrice
       })
     },
+    /*
+     * 结算
+     */ 
     checkout() {
       this.triggerEvent('checkout', {
         totalPrice: this.data.totalPrice,
