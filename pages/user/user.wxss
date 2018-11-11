@@ -64,3 +64,10 @@
 .icon.icon-coupon {
   width: 32rpx;
 }
+.icon-arrow {
+  width: 15rpx;
+  height: 15rpx;
+  border-right: 1rpx solid #7d7d7d;
+  border-top: 1rpx solid #7d7d7d;
+  transform: translateX(-6rpx) rotate(45deg);
+}
