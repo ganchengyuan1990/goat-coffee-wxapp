@@ -12,21 +12,21 @@
         <image mode="widthFix" class="icon icon-addr" src="../../icons/user-addr.png"></image>
         <text>收货地址</text>
       </view>
-      <view>></view>
+      <view class="icon-arrow"></view>
     </view>
     <view class="item">
       <view class="tt">
         <image mode="widthFix" class="icon icon-coupon" src="../../icons/user-coupon.png"></image>
         <text>优惠券</text>
       </view> 
-      <view>></view>
+      <view class="icon-arrow"></view>
     </view>   
     <view class="item">
       <view class="tt">
         <image mode="widthFix" class="icon icon-discount" src="../../icons/user-discount.png"></image>
         <text>兑换券</text>
       </view>
-      <view>></view>
+      <view class="icon-arrow"></view>
     </view>
   </view>
 </view>

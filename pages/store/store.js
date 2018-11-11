@@ -316,13 +316,13 @@ Page({
 			let skuList = item.sku_list
 			let obj = skuList.find(item => item.isdefault === 1) || {}
 			let propList = item.key_list
-			let propIds = propList.map(i => {
-				let idObj = i.val_list.find(j => {
-					return j.prop_id === i.default_val_id
-				})
-				return idObj.prop_id
-			})
-			console.log(propIds, 'propdis')
+			// let propIds = propList.map(i => {
+			// 	let idObj = i.val_list.find(j => {
+			// 		return j.prop_id === i.default_val_id
+			// 	})
+			// 	return idObj.prop_id
+			// })
+			// console.log(propIds, 'propdis')
 			return Object.assign({},{
 				productName: item.productName,
 				productId: item.id,
@@ -330,7 +330,7 @@ Page({
 				skuName: obj.skuName,
 				number: item.count,
 				price: obj.price,
-				productPropIds: propIds
+				productPropIds: []
 			})
 		})
 		let obj = {
@@ -360,6 +360,9 @@ Page({
 		// 验证skuid， propids, productId一致性
 
 		let cartList = this.data.cartList
+		list.forEach(item => {
+
+		})
 		let arr = cartList.concat(list)
 		this.setData({
 			cartList: arr

@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 14,
+			"current": 15,
 			"list": [
 				{
 					"id": -1,
@@ -124,6 +124,12 @@
 					"name": "pin_detail",
 					"pathName": "pages/pin/pin_detail/pin_detail",
 					"query": "lesson_id=27"
+				},
+				{
+					"id": -1,
+					"name": "user",
+					"pathName": "pages/user/user",
+					"query": ""
 				}
 			]
 		}
