@@ -24,13 +24,17 @@ Page({
     addressId: 0,
     couponId: 0,
     chooseSelf: true,
-    chooseExpress: false
+    chooseExpress: false,
+    options: {}
   },
   onLoad: function (options) {
 
-    this.setData({
-      goodsTotalPrice: parseInt(options.price)
-    })
+    this.dealOptions(options);
+
+
+    // this.setData({
+    //   goodsTotalPrice: parseInt(options.price)
+    // })
 
     // 页面初始化 options为页面跳转所带来的参数
 
@@ -53,6 +57,15 @@ Page({
     }
 
 
+  },
+
+  dealOptions (items) {
+    if (items.data) {
+      let options = JSON.parse(decodeURIComponent(items.data));
+      this.setData({
+        options: options
+      });
+    }
   },
 
   calcTotalWeight () {
