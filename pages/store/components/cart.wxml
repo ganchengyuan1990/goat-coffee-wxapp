@@ -11,7 +11,7 @@
           <view class="top" bindtap="toggleCart"></view>
           <view class="bottom">
               <view class="hd">
-                  <view>您有一张满19减10优惠券，还差2元可用</view>
+                  <view>满30免运费</view>
                   <view class="btn-more">去凑单<text>></text></view>
               </view>
               <view class="bd">
