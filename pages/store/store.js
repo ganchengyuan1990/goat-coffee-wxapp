@@ -141,8 +141,8 @@ Page({
 		model('home/lbs/getStoreListByLocation', {
 			// lng: geo.lng,
 			// lat: geo.lat,
-			lng: 121.468532,
-			lat: 31.244450,
+			lng: 121.483821,
+			lat: 31.265335,
 			page: 1
 		}).then(res => {
 			console.log(res, 'location')
@@ -335,8 +335,7 @@ Page({
 			product: products
 		}
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
-		console.log(obj);
-		return
+
 		wx.navigateTo({
 			url: url
 		})

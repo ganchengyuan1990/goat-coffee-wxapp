@@ -99,8 +99,15 @@ Component({
           [`${path}.count`]: count,
           [`${path}.totalPrice`]: util.mul(price, count)
         })
-        this.setTotalResult()
+      } else {
+        let data = this.data.info
+        console.log(data, 'cart data');
+        data.splice(idx,1)
+        this.setData({
+          info: data
+        })
       }
+      this.setTotalResult()
     },
     /** 
      * 清空购物车

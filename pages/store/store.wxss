@@ -218,16 +218,16 @@ page {
 }
 
 .btn {
-  width: 50rpx;
-  height: 50rpx;
+  width: 36rpx;
+  height: 36rpx;
   border-radius: 50%;
-  font-size: 40rpx;
+  font-size: 36rpx;
   font-weight: 400;
   color: #fff;
   text-align: center;
-  line-height: 40rpx;
+  line-height: 30rpx;
   background-color: #d8d8d8;
-  margin: 0 16rpx;
+  margin: 0 40rpx 0 16rpx;
 }
 
 .price-wrap .price {
