@@ -146,6 +146,7 @@ Page({
 			page: 1
 		}).then(res => {
 			console.log(res, 'location')
+
 			const {data} = res
 			if (data && data.length > 0) {
 				let storeInfo = data[0]
