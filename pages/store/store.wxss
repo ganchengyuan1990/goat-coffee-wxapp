@@ -125,20 +125,21 @@ page {
 .list-cnt {
   flex-grow: 1;
   padding-left: 20rpx;
-  font-size: 26rpx;
-}
-.list-cnt .title {
-  font-weight: 700;
-  padding: 0 20rpx;
-  margin-bottom: 20rpx;
-  height: 50rpx;
-  line-height: 50rpx;
-  background-color: #eee;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  font-size: 20rpx;
 }
 
+.list-cnt .title {
+  display: flex;
+  align-items: center;
+  margin: 10rpx 0;
+  color: #d8d8d8;
+}
+.list-cnt .title .line {
+  flex: 1;
+  height: 1rpx;
+  margin: 0 20rpx;
+  background: #d8d8d8;
+}
 /* .list-cnt .title-group {
   padding-bottom: 30rpx;
 } */
@@ -154,13 +155,13 @@ page {
 }
 
 .list-detail {
-  margin-top: 58rpx;
+  margin-bottom: 58rpx;
   display: flex;
 }
 
-/* .list-detail:last-child {
-  margin-bottom: 0;
-} */
+.list-detail:last-child {
+  margin-bottom: 20rpx;
+}
 
 .list-detail .img {
   margin-right: 24rpx;
