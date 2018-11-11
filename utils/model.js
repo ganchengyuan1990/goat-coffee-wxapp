@@ -31,7 +31,7 @@ const model = (name = '', data = {}, method = 'GET', header, ip) => {
             header: header  || {
                 'content-type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json',
-                'authorization': 'Bearer ' + wx.getStorageSync('token').token
+                'authorization': 'Bearer ' + wx.getStorageSync('token').token || ''
             },
             success(res) {
                 const { statusCode, errMsg, data} = res

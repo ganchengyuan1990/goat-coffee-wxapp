@@ -87,10 +87,20 @@
 
         <view class="transport-item" bindtap="goCoupon">
             <view class="l">
+                <text class="name">兑换券</text>
+            </view>
+            <view class="r">
+                <text class="txt">无可用</text>
+                <!-- <image class="txt" src="../../../images/arrow.png"/> -->
+            </view>
+        </view>
+
+        <view class="transport-item" bindtap="goPromotion">
+            <view class="l">
                 <text class="name">优惠券</text>
             </view>
             <view class="r">
-                <text class="txt">￥0</text>
+                <text class="txt"> - ￥{{couponMoney}}</text>
                 <!-- <image class="txt" src="../../../images/arrow.png"/> -->
             </view>
         </view>
@@ -150,4 +160,7 @@
         </view>
         <view class="r" bindtap="submitOrder">去结算</view>
     </view>
+
+    <toast wx:if="{{errorToast}}" is-show="{{errorToast}}" title="{{toastInfo}}" disappear-sec="3"></toast>
+
 </view>

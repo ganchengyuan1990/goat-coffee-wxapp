@@ -7,9 +7,13 @@ var app = getApp();
 
 Page({
     data: {
-
+        price: 0
     },
-    onLoad: function (options) {},
+    onLoad: function (options) {
+        this.setData({
+            price: options.price
+        })
+    },
     onReady: function () {
 
     },

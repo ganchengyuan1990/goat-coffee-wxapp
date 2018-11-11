@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/login/login",
+    "pages/store/store",
     "pages/index/index",
     "pages/cart/cart",
     "pages/user/user",
@@ -18,9 +20,7 @@
     "pages/my/address/address",
     "pages/transport/transport",
     "pages/promotion-list/promotion-list",
-    "pages/store/store",
-    "pages/coupon/coupon",
-    "pages/login/login"
+    "pages/coupon/coupon"
   ],
   "window": {
     "backgroundTextStyle": "dark",

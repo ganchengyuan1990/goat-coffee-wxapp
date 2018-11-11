@@ -41,8 +41,12 @@
     /* padding: 10rpx; */
     width: 188rpx;
     text-align: center;
+    z-index: 10000;
 }
-
+.actived {
+    background: #333 !important;
+    color: #fff !important;
+}
 .btn-area {
     margin-top: 50rpx;
     height: 100rpx;

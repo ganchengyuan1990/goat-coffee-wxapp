@@ -10,19 +10,19 @@
             </view>
             </view>
         </view>
-        <form bindsubmit="formSubmit">
+        <form>
             <view class="section {{showButtonLineName ? 'tapped' : ''}}">
                 <!-- <view >用户名</view> -->
-                <input name="username" type='number' placeholder="请输入手机号码" auto-focus bindinput="dealName" bindtap="dealTapName"/>
+                <input name="username" type='number' placeholder="请输入手机号码" auto-focus bindinput="dealPhone" bindtap="dealTapPhone"/>
             </view>
             <view class="section {{showButtonLinePhone ? 'tapped' : ''}}">
                 <!-- <view >密码</view> -->
-                <input type='number' name="password" placeholder="请输入验证码"  bindtap="dealTapPhone"/>
-                <view class='getVerify' bindtap='getMessage'>获取验证码</view>
-                <!-- <view class='getVerify'>{{leftSeconds}}秒</view>  -->
+                <input type='number' name="password" placeholder="请输入验证码"  bindinput="dealVerify" bindtap="dealTapVerify"/>
+                <view class='getVerify' catchtap='getMessage' wx:if="{{!showSeconds}}">获取验证码</view>
+                <view class='getVerify' wx:if="{{showSeconds}}">{{leftSeconds}}秒</view> 
             </view>
             <view class="btn-area">
-                <view class='button' bindtap='register'>确定</view>
+                <view class="button {{actived ? 'actived' : ''}}" bindtap='register'>确定</view>
             </view>
 
             

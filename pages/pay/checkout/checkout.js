@@ -29,7 +29,10 @@ Page({
     chooseSelf: true,
     chooseExpress: false,
     options: {},
-    transportFee: 0
+    transportFee: 0,
+    couponMoney: 0,
+    errorToast: false,
+    toastInfo: ''
   },
   onLoad: function (options) {
 
@@ -72,18 +75,21 @@ Page({
       item.pid = item.productId;
       item.skuid = item.skuId;
       item.num = item.number;
-      delete item.productId;
-      delete item.skuId;
-      delete item.number;
-      delete item.price;
-      delete item.skuName;
-      delete item.productName;
+      // delete item.productId;
+      // delete item.skuId;
+      // delete item.number;
+      // delete item.price;
+      // delete item.skuName;
+      // delete item.productName;
     });
     
     model(`home/coupon/getBestCouponByProduct`, {
       uid: 1,
       list: product
     }).then(data => {
+      this.setData({
+        couponMoney: data.data[0].discountPrice
+      })
 
     })
   },
@@ -124,93 +130,6 @@ Page({
       chooseExpress: true
     })
   },
-
-  getCheckoutInfo: function () {
-    let that = this;
-
-
-    that.setData({
-      checkedGoodsList: wx.getStorageSync('chooseCartInfo'),
-      // checkedAddress: res.data.checkedAddress,
-      // actualPrice: res.data.actualPrice,
-      // checkedCoupon: res.data.checkedCoupon,
-      // couponList: res.data.couponList,
-      // couponPrice: res.data.couponPrice,
-      // freightPrice: res.data.freightPrice,
-      // goodsTotalPrice: res.data.goodsTotalPrice,
-      // orderTotalPrice: res.data.orderTotalPrice
-    });
-
-    wx.hideLoading();
-    wx2promise(wx.request, {
-            url: 'https://www.jasongan.cn/getAddressByOpenId',
-            method: 'GET',
-            // data:  'appid=1256596722&url=https://www.jasongan.cn/img/fengli.jpeg',
-            data: {
-                openid: wx.getStorageSync('openid')
-            },
-            header: {
-                //设置参数内容类型为x-www-form-urlencoded
-                'Content-Type': 'application/json',
-                'Authorization': 'tdpeGHT2XVFmQOVci+vDhRFG6XZhPTEyNTY1OTY3MjImaz1BS0lEUmhpVUZ2b2FjUjFMUUZvQUc2a0FMSzdnejJwTFpZR2gmZT0xNTI5MTM2MTE1JnQ9MTUyOTA0OTcxNSZyPTM0Nzg0ODEwNzMmdT0wJmY9',
-                'Host': 'recognition.image.myqcloud.com'
-            },
-        }).then(function (res) {
-      if (res.data.code === 200) {
-        console.log(res.data);
-        that.setData({
-          checkedGoodsList: wx.getStorageSync('chooseCartInfo'),
-          checkedAddress: JSON.parse(res.data.resultLists[0].address),
-          // actualPrice: res.data.actualPrice,
-          // checkedCoupon: res.data.checkedCoupon,
-          // couponList: res.data.couponList,
-          // couponPrice: res.data.couponPrice,
-          // freightPrice: res.data.freightPrice,
-          // goodsTotalPrice: res.data.goodsTotalPrice,
-          // orderTotalPrice: res.data.orderTotalPrice
-        });
-        wx2promise(wx.request, {
-            url: 'https://www.jasongan.cn/getTransportFee',
-            method: 'GET',
-            // data:  'appid=1256596722&url=https://www.jasongan.cn/img/fengli.jpeg',
-            data: {
-                weight: that.calcTotalWeight(),
-                destionation: that.data.checkedAddress.region.split(',')[0]
-            },
-            header: {
-                //设置参数内容类型为x-www-form-urlencoded
-                'Content-Type': 'application/json',
-                'Authorization': 'tdpeGHT2XVFmQOVci+vDhRFG6XZhPTEyNTY1OTY3MjImaz1BS0lEUmhpVUZ2b2FjUjFMUUZvQUc2a0FMSzdnejJwTFpZR2gmZT0xNTI5MTM2MTE1JnQ9MTUyOTA0OTcxNSZyPTM0Nzg0ODEwNzMmdT0wJmY9',
-                'Host': 'recognition.image.myqcloud.com'
-            },
-        }).then(function (innerRes) {
-            that.setData({
-              goodsTotalPrice: that.data.goodsTotalPrice,
-              freightPrice: innerRes.data.totalFee,
-              actualPrice: that.data.goodsTotalPrice + innerRes.data.totalFee
-            })
-            wx.hideLoading();
-        }); 
-      }
-    });
-    // util.request(`https://www.jasongan.cn/getAddressByOpenId?openid=${wx.getStorageSync('openid')}`).then(function (res) {
-    //   if (res.errno === 0) {
-    //     console.log(res.data);
-    //     that.setData({
-    //       checkedGoodsList: res.data.checkedGoodsList,
-    //       checkedAddress: res.data.checkedAddress,
-    //       actualPrice: res.data.actualPrice,
-    //       checkedCoupon: res.data.checkedCoupon,
-    //       couponList: res.data.couponList,
-    //       couponPrice: res.data.couponPrice,
-    //       freightPrice: res.data.freightPrice,
-    //       goodsTotalPrice: res.data.goodsTotalPrice,
-    //       orderTotalPrice: res.data.orderTotalPrice
-    //     });
-    //   }
-    //   wx.hideLoading();
-    // });
-  },
   selectAddress() {
     wx.navigateTo({
       url: '/pages/address/address',
@@ -219,7 +138,13 @@ Page({
 
   goCoupon () {
     wx.navigateTo({
-      url: '/pages/promotion-list/promotion-list',
+      url: '/pages/promotion-list/promotion-list?type=1',
+    })
+  },
+
+  goPromotion () {
+    wx.navigateTo({
+      url: '/pages/promotion-list/promotion-list?type=2',
     })
   },
   addAddress() {
@@ -292,14 +217,24 @@ Page({
           "number": 1
         }
       ], 'POST', {
-      'authorization': 'Bearer ' + wx.getStorageSync('token'),
+      'authorization': 'Bearer ' + wx.getStorageSync('token').token,
       'Accept': 'application/json'
-    }, 1).then(data => {
-      
+    }).then(data => {
+        if (data.data.code === 'suc') {
+          wx.navigateTo({
+            url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
+          });
+        }
+    }).catch(e => {
+      // this.setData({
+      //   errorToast: true,
+      //   toastInfo: e
+      // })
+      wx.navigateTo({
+        url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
+      });
     })
-    wx.navigateTo({
-      url: '/pages/pay/pay_success/pay_success'
-    });
+    
 
 }
 })

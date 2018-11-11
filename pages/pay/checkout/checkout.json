@@ -1,3 +1,7 @@
 {
-    
+    "usingComponents": {
+        "modal": "/components/modal/modal",
+        "toast": "../../../components/toast/toast"
+    },
+    "enablePullDownRefresh": false
 }

@@ -18,28 +18,61 @@ Page({
         })
     },
 
-    dealTapName() {
+    dealTapPhone() {
         this.setData({
             showButtonLineName: true,
             showButtonLinePhone: false
         })
     },
 
-    dealTapPhone() {
+    dealTapVerify() {
         this.setData({
             showButtonLineName: false,
             showButtonLinePhone: true
         })
     },
 
-    getMessage () {
-        model('my/sms/sendPhoneCode', {
-            phoneNum: 17602183915
-        }, 'POST').then(data => {
-            this.setData({
-                phoneCode: data.data
-            })
+    dealPhone: function(e) {
+        this.setData({
+            phoneNum: e.detail.value,
+            actived: this.data.phoneCode.length > 0 && e.detail.value.length > 0
         })
+    },
+
+    dealVerify (e) {
+        this.setData({
+            phoneCode: e.detail.value,
+            actived: this.data.phoneNum.length > 0 && e.detail.value.length > 0
+        })
+    },
+
+    getMessage () {
+
+        
+        if (!this.data.showSeconds) {
+            this.setData({
+                showSeconds: true
+            });
+            let timeRemain = this.data.leftSeconds;
+            var interval = setInterval(() => {
+                if (timeRemain > 1) {
+                    timeRemain--;
+                    this.setData({
+                        leftSeconds: timeRemain
+                    })
+                } else {
+                    clearInterval(interval);
+                }
+            }, 1000);
+            model('my/sms/sendPhoneCode', {
+                phoneNum: this.data.phoneNum
+            }, 'POST').then(data => {
+                this.setData({
+                    phoneCode: data.data
+                });
+            })
+        }
+        
     },
 
     register () {
@@ -125,7 +158,9 @@ Page({
         phoneCode: '',
         token: '',
         sysinfo: {},
-        auth: false
+        auth: false,
+        showSeconds: false,
+        actived: false
     },
 
     /**
@@ -133,49 +168,44 @@ Page({
      */
     onLoad: function (options) {
         let self = this;
-        wx.getSystemInfo({
-            success(res) {
-                self.setData({
-                    sysinfo: {
-                        brand: res.brand,
-                        model: res.model,
-                        pixelRatio: res.pixelRatio,
-                        screenWidth: res.screenWidth,
-                        screenHeight: res.screenHeight,
-                        statusBarHeight: res.statusBarHeight,
-                        windowWidth: res.windowWidth,
-                        windowHeight: res.windowHeight,
-                        language: res.language,
-                        version: res.version,
-                        platform: res.platform,
-                        fontSizeSetting: res.fontSizeSetting,
-                        SDKVersion: res.SDKVersion
-                    }
-                });
-                console.log(self.data.sysinfo);
+        if (wx.getStorageSync('token')) {
+            wx.switchTab({ url: '/pages/store/store' });
+        } else {
+            wx.getSystemInfo({
+                success(res) {
+                    self.setData({
+                        sysinfo: {
+                            brand: res.brand,
+                            model: res.model,
+                            pixelRatio: res.pixelRatio,
+                            screenWidth: res.screenWidth,
+                            screenHeight: res.screenHeight,
+                            statusBarHeight: res.statusBarHeight,
+                            windowWidth: res.windowWidth,
+                            windowHeight: res.windowHeight,
+                            language: res.language,
+                            version: res.version,
+                            platform: res.platform,
+                            fontSizeSetting: res.fontSizeSetting,
+                            SDKVersion: res.SDKVersion
+                        }
+                    });
+                    console.log(self.data.sysinfo);
+                }
+            })
+            if (app.globalData.userInfo) {
+                this.setData({
+                    userInfo: app.globalData.userInfo,
+                    hasUserInfo: true
+                })
             }
-        })
-        if (app.globalData.userInfo) {
+            
+            let openid = wx.getStorageSync('openid')
             this.setData({
-                userInfo: app.globalData.userInfo,
-                hasUserInfo: true
+                auth: openid
             })
         }
-        let timeRemain = this.data.leftSeconds;
-        var interval = setInterval(() => {
-            if (timeRemain > 1) {
-                timeRemain--;
-                this.setData({
-                    leftSeconds: timeRemain
-                })
-            } else {
-                clearInterval(interval);
-            }
-        }, 1000);
-        let openid = wx.getStorageSync('openid')
-        this.setData({
-            auth: openid
-        })
+        
     },
 
     /**

@@ -12,7 +12,8 @@ Page({
         }],
         unActivedItems: [],
         chosenId: -1,
-        canUseRedPacketMeanwhile: false
+        canUseRedPacketMeanwhile: false,
+        type: 1
     },
     onMyEvent: function (e) {
         // 选择一项就返回，并用setData把选中的那项以外的其他项checked设为空
@@ -82,12 +83,28 @@ Page({
         let chosenId = option.chosenId;
         let activedItems = [];
         let unActivedItems = [];
-        model('my/coupon/list', {
-            userId: 1
-        }).then(data => {
-            this.setData({
-                activedItems: data.data
-            })
+        this.setData({
+            type: parseInt(option.type)
         })
+        if (this.data.type === 2) {
+            // 优惠券
+            model('my/coupon/list', {
+                userId: 1
+            }).then(data => {
+                this.setData({
+                    activedItems: data.data
+                })
+            })
+        } else {
+            // 兑换券
+            model('my/voucher/list', {
+                userId: 1
+            }).then(data => {
+                this.setData({
+                    activedItems: data.data
+                })
+            })
+        }
+        
     }
 });

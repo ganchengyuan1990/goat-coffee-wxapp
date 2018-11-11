@@ -273,13 +273,22 @@ checkbox {
 }
 
 .special-item .l {
-    margin: 60rpx 30rpx;
+    margin: 30rpx;
+    
+}
+.center {
+    height:52rpx;
+    line-height:52rpx;
+
+}
+.center .txt {
+    font-size: 32rpx;
 }
 
 .special-item .r {
     position: absolute;
     right: 30rpx;
-    top: 50rpx;
+    top: 32rpx;
     /* margin: 30rpx; */
 }
 
