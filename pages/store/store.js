@@ -339,11 +339,12 @@ Page({
 				productPropIds: propIds.join(',')
 			})
 		})
+		let fee = info.storeInfo.deliverFee
 		let obj = {
 			storeId: info.storeInfo.id,
 			userAddressId: info.userAddressId,
-			deliverFee: info.storeInfo.deliverFee,
-			payAmount: totalPrice,
+			deliverFee: fee,
+			payAmount: totalPrice > 30 ? totalPrice : util.add(totalPrice, fee),
 			orderType: info.isSelfTaking ? 2 : 1,
 			product: products
 		}
