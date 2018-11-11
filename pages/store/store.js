@@ -146,6 +146,7 @@ Page({
 			page: 1
 		}).then(res => {
 			console.log(res, 'location')
+
 			const {data} = res
 			if (data && data.length > 0) {
 				let storeInfo = data[0]
@@ -314,8 +315,14 @@ Page({
 		let products = cartList.map(item => {
 			let skuList = item.sku_list
 			let obj = skuList.find(item => item.isdefault === 1) || {}
-			console.log(obj, 'obj obj');
-			
+			let propList = item.key_list
+			let propIds = propList.map(i => {
+				let idObj = i.val_list.find(j => {
+					return j.prop_id === i.default_val_id
+				})
+				return idObj.prop_id
+			})
+			console.log(propIds, 'propdis')
 			return Object.assign({},{
 				productName: item.productName,
 				productId: item.id,
@@ -323,6 +330,7 @@ Page({
 				skuName: obj.skuName,
 				number: item.count,
 				price: obj.price,
+				productPropIds: propIds
 			})
 		})
 		let obj = {
@@ -349,6 +357,8 @@ Page({
 		if (!Array.isArray(list)) {
 			return 
 		}
+		// 验证skuid， propids, productId一致性
+
 		let cartList = this.data.cartList
 		let arr = cartList.concat(list)
 		this.setData({

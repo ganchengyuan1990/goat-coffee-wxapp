@@ -129,6 +129,7 @@
 }
 .cart-panel .list-wrap {
     flex: 1;
+    overflow-y: scroll;
 }
 .list-wrap .list-item {
     display: flex;

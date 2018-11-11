@@ -141,7 +141,7 @@
   height: 46rpx;
   border: 1rpx solid #000;
   border-radius: 50%;
-  line-height: 38rpx;
+  line-height: 40rpx;
   text-align: center;
   font-size: 44rpx;
 }
@@ -159,7 +159,6 @@
 }
 .icon-crown {
   display: inline-block;
-
   vertical-align: bottom;
   width: 36rpx;
   height: 30rpx;
