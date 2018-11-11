@@ -316,13 +316,19 @@ Page({
 			let skuList = item.sku_list
 			let obj = skuList.find(item => item.isdefault === 1) || {}
 			let propList = item.key_list
-			// let propIds = propList.map(i => {
-			// 	let idObj = i.val_list.find(j => {
-			// 		return j.prop_id === i.default_val_id
-			// 	})
-			// 	return idObj.prop_id
-			// })
-			// console.log(propIds, 'propdis')
+			let propIds = []
+			propList.forEach(i => {
+				console.log(i, 'i');
+				
+				let idObj = i.val_list.find(j => {
+					return j.id === i.default_val_id
+				})
+				
+				if (idObj) {
+					propIds.push(idObj.prop_id)
+				}
+			})
+			console.log(propIds, 'propdis')
 			return Object.assign({},{
 				productName: item.productName,
 				productId: item.id,
@@ -330,7 +336,7 @@ Page({
 				skuName: obj.skuName,
 				number: item.count,
 				price: obj.price,
-				productPropIds: []
+				productPropIds: propIds.join(',')
 			})
 		})
 		let obj = {
@@ -342,7 +348,6 @@ Page({
 			product: products
 		}
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
-
 		wx.navigateTo({
 			url: url
 		})
