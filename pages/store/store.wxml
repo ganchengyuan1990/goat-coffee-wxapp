@@ -46,8 +46,11 @@
       <scroll-view scroll-y scroll-with-animation style="height:{{listHeight}}px" scroll-into-view="{{viewToList}}" bindscroll="scroll">
         <view style="padding-bottom: 50rpx">
           <view wx:for="{{menuList}}" wx:key="item.id" class="title-group J_group" wx:for-index="idx" id="{{'list'+item.id}}">
-            <!-- <view class="title">{{item.name}}</view> -->
-            <view wx:for="{{item.product_list}}" wx:for-item="product" wx:key="product.id" class="list-detail" wx:for-index="index">
+            <view class="title">
+              <view>{{item.name}}</view>
+              <view class="line"></view>
+            </view>
+            <view wx:for="{{item.product_list}}" bindtap="orderProduct" wx:for-item="product" wx:key="product.id" class="list-detail" wx:for-index="index">
               <view class="img">
                 <image src="{{product.icon}}"></image>
               </view>
@@ -60,7 +63,7 @@
                 <view class="price-count">
                   <view class="price">{{product.default_sku.price > 0 ? '￥'+product.default_sku.price:'暂无价格'}}</view>
                   <view class="count">
-                    <view class="add btn" bindtap="orderProduct" data-item="{{item}}" data-groupidx="{{idx}}" data-productidx="{{index}}" bindtap="orderProduct">
+                    <view class="add btn" data-item="{{item}}" data-groupidx="{{idx}}" data-productidx="{{index}}" bindtap="orderProduct">
                       +
                     </view>
                   </view>
