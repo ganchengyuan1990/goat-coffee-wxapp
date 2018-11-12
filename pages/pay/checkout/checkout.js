@@ -75,12 +75,13 @@ Page({
       item.pid = item.productId;
       item.skuid = item.skuId;
       item.num = item.number;
-      // delete item.productId;
-      // delete item.skuId;
-      // delete item.number;
-      // delete item.price;
-      // delete item.skuName;
-      // delete item.productName;
+      delete item.productId;
+      delete item.skuId;
+      delete item.number;
+      delete item.price;
+      delete item.skuName;
+      delete item.productName;
+      delete item.productPropIds;
     });
     
     model(`home/coupon/getBestCouponByProduct`, {

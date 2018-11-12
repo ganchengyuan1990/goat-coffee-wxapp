@@ -11,7 +11,7 @@ page {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 144rpx;
+  height: 124rpx;
   padding-right: 30rpx;
 }
 
