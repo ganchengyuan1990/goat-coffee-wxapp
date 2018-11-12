@@ -136,7 +136,9 @@ Component({
         count = util.add(count, item.count)
       }, 0)
       remain = totalPrice > 30 ? 0 : util.sub(30, totalPrice)
-      totalPrice = util.add(totalPrice, this.data.fee)
+      if (remain > 0) {
+        totalPrice = util.add(totalPrice, this.data.fee)
+      }
       this.setData({
         count: count,
         totalPrice: totalPrice,
