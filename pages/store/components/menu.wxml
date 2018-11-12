@@ -20,9 +20,9 @@
                         wx:key="{{index}}" 
                         data-group="sku" 
                         data-tagidx="{{index}}" 
-                        data-val="{{item.skuName}}"
+                        data-val="{{item.propSkuName}}"
                         bind:tap="select">
-                          {{item.skuName}}
+                          {{item.propSkuName}}
                       </view>
                   </view>
               </view>              

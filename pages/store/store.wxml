@@ -13,7 +13,7 @@
   }
   module.exports.getSpecific = getSpecific
 </wxs>
-<view class="store-container">
+<view class="store-container" bind:touchstart="handleTouchStart" bind:touchend="handleTouchEnd">
   <view class="hd-wrap J_hd_wrap">
     <view class="store-addr">
       <view class="tt">{{storeInfo.storeName}}</view>

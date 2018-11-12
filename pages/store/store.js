@@ -332,8 +332,7 @@ Page({
 			let propList = item.key_list
 			let propIds = []
 			propList.forEach(i => {
-				console.log(i, 'i');
-				
+				// console.log(i, 'i');
 				let idObj = i.val_list.find(j => {
 					return j.id === i.default_val_id
 				})
@@ -346,8 +345,8 @@ Page({
 			return Object.assign({},{
 				productName: item.productName,
 				productId: item.id,
-				skuId: obj.id,
-				skuName: obj.skuName,
+				skuId: obj.propSkuId,
+				skuName: obj.propSkuName,
 				number: item.count,
 				price: obj.price,
 				productPropIds: propIds.join(',')
@@ -389,5 +388,11 @@ Page({
 		this.setData({
 			cartList: arr
 		})
+	},
+	handleTouchStart() {
+
+	},
+	handleTouchEnd() {
+		
 	}
 });
