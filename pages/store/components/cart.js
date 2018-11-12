@@ -26,7 +26,8 @@ Component({
   data: {
     isCartPanelShow: false,
     totalPrice: 0,
-    count: 1
+    count: 1,
+    remain: 0
   },
   attached() {
 
@@ -129,13 +130,17 @@ Component({
       }
       let count = 0
       let totalPrice = 0
+      let remain = 0
       val.forEach((item) => {
         totalPrice = util.add(totalPrice, item.totalPrice)
         count = util.add(count, item.count)
       }, 0)
+      remain = totalPrice > 30 ? 0 : util.sub(30, totalPrice)
+      totalPrice = util.add(totalPrice, this.data.fee)
       this.setData({
         count: count,
-        totalPrice: totalPrice
+        totalPrice: totalPrice,
+        remain: remain
       })
     },
     /*

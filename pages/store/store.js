@@ -1,6 +1,7 @@
 // pages/store/store.js
 const app = getApp();
-const model = require('../../utils/model.js')
+import model from '../../utils/model.js'
+import util from '../../utils/util.js'
 let timer;
 Page({
 	/**
@@ -79,7 +80,9 @@ Page({
 	/**
 	 * 生命周期函数--监听页面显示
 	 */
-	onShow() {},
+	onShow() {
+
+	},
 
 	/**
 	 * 页面相关事件处理函数--监听用户下拉动作
@@ -151,7 +154,10 @@ Page({
 			if (data && data.length > 0) {
 				let storeInfo = data[0]
 				console.log(storeInfo, 'storeInfo');
-				
+				wx.setStorage({
+					key: 'STORE_INFO',
+					data: JSON.stringify(storeInfo)
+				})
 				let distance = storeInfo.distance
 				if (distance) {
 					distance = distance > 1 ? `${distance.toFixed(1)}km` : `${Math.round(distance * 1000)}m`
@@ -252,9 +258,9 @@ Page({
 	},
 	toggleSpecific() {
 		let isShow = this.data.isCatePanelShow
-		this.setData({
-			isCatePanelShow: !isShow
-		})
+		// this.setData({
+		// 	isCatePanelShow: !isShow
+		// })
 		if (isShow) {
 			this.toggleTabBar(true)
 			this.setData({
