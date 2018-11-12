@@ -145,7 +145,7 @@ page {
 } */
 
 .list-cnt .title-group:last-child {
-  margin-bottom: 120rpx;
+  margin-bottom: 640rpx;
 }
 
 .list-cover {

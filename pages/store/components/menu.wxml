@@ -10,7 +10,7 @@
                 <image src="{{info.icon}}" mode="aspectFill" class="img-caption"></image>
               </view>
           </view>
-          <view class="bd">
+          <scroll-view scroll-y="{{true}}" class="bd">
               <view class="opt-group">
                   <view class="opt-tt">规格</view>
                   <view class="opt-bd">
@@ -21,6 +21,7 @@
                         data-group="sku" 
                         data-tagidx="{{index}}" 
                         data-val="{{item.propSkuName}}"
+                        data-code="{{item.propSkuId}}"
                         bind:tap="select">
                           {{item.propSkuName}}
                       </view>
@@ -38,10 +39,11 @@
                         data-group="opt"
                         data-groupidx="{{idx}}"
                         data-tagidx="{{index}}"
-                        data-val="{{tag.val}}">{{tag.val}}</view>
+                        data-val="{{tag.val}}"
+                        data-code="{{tag.prop_id}}">{{tag.val}}</view>
                   </view>
               </view>
-          </view>
+          </scroll-view>
           <view class="ft">
               <view class="counter-wrap">
                   <view class="price-wrap">

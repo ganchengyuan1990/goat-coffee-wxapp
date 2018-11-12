@@ -3,6 +3,9 @@ const app = getApp();
 import model from '../../utils/model.js'
 import util from '../../utils/util.js'
 let timer;
+let touchTimer = null
+let touchObj = {}
+let touchDy = 0
 Page({
 	/**
 	 * 页面的初始数据
@@ -53,14 +56,20 @@ Page({
 				isSelfTaking: false
 			})	
 		}
-		// wx.getStorage({
-		// 	key: 'CART_LIST',
-		// 	success(res) {
-		// 		console.log(res, 'storage');
-		// 		let data = JSON.parse(res.data)
-		// 		self.mergeCart(data)
-		// 	}
-		// })
+		wx.getStorage({
+			key: 'CART_LIST',
+			success(res) {
+				console.log(res, 'storage');
+				let data = JSON.parse(res.data)
+				if (data && Array.isArray(data)) {
+					let arr = self.data.cartList
+					arr = arr.concat(data)
+					
+					self.mergeCart(arr)
+				}
+				
+			}
+		})
 	},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -286,22 +295,39 @@ Page({
 	 * 添加到购物车 
 	 */
 	saveCart(e) {
+		let cart = e.detail.cartList
+		if (e.detail) {
+			this.mergeCart(cart)
+		}
+	},
+	addCart(e) {
 		let cart = this.data.cartList
 		if (e.detail) {
 			cart.push(e.detail)
 		}
-		this.setData({
-			cartList: cart
-		})
-		wx.setStorage({
-			key: 'CART_LIST',
-			data: JSON.stringify(cart)
-		})
+		this.mergeCart(cart)
 	},
+    toggleCart() {
+    	let isShow = this.data.isCartPanelShow
+    	let self = this
+
+    	if (!isShow) {
+    		this.toggleTabBar(false, () => {
+    			self.setData({
+    				isCartPanelShow: !isShow
+    			})
+    		})
+    	} else {
+    		this.toggleTabBar(true)
+    		self.setData({
+    			isCartPanelShow: !isShow
+    		})
+    	}
+    },
 	toggleTabBar(isShow, callback) {
 		if (!isShow) {
 			wx.hideTabBar({
-				animation: false,
+				animation: true,
 				success() {
 					callback && callback()
 				},
@@ -309,7 +335,7 @@ Page({
 			})
 		} else {
 			wx.showTabBar({
-				animation: false,
+				animation: true,
 				success() {
 					callback && callback()
 				},
@@ -364,6 +390,7 @@ Page({
 		console.log(obj);
 		// return
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
+		this.toggleCart()
 		wx.navigateTo({
 			url: url
 		})
@@ -380,19 +407,55 @@ Page({
 		}
 		// 验证skuid， propids, productId一致性
 
-		let cartList = this.data.cartList
-		list.forEach(item => {
-
+		let cartList = list
+		let obj = {}
+		cartList.forEach(item => {
+			let key = item.customedKey
+			let val = obj[key]
+			if (val) {
+				val.count = util.add(val.count, item.count)
+			} else {
+				obj[key] = item
+			}
 		})
-		let arr = cartList.concat(list)
+		let arr = Object.values(obj)
 		this.setData({
 			cartList: arr
 		})
+		wx.setStorage({
+			key: 'CART_LIST',
+			data: JSON.stringify(arr)
+		})
 	},
-	handleTouchStart() {
-
+	handleTouchStart(e) {
+		// console.log(e, 'touch');
+		touchTimer = e.timeStamp
+		touchObj = e.touches[0]
+		touchDy = 0
 	},
-	handleTouchEnd() {
-		
+	handleTouchMove(e) {
+		// console.log(e, 'move')
+		let touch = e.touches[0]
+		let id = touchObj.identifier
+		let curId = touch.identifier
+		if (curId === id) {
+			let pageY = touch.pageY
+			touchDy = pageY - touchObj.pageY
+		}
+	},
+	handleTouchEnd(e) {
+		// console.log(e, 'end');
+		let touch = e.changedTouches[0]
+		let id = touchObj.identifier
+		let curId = touch.identifier
+		let interval = e.timeStamp - touchTimer
+		if (id === curId && interval < 200 && touchDy > 150) {
+			if (this.data.isCatePanelShow) {
+				this.toggleSpecific()
+			}
+			if (this.data.isCartPanelShow) {
+				this.toggleCart()
+			}
+		}
 	}
 });
