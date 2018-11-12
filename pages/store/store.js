@@ -36,9 +36,17 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		this.fetchLoaction()
-		let addrId = options.userAddressId
 		let self = this
+		let addrId = options.userAddressId
+		let fromPage = options.from
+		if (fromPage === 'selfExtraction') {
+			
+		}
+		if (fromPage === 'delivery') {
+			
+		}
+		this.fetchLoaction()
+
 		if (addrId) {
 			this.setData({
 				userAddressId: addrId,
@@ -246,8 +254,8 @@ Page({
 		}, 100)
 	},
 	orderProduct(e) {
-		let groupIdx = e.target.dataset.groupidx
-		let productIdx = e.target.dataset.productidx
+		let groupIdx = e.currentTarget.dataset.groupidx
+		let productIdx = e.currentTarget.dataset.productidx
 		// let detail = `menuList[${groupIdx}].product_list[${productIdx}]`
 		let detail = this.data.menuList[groupIdx].product_list[productIdx]
 		this.setData({
@@ -350,10 +358,12 @@ Page({
 			storeId: info.storeInfo.id,
 			userAddressId: info.userAddressId,
 			deliverFee: fee,
-			payAmount: totalPrice > 30 ? totalPrice : util.add(totalPrice, fee),
+			payAmount: totalPrice,
 			orderType: info.isSelfTaking ? 2 : 1,
 			product: products
 		}
+		console.log(obj);
+		// return
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
 		wx.navigateTo({
 			url: url

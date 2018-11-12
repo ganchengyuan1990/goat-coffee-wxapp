@@ -50,7 +50,15 @@
               <view>{{item.name}}</view>
               <view class="line"></view>
             </view>
-            <view wx:for="{{item.product_list}}" bindtap="orderProduct" wx:for-item="product" wx:key="product.id" class="list-detail" wx:for-index="index">
+            <view 
+              wx:for="{{item.product_list}}" 
+              bindtap="orderProduct" 
+              wx:for-item="product" 
+              wx:key="product.id" 
+              class="list-detail" 
+              wx:for-index="index"
+              data-groupidx="{{idx}}" 
+              data-productidx="{{index}}">
               <view class="img">
                 <image src="{{product.icon}}"></image>
               </view>
@@ -63,7 +71,7 @@
                 <view class="price-count">
                   <view class="price">{{product.default_sku.price > 0 ? '￥'+product.default_sku.price:'暂无价格'}}</view>
                   <view class="count">
-                    <view class="add btn" data-item="{{item}}" data-groupidx="{{idx}}" data-productidx="{{index}}" bindtap="orderProduct">
+                    <view class="add btn" data-item="{{item}}">
                       +
                     </view>
                   </view>
