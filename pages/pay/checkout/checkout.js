@@ -107,6 +107,11 @@ Page({
         actualPrice: options.deliverFee + options.payAmount
       });
     }
+    if (wx.getStorageSync('STORE_INFO')) {
+      this.setData({
+        checkedAddress: JSON.parse(wx.getStorageSync('STORE_INFO'))
+      })
+    }
   },
 
   calcTotalWeight () {
@@ -139,7 +144,7 @@ Page({
 
   goAddressList () {
     wx.navigateTo({
-      url: '/pages/my/address_list/address_list',
+      url: '/pages/transport/transport',
     })
   },
 

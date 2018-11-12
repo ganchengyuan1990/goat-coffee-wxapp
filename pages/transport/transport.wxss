@@ -26,6 +26,8 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    /* position: relative;
+    top: 0; */
     border-top: 2rpx solid #ccc;
 }
 
@@ -50,7 +52,8 @@
 
 .direct-item {
     display: flex;
-    padding: 20rpx 28rpx 20rpx 20rpx;
+    padding-bottom: 40rpx;
+    padding-top: 30rpx;
 }
 
 .direct-item .direct-content {
@@ -73,7 +76,7 @@
 
 .direct-item .direct-name-text {
     font-family: PingFangSC-Regular;
-    font-size: 30rpx;
+    font-size: 33rpx;
     color: #333333;
 }
 
@@ -136,12 +139,18 @@
 .direct-item .direct-address-text {
     font-family: PingFangSC-Regular;
     font-size: 24rpx;
-    color: #c6c6c6;
+    color: #999;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     flex: 1;
     max-width: 520rpx;
+}
+.searchText {
+    color: #999;
+    margin-left: 20rpx;
+    flex:1;
+
 }
 
 .direct-item .direct-distance {
@@ -175,8 +184,8 @@
 }
 
 .searchIcon {
-    position: absolute;
-    left: 0;
+    /* position: absolute;
+    left: 0; */
     width: 150rpx;
     text-align: center;
     border-right: 1rpx solid #d8d8d8;
@@ -195,7 +204,8 @@
 }
 
 .suggest-container {
-    border-top:2rpx solid #ccc;
+    border-bottom:2rpx solid #eee;
+    margin: 20rpx 28rpx 20rpx 20rpx;
 
 }
 

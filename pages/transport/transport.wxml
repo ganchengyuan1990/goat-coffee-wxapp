@@ -6,26 +6,25 @@
 
     <view class="searchEntry" bindtap="onSearchShow" data-source="0">
         <view class="searchIcon">定位失败</view>
-        <text class="searchKeyword" wx:if="{{keyword}}">{{ keyword }}</text>
-        <text class="searchText" wx:if="{{!keyword}}">输入商品名</text>
+        <view class="searchKeyword" wx:if="{{keyword}}">{{ keyword }}</view>
+        <view class="searchText" >输入地址寻找附近门店</view>
         <view class="close-icon" catchtap="clearKeyWord" wx:if="{{keyword}}"><image mode="scaleToFill" src="https://www.jasongan.cn/uploads/close.png" /></view>
     </view>
 
     <view class="search-find-container">
-        <view class="suggestListWrap" wx:if="{{searchSuggest && searchSuggest.length}}">
+        <view class="suggestListWrap" wx:if="{{searchSuggest && searchSuggest.length}}"  data-id="{{item.id}}" bindtap="goStore">
             <scroll-view class="suggestList" scroll-y="true">
                 <view wx:key="suggestItem" wx:for="{{searchSuggest}}" class="suggest-container">
-                    <view wx:if="{{item.eventtype === 'direct_poi'}}" class="direct-item border-bottom" catchtap="navURL" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
+                    <view class="direct-item border-bottom" catchtap="navURL" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
                         <view class="suggest-icon point-icon"></view>
                         <view class="direct-content">
                             <view class="direct-name">
                                 <view class="direct-name-container">
-                                    <text wx:for="{{item.splitName}}" wx:for-item="name" wx:key="splitItem"
-                                        class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{name.text}}</text>
+                                    <text class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.storeName}}</text>
                                     <view wx:if="{{item.hasdeals == 1}}" class="group-icon"></view>
                                     <view wx:elif="{{item.hasmopay == 1}}" class="mopay-icon"></view>
                                 </view>
-                                <view wx:if="{{item.distance}}" class="direct-distance"><text class="direct-distance-text">{{item.distance}}</text></view>
+                                <view wx:if="{{item.distance}}" class="direct-distance"><text class="direct-distance-text">距您{{item.distance}}km</text></view>
                             </view>
          
                             <view class="direct-bottom">
@@ -38,12 +37,9 @@
                             </view>
                         </view>
                     </view>
-                    <view wx:elif="{{item.eventtype === 'search_common'}}" class="direct-item common-item border-bottom" catchtap="navURL" data-url="{{item.url}}">
-                        <view wx:if="{{item.isInHistory}}" class="time-icon"></view>
-                        <view wx:else class="suggest-icon find-icon"></view>
+                    <!-- <view wx:elif="{{item.eventtype === 'search_common'}}" class="direct-item common-item border-bottom" catchtap="navURL" data-url="{{item.url}}">
                         <view class="common-keyword">
-                            <text wx:for="{{item.splitName}}" wx:for-item="name" wx:key="splitItem"
-                                class="{{name.isImportant ? '' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{name.text}}</text>          
+                            <text class="{{name.isImportant ? '' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.storeName}}</text>          
                         </view>
                         <view wx:if="{{item.labels && item.labels.length}}" class="common-labels">
                             <view class="common-label" wx:for="{{item.labels}}" wx:for-item="label" wx:key="labelItem" catchtap="navURL" data-url="{{label.url}}">
@@ -70,7 +66,7 @@
                             <text wx:if="{{item.displayinfo}}" class="direct-movie-info {{item.keyword ? 'before-content' : ''}}">{{item.displayinfo}}</text>
                         </view>
                         <view class="entry"></view>
-                    </view>
+                    </view> -->
                 </view>
             </scroll-view>
         </view>

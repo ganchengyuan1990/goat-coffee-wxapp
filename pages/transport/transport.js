@@ -3,6 +3,8 @@
 // const pay = require('../../../services/pay.js');
 import {wx2promise, showErrorToast} from '../../utils/util';
 
+import model from '../../utils/model';
+
 var app = getApp();
 
 Page({
@@ -33,9 +35,16 @@ Page({
       "eventtype": "direct_poi"
     }],
     showSelfGet: true,
-    showExpress: false
+    showExpress: false, 
+    from: ''
   },
   onLoad: function (options) {
+
+    if (options.from === 'store') {
+      this.setData({
+        from: 'selfExtracting'
+      })
+    }
 
     this.setData({
       goodsTotalPrice: parseInt(options.price)
@@ -76,14 +85,16 @@ Page({
   goSelfGet () {
     this.setData({
       showSelfGet: true,
-      showExpress: false
+      showExpress: false,
+      from: this.data.from === 'delivery' ? 'selfExtracting' : ''
     })
   },
 
   goExpress() {
     this.setData({
       showExpress: true,
-      showSelfGet: false
+      showSelfGet: false,
+      from: this.data.from === 'selfExtracting' ? 'delivery' : ''
     })
   },
 
@@ -93,56 +104,34 @@ Page({
     });
   },
 
+  goStore () {
+    wx.navigateTo({
+      url: `/pages/store/store?from=${this.data.from}`
+    });
+  },
+
   getCheckoutInfo: function () {
     let that = this;
 
     wx.hideLoading();
-    wx2promise(wx.request, {
-            url: 'https://www.jasongan.cn/getAddressByOpenId',
-            method: 'GET',
-            // data:  'appid=1256596722&url=https://www.jasongan.cn/img/fengli.jpeg',
-            data: {
-                openid: wx.getStorageSync('openid')
-            },
-            header: {
-                //设置参数内容类型为x-www-form-urlencoded
-                'Content-Type': 'application/json',
-                'Authorization': 'tdpeGHT2XVFmQOVci+vDhRFG6XZhPTEyNTY1OTY3MjImaz1BS0lEUmhpVUZ2b2FjUjFMUUZvQUc2a0FMSzdnejJwTFpZR2gmZT0xNTI5MTM2MTE1JnQ9MTUyOTA0OTcxNSZyPTM0Nzg0ODEwNzMmdT0wJmY9',
-                'Host': 'recognition.image.myqcloud.com'
-            },
-        }).then(function (res) {
-      if (res.data.code === 200) {
-        console.log(res.data);
-        that.setData({
-          checkedGoodsList: wx.getStorageSync('chooseCartInfo'),
-          checkedAddress: JSON.parse(res.data.resultLists[0].address),
-          // actualPrice: res.data.actualPrice,
-          // checkedCoupon: res.data.checkedCoupon,
-          // couponList: res.data.couponList,
-          // couponPrice: res.data.couponPrice,
-          // freightPrice: res.data.freightPrice,
-          // goodsTotalPrice: res.data.goodsTotalPrice,
-          // orderTotalPrice: res.data.orderTotalPrice
-        });
-      }
-    });
-    // util.request(`https://www.jasongan.cn/getAddressByOpenId?openid=${wx.getStorageSync('openid')}`).then(function (res) {
-    //   if (res.errno === 0) {
-    //     console.log(res.data);
-    //     that.setData({
-    //       checkedGoodsList: res.data.checkedGoodsList,
-    //       checkedAddress: res.data.checkedAddress,
-    //       actualPrice: res.data.actualPrice,
-    //       checkedCoupon: res.data.checkedCoupon,
-    //       couponList: res.data.couponList,
-    //       couponPrice: res.data.couponPrice,
-    //       freightPrice: res.data.freightPrice,
-    //       goodsTotalPrice: res.data.goodsTotalPrice,
-    //       orderTotalPrice: res.data.orderTotalPrice
-    //     });
-    //   }
-    //   wx.hideLoading();
-    // });
+
+    model('home/lbs/getStoreListByLocation', {
+      // lng: geo.lng,
+      // lat: geo.lat,
+      lng: 121.483821,
+      lat: 31.265335,
+      page: 1
+    }).then(data => {
+      let result = data.data;
+      // result = result.concat(result);
+      result.forEach(item => {
+        item.distance = parseFloat(item.distance).toFixed(2);
+      });
+      this.setData({
+        searchSuggest: result
+      })
+    })
+    
   },
   onReady: function () {
     // 页面渲染完成

@@ -21,15 +21,15 @@
         
         <view class="address-item" bindtap="selectAddress" wx:if="{{checkedAddress}}">
             <view class="address">
-                配送地址
+                自提门店
             </view>
             <view class="l">
                 <!-- <text class="default">默认</text> -->
-                <text class="address">{{checkedAddress.region + checkedAddress.address}}</text>
+                <text class="address">{{checkedAddress.storeName}}</text>
             </view>
             <view class="m">
-                <text class="name">{{checkedAddress.name}}</text>
-                <text class="mobile">{{checkedAddress.phone}}</text>
+                <text class="name">{{checkedAddress.city}}{{checkedAddress.area}}{{checkedAddress.address}}</text>
+                <!-- <text class="mobile">{{checkedAddress.phone}}</text> -->
                 <!-- <text class="address">{{checkedAddress.region + checkedAddress.address}}</text> -->
             </view>
             <!-- <view class="r">
