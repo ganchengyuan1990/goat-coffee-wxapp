@@ -201,6 +201,8 @@
     width: 100%;
     z-index:10000;
     border-top: 1rpx solid #ccc; 
+    background:#fff;
+
 }
 
 .suggest-container {

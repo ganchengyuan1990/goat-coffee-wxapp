@@ -72,26 +72,27 @@ Page({
 
     let product = this.data.options.product;
     product.forEach(item => {
-      item.pid = item.productId;
-      item.skuid = item.skuId;
-      item.num = item.number;
-      delete item.productId;
-      delete item.skuId;
-      delete item.number;
+      // item.pid = item.productId;
+      // item.skuid = item.skuId;
+      // item.num = item.number;
+      // delete item.productId;
+      // delete item.skuId;
+      // delete item.number;
       delete item.price;
       delete item.skuName;
       delete item.productName;
-      delete item.productPropIds;
+      // delete item.productPropIds;
     });
     
     model(`home/coupon/getBestCouponByProduct`, {
       uid: 1,
       list: product
     }).then(data => {
-      this.setData({
-        couponMoney: data.data[0].discountPrice
-      })
-
+      if (data.data) {
+        this.setData({
+          couponMoney: parseFloat(data.data[0].discountPrice).toFixed(2)
+        })
+      }
     })
   },
 
@@ -104,7 +105,7 @@ Page({
       // })
       this.setData({
         options: options,
-        actualPrice: options.deliverFee + options.payAmount
+        actualPrice: options.payAmount + options.deliverFee
       });
     }
     if (wx.getStorageSync('STORE_INFO')) {
@@ -193,7 +194,7 @@ Page({
       deliverFee: this.data.options.deliverFee,
       payAmount: this.data.options.payAmount,
       orderType: 1,
-      payType: 1,
+      payType: 1
       // discountIds: '1,2,3'
     }
     let paramStr = '';
@@ -202,20 +203,12 @@ Page({
       if (item === 'storeId') {
         param[item] = 29;
       }
-      if (item === 'deliverFee') {
-        param[item] = 6;
-      }
-      if (item === 'payAmount') {
-        param[item] = 45;
-      }
       if (index !== keys.length - 1) {
         paramStr += item + '=' + param[item] + '&';
       } else {
         paramStr += item + '=' + param[item];
       }
     })
-
-    debugger
 
     // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
     model(`order/detail/submit?${paramStr}`, this.data.options.product, 'POST', {

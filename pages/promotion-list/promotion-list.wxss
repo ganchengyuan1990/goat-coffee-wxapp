@@ -1,6 +1,7 @@
 .wrapper {
   background: #f6f6f6;
-  height: 100vh;
+  padding-bottom: 30rpx;
+  /* height: 100vh; */
 }
 .promotion-tip {
   width: 100%;
@@ -164,4 +165,17 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
 
 .list-item-deal .deal-num {
   font-size: 48rpx;
+}
+
+.no_coupon_wrapper {
+  height: 100vh;
+}
+.no_coupon {
+  height: 200rpx;
+  width: 200rpx;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -100rpx;
+  margin-left: -100rpx;
 }

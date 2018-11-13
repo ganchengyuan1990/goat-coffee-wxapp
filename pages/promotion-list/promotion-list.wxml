@@ -19,7 +19,9 @@
             <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
 
             <view class="list-item-deal">
-              <label class="deal-icon"></label><label class="deal-num">{{item.coupon.discount}}折</label>
+              <label class="deal-icon"></label>
+              <label class="deal-num" wx:if="{{item.coupon.couponType === 2}}">{{item.coupon.discount}}折</label>
+              <label class="deal-num" wx:if="{{item.coupon.couponType === 1}}">￥{{item.coupon.saveAmount}}</label>
             </view>
           </view>
 
@@ -39,6 +41,12 @@
       </checkbox-group>
       <!-- <promotion promotions="{{array}}" category="promotion" bind:myevent="onMyEvent"></promotion> -->
     </view>
+
+
+    <view class="no_coupon_wrapper" wx:if="{{activedItems.length === 0}}">
+      <image class='no_coupon' src="../../images/no_coupon.png" />
+    </view>
+
     <!-- <view class="group">
       <view class="title-box">
         <text class="title" wx:if="{{unActivedItems.length > 0}}">不可用促销优惠（{{unActivedItems.length}}）</text>

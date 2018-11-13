@@ -15,7 +15,7 @@
         <view class="suggestListWrap" wx:if="{{searchSuggest && searchSuggest.length}}"  data-id="{{item.id}}" bindtap="goStore">
             <scroll-view class="suggestList" scroll-y="true">
                 <view wx:key="suggestItem" wx:for="{{searchSuggest}}" class="suggest-container">
-                    <view class="direct-item border-bottom" catchtap="navURL" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
+                    <view class="direct-item border-bottom" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
                         <view class="suggest-icon point-icon"></view>
                         <view class="direct-content">
                             <view class="direct-name">
@@ -37,36 +37,6 @@
                             </view>
                         </view>
                     </view>
-                    <!-- <view wx:elif="{{item.eventtype === 'search_common'}}" class="direct-item common-item border-bottom" catchtap="navURL" data-url="{{item.url}}">
-                        <view class="common-keyword">
-                            <text class="{{name.isImportant ? '' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.storeName}}</text>          
-                        </view>
-                        <view wx:if="{{item.labels && item.labels.length}}" class="common-labels">
-                            <view class="common-label" wx:for="{{item.labels}}" wx:for-item="label" wx:key="labelItem" catchtap="navURL" data-url="{{label.url}}">
-                                <text class="common-label-text">{{label.text}}</text>
-                            </view>
-                        </view>
-                        <view wx:else class="common-info"><text class="common-info-text">{{item.displayinfo}}</text></view>
-                    </view>
-                    <view wx:elif="{{item.eventtype === 'direct_business_brand'}}" class="direct-item brand-item border-bottom" catchtap="navURL" data-url="{{item.url}}">
-                        <image src="{{item.icon}}" class="direct-image direct-brand-image"></image>
-                        <view class="direct-brand-content">
-                            <text wx:for="{{item.splitName}}" wx:for-item="name" wx:key="splitItem"
-                                class="{{name.isImportant ? 'important-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{name.text}}</text>                                    
-                            <text wx:if="{{item.displayinfo}}" class="direct-brand-info {{item.keyword ? 'before-content' : ''}}">{{item.displayinfo}}</text>
-                        </view>
-                        <view class="entry"></view>
-                    </view>
-                    <view wx:elif="{{item.eventtype === 'direct_movie'}}" class="direct-item movie-item border-bottom" catchtap="navURL" data-url="{{item.url}}">
-                        <view wx:if="{{item.isInHistory}}" class="time-icon"></view>
-                        <view wx:else class="direct-image movie-icon"></view>
-                        <view class="direct-movie-content">
-                            <text wx:for="{{item.splitName}}" wx:for-item="name" wx:key="splitItem"
-                                class="{{name.isImportant ? 'important-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{name.text}}</text>                                    
-                            <text wx:if="{{item.displayinfo}}" class="direct-movie-info {{item.keyword ? 'before-content' : ''}}">{{item.displayinfo}}</text>
-                        </view>
-                        <view class="entry"></view>
-                    </view> -->
                 </view>
             </scroll-view>
         </view>

@@ -34,6 +34,7 @@ Page({
       "url": "/pages/detail/detail?shopUuid=1860781&from=search_banner",
       "eventtype": "direct_poi"
     }],
+    showSearchitem: {},
     showSelfGet: true,
     showExpress: false, 
     from: ''
@@ -105,9 +106,19 @@ Page({
   },
 
   goStore () {
-    wx.navigateTo({
+    // if (this.data.from) {
+    //   wx.navigateTo({
+    //     url: `/pages/store/store?from=${this.data.from}`
+    //   });
+    // } else {
+    //   wx.navigateBack({
+    //     delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+    //   });
+    // }
+    wx.switchTab({
       url: `/pages/store/store?from=${this.data.from}`
     });
+    
   },
 
   getCheckoutInfo: function () {
