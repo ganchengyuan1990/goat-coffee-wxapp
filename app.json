@@ -22,7 +22,9 @@
     "pages/coupon/coupon",
     "pages/my/index/index",
     "pages/my/profile/profile",
-    "pages/my/profile/edit"
+    "pages/my/profile/edit",
+    "pages/order/index",
+    "pages/order/detail"
   ],
   "window": {
     "backgroundTextStyle": "dark",
@@ -49,7 +51,7 @@
         "selectedIconPath": "./icons/coupon-select.png"
       },
       {
-        "pagePath": "pages/cart/cart",
+        "pagePath": "pages/order/index",
         "text": "订单",
         "iconPath": "./icons/list.png",
         "selectedIconPath": "./icons/list-select.png"

@@ -1,0 +1,98 @@
+page {
+    background: #F5F5F5;
+}
+.order-wrap {
+    display: flex;
+    flex-direction: column;
+}
+.filter-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* height: 80rpx; */
+    background: #fff;
+}
+.filter-wrap .tab {
+    display: flex;
+    padding: 20rpx 30rpx;
+    color: #666;
+    font-size: 28rpx;
+    line-height: 40rpx;
+}
+.filter-wrap .tab .item {
+    position: relative;
+}
+.filter-wrap .tab .item:first-child {
+    margin-right: 120rpx;
+}
+.filter-wrap .tab .item text {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: -20rpx;
+    border-bottom: 8rpx solid #ccc;
+    border-left: 6rpx solid transparent;
+    border-right: 6rpx solid transparent;
+    transform: translateY(-50%);
+}
+.filter-wrap .cnt {
+    font-size: 28rpx;
+}
+.list-wrap {
+    margin-top: 120rpx;
+}
+.panel {
+    margin: 40rpx 30rpx;
+    padding: 0 30rpx;
+    background: #fff;
+    color: #999;
+    font-size: 22rpx;
+}
+.panel .panel-hd {
+    display: flex;
+    justify-content: space-between;
+    padding: 20rpx 0;
+    border-bottom: 2rpx solid #f2f2f2;
+    line-height: 1;
+}
+.panel .panel-hd .active {
+    color: #7ED321;
+}
+.panel .panel-bd .tt {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 30rpx;
+    color: #333;
+    font-size: 28rpx;
+    line-height: 40rpx;
+}
+.panel .panel-bd .desc {
+    margin-top: 8rpx;
+    line-height: 32rpx;
+}
+.panel .panel-bd .date {
+    color: #ccc;
+    margin-top: 16rpx;
+    line-height: 32rpx;
+}
+.panel .panel-ft {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20rpx 0 30rpx;
+}
+.panel .panel-ft .price {
+    color: #000;
+    font-size: 36rpx;
+    line-height: 50rpx;
+}
+.btn-buy {
+    padding: 14rpx 32rpx;
+    border: 2rpx solid #999;
+    color: #333;
+    font-size: 24rpx;
+    line-height: 1;
+}
