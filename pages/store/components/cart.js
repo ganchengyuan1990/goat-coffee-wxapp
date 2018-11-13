@@ -130,7 +130,7 @@ Component({
       this.saveCart([])
     },
     saveCart(info) {
-      this.setTotalResult()
+      
       this.triggerEvent('save', {
         cartList: info
       })

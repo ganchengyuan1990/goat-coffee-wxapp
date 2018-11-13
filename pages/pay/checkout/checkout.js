@@ -5,6 +5,11 @@ import {wx2promise, showErrorToast} from '../../../utils/util';
 
 import model from '../../../utils/model';
 
+import {
+  BigNumber
+} from '../../../utils/bignumber.min';
+
+
 
 var app = getApp();
 
@@ -32,7 +37,11 @@ Page({
     transportFee: 0,
     couponMoney: 0,
     errorToast: false,
-    toastInfo: ''
+    toastInfo: '',
+    product: [],
+    payAmount: 0,
+    discountType: 1,
+    couponUserRelation: ''
   },
   onLoad: function (options) {
 
@@ -69,29 +78,28 @@ Page({
   },
 
   getBestCouponByProduct () {
-
-    let product = this.data.options.product;
-    product.forEach(item => {
-      // item.pid = item.productId;
-      // item.skuid = item.skuId;
-      // item.num = item.number;
-      // delete item.productId;
-      // delete item.skuId;
-      // delete item.number;
-      delete item.price;
-      delete item.skuName;
-      delete item.productName;
-      // delete item.productPropIds;
-    });
     
     model(`home/coupon/getBestCouponByProduct`, {
       uid: 1,
-      list: product
+      list: this.data.product
     }).then(data => {
       if (data.data) {
+        let result = parseFloat(data.data[0].discountPrice).toFixed(2);
+        let _a = new BigNumber(this.data.payAmount);
+        let _b = new BigNumber(this.data.options.deliverFee);
+        let actualPrice = _a.plus(_b).minus(result);
+        let couponArr = data.data[0].solutionList;
+        let couponUserRelation = ''
+        
+        couponArr.forEach(item => {
+          couponUserRelation += item.userRelation + ','
+        });
         this.setData({
-          couponMoney: parseFloat(data.data[0].discountPrice).toFixed(2)
-        })
+          couponMoney: result,
+          actualPrice: parseFloat(actualPrice),
+          discountType: 1,
+          couponUserRelation: couponUserRelation
+        });
       }
     })
   },
@@ -103,9 +111,20 @@ Page({
       // options.product.forEach(item => {
       //   transportFee += item.transportFee;
       // })
+
+      let product = options.product;
+      let payAmount = 0;
+      product.forEach(item => {
+        // item.pid = item.productId;
+        // item.skuid = item.skuId;
+        item.num = item.number;
+        item.totalPrice = item.number * item.price;
+        payAmount += item.totalPrice;
+      });
       this.setData({
         options: options,
-        actualPrice: options.payAmount + options.deliverFee
+        product: product,
+        payAmount: payAmount
       });
     }
     if (wx.getStorageSync('STORE_INFO')) {
@@ -190,11 +209,12 @@ Page({
       storeId: this.data.options.storeId,
       userAddressId: 3,
       userId: 1,
-      discountType: 0,
+      discountType: this.data.discountType,
       deliverFee: this.data.options.deliverFee,
-      payAmount: this.data.options.payAmount,
+      payAmount: this.data.actualPrice,
       orderType: 1,
-      payType: 1
+      payType: 1,
+      discountIds: this.data.couponUserRelation.substr(0, this.data.couponUserRelation.length - 1)
       // discountIds: '1,2,3'
     }
     let paramStr = '';
@@ -215,7 +235,8 @@ Page({
       'authorization': 'Bearer ' + wx.getStorageSync('token').token,
       'Accept': 'application/json'
     }).then(data => {
-        if (data.data.code === 'suc') {
+        if (data.code === 'suc') {
+          wx.removeStorageSync('CART_LIST');
           wx.navigateTo({
             url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
           });

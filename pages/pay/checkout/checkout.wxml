@@ -66,13 +66,13 @@
             <view class="order-item" wx:for="{{options.product}}" wx:key="idx">
                 <view class="l">
                     <text class="name">{{item.productName}}</text>
-                    <text class="format">大/无奶/无糖/热</text>
+                    <text class="format">{{item.skuName}}</text>
                 </view>
                 <view class="center">
                     <text class="txt">X {{item.number}}</text>
                 </view>
                 <view class="r">
-                    <text class="txt">￥{{item.price}}</text>
+                    <text class="txt">￥{{item.totalPrice}}</text>
                 </view>
             </view>
 

@@ -8,6 +8,7 @@
     "pages/pay/checkout/checkout",
     "pages/pay/pay_success/pay_success",
     "pages/pay/normalPay/normalPay",
+    "pages/pay/backup/backup",
     "pages/pay/share_success/share_success",
     "pages/pay/share_coupon/share_coupon",
 

@@ -306,7 +306,8 @@ checkbox {
     /* background:rgba(125, 125, 125, 1); */
     color: #7D7D7D;
     position: relative;
-    top: 5rpx;
+    top: 10rpx;
+    right: -3rpx;
 }
 
 .order-box .order-item{

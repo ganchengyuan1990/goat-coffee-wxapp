@@ -1,10 +1,5 @@
 // var QRCode = require('../../utils/weapp-qrcode.js')
 
-const QRCode = require('../../utils/qrcode-logo')
-
-import {wx2promise} from '../../utils/util';
-
-
 Page({
     data: {
         lesson: '',
@@ -40,126 +35,103 @@ Page({
             timeliness: option.timeLimit,
             orderType: option.lesson_id ? 1 : 2
         });
-        if (option.qrcode) {
-            this.setData({
-                hasQrcode: true
-            });
-        }
-        let self = this;
+        
 
-
-        if (this.data.init) {
-            if (option.update) {
-                this.updateOrder(option);
-            } else {
-                this.createPoiOrder(this);
-            }
-        } else {
-            wx.request({
-                url: `https://www.jasongan.cn/createOrder?price=${this.data.price}&id=${this.data.pinOrderId}&openid=${openid}&timeliness=${this.data.timeliness > 0 ? this.data.timeliness : 1000}`, //开发者服务器接口地址",
-                method: 'GET',
-                dataType: 'json', //如果设为json，会尝试对返回的数据做一次 JSON.parse
-                success: res => {
-                    let prepay_id = res.data.prepay_id;
-                    let paySign = res.data.paySign;
-                    let timeStamp = res.data.timeStamp.toString();
-                    let out_trade_no = res.data.out_trade_no;
-                    self.setData({
-                        prepay_id: prepay_id
-                    });
-                    wx.setStorageSync('prepay_id', prepay_id);
-                    wx.hideLoading();
-                    // prepay_id = prepay_id.replace('<![CDATA[', '');
-                    // prepay_id = prepay_id.replace(']]>', '');
-                    wx.requestPayment({
-                        'timeStamp': timeStamp,
-                        'nonceStr': '5K8264ILTKCH16CQ2502SI8ZNMTM67VS',
-                        'package': `prepay_id=${prepay_id}`,
-                        'signType': 'MD5',
-                        'paySign': paySign,
-                        'success': function (res) {
-                            wx2promise(wx.request, {
-                                url: 'https://www.jasongan.cn/updatePinOrderPayStatusMember',
-                                method: 'GET',
-                                data: {
-                                    id: self.data.pinOrderId,
-                                    member: self.data.openid,
-                                    formId: self.data.prepay_id,
-                                    status: 'yes'
-                                },
-                                header: {
-                                    'content-type': 'application/x-www-form-urlencoded',
-                                    'Accept': 'application/json'
-                                }
-                            }).then(res => {
-                                console.log(res);
-                            });
-                            wx2promise(wx.request, {
-                                url: 'https://www.jasongan.cn/updateOutTradeNo',
-                                method: 'GET',
-                                data: {
-                                    out_trade_no: out_trade_no,
-                                    id: self.data.pinOrderId
-                                },
-                                header: {
-                                    'content-type': 'application/x-www-form-urlencoded',
-                                    'Accept': 'application/json'
-                                }
-                            }).then(res => {
-                                console.log(res);
-                            });
-                            if (self.data.hasQrcode) {
-                                let pages = getCurrentPages();
-                                let prevPage = pages[pages.length - 2];
-                                prevPage.setData({
-                                    paid: true,
-                                    fromPay: true
-                                });
-                                wx.redirectTo({ url: '/pages/own_pin_list/own_pin_list' });
-                            } else {
-                                // self.uploadQrcode();
+        wx.request({
+            url: `https://www.jasongan.cn/createOrder?price=${this.data.price}&id=${this.data.pinOrderId}&openid=${openid}&timeliness=${this.data.timeliness > 0 ? this.data.timeliness : 1000}`, //开发者服务器接口地址",
+            method: 'GET',
+            dataType: 'json', //如果设为json，会尝试对返回的数据做一次 JSON.parse
+            success: res => {
+                let prepay_id = res.data.prepay_id;
+                let paySign = res.data.paySign;
+                let timeStamp = res.data.timeStamp.toString();
+                let out_trade_no = res.data.out_trade_no;
+                self.setData({
+                    prepay_id: prepay_id
+                });
+                wx.setStorageSync('prepay_id', prepay_id);
+                wx.hideLoading();
+                // prepay_id = prepay_id.replace('<![CDATA[', '');
+                // prepay_id = prepay_id.replace(']]>', '');
+                wx.requestPayment({
+                    'timeStamp': timeStamp,
+                    'nonceStr': '5K8264ILTKCH16CQ2502SI8ZNMTM67VS',
+                    'package': `prepay_id=${prepay_id}`,
+                    'signType': 'MD5',
+                    'paySign': paySign,
+                    'success': function (res) {
+                        wx2promise(wx.request, {
+                            url: 'https://www.jasongan.cn/updatePinOrderPayStatusMember',
+                            method: 'GET',
+                            data: {
+                                id: self.data.pinOrderId,
+                                member: self.data.openid,
+                                formId: self.data.prepay_id,
+                                status: 'yes'
+                            },
+                            header: {
+                                'content-type': 'application/x-www-form-urlencoded',
+                                'Accept': 'application/json'
                             }
-                        },
-                        'fail': function (res) {
-                            // wx2promise(wx.request, {
-                            //     url: 'https://www.jasongan.cn/updatePinOrderPayStatusMember',
-                            //     method: 'GET',
-                            //     data: {
-                            //         id: self.data.pinOrderId,
-                            //         status: 'no',
-                            //         member: self.data.openid
-                            //     },
-                            //     header: {
-                            //         'content-type': 'application/x-www-form-urlencoded',
-                            //         'Accept': 'application/json'
-                            //     }
-                            // });
-                            wx2promise(wx.request, {
-                                url: 'https://www.jasongan.cn/updateNeedToPayPrice',
-                                method: 'GET',
-                                data: {
-                                    id: self.data.pinOrderId,
-                                    price: self.data.price
-                                },
-                                header: {
-                                    'content-type': 'application/x-www-form-urlencoded',
-                                    'Accept': 'application/json'
-                                }
-                            });
-                            // wx.navigateBack({
-                            //     delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-                            // });
-                            wx.redirectTo({ url: '/pages/own_pin_list/own_pin_list' });
-                        },
-                        'complete': function (res) {
+                        }).then(res => {
+                            console.log(res);
+                        });
+                        // wx2promise(wx.request, {
+                        //     url: 'https://www.jasongan.cn/updateOutTradeNo',
+                        //     method: 'GET',
+                        //     data: {
+                        //         out_trade_no: out_trade_no,
+                        //         id: self.data.pinOrderId
+                        //     },
+                        //     header: {
+                        //         'content-type': 'application/x-www-form-urlencoded',
+                        //         'Accept': 'application/json'
+                        //     }
+                        // }).then(res => {
+                        //     console.log(res);
+                        // });
+                        // if (self.data.hasQrcode) {
+                        //     let pages = getCurrentPages();
+                        //     let prevPage = pages[pages.length - 2];
+                        //     prevPage.setData({
+                        //         paid: true,
+                        //         fromPay: true
+                        //     });
+                        //     wx.redirectTo({
+                        //         url: '/pages/own_pin_list/own_pin_list'
+                        //     });
+                        // } else {
+                        //     // self.uploadQrcode();
+                        // }
+                    },
+                    'fail': function (res) {
+                        // wx2promise(wx.request, {
+                        //     url: 'https://www.jasongan.cn/updateNeedToPayPrice',
+                        //     method: 'GET',
+                        //     data: {
+                        //         id: self.data.pinOrderId,
+                        //         price: self.data.price
+                        //     },
+                        //     header: {
+                        //         'content-type': 'application/x-www-form-urlencoded',
+                        //         'Accept': 'application/json'
+                        //     }
+                        // });
+                        // wx.navigateBack({
+                        //     delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                        // });
+                        wx.redirectTo({
+                            url: '/pages/own_pin_list/own_pin_list'
+                        });
+                    },
+                    'complete': function (res) {
 
-                        }
-                    })
-                },
-                fail: () => {},
-                complete: () => {}
-            });
-        }
+                    }
+                })
+            },
+            fail: () => {},
+            complete: () => {}
+        });
   
     },
 

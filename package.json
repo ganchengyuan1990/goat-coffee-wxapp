@@ -1,0 +1,22 @@
+{
+  "name": "wechat-meituan-master",
+  "version": "1.0.0",
+  "description": "原生微信小程序代码编写",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ganchengyuan1990/goat-coffee-wxapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ganchengyuan1990/goat-coffee-wxapp/issues"
+  },
+  "homepage": "https://github.com/ganchengyuan1990/goat-coffee-wxapp#readme",
+  "dependencies": {
+    "bignumber.js": "^8.0.1"
+  }
+}

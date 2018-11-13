@@ -40,22 +40,29 @@ Page({
 	 */
 	onLoad(options) {
 		let self = this
+
+		let token = wx.getStorageSync('token')
+		if (!token) {
+			wx.navigateTo({
+				url: '/pages/login/login'
+			})
+			return
+		}
 		let addrId = options.userAddressId
 		let fromPage = options.from
 		if (fromPage === 'selfExtraction') {
-			
+			this.setData({
+				isSelfTaking: true
+			})
 		}
 		if (fromPage === 'delivery') {
-			
-		}
-		this.fetchLoaction()
-
-		if (addrId) {
 			this.setData({
 				userAddressId: addrId,
 				isSelfTaking: false
-			})	
+			})
 		}
+		this.fetchLoaction()
+
 		wx.getStorage({
 			key: 'CART_LIST',
 			success(res) {
@@ -147,9 +154,11 @@ Page({
 					lat: latitude
 				}
 				self.fetchStore(geo)
+				app.globalData.isGeoAuth = false
 			},
 			fail() {
 				self.checkAuth()
+				app.globalData.isGeoAuth = false
 			}
 		})
 	},
@@ -161,8 +170,8 @@ Page({
 		model('home/lbs/getStoreListByLocation', {
 			// lng: geo.lng,
 			// lat: geo.lat,
-			lng: 121.483821,
-			lat: 31.265335,
+			lng: 121.419114,
+			lat: 31.239629,
 			page: 1
 		}).then(res => {
 			console.log(res, 'location')
@@ -371,7 +380,7 @@ Page({
 			return Object.assign({},{
 				productName: item.productName,
 				productId: item.id,
-				skuId: obj.propSkuId,
+				skuId: obj.id,
 				skuName: obj.propSkuName,
 				number: item.count,
 				price: obj.price,
@@ -414,6 +423,7 @@ Page({
 			let val = obj[key]
 			if (val) {
 				val.count = util.add(val.count, item.count)
+				val.totalPrice = util.mul(val.count, val.price)
 			} else {
 				obj[key] = item
 			}
