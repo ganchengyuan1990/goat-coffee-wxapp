@@ -25,6 +25,7 @@ Component({
   data: {
     // 展示规格
     customed: '',
+    customedKey: '',
     // 展示价格
     price: 0,
     totalPrice: 0,
@@ -70,7 +71,8 @@ Component({
         count: this.data.count,
         totalPrice: this.data.totalPrice,
         price: this.data.price,
-        spec: spec
+        spec: spec,
+        customedKey: this.data.customedKey
       }))
       this.toggleMenu()
     },
@@ -160,12 +162,15 @@ Component({
         dataset: true
       }, res => {
         let list = res
-        let tags = list.map(item => {
-          let tag = item.dataset.val
-          return tag
+        let tags = []
+        let keys = []
+        list.forEach(item => {
+          tags.push(item.dataset.val)
+          keys.push(item.dataset.code)
         })
         this.setData({
-          customed: tags.join('/')
+          customed: tags.join('/'),
+          customedKey: this.data.info.id + '-' + keys.join('-')
         })
       }).exec();
     }

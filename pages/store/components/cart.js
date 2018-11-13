@@ -17,6 +17,10 @@ Component({
     fee: {
       type: String,
       value: ''
+    },
+    isCartPanelShow: {
+      type: Boolean,
+      value: false
     }
   },
 
@@ -24,7 +28,6 @@ Component({
    * 组件的初始数据
    */
   data: {
-    isCartPanelShow: false,
     totalPrice: 0,
     cartTotalPrice: 0,
     count: 1,
@@ -38,90 +41,98 @@ Component({
    */
   methods: {
     toggleCart() {
-      let isShow = this.data.isCartPanelShow
-      let self = this
+      // let isShow = this.data.isCartPanelShow
+      // let self = this
 
-      if (!isShow) {
-        this.toggleTabBar(false, () => {
-          self.setData({
-            isCartPanelShow: !isShow
-          })
-        })
-      } else {
-        this.toggleTabBar(true)
-        self.setData({
-          isCartPanelShow: !isShow
-        })
-      }
+      // if (!isShow) {
+      //   this.toggleTabBar(false, () => {
+      //     self.setData({
+      //       isCartPanelShow: !isShow
+      //     })
+      //   })
+      // } else {
+      //   this.toggleTabBar(true)
+      //   self.setData({
+      //     isCartPanelShow: !isShow
+      //   })
+      // }
+      this.triggerEvent('togglecart')
     },
-    toggleTabBar(isShow, callback) {
-      if (!isShow) {
-        wx.hideTabBar({
-          animation: true,
-          success() {
-            callback && callback()
-          },
-          fail() {}
-        })
-      } else {
-        wx.showTabBar({
-          animation: true,
-          success() {
-            callback && callback()
-          },
-          fail() {}
-        })
-      }
-    },
+    // toggleTabBar(isShow, callback) {
+    //   if (!isShow) {
+    //     wx.hideTabBar({
+    //       animation: true,
+    //       success() {
+    //         callback && callback()
+    //       },
+    //       fail() {}
+    //     })
+    //   } else {
+    //     wx.showTabBar({
+    //       animation: true,
+    //       success() {
+    //         callback && callback()
+    //       },
+    //       fail() {}
+    //     })
+    //   }
+    // },
     /**
      * TODOS, 待优化
      *
      */ 
     increase(e) {
       let idx = e.currentTarget.dataset.idx
-      let count = this.data.info[idx].count
-      let price = this.data.info[idx].price
+      let info = this.data.info
+      let count = info[idx].count
+      let price = info[idx].price
       count++
       console.log(idx, count, 'count')
-      let path = `info[${idx}]`
-      this.setData({
-        [`${path}.count`]: count,
-        [`${path}.totalPrice`]: util.mul(price, count)
-      })
-      this.setTotalResult()
+      info[idx].count = count
+      info[idx].totalPrice = util.mul(price, count)
+      // this.setData({
+      //   info: info
+      // })
+      this.saveCart(info)
     },
     decrease(e) {
       let idx = e.currentTarget.dataset.idx
-      let count = this.data.info[idx].count
-      let price = this.data.info[idx].price
-      let path = `info[${idx}]`
+      let info = this.data.info
+      let count = info[idx].count
+      let price = info[idx].price
       count--
       if (count > 0) {
-        this.setData({
-          [`${path}.count`]: count,
-          [`${path}.totalPrice`]: util.mul(price, count)
-        })
+        info[idx].count = count
+        info[idx].totalPrice = util.mul(price, count)
+        // this.setData({
+        //   info: info
+        // })
       } else {
-        let data = this.data.info
-        console.log(data, 'cart data');
-        data.splice(idx,1)
-        this.setData({
-          info: data
-        })
+        info.splice(idx,1)
+        // this.setData({
+        //   info: info
+        // })
       }
-      this.setTotalResult()
+      this.saveCart(info)
     },
     /** 
      * 清空购物车
     */
     clearCart() {
-      this.setData({
-        totalPrice: 0,
-        count: 0,
-        info: []
-      })
-      wx.removeStorage({
-        key: 'CART_LIST'
+      // this.setData({
+      //   totalPrice: 0,
+      //   count: 0,
+      //   info: []
+      // })
+      // wx.removeStorage({
+      //   key: 'CART_LIST'
+      // })
+      this.saveCart([])
+    },
+    saveCart(info) {
+      this.setTotalResult()
+      this.triggerEvent('save', {
+        cartList: info
       })
     },
     setTotalResult() {
@@ -129,6 +140,7 @@ Component({
       if (!val) {
         return
       }
+
       let count = 0
       let totalPrice = 0
       let cartTotalPrice = 0

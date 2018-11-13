@@ -128,8 +128,9 @@
     font-size: 28rpx;
 }
 .cart-panel .list-wrap {
-    flex: 1;
+    flex: none;
     overflow-y: scroll;
+    height: 390rpx;
 }
 .list-wrap .list-item {
     display: flex;

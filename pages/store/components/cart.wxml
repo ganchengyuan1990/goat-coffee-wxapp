@@ -29,7 +29,7 @@
                       </view>
                       <view class="btn-clear" bind:tap="clearCart">清空购物车</view>
                   </view>
-                  <view class="list-wrap">
+                  <scroll-view scroll-y="{{true}}" class="list-wrap">
                       <view class="list-item" wx:for="{{info}}" wx:key="{{index}}">
                             <view class="cnt">
                                 <view class="tt">{{item.productName}}￥{{item.totalPrice}}</view>
@@ -41,7 +41,7 @@
                                 <view class="ico ico-plus" bind:tap="increase" data-idx="{{index}}">+</view>
                             </view>
                       </view>
-                  </view>
+                  </scroll-view>
                   <view class="fee">{{remain === 0 ? '免配送费': '配送费￥'+fee}}</view>
               </view>
               <view class="ft">
