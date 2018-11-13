@@ -1,0 +1,25 @@
+@import '../common/list.wxss';
+
+.profile-wrap .avatar {
+    width: 60rpx;
+    height: 60rpx;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.btn-wrap {
+    position: relative;
+    width: 100%;
+    margin-top: 164rpx;
+    padding: 0 40rpx;
+    box-sizing: border-box;
+}
+.btn-wrap .btn-save {
+    width: 100%;
+    padding: 34rpx 0;
+    border-radius: 10rpx;
+    color: #fff;
+    background: #000;
+    font-size: 36rpx;
+    text-align: center;
+    line-height: 1;
+}

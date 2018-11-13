@@ -1,0 +1,45 @@
+<view class="profile-wrap">
+    <view class="list-wrap">
+        <view class="item" bind:tap="chooseImage">
+            <view class="tt">
+                <text>头像</text>
+            </view>
+            <view class="cnt">
+                <view class="desc">
+                    <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+                </view>
+                <view class="icon-arrow"></view>
+            </view>
+        </view>
+        <view class="item" bind:tap="goEdit">
+            <view class="tt">
+                <text>昵称</text>
+            </view>
+            <view class="cnt">
+                <view class="desc">{{userInfo.nickName}}</view>
+                <view class="icon-arrow"></view>
+            </view>
+        </view>
+        <view class="item" bind:tap="showGenderList">
+            <view class="tt">
+                <text>性别</text>
+            </view>
+            <view class="cnt">
+                <view class="desc">{{userInfo.gender === 1 ? '男': '女'}}</view>
+                <view class="icon-arrow"></view>
+            </view>
+        </view>
+        <view class="item">
+            <view class="tt">
+                <text>绑定手机号</text>
+            </view>
+            <view class="cnt">
+                <view class="desc dark">13312345678</view>
+                <!-- <view class="icon-arrow"></view> -->
+            </view>
+        </view>
+    </view>
+    <view class="btn-wrap">
+        <view class="btn-save">保存</view>
+    </view>
+</view>
