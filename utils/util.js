@@ -100,6 +100,25 @@ function div(a, b) {
   } catch (g) { }
   return c = Number(a.toString().replace(".", "")), d = Number(b.toString().replace(".", "")), mul(c / d, Math.pow(10, f - e));
 }
+
+function throttle(fn = () => {}, delay = 0) {
+  let last = +new Date()
+  let timer = null
+  return function () {
+    let self = this
+    let args = arguments
+    let now = +new Date()
+    if (now - last > delay) {
+      clearTimeout(timer)
+      fn.apply(self, args)
+      last = now
+    } else {
+      timer = setTimeout(function () {
+        fn.apply(self, args)
+      }, delay)
+    }
+  }
+}
 module.exports = {
   formatTime: formatTime,
   wx2promise: wx2promise,
@@ -107,5 +126,6 @@ module.exports = {
   add: add,
   sub: sub,
   mul: mul,
-  div: div
+  div: div,
+  throttle: throttle
 }

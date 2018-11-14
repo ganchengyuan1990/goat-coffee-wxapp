@@ -1,18 +1,18 @@
-// pages/order/index.js
+import model from '../../utils/model.js'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    orderList: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.fetchOrderList()
   },
 
   /**
@@ -49,18 +49,25 @@ Page({
   onPullDownRefresh: function () {
 
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  fetchOrderList() {
+    let userInfo = wx.getStorageSync('token')
+    if (!userInfo.token) {
+      wx.navigateTo({
+        url: '/pages/login/login'
+      })
+      return
+    }
+    model('order/detail/list', {
+      page: 1,
+      userId: userInfo.user.id
+    }).then(res => {
+      console.log('order res', res)
+      const {data} = res
+      if (data && data.length > 0) {
+        this.setData({
+          orderList: data
+        })
+      }
+    })
   }
 })
