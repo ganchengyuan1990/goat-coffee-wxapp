@@ -76,20 +76,6 @@ Page({
     },
 
     register () {
-        // model('my/user/login', {
-        //     phoneNum: this.data.phoneNum,
-        //     sms_code: this.data.phoneCode,
-        //     openId: wx.getStorageSync('openid'),
-        //     user_name: wx.getStorageSync('personal_info').nickName,
-        //     sysinfo: JSON.stringify(this.data.sysinfo)
-        // }, 'POST', {
-        //     'Accept': 'application/json'
-        // }).then(data => {
-        //     this.setData({
-        //         token: data.data
-        //     })
-        //     wx.setStorageSync('token', data.data);
-        // })
         model(`my/user/login?phoneNum=${this.data.phoneNum}&sms_code=${this.data.phoneCode}&openId=${wx.getStorageSync('openid')}&user_name=${wx.getStorageSync('personal_info').nickName}`, {
             sysinfo: JSON.stringify(this.data.sysinfo)
         }, 'POST', {

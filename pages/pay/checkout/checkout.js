@@ -42,7 +42,8 @@ Page({
     payAmount: 0,
     discountType: 1,
     couponUserRelation: '',
-    checkedExpress: {}
+    checkedExpress: {},
+    deliverFee: 0
   },
   onLoad: function (options) {
 
@@ -102,7 +103,7 @@ Page({
       if (data.data) {
         let result = parseFloat(data.data[0].discountPrice).toFixed(2);
         let _a = new BigNumber(this.data.payAmount);
-        let _b = new BigNumber(this.data.options.deliverFee);
+        let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
         let actualPrice = _a.plus(_b).minus(result);
         let couponArr = data.data[0].solutionList;
         let couponUserRelation = ''
@@ -118,7 +119,7 @@ Page({
         });
       } else {
         let _a = new BigNumber(this.data.payAmount);
-        let _b = new BigNumber(this.data.options.deliverFee);
+        let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
         let actualPrice = _a.plus(_b);
          this.setData({
            actualPrice: parseFloat(actualPrice),
@@ -170,15 +171,19 @@ Page({
   chooseSelf () {
     this.setData({
       chooseSelf: true,
-      chooseExpress: false
+      chooseExpress: false,
+      deliverFee: 0,
     })
+    this.getBestCouponByProduct();
   },
 
   chooseExpress () {
     this.setData({
       chooseSelf: false,
-      chooseExpress: true
+      chooseExpress: true,
+      deliverFee: this.data.options.deliverFee
     })
+    this.getBestCouponByProduct();
   },
   selectAddress() {
     wx.navigateTo({
@@ -235,7 +240,7 @@ Page({
       userAddressId: 3,
       userId: 1,
       discountType: this.data.discountType,
-      deliverFee: this.data.options.deliverFee,
+      deliverFee: this.data.deliverFee,
       payAmount: this.data.actualPrice,
       orderType: 1,
       payType: 1,

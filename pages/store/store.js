@@ -40,14 +40,6 @@ Page({
 	 */
 	onLoad(options) {
 		let self = this
-
-		let token = wx.getStorageSync('token')
-		if (!token) {
-			wx.navigateTo({
-				url: '/pages/login/login'
-			})
-			return
-		}
 		let addrId = options.userAddressId
 		let fromPage = options.from
 		if (fromPage === 'selfExtraction') {
