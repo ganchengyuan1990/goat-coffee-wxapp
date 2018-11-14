@@ -1,3 +1,25 @@
+
+<wxs module="filter">
+    var filters = {
+        getOrderState: function(code) {
+            switch(code) {
+                case '00': return '待支付';
+                case '01': return '待接单';
+                case '02': return '制作中';
+                case '03': return '待配送';
+                case '04': return '配送中';
+                case '100': return '已完成';
+                case '30': return '慢必赔';
+                case '31': return '取消订单';
+                case '40': return '退款中';
+                case '41': return '退款完成';
+                default: return ''
+            }
+        },
+    }
+
+    module.exports=filters
+</wxs>
 <view class="orider-wrap">
     <view class="filter-wrap">
         <view class="tab">
@@ -16,15 +38,30 @@
         </view> -->
     </view>
     <view class="list-wrap">
-        <view class="panel">
+        <view class="panel" wx:for="{{orderList}}" wx:key="{{item.id}}">
             <view class="panel-hd">
-                <view>外卖订单：21298478395726</view>
-                <view class="active">进行中</view>
+                <view>{{item.consumeType}}订单：{{item.id}}</view>
+                <view class="active">{{filter.getOrderState(item.orderState)}}</view>
             </view>
             <view class="panel-bd">
                 <view class="tt">北京市海淀区清华东路35号</view>
                 <view class="desc">标准美式咖啡等 共两件商品</view>
-                <view class="date">2018-09-28 10：20</view>
+                <view class="date">2018-09-28 10:20</view>
+            </view>
+            <view class="panel-ft">
+                <view class="price">￥{{item.payAmount}}</view>
+                <view class="btn-buy">再来一单</view>
+            </view>
+        </view>
+        <view class="panel">
+            <view class="panel-hd">
+                <view>外卖订单：21298478395726</view>
+                <view>已完成</view>
+            </view>
+            <view class="panel-bd">
+                <view class="tt">北京市海淀区清华东路35号</view>
+                <view class="desc">标准美式咖啡等 共两件商品</view>
+                <view class="date">2018-09-28 10:20</view>
             </view>
             <view class="panel-ft">
                 <view class="price">￥21</view>
@@ -39,22 +76,7 @@
             <view class="panel-bd">
                 <view class="tt">北京市海淀区清华东路35号</view>
                 <view class="desc">标准美式咖啡等 共两件商品</view>
-                <view class="date">2018-09-28 10：20</view>
-            </view>
-            <view class="panel-ft">
-                <view class="price">￥21</view>
-                <view class="btn-buy">再来一单</view>
-            </view>
-        </view>
-        <view class="panel">
-            <view class="panel-hd">
-                <view>外卖订单：21298478395726</view>
-                <view>已完成</view>
-            </view>
-            <view class="panel-bd">
-                <view class="tt">北京市海淀区清华东路35号</view>
-                <view class="desc">标准美式咖啡等 共两件商品</view>
-                <view class="date">2018-09-28 10：20</view>
+                <view class="date">2018-09-28 10:20</view>
             </view>
             <view class="panel-ft">
                 <view class="price">￥21</view>

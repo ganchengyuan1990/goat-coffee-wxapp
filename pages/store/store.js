@@ -2,10 +2,15 @@
 const app = getApp();
 import model from '../../utils/model.js'
 import util from '../../utils/util.js'
-let timer;
+import { BigNumber } from '../../utils/bignumber.min';
+function BN(...args) {
+	return new BigNumber(...args)
+}
 let touchTimer = null
 let touchObj = {}
 let touchDy = 0
+
+
 Page({
 	/**
 	 * 页面的初始数据
@@ -39,22 +44,17 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
+		console.log(options, 'options');
+		
 		let self = this
-
-		let token = wx.getStorageSync('token')
-		console.log(token)
-		if (!token) {
-			wx.navigateTo({
-				url: '/pages/login/login'
-			})
-			return
-		}
 		let addrId = options.userAddressId
 		let fromPage = options.from
 		if (fromPage === 'selfExtraction') {
+			
 			this.setData({
 				isSelfTaking: true
 			})
+			
 		}
 		if (fromPage === 'delivery') {
 			this.setData({
@@ -67,7 +67,7 @@ Page({
 		wx.getStorage({
 			key: 'CART_LIST',
 			success(res) {
-				console.log(res, 'storage');
+				// console.log(res, 'storage');
 				let data = JSON.parse(res.data)
 				if (data && Array.isArray(data)) {
 					let arr = self.data.cartList
@@ -175,12 +175,12 @@ Page({
 			lat: 31.239629,
 			page: 1
 		}).then(res => {
-			console.log(res, 'location')
+			// console.log(res, 'location')
 
 			const {data} = res
 			if (data && data.length > 0) {
 				let storeInfo = data[0]
-				console.log(storeInfo, 'storeInfo');
+				// console.log(storeInfo, 'storeInfo');
 				wx.setStorage({
 					key: 'STORE_INFO',
 					data: JSON.stringify(storeInfo)
@@ -236,7 +236,7 @@ Page({
 		
 	},
 	selectNav(e) {
-		console.log(e.currentTarget.dataset.index, e.currentTarget.dataset.navid)
+		// console.log(e.currentTarget.dataset.index, e.currentTarget.dataset.navid)
 		this.setData({
 			activeIndex: e.currentTarget.dataset.index,
 			viewToList: e.currentTarget.dataset.navid
@@ -245,9 +245,7 @@ Page({
 
 	// 手机端有延迟 节流函数效果不好 用防抖函数凑合
 	scroll(e) {
-		// console.log(e);
-		clearTimeout(timer);
-		timer = setTimeout(() => {
+		(util.throttle(() => {
 			let srollTop = e.detail.scrollTop;
 			for (let i = 0; i < this.data.heigthArr.length; i++) {
 				if (
@@ -270,7 +268,7 @@ Page({
 					return;
 				}
 			}
-		}, 100)
+		}, 100))()
 	},
 	orderProduct(e) {
 		let groupIdx = e.currentTarget.dataset.groupidx
@@ -354,11 +352,17 @@ Page({
 		}
 	},
 	checkout(e) {
+		let token = wx.getStorageSync('token').token
+		if (!token) {
+			wx.navigateTo({
+				url: '/pages/login/login'
+			})
+			return
+		}
 		let info = this.data
-		
 		let cartList = e.detail.cart
 		let totalPrice = e.detail.totalPrice
-		console.log(cartList, 'cartList')
+		// console.log(cartList, 'cartList')
 		if (cartList.length === 0) {
 			return
 		}
@@ -413,12 +417,17 @@ Page({
 		let type = e.target.dataset.delivery
 		if (type === 'taking') {
 			// TODOS callback set address
+			// wx.navigateTo({
+			// 	url: '/pages/transport/transport?from=store&type=2'
+			// })
 			this.setData({
 				isSelfTaking: true
 			})
 		}
 		if (type === 'delivery') {
-			// TODOS
+			// wx.navigateTo({
+			// 	url: '/pages/transport/transport?from=store&type=1'
+			// })
 			this.setData({
 				isSelfTaking: false
 			})
@@ -437,8 +446,8 @@ Page({
 			let key = item.customedKey
 			let val = obj[key]
 			if (val) {
-				val.count = util.add(val.count, item.count)
-				val.totalPrice = util.mul(val.count, val.price)
+				val.count = BN(val.count).plus(item.count).valueOf()
+				val.totalPrice = BN(val.count).multipliedBy(val.price).valueOf()
 			} else {
 				obj[key] = item
 			}

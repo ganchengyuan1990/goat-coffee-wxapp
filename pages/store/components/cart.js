@@ -1,5 +1,9 @@
 // pages/store/components/cart.js
-import util from '../../../utils/util.js'
+import { BigNumber } from '../../../utils/bignumber.min';
+
+function BN(...args) {
+  return new BigNumber(...args)
+}
 Component({
   /**
    * 组件的属性列表
@@ -63,7 +67,7 @@ Component({
       count++
       console.log(idx, count, 'count')
       info[idx].count = count
-      info[idx].totalPrice = util.mul(price, count)
+      info[idx].totalPrice = BN(price).multipliedBy(count).valueOf()
       // this.setData({
       //   info: info
       // })
@@ -77,7 +81,7 @@ Component({
       count--
       if (count > 0) {
         info[idx].count = count
-        info[idx].totalPrice = util.mul(price, count)
+        info[idx].totalPrice = BN(price).multipliedBy(count).valueOf()
       } else {
         info.splice(idx,1)
       }
@@ -106,12 +110,12 @@ Component({
       let cartTotalPrice = 0
       let remain = 0
       val.forEach((item) => {
-        totalPrice = util.add(totalPrice, item.totalPrice)
-        count = util.add(count, item.count)
+        totalPrice = BN(totalPrice).plus(item.totalPrice).valueOf()
+        count = BN(count).plus(item.count).valueOf()
       }, 0)
-      remain = totalPrice > 30 ? 0 : util.sub(30, totalPrice)
+      remain = totalPrice > 30 ? 0 : BN(30).minus(totalPrice).valueOf()
       if (remain > 0 && totalPrice > 0 && !this.data.isSelfTaking) {
-        cartTotalPrice = util.add(totalPrice, this.data.fee)
+        cartTotalPrice = BN(totalPrice).plus(this.data.fee).valueOf()
       } else {
         cartTotalPrice = totalPrice
       }

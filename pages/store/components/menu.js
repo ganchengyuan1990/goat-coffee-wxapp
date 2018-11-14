@@ -1,4 +1,10 @@
-import util from '../../../utils/util.js'
+import {
+  BigNumber
+} from '../../../utils/bignumber.min';
+
+function BN(...args) {
+  return new BigNumber(...args)
+}
 Component({
   /**
    * 组件的属性列表
@@ -147,9 +153,11 @@ Component({
     setPrice() {
       let count = this.data.count
       let price = Number(this.data.price)
+      console.log(BN('0.98').valueOf());
+      
       if (!isNaN(price)) {
         this.setData({
-          totalPrice: util.mul(count, price)
+          totalPrice: BN(price).multipliedBy(count).valueOf()
         })
       }
     },
