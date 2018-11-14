@@ -230,6 +230,7 @@ Page({
   },
   submitOrder: function () {
     let param = {
+      openId: wx.getStorageSync('openid'),
       storeId: this.data.options.storeId,
       userAddressId: 3,
       userId: 1,
@@ -240,6 +241,9 @@ Page({
       payType: 1,
       discountIds: this.data.couponUserRelation.substr(0, this.data.couponUserRelation.length - 1)
       // discountIds: '1,2,3'
+    }
+    if (!param.discountIds) {
+      delete param.discountIds;
     }
     let paramStr = '';
     let keys = Object.keys(param);
@@ -261,18 +265,24 @@ Page({
     }).then(data => {
         if (data.code === 'suc') {
           wx.removeStorageSync('CART_LIST');
+          let payParamStr = '';
+          let params = data.data;
+          for (let key of Object.keys(params)) {
+            payParamStr += `${key}=${params[key]}&`;
+          }
           wx.navigateTo({
-            url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
+            // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
+            url: `/pages/pay/normalPay/normalPay?${payParamStr}`
           });
         }
     }).catch(e => {
-      // this.setData({
-      //   errorToast: true,
-      //   toastInfo: e
-      // })
-      wx.navigateTo({
-        url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
-      });
+      this.setData({
+        errorToast: true,
+        toastInfo: e
+      })
+      // wx.navigateTo({
+      //   url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
+      // });
     })
     
 
