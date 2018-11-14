@@ -1,0 +1,34 @@
+<view class="user-container">
+    <view class="head-wrap">
+        <view class="center" bind:tap="goProfile">
+            <view class="avatar">
+                <image src="{{userInfo.avatarUrl}}"></image>
+            </view>
+            <view class="nick">用户昵称</view>
+            <view class="name">用户姓名</view>
+        </view>
+    </view>
+    <view class="list-wrap">
+        <view class="item">
+            <view class="tt">
+                <image mode="widthFix" class="prefix-icon" src="../../../icons/user-addr.png"></image>
+                <text>收货地址</text>
+            </view>
+            <view class="icon-arrow"></view>
+        </view>
+        <view class="item">
+            <view class="tt">
+                <image mode="widthFix" class="prefix-icon" src="../../../icons/user-coupon.png"></image>
+                <text>优惠券</text>
+            </view>
+            <view class="icon-arrow"></view>
+        </view>
+        <view class="item">
+            <view class="tt">
+                <image mode="widthFix" class="prefix-icon" src="../../../icons/user-discount.png"></image>
+                <text>兑换券</text>
+            </view>
+            <view class="icon-arrow"></view>
+        </view>
+    </view>
+</view>

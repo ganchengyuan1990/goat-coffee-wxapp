@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 16,
+			"current": 15,
 			"list": [
 				{
 					"id": -1,
@@ -126,9 +126,9 @@
 					"query": "lesson_id=27"
 				},
 				{
-					"id": -1,
+					"id": 15,
 					"name": "user",
-					"pathName": "pages/user/user",
+					"pathName": "pages/order/index",
 					"query": ""
 				},
 				{

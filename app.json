@@ -11,17 +11,20 @@
     "pages/pay/backup/backup",
     "pages/pay/share_success/share_success",
     "pages/pay/share_coupon/share_coupon",
-
     "pages/pin/checkout/checkout",
     "pages/pin/pay_success/pay_success",
     "pages/pin/pin_list/pin_list",
     "pages/pin/pin_detail/pin_detail",
-
     "pages/my/address_list/address_list",
     "pages/my/address/address",
     "pages/transport/transport",
     "pages/promotion-list/promotion-list",
-    "pages/coupon/coupon"
+    "pages/coupon/coupon",
+    "pages/my/index/index",
+    "pages/my/profile/profile",
+    "pages/my/profile/edit",
+    "pages/order/index",
+    "pages/order/detail"
   ],
   "window": {
     "backgroundTextStyle": "dark",
@@ -38,26 +41,26 @@
       {
         "pagePath": "pages/store/store",
         "text": "点单",
-        "iconPath": "./icons/index.png",
-        "selectedIconPath": "./icons/index_select.png"
+        "iconPath": "./icons/bean.png",
+        "selectedIconPath": "./icons/bean-select.png"
       },
       {
         "pagePath": "pages/pin/pin_list/pin_list",
         "text": "拼团",
-        "iconPath": "./icons/index.png",
-        "selectedIconPath": "./icons/index_select.png"
+        "iconPath": "./icons/coupon.png",
+        "selectedIconPath": "./icons/coupon-select.png"
       },
       {
-        "pagePath": "pages/cart/cart",
+        "pagePath": "pages/order/index",
         "text": "订单",
-        "iconPath": "./icons/cart.png",
-        "selectedIconPath": "./icons/cart_select.png"
+        "iconPath": "./icons/list.png",
+        "selectedIconPath": "./icons/list-select.png"
       },
       {
-        "pagePath": "pages/user/user",
+        "pagePath": "pages/my/index/index",
         "text": "我的",
         "iconPath": "./icons/user.png",
-        "selectedIconPath": "./icons/user_select.png"
+        "selectedIconPath": "./icons/user-select.png"
       }
     ]
   }

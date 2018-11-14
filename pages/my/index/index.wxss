@@ -1,0 +1,46 @@
+@import '../common/list.wxss';
+.user-container .head-wrap {
+    height: 450rpx;
+}
+
+.head-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.head-wrap .avatar {
+    flex: none;
+    width: 168rpx;
+    height: 168rpx;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.head-wrap .avatar image {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.head-wrap .nick {
+    margin-top: 20rpx;
+    font-size: 32rpx;
+    line-height: 44rpx;
+    color: #333;
+}
+
+.head-wrap .name {
+    margin-top: 8rpx;
+    font-size: 22rpx;
+    line-height: 32rpx;
+    color: #999;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

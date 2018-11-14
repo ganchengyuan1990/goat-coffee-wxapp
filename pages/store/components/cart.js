@@ -41,42 +41,8 @@ Component({
    */
   methods: {
     toggleCart() {
-      // let isShow = this.data.isCartPanelShow
-      // let self = this
-
-      // if (!isShow) {
-      //   this.toggleTabBar(false, () => {
-      //     self.setData({
-      //       isCartPanelShow: !isShow
-      //     })
-      //   })
-      // } else {
-      //   this.toggleTabBar(true)
-      //   self.setData({
-      //     isCartPanelShow: !isShow
-      //   })
-      // }
       this.triggerEvent('togglecart')
     },
-    // toggleTabBar(isShow, callback) {
-    //   if (!isShow) {
-    //     wx.hideTabBar({
-    //       animation: true,
-    //       success() {
-    //         callback && callback()
-    //       },
-    //       fail() {}
-    //     })
-    //   } else {
-    //     wx.showTabBar({
-    //       animation: true,
-    //       success() {
-    //         callback && callback()
-    //       },
-    //       fail() {}
-    //     })
-    //   }
-    // },
     /**
      * TODOS, 待优化
      *
@@ -104,14 +70,8 @@ Component({
       if (count > 0) {
         info[idx].count = count
         info[idx].totalPrice = util.mul(price, count)
-        // this.setData({
-        //   info: info
-        // })
       } else {
         info.splice(idx,1)
-        // this.setData({
-        //   info: info
-        // })
       }
       this.saveCart(info)
     },
@@ -119,14 +79,6 @@ Component({
      * 清空购物车
     */
     clearCart() {
-      // this.setData({
-      //   totalPrice: 0,
-      //   count: 0,
-      //   info: []
-      // })
-      // wx.removeStorage({
-      //   key: 'CART_LIST'
-      // })
       this.saveCart([])
     },
     saveCart(info) {
