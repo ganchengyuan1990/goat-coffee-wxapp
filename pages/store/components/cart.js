@@ -21,6 +21,14 @@ Component({
     isCartPanelShow: {
       type: Boolean,
       value: false
+    },
+    isSelfTaking: {
+      type: Boolean,
+      observer(newVal, oldVal) {
+        if (typeof newVal !== 'undefined') {
+          this.setTotalResult()
+        }
+      }
     }
   },
 
@@ -102,7 +110,7 @@ Component({
         count = util.add(count, item.count)
       }, 0)
       remain = totalPrice > 30 ? 0 : util.sub(30, totalPrice)
-      if (remain > 0 && totalPrice > 0) {
+      if (remain > 0 && totalPrice > 0 && !this.data.isSelfTaking) {
         cartTotalPrice = util.add(totalPrice, this.data.fee)
       } else {
         cartTotalPrice = totalPrice

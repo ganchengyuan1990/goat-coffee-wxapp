@@ -21,8 +21,8 @@
     </view>
     <view class="delivery">
       <view class="btn-delivery">
-        <view class="item {{isSelfTaking ? 'active':''}}" bind:tap="selectAddress">自提</view>
-        <view class="item {{!isSelfTaking ? 'active':''}}">外送</view>
+        <view class="item {{isSelfTaking ? 'active':''}}" bind:tap="selectAddress" data-delivery="taking">自提</view>
+        <view class="item {{!isSelfTaking ? 'active':''}}" bind:tap="selectAddress" data-delivery="delivery">外送</view>
       </view>
     </view>
   </view>
@@ -88,6 +88,7 @@
       isCartPanelShow="{{isCartPanelShow}}" 
       info="{{cartList}}" 
       fee="{{storeInfo.deliverFee}}" 
+      isSelfTaking="{{isSelfTaking}}"
       bind:checkout="checkout" 
       bind:togglecart="toggleCart"
       bind:save="saveCart"></cart>

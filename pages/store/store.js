@@ -42,6 +42,7 @@ Page({
 		let self = this
 
 		let token = wx.getStorageSync('token')
+		console.log(token)
 		if (!token) {
 			wx.navigateTo({
 				url: '/pages/login/login'
@@ -404,10 +405,24 @@ Page({
 			url: url
 		})
 	},
-	selectAddress() {
-		wx.navigateTo({
-			url: '/pages/my/address_list/address_list?from=store'
-		})
+	selectAddress(e) {
+		// wx.navigateTo({
+		// 	url: '/pages/my/address_list/address_list?from=store'
+		// })
+		console.log(e, 'select')
+		let type = e.target.dataset.delivery
+		if (type === 'taking') {
+			// TODOS callback set address
+			this.setData({
+				isSelfTaking: true
+			})
+		}
+		if (type === 'delivery') {
+			// TODOS
+			this.setData({
+				isSelfTaking: false
+			})
+		}
 	},
 	// TODOS 合并相同品类
 	mergeCart(list) {

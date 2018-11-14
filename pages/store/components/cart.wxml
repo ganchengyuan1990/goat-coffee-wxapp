@@ -1,6 +1,6 @@
   <wxs module="filter">
-    var getFeeCnt = function(remain) {
-        if (remain === 0) {
+    var getFeeCnt = function(remain, isSelfTaking) {
+        if (remain === 0 || isSelfTaking) {
             return '恭喜您，此单已经不需要配送费啦'
         } else {
             return '满30减运费，您只差' + remain + '元'
@@ -18,7 +18,7 @@
           <view class="top" bindtap="toggleCart"></view>
           <view class="bottom">
               <view class="hd">
-                  <view>{{filter.getFeeCnt(remain)}}</view>
+                  <view>{{filter.getFeeCnt(remain, isSelfTaking)}}</view>
                   <view class="btn-more">去凑单<text>></text></view>
               </view>
               <view class="bd">
@@ -42,7 +42,7 @@
                             </view>
                       </view>
                   </scroll-view>
-                  <view class="fee">{{remain === 0 ? '免配送费': '配送费￥'+fee}}</view>
+                  <view class="fee">{{remain === 0 || isSelfTaking ? '免配送费': '配送费￥'+fee}}</view>
               </view>
               <view class="ft">
                   <view class="total">
