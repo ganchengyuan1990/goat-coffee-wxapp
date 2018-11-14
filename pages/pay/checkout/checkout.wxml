@@ -9,8 +9,11 @@
             </view>
         </view>
 
-        <view class="float_right">
+        <view class="float_right" wx:if="{{chooseSelf}}">
             约10:24送达
+        </view>
+        <view class="float_right" wx:if="{{chooseExpress}}">
+            约10:24可取餐
         </view>
     </view>
     <view class="address-box" bindtap="goAddressList">
@@ -19,7 +22,7 @@
             <image class="arrow" src="../../../images/arrow.png"/>
         </view>
         
-        <view class="address-item" bindtap="selectAddress" wx:if="{{checkedAddress}}">
+        <view class="address-item" bindtap="selectAddress" wx:if="{{chooseSelf}}">
             <view class="address">
                 自提门店
             </view>
@@ -36,14 +39,33 @@
                 <image src="/static/images/address_right.png"></image>
             </view> -->
         </view>
-        <view class="address-item address-empty" bindtap="addAddress" wx:if="{{checkedAddress.id <= 0}}">
+
+        <view class="address-item" bindtap="selectAddress" wx:if="{{chooseExpress}}">
+            <view class="address">
+                配送地址
+            </view>
+            <view class="l">
+                <!-- <text class="default">默认</text> -->
+                <!-- <text class="address">{{checkedExpress.storeName}}</text> -->
+                <text class="address">{{checkedExpress.city}}{{checkedExpress.area}}{{checkedExpress.address}}</text>
+            </view>
+            <view class="m">
+                <!-- <text class="name">{{checkedExpress.city}}{{checkedExpress.area}}{{checkedExpress.address}}</text> -->
+                <text class="name">{{checkedExpress.contact}}</text>
+                <text class="mobile">{{checkedExpress.tel}}</text>
+            </view>
+            <!-- <view class="r">
+                <image src="/static/images/address_right.png"></image>
+            </view> -->
+        </view>
+        <!-- <view class="address-item address-empty" bindtap="addAddress" wx:if="{{!chooseExpress.contact}}">
             <view class="m">
                还没有收货地址，去添加
             </view>
             <view class="r">
                 <image src="/static/images/address_right.png"></image>
             </view>
-        </view>
+        </view> -->
     </view>
 
     <!-- <view class="coupon-box">

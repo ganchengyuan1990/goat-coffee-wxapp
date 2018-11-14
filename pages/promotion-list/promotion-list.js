@@ -5,11 +5,13 @@ import model from '../../utils/model';
 Page({
     data: {
         array: [],
-        activedItems: [{
-            title: 'ssds',
-            subtitle: 'ssss',
-            discountMoney: 50
-        }],
+        // activedItems: [{
+        //     title: 'ssds',
+        //     subtitle: 'ssss',
+        //     discountMoney: 50
+        // }],
+        couponItems: [],
+        voucherItems: [],
         unActivedItems: [],
         chosenId: -1,
         canUseRedPacketMeanwhile: false,
@@ -97,7 +99,7 @@ Page({
                     element.coupon.availabileEndTime = element.coupon.availabileEndTime.split('.')[0]
                 });
                 this.setData({
-                    activedItems: data.data
+                    couponItems: data.data
                 })
             })
         } else {
@@ -107,11 +109,12 @@ Page({
             }).then(data => {
                 let result = data.data;
                 result.forEach(element => {
-                    element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0]
-                    element.coupon.availabileEndTime = element.coupon.availabileEndTime.split('.')[0]
+                    element.voucher.availabileStartTime = element.voucher.availabileStartTime.split('.')[0];
+                    element.voucher.availabileEndTime = element.voucher.availabileEndTime.split('.')[0];
+                    element.counpon = element.voucher;
                 });
                 this.setData({
-                    activedItems: data.data
+                    voucherItems: data.data
                 })
             })
         }

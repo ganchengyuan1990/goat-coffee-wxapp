@@ -170,6 +170,10 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
 .no_coupon_wrapper {
   height: 100vh;
 }
+
+.no_margin_left {
+  margin-left: 0 !important;
+}
 .no_coupon {
   height: 200rpx;
   width: 200rpx;

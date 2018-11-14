@@ -41,7 +41,8 @@ Page({
     product: [],
     payAmount: 0,
     discountType: 1,
-    couponUserRelation: ''
+    couponUserRelation: '',
+    checkedExpress: {}
   },
   onLoad: function (options) {
 
@@ -49,6 +50,7 @@ Page({
 
     this.getBestCouponByProduct();
 
+    this.getAddressList();
 
     // this.setData({
     //   goodsTotalPrice: parseInt(options.price)
@@ -77,6 +79,20 @@ Page({
 
   },
 
+  getAddressList () {
+    model('my/address/list', {
+      userId: 1,
+      // openid: wx.getStorageSync('openid')
+    }).then(data => {
+      if (data.data) {
+        let list = data.data;
+        this.setData({
+          checkedExpress: list[0]
+        });
+      }
+    })
+  },
+
   getBestCouponByProduct () {
     
     model(`home/coupon/getBestCouponByProduct`, {
@@ -100,6 +116,14 @@ Page({
           discountType: 1,
           couponUserRelation: couponUserRelation
         });
+      } else {
+        let _a = new BigNumber(this.data.payAmount);
+        let _b = new BigNumber(this.data.options.deliverFee);
+        let actualPrice = _a.plus(_b);
+         this.setData({
+           actualPrice: parseFloat(actualPrice),
+           discountType: 0
+         });
       }
     })
   },

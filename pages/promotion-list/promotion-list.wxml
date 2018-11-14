@@ -10,7 +10,7 @@
         <text class="title">可用促销优惠（{{activedItems.length}}）</text>
       </view> -->
       <checkbox-group class="radio-group" bindchange="onMyEvent">
-        <label wx:for="{{activedItems}}" wx:for-index="idx" wx:for-item="item" class="list-item">
+        <label wx:for="{{couponItems}}" wx:for-index="idx" wx:for-item="item" class="list-item">
 
           <view class='cover-top'></view>
           <view class='cover-bottom'></view>
@@ -18,7 +18,7 @@
           <view class='left-part'>
             <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
 
-            <view class="list-item-deal">
+            <view class="list-item-deal {{item.coupon.couponType === 1 ? 'no_margin_left' : ''}}">
               <label class="deal-icon"></label>
               <label class="deal-num" wx:if="{{item.coupon.couponType === 2}}">{{item.coupon.discount}}折</label>
               <label class="deal-num" wx:if="{{item.coupon.couponType === 1}}">￥{{item.coupon.saveAmount}}</label>
@@ -30,6 +30,34 @@
               <text class="promotion-description">{{item.coupon.couponName}}</text>
               <text class="promotion-limit-tip">{{item.couponBref}}</text>
               <text class="promotion-limit-tip">{{item.coupon.availabileStartTime}} - {{item.coupon.availabileEndTime}}</text>
+            </view>
+          </view>
+
+          <view class="coupon-right">
+            <image src="../../images/coffee_cup_2@2x.png" />
+          </view>
+          
+        </label>
+
+        <label wx:for="{{voucherItems}}" wx:for-index="idx" wx:for-item="item" class="list-item">
+
+          <view class='cover-top'></view>
+          <view class='cover-bottom'></view>
+
+          <view class='left-part'>
+            <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
+
+            <view class="list-item-deal no_margin_left">
+              <label class="deal-icon"></label>
+              <label class="deal-num">￥{{item.voucher.voucherPrice}}</label>
+            </view>
+          </view>
+
+          <view class='right-part'>
+            <view class="list-item-name">
+              <text class="promotion-description">{{item.voucher.voucherName}}</text>
+              <text class="promotion-limit-tip"></text>
+              <text class="promotion-limit-tip">{{item.voucher.availabileStartTime}} - {{item.voucher.availabileEndTime}}</text>
             </view>
           </view>
 

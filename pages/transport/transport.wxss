@@ -47,7 +47,7 @@
     /* margin-left: 32rpx; */
     overflow: hidden;
     box-sizing: border-box;
-    height: 100%;
+    height: calc(100vh);
 }
 
 .direct-item {
