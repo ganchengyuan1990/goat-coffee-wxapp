@@ -1,11 +1,12 @@
-import model from '../../utils/model.js'
+import model from '../../../utils/model.js'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    orderList: []
+    orderList: [],
+    isPanelShow: false
   },
 
   /**
@@ -69,5 +70,8 @@ Page({
         })
       }
     })
+  },
+  showCategory() {
+
   }
 })
