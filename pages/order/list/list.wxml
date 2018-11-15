@@ -16,8 +16,21 @@
                 default: return ''
             }
         },
+        getAddr: function(item) {
+            var type = item.consumeType
+            switch(type) {
+                case 1: return item.contactAddress
+                case 2: 
+                case 3: return item.storeName
+            }
+        },
+        getOrderBrief: function(item) {
+            var orders = item.orderDetail_list
+            var len = order.length
+            var firstName = orders[0].productName
+            return  firstName + (len > 1 ? '等': '') + ' 共' + len + '件商品'
+        }
     }
-
     module.exports=filters
 </wxs>
 <view class="orider-wrap">
@@ -26,16 +39,16 @@
             <view class="item">外卖订单<text></text></view>
             <view class="item">状态<text></text></view>
         </view>
-        <!-- <view class="cnt">
+        <view class="cnt" wx:if="{{false}}">
             <view class="category">
-                <view class="">外卖订单</view>
-                <view class="">团购订单</view>
+                <view class="item active">外卖订单</view>
+                <view class="item">团购订单</view>
             </view>
             <view class="type">
-                <view class="">已完成</view>
-                <view class="">未完成</view>
+                <view class="item active">已完成</view>
+                <view class="item">未完成</view>
             </view>
-        </view> -->
+        </view>
     </view>
     <view class="list-wrap">
         <view class="panel" wx:for="{{orderList}}" wx:key="{{item.id}}">
@@ -44,9 +57,9 @@
                 <view class="active">{{filter.getOrderState(item.orderState)}}</view>
             </view>
             <view class="panel-bd">
-                <view class="tt">北京市海淀区清华东路35号</view>
-                <view class="desc">标准美式咖啡等 共两件商品</view>
-                <view class="date">2018-09-28 10:20</view>
+                <view class="tt">{{filter.getAddr(item)}}</view>
+                <view class="desc">{{filter.getOrderBrief(item)}}</view>
+                <view class="date">{{item.CreateTime}}</view>
             </view>
             <view class="panel-ft">
                 <view class="price">￥{{item.payAmount}}</view>
