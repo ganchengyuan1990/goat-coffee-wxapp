@@ -117,7 +117,7 @@
             </view>
             <view class="r">
                 <text class="txt">无可用</text>
-                <image class="arrow"/>
+                <view class="arrow"></view>
                 <!-- <image class="txt" src="../../../images/arrow.png"/> -->
             </view>
         </view>

@@ -71,7 +71,7 @@
 } */
 
 .head .head_img {
-    border-radius: 50%;
+    /* border-radius: 50%; */
 }
 
 .head {
@@ -82,4 +82,14 @@
     text-align: center;
     font-size: 24rpx;
     color: #999;
+}
+
+button {
+    background: #E50113;
+    border-radius:32px;
+    width:273px;
+    height:48px;
+    line-height:48px;
+    color: #fff;
+    font-size: 32rpx;
 }

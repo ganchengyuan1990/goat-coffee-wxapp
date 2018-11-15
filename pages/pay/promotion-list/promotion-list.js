@@ -1,5 +1,5 @@
 "use strict";
-import model from '../../utils/model';
+import model from '../../../utils/model';
 
 
 Page({

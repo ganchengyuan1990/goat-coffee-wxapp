@@ -56,7 +56,7 @@
 				{
 					"id": -1,
 					"name": "promotion-list",
-					"pathName": "pages/promotion-list/promotion-list",
+					"pathName": "pages/pay/promotion-list/promotion-list",
 					"query": "array=[]"
 				},
 				{

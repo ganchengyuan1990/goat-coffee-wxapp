@@ -301,6 +301,7 @@ checkbox {
     height:14px;
 }
 .arrow {
+    display: inline-block;
     width:9px;
     height:14px;
     /* background:rgba(125, 125, 125, 1); */
@@ -308,6 +309,8 @@ checkbox {
     position: relative;
     top: 10rpx;
     right: -3rpx;
+    background-size:9px 14px;
+    background-repeat:no-repeat;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAaCAYAAABozQZiAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAABGUlEQVQ4y6XUT0rDQBiG8aeThRdw4YXeCyiCpk2brtwJnsSdIFatEq2tK9ffVTyACy8gWHAzgSjzT/rtJvT3JO1MMzKzY+AK+AbOJb1SOA64BvaBA2BlZpP/4K/BugKWpQEHXADbQGCcxZJegDYQeDCzOndnJHXAPBB4TAVGw4WZTYE7D/vZAo2kVRJnAhP/FePYB2bAbSAwlrROYh9ogUUgUEvaJHFJIIl9YA7cBAKHWTwILPBb6+fdleDY7PLYRy4D2wisJb3ttFVVBKYOyaa/UAVg6niuh591hbD5e65/3dnMGuA+AKehfxT4rfKvnWUEPsd+1JGZnQBdAM4kPZEYB1wGYJuDPd4LwC4He3wGfAIfwGkpBPgBUQyERVT9t0IAAAAASUVORK5CYII=)
 }
 

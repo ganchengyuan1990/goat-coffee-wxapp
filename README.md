@@ -12,6 +12,6 @@
     "pages/store/store",
     "pages/transport/transport", // 配送方式选择页
     "pages/login/login",
-    "pages/promotion-list/promotion-list", //促销
+    "pages/pay/promotion-list/promotion-list", //促销
   ],
 ```

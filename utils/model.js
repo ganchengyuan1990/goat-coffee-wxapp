@@ -18,7 +18,7 @@ const BASE_URL = (() => {
 const model = (name = '', data = {}, method = 'GET', header, ip) => {
     let url = `${BASE_URL}${name}`
     if (ip) {
-        url = `http://192.168.1.52:6688/api/${CONFIG.version}/server/${name}`
+        url = `http://wx.web.haokaixin.xyz/api/${CONFIG.version}/server/${name}`
     }
     // if (wx.getStorageSync('token')) {
     //     data.token = wx.getStorageSync('token');

@@ -199,13 +199,13 @@ Page({
 
   goCoupon () {
     wx.navigateTo({
-      url: '/pages/promotion-list/promotion-list?type=1',
+      url: `/pages/pay/promotion-list/promotion-list?type=1&products=${encodeURIComponent(JSON.stringify(this.data.options.product))}`,
     })
   },
 
   goPromotion () {
     wx.navigateTo({
-      url: '/pages/promotion-list/promotion-list?type=2',
+      url: `/pages/pay/promotion-list/promotion-list?type=2&products=${encodeURIComponent(JSON.stringify(this.data.options.product))}`,
     })
   },
   addAddress() {
@@ -263,8 +263,17 @@ Page({
       }
     })
 
+    let products = this.data.options.product;
+    products.forEach(item => {
+      delete item.num;
+      delete item.skuName;
+      delete item.totalPrice;
+      delete item.productName;
+      delete item.price;
+    })
+
     // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
-    model(`order/detail/submit?${paramStr}`, this.data.options.product, 'POST', {
+    model(`order/detail/submit?${paramStr}`, products, 'POST', {
       'authorization': 'Bearer ' + wx.getStorageSync('token').token,
       'Accept': 'application/json'
     }).then(data => {
@@ -275,6 +284,7 @@ Page({
           for (let key of Object.keys(params)) {
             payParamStr += `${key}=${params[key]}&`;
           }
+          payParamStr += `price=${this.data.actualPrice}`
           wx.navigateTo({
             // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
             url: `/pages/pay/normalPay/normalPay?${payParamStr}`

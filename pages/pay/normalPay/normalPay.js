@@ -13,7 +13,8 @@ Page({
         paySign: '',
         prepayId: '',
         signType: '',
-        timeStamp: ''
+        timeStamp: '',
+        price: ''
     },
     onLoad: function (option) {
         let openid = wx.getStorageSync('openid');
@@ -23,7 +24,8 @@ Page({
             paySign: option.paySign,
             prepayId: option.prepayId,
             signType: option.signType,
-            timeStamp: option.timeStamp
+            timeStamp: option.timeStamp,
+            price: option.price
         });
 
         this.payFunc(this);
@@ -40,7 +42,9 @@ Page({
             'signType': this.data.signType,
             'paySign': this.data.paySign,
             'success': function (res) {
-                debugger
+                wx.redirectTo({
+                  url: `/pages/pay/pay_success/pay_success?price=${self.data.price}`
+                });
             },
             'fail': function (res) {
                 if (res.errMsg.indexOf('cancel') > 0) {
