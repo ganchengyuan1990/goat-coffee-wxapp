@@ -1,4 +1,5 @@
-const app = getApp();
+const app = getApp()
+import model from '../../../utils/model'
 Page({
 
   /**
@@ -59,6 +60,24 @@ Page({
         // tempFilePath可以作为img标签的src属性显示图片
         const tempFilePaths = res.tempFilePaths
       }
+    })
+  },
+  saveProfile() {
+    let obj = {
+
+    }
+    model('my/user/updateUser', obj, 'POST').then(res => {
+      wx.showToast({
+        title: '修改成功',
+        icon: 'success',
+        duration: 1500
+      })
+    }).catch(e => {
+      wx.showToast({
+        title: '修改失败',
+        icon: 'fail',
+        duration: 1500
+      })
     })
   }
 

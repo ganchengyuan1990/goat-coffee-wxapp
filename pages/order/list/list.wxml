@@ -17,7 +17,7 @@
             }
         },
         getAddr: function(item) {
-            var type = item.consumeType
+            var type = item.orderType
             switch(type) {
                 case 1: return item.contactAddress
                 case 2: 
@@ -26,23 +26,27 @@
         },
         getOrderBrief: function(item) {
             var orders = item.orderDetail_list
-            var len = order.length
-            var firstName = orders[0].productName
-            return  firstName + (len > 1 ? '等': '') + ' 共' + len + '件商品'
+            var len = orders.length
+            if (len > 0) {
+                var firstName = orders[0].productName
+                return  firstName + (len > 1 ? '等': '') + ' 共' + len + '件商品'
+            }
+            return ''
         }
     }
     module.exports=filters
 </wxs>
 <view class="orider-wrap">
-    <view class="filter-wrap">
+    <view class="filter-wrap {{isFilterShow?'active':''}}">
         <view class="tab">
             <view class="item">外卖订单<text></text></view>
             <view class="item">状态<text></text></view>
         </view>
         <view class="cnt" wx:if="{{false}}">
             <view class="category">
-                <view class="item active">外卖订单</view>
-                <view class="item">团购订单</view>
+                <view class="item active">全部订单</view>
+                <view class="item">外卖订单</view>
+                <view class="item">自取订单</view>
             </view>
             <view class="type">
                 <view class="item active">已完成</view>
@@ -51,10 +55,10 @@
         </view>
     </view>
     <view class="list-wrap">
-        <view class="panel" wx:for="{{orderList}}" wx:key="{{item.id}}">
+        <view class="panel" wx:for="{{orderList}}" wx:key="{{item.id}}" bind:tap="showDetail" data-item="{{item}}">
             <view class="panel-hd">
-                <view>{{item.consumeType}}订单：{{item.id}}</view>
-                <view class="active">{{filter.getOrderState(item.orderState)}}</view>
+                <view>{{item.consumeType}}订单：{{item.orderNo}}</view>
+                <view class="{{item.orderState === '00' ? 'active':''}}">{{filter.getOrderState(item.orderState)}}</view>
             </view>
             <view class="panel-bd">
                 <view class="tt">{{filter.getAddr(item)}}</view>
@@ -81,7 +85,8 @@
                 <view class="btn-buy">再来一单</view>
             </view>
         </view>
-        <view class="panel">
+        <view class="loading">{{isCompleted?'没有更多了':'加载中...'}}</view>
+        <!-- <view class="panel">
             <view class="panel-hd">
                 <view>外卖订单：21298478395726</view>
                 <view>已完成</view>
@@ -95,6 +100,6 @@
                 <view class="price">￥21</view>
                 <view class="btn-buy">再来一单</view>
             </view>
-        </view>
+        </view> -->
     </view>
 </view>

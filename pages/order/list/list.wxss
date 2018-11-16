@@ -13,6 +13,7 @@ page {
     right: 0;
     /* height: 80rpx; */
     /* background: #fff; */
+    z-index: 10;
 }
 .filter-wrap.active {
     bottom: 0;
@@ -69,6 +70,7 @@ page {
     background: #f4f4f4;
 }
 .list-wrap {
+    /* height: 100%;     */
     margin-top: 120rpx;
 }
 .panel {
@@ -123,4 +125,10 @@ page {
     color: #333;
     font-size: 24rpx;
     line-height: 1;
+}
+.loading {
+    padding-bottom: 20rpx;
+    color: #ccc;
+    font-size: 28rpx;
+    text-align: center;
 }
