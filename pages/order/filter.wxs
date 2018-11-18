@@ -1,0 +1,101 @@
+    var filters = {
+        getOrderState: function (code) {
+            switch (code) {
+                case '00':
+                    return '待支付';
+                case '01':
+                    return '待接单';
+                case '02':
+                    return '制作中';
+                case '03':
+                    return '待配送';
+                case '04':
+                    return '配送中';
+                case '100':
+                    return '已完成';
+                case '30':
+                    return '慢必赔';
+                case '31':
+                    return '取消订单';
+                case '40':
+                    return '退款中';
+                case '41':
+                    return '退款完成';
+                default:
+                    return ''
+            }
+        },
+        getAddr: function (item) {
+            var type = item.orderType
+            switch (type) {
+                case 1:
+                    return item.contactAddress
+                case 2:
+                case 3:
+                    return item.storeName
+            }
+        },
+        getOrderBrief: function (item) {
+            var orders = item.orderDetail_list
+            var len = orders.length
+            if (len > 0) {
+                var firstName = orders[0].productName
+                return firstName + (len > 1 ? '等' : '') + ' 共' + len + '件商品'
+            }
+            return ''
+        },
+                getDiscountType: function(item) {
+            var val =  item.discountAmount === 0 ?  '无可用' : '-￥'+item.discountAmount
+            switch(item.discountType) {
+                case 0: 
+                    return {
+                        discount: '无可用',
+                        coupon: '无可用'
+                    }
+                case 1: 
+                    return {
+                        discount: val,
+                        coupon: '无可用'
+                    }
+                case 2: 
+                    return {
+                        discount: val,
+                        coupon:'无可用'  
+                    }
+                default:
+                    return {
+                        discount:'无可用',
+                        coupon: '无可用'
+                    }
+            }
+        },
+        getDiscountType: function (item) {
+            var val = item.discountAmount === 0 ? '无可用' : '-￥' + item.discountAmount
+            switch (item.discountType) {
+                case 0:
+                    return {
+                        discount: '无可用',
+                        coupon: '无可用'
+                    }
+                case 1:
+                    return {
+                        discount: val,
+                        coupon: '无可用'
+                    }
+                case 2:
+                    return {
+                        discount: val,
+                        coupon: '无可用'
+                    }
+                default:
+                    return {
+                        discount: '无可用',
+                        coupon: '无可用'
+                    }
+            }
+        },
+        getSum: function (list) {
+            return list ? list.length : 0
+        }
+    }
+    module.exports = filters

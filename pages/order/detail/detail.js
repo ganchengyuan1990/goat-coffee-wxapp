@@ -14,10 +14,12 @@ Page({
   onLoad: function (options) {
     let data = decodeURIComponent(options.data)
     if (data) {
-      data = JSON.parse(data)
-      this.setData({
-        detail: data
-      })
+      this.formatData(data)
+    } else {
+      // wx.showModal({
+      //   title: '提示',
+
+      // })
     }
   },
 
@@ -34,39 +36,19 @@ Page({
   onShow: function () {
 
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  formatData(data) {
+    let detail = JSON.parse(data || '{}')
+    console.log(detail, 'data');
+    let list = detail.orderDetail_list || []
+    list.forEach(item => {
+      let props = JSON.parse(item.props || '[]')
+      let propArr = props.map(i => {
+        return i.val.val
+      }, '')
+      item.spec = propArr.join('/')
+    })
+    this.setData({
+      detail: detail
+    })
   }
 })

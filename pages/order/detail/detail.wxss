@@ -135,5 +135,5 @@ page {
     line-height: 44rpx;
 }
 .addr-box .date {
-    margin-top: 30rpx;
+    margin: 30rpx 0;
 }
