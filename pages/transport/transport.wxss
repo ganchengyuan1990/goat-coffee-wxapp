@@ -50,6 +50,14 @@
     height: calc(100vh);
 }
 
+.higher {
+    top: 100rpx;
+}
+
+.second {
+    margin-left: 10px;
+}
+
 .direct-item {
     display: flex;
     padding-bottom: 40rpx;

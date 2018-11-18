@@ -50,6 +50,7 @@ Page({
     chosenVoucher: -1,
     chooseType: -1,
     goBackFromChildPage: false,
+    fromAddress: false,
     chosenInfo: {},
     chooseNoCoupon: false,
     chooseNoVoucher: false
@@ -98,8 +99,9 @@ Page({
     }).then(data => {
       if (data.data) {
         let list = data.data;
+        wx.setStorageSync('addressList', list);
         this.setData({
-          checkedExpress: list[0]
+          checkedExpress: list[0] || {}
         });
       }
     })
@@ -133,7 +135,7 @@ Page({
         })
         
       } else {
-        debugger
+        
       }
     })
   },
@@ -252,7 +254,7 @@ Page({
 
   goAddressList () {
     wx.navigateTo({
-      url: '/pages/transport/transport',
+      url: `/pages/transport/transport?type=${this.data.chooseSelf ? 1 : 2}`,
     })
   },
 
@@ -282,7 +284,7 @@ Page({
   },
   addAddress() {
     wx.navigateTo({
-      url: '/pages/shopping/addressAdd/addressAdd',
+      url: '/pages/my/address/address',
     })
   },
 
@@ -334,6 +336,8 @@ Page({
     // this.getCheckoutInfo();
     if (this.data.goBackFromChildPage) {
       this.dealChildPageInfo() ;
+    } else if (this.data.fromAddress) {
+      this.getAddressList();
     }
 
   },

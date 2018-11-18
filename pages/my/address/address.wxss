@@ -30,15 +30,23 @@
     border-bottom: 1rpx solid #f63;
 }
 
-button {
+.button {
     position: fixed;
     bottom: 76rpx;
     /* width: 100%; */
     left: 40rpx;
     right: 40rpx;
+    color: #fff;
+    display: flex;
+}
+
+.button button {
     border-radius: 10rpx;
     background: #000;
+    flex: 1;
     color: #fff;
+    margin-right: 15rpx;
+    margin-left: 15rpx;
 }
 
 .protocol {

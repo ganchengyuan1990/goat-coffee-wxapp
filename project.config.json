@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 17,
+			"current": 3,
 			"list": [
 				{
 					"id": -1,
@@ -54,7 +54,7 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 3,
 					"name": "promotion-list",
 					"pathName": "pages/pay/promotion-list/promotion-list",
 					"query": "array=[]"

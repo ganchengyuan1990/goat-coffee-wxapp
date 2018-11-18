@@ -19,6 +19,8 @@
         <view class="picker">
           {{region[0]}}，{{region[1]}}，{{region[2]}}
         </view>
+        <!-- <view class="picker" wx:if="{{region.length == 0}}">
+        </view> -->
       </picker>
     </view>
 
@@ -32,8 +34,11 @@
         <text class="name">我已同意《咖啡支付协议》</text>
     </view>
 
+    <view class="button">
+        <button bindtap="updateUserAddress">保存</button>
 
-    <button bindtap="updateUserAddress">保存</button>
+        <button bindtap="deleteUserAddress" wx:if="{{!newAdd}}">删除</button>
+    </view>
 
     <toast wx:if="{{toastShown}}" is-show="{{toastShown}}" title="{{toastInfo}}" disappear-sec="3"></toast>
 
