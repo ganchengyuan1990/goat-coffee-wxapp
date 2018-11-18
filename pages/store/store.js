@@ -225,7 +225,7 @@ Page({
 			this.setData({
 				menuList: list
 			})
-			this.generatePriceMap()
+			// this.generatePriceMap()
 			this.calculateHeight()
 		}).catch(e => {
 			console.log(e)
@@ -498,18 +498,18 @@ Page({
 			data: JSON.stringify(arr)
 		})
 	},
-	addAdditional() {
-		let menu = this.data.menuList
+	// addAdditional() {
+	// 	let menu = this.data.menuList
 
-		let val = wx.getStorageSync('CART_ADD')
-		if (val) {
-			/*
-			 *{ customedKey, count, productid-skuid  }
-			 */
-			let list = JSON.parse(val)
+	// 	let val = wx.getStorageSync('CART_ADD')
+	// 	if (val) {
+	// 		/*
+	// 		 *{ customedKey, count, productid-skuid  }
+	// 		 */
+	// 		let list = JSON.parse(val)
 			
-		}
-	},
+	// 	}
+	// },
 	handleTouchStart(e) {
 		// console.log(e, 'touch');
 		touchTimer = e.timeStamp

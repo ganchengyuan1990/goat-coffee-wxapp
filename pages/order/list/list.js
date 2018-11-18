@@ -230,19 +230,44 @@ Page({
       filterList: list
     })
   },
-  addCart(e) {
-    let detail = e.currentTarget.dataset.item
-    console.log(detail, 'detail');
-    let orders = detail.orderDetail_list
-    let arr = []
-    orders.forEach(item => {
-      let obj = {}
-      let props = JSON.parse(item.props || '[]')
-      let key = `${item.productId}-${item.skuId}-${item.productPropIds.replace(/,/g, '-')}`
-      let val = Object.assign({}, item, {
-        // spec: 
-      })
+  // addCart(e) {
+  //   let detail = e.currentTarget.dataset.item
+  //   console.log(detail, 'detail');
+  //   let orders = detail.orderDetail_list
+  //   let arr = []
+  //   orders.forEach(item => {
+  //     let obj = {}
+  //     let props = JSON.parse(item.props || '[]')
+  //     let key = `${item.productId}-${item.skuId}-${item.productPropIds.replace(/,/g, '-')}`
+  //     let val = Object.assign({}, item, {
+  //       // spec: 
+  //     })
+  //   })
+  // },
+	goCheckout(e) {
+	  let token = wx.getStorageSync('token').token
+	  if (!token) {
+	    wx.navigateTo({
+	      url: '/pages/login/login'
+	    })
+	    return
+	  }
+    let item = e.currentTarget.dataset.item
+    if (!item) {
+      return
+    }
+    item.product = item.orderDetail_list
+    item.product.forEach(i => {
+      i.price = i.skuPrice
     })
+	  // return
+	  const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(item))}`
+	  wx.navigateTo({
+	    url: url
+	  })
+	},
+  goPay() {
+
   },
   confirm() {
     this.refreshList()
