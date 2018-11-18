@@ -12,12 +12,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (app.globalData.userInfo) {
+    let userInfo = wx.getStorageSync('token')
+    let userInfoWechat = app.globalData.userInfo
+    if (userInfo.token) {
+      console.log(userInfo, 'userinfo');
+      console.log(userInfoWechat, 'wechat');
+
       this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
+        userInfo: userInfo.user,
+        userInfoWechat: userInfoWechat
+      })
+    } else {
+      wx.redirectTo({
+        url: '/pages/login/login'
       })
     }
+    this.setData({
+      name: userInfo.userName ? userInfo.userName : userInfoWechat.nickName,
+      gender: userInfo.sex ? userInfo.sex : userInfoWechat.gender,
+      img: userInfo.avatar ? userInfo.avatar : userInfoWechat.avatarUrl
+    })
   },
 
   /**

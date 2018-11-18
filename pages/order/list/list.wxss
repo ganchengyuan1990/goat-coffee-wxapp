@@ -7,18 +7,22 @@ page {
     flex-direction: column;
 }
 .filter-wrap {
+    display: flex;
+    flex-direction: column;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     /* height: 80rpx; */
     /* background: #fff; */
+    z-index: 10;
 }
 .filter-wrap.active {
     bottom: 0;
     background: rgba(0, 0, 0, .5);
 }
 .filter-wrap .tab {
+    flex: none;
     display: flex;
     padding: 20rpx 30rpx;
     color: #666;
@@ -43,20 +47,30 @@ page {
     border-right: 6rpx solid transparent;
     transform: translateY(-50%);
 }
+.filter-wrap .tab .item.active text {
+    border-bottom-color: #333;
+    transform: translateY(-50%) rotate(180deg);
+}
 .filter-wrap .cnt {
+    flex: none;
+    height: 200rpx;
     padding: 20rpx 30rpx;
     background: #fff;
     color: #9b9b9b;
     font-size: 28rpx;
     line-height: 40rpx;
+    box-sizing: border-box;
 }
 .filter-wrap .cnt .category .item {
     padding: 20rpx 0;
 }
+.filter-wrap .cnt .type {
+    padding-top: 40rpx;
+}
 .filter-wrap .cnt .type .item {
     display: inline-block;
     margin-right: 48rpx;
-    padding: 10rpx 22rpx;
+    padding: 8rpx 20rpx;
     border: 2rpx solid #979797;
     border-radius: 4rpx;
     color: #666;
@@ -68,7 +82,11 @@ page {
 .filter-wrap .cnt .type .active {
     background: #f4f4f4;
 }
+.filter-wrap .mask {
+    flex: 1;
+}
 .list-wrap {
+    /* height: 100%;     */
     margin-top: 120rpx;
 }
 .panel {
@@ -123,4 +141,29 @@ page {
     color: #333;
     font-size: 24rpx;
     line-height: 1;
+}
+.loading {
+    padding-bottom: 20rpx;
+    color: #ccc;
+    font-size: 28rpx;
+    text-align: center;
+}
+
+.btn-group {
+    height: 100rpx;
+    background: #fff;
+    font-size: 0;
+    box-shadow:0px 0px 4px 0px rgba(0, 0, 0, 0.5);
+}
+.btn-group .btn {
+    display: inline-block;
+    width: 50%;
+    height: 100%;
+    font-size: 28rpx;
+    text-align: center;
+    line-height: 100rpx;
+}
+.btn-group .confirm {
+    background: #333;
+    color: #fff;
 }

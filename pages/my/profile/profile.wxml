@@ -6,7 +6,7 @@
             </view>
             <view class="cnt">
                 <view class="desc">
-                    <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+                    <image class="avatar" src="{{img}}"></image>
                 </view>
                 <view class="icon-arrow"></view>
             </view>
@@ -16,7 +16,7 @@
                 <text>昵称</text>
             </view>
             <view class="cnt">
-                <view class="desc">{{userInfo.nickName}}</view>
+                <view class="desc">{{name}}</view>
                 <view class="icon-arrow"></view>
             </view>
         </view>
@@ -25,7 +25,7 @@
                 <text>性别</text>
             </view>
             <view class="cnt">
-                <view class="desc">{{userInfo.gender === 1 ? '男': '女'}}</view>
+                <view class="desc">{{gender === 1 ? '男': '女'}}</view>
                 <view class="icon-arrow"></view>
             </view>
         </view>
@@ -34,12 +34,12 @@
                 <text>绑定手机号</text>
             </view>
             <view class="cnt">
-                <view class="desc dark">13312345678</view>
+                <view class="desc dark">{{userInfo.tel}}</view>
                 <!-- <view class="icon-arrow"></view> -->
             </view>
         </view>
     </view>
     <view class="btn-wrap">
-        <view class="btn-save">保存</view>
+        <view class="btn-save" bind:tap="saveProfile">保存</view>
     </view>
 </view>

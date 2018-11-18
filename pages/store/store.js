@@ -50,11 +50,9 @@ Page({
 		let addrId = options.userAddressId
 		let fromPage = options.from
 		if (fromPage === 'selfExtraction') {
-			
 			this.setData({
 				isSelfTaking: true
 			})
-			
 		}
 		if (fromPage === 'delivery') {
 			this.setData({
@@ -62,8 +60,9 @@ Page({
 				isSelfTaking: false
 			})
 		}
-		this.fetchLoaction()
 
+		this.fetchLoaction()
+		// TODOS 考虑店不同，需要重新计算价格， 以及去除缺货产品
 		wx.getStorage({
 			key: 'CART_LIST',
 			success(res) {
@@ -155,7 +154,7 @@ Page({
 					lat: latitude
 				}
 				self.fetchStore(geo)
-				app.globalData.isGeoAuth = false
+				app.globalData.isGeoAuth = true
 			},
 			fail() {
 				self.checkAuth()
@@ -175,8 +174,6 @@ Page({
 			lat: 31.239629,
 			page: 1
 		}).then(res => {
-			// console.log(res, 'location')
-
 			const {data} = res
 			if (data && data.length > 0) {
 				let storeInfo = data[0]
@@ -212,10 +209,33 @@ Page({
 			this.setData({
 				menuList: list
 			})
+			this.generatePriceMap()
 			this.calculateHeight()
 		}).catch(e => {
 			console.log(e)
 		})
+	},
+	/*
+	 * 生成价格对照表 
+	 */
+	generatePriceMap() {
+		let list = this.data.menuList
+		let obj = {}
+		// 使用 productid-skuid 对应价格map表
+		console.log(list, 'list');
+		
+		list.forEach(i => {
+			let pList = i.product_list
+			pList.forEach(j => {
+				let sList = j.sku_list
+				sList.forEach(k => {
+					let key = k.productId + '-' + k.id
+					obj[key] = k.price
+				})
+			})
+		})
+		console.log(obj);
+		
 	},
 	calculateHeight() {
 		let heigthArr = [];
@@ -460,6 +480,17 @@ Page({
 			key: 'CART_LIST',
 			data: JSON.stringify(arr)
 		})
+	},
+	addAdditional() {
+		let menu = this.data.menuList
+
+		let val = wx.getStorageSync('CART_ADD')
+		if (val) {
+			/*
+			 *{ customedKey, count }
+			 */
+			let list = JSON.parse(val)
+		}
 	},
 	handleTouchStart(e) {
 		// console.log(e, 'touch');

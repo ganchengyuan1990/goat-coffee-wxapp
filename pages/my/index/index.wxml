@@ -2,10 +2,10 @@
     <view class="head-wrap">
         <view class="center" bind:tap="goProfile">
             <view class="avatar">
-                <image src="{{userInfo.avatarUrl}}"></image>
+                <image src="{{img}}"></image>
             </view>
-            <view class="nick">用户昵称</view>
-            <view class="name">用户姓名</view>
+            <view class="nick">{{name}}</view>
+            <!-- <view class="name">用户姓名</view> -->
         </view>
     </view>
     <view class="list-wrap">

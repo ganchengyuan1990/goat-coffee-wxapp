@@ -1,60 +1,47 @@
 
-<wxs module="filter">
-    var filters = {
-        getOrderState: function(code) {
-            switch(code) {
-                case '00': return '待支付';
-                case '01': return '待接单';
-                case '02': return '制作中';
-                case '03': return '待配送';
-                case '04': return '配送中';
-                case '100': return '已完成';
-                case '30': return '慢必赔';
-                case '31': return '取消订单';
-                case '40': return '退款中';
-                case '41': return '退款完成';
-                default: return ''
-            }
-        },
-        getAddr: function(item) {
-            var type = item.consumeType
-            switch(type) {
-                case 1: return item.contactAddress
-                case 2: 
-                case 3: return item.storeName
-            }
-        },
-        getOrderBrief: function(item) {
-            var orders = item.orderDetail_list
-            var len = order.length
-            var firstName = orders[0].productName
-            return  firstName + (len > 1 ? '等': '') + ' 共' + len + '件商品'
-        }
-    }
-    module.exports=filters
-</wxs>
+<wxs  src="../filter.wxs" module="filter"></wxs>
 <view class="orider-wrap">
-    <view class="filter-wrap">
+    <view class="filter-wrap {{isFilterShow?'active':''}}">
         <view class="tab">
-            <view class="item">外卖订单<text></text></view>
-            <view class="item">状态<text></text></view>
+            <view 
+                class="item {{isFilterShow && currentPanel === item.tab ? 'active':''}}" 
+                wx:for="{{filterList}}"
+                wx:key="{{item.tab}}"
+                bind:tap="showCategory" 
+                data-tab="{{item.tab}}">{{item.tt}}<text></text></view>
         </view>
-        <view class="cnt" wx:if="{{false}}">
-            <view class="category">
-                <view class="item active">外卖订单</view>
-                <view class="item">团购订单</view>
+        <view class="cnt-wrap" wx:if="{{isFilterShow}}">
+            <view class="cnt">
+                <view 
+                    wx:for="{{filterList}}"
+                    wx:key="{{item.tab}}"
+                    wx:for-index="index"
+                    wx:if="{{currentPanel === item.tab}}"
+                    class="{{item.cls}}">
+                    <view 
+                        wx:for="{{item.list}}" 
+                        wx:for-index="idx"
+                        wx:key="{{idx}}"
+                        wx:for-item="list"
+                        class="item {{list.active ? 'active': ''}}" 
+                        bind:tap="chooseFilterItem"
+                        data-code="{{list.code}}"
+                        data-idx="{{idx}}"
+                        data-title="{{list.tt}}">{{list.tt}}</view>
+                </view>
             </view>
-            <view class="type">
-                <view class="item active">已完成</view>
-                <view class="item">未完成</view>
+            <view class="btn-group">
+                <view class="btn" bind:tap="resetFilterState">重置</view>
+                <view class="btn confirm" bind:tap="confirm">确定</view>
             </view>
         </view>
+        <view class="mask" bind:tap="cancel"></view>
     </view>
     <view class="list-wrap">
-        <view class="panel" wx:for="{{orderList}}" wx:key="{{item.id}}">
+        <view class="panel" wx:for="{{orderList}}" wx:key="{{item.id}}" bind:tap="showDetail" data-item="{{item}}">
             <view class="panel-hd">
-                <view>{{item.consumeType}}订单：{{item.id}}</view>
-                <view class="active">{{filter.getOrderState(item.orderState)}}</view>
+                <view>{{item.consumeType}}订单：{{item.orderNo}}</view>
+                <view class="{{item.orderState === '00' ? 'active':''}}">{{filter.getOrderState(item.orderState)}}</view>
             </view>
             <view class="panel-bd">
                 <view class="tt">{{filter.getAddr(item)}}</view>
@@ -66,7 +53,7 @@
                 <view class="btn-buy">再来一单</view>
             </view>
         </view>
-        <view class="panel">
+        <!-- <view class="panel">
             <view class="panel-hd">
                 <view>外卖订单：21298478395726</view>
                 <view>已完成</view>
@@ -80,8 +67,9 @@
                 <view class="price">￥21</view>
                 <view class="btn-buy">再来一单</view>
             </view>
-        </view>
-        <view class="panel">
+        </view> -->
+        <view class="loading">{{isCompleted?'没有更多了':'加载中...'}}</view>
+        <!-- <view class="panel">
             <view class="panel-hd">
                 <view>外卖订单：21298478395726</view>
                 <view>已完成</view>
@@ -95,6 +83,6 @@
                 <view class="price">￥21</view>
                 <view class="btn-buy">再来一单</view>
             </view>
-        </view>
+        </view> -->
     </view>
 </view>
