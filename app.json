@@ -18,13 +18,13 @@
     "pages/my/address_list/address_list",
     "pages/my/address/address",
     "pages/transport/transport",
-    
     "pages/coupon/coupon",
     "pages/my/index/index",
     "pages/my/profile/profile",
     "pages/my/profile/edit",
     "pages/order/list/list",
-    "pages/order/detail/detail"
+    "pages/order/detail/detail",
+    "pages/my/coupon/coupon"
   ],
   "window": {
     "backgroundTextStyle": "dark",

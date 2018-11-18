@@ -16,20 +16,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let userInfo = wx.getStorageSync('token')
+    let info = wx.getStorageSync('token')
+    let userInfo = info.user
     let userInfoWechat = app.globalData.userInfo
-    if (userInfo.token) {
+    if (info.token) {
       console.log(userInfo, 'userinfo');
       console.log(userInfoWechat, 'wechat');
       
       this.setData({
-        userInfo: userInfo.user,
+        userInfo: userInfo,
         userInfoWechat: userInfoWechat
       })
     } else {
       wx.redirectTo({
         url: '/pages/login/login'
       })
+      return
     }
 
     this.setData({
@@ -106,15 +108,28 @@ Page({
       }
     })
   },
+  updateCurrentInfo(obj) {
+    try {
+      let token = wx.getStorageSync('token')
+      let userInfo = token.user
+      userInfo.userName = obj.userName
+      userInfo.avatar = obj.avatar
+      userInfo.sex = obj.gender
+      wx.setStorageSync('token', token)
+    } catch(e) {
+      console.log(e);
+      
+    }
+
+  },
   saveProfile() {
+    let self = this
     let obj = {}
     let data = this.data
     if (data.name) {
       obj.userName = data.name
     }
-    if (data.imgData) {
-      obj.avatar = data.imgData
-    }
+    obj.avatar = data.imgData || data.img
     if (data.gender) {
       obj.sex = data.gender
     }
@@ -123,7 +138,17 @@ Page({
       wx.showToast({
         title: '修改成功',
         icon: 'success',
-        duration: 1500
+        duration: 1500,
+        success() {
+          // 更新global data里面的信息
+          // 更新localstorage 信息
+          self.updateCurrentInfo(obj)
+          setTimeout(()=>{
+            wx.navigateBack({
+              delta: 1
+            })
+          }, 1500)
+        }
       })
     }).catch(e => {
       wx.showToast({

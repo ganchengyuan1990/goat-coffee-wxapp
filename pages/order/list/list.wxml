@@ -50,7 +50,7 @@
             </view>
             <view class="panel-ft">
                 <view class="price">￥{{item.payAmount}}</view>
-                <view class="btn-buy">再来一单</view>
+                <view class="btn-buy" data-item="{{item}}" catchtap="addCart">再来一单</view>
             </view>
         </view>
         <!-- <view class="panel">

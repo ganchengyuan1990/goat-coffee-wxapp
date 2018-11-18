@@ -45,7 +45,14 @@ Page({
 	 */
 	onLoad(options) {
 		console.log(options, 'options');
-		
+		let isLogin = this.checkLogin()
+		if (!isLogin) {
+			wx.redirectTo({
+				url: '/pages/login/login'
+			})
+			return
+		}
+		// TODOS
 		let self = this
 		let addrId = options.userAddressId
 		let fromPage = options.from
@@ -61,7 +68,6 @@ Page({
 			})
 		}
 
-		this.fetchLoaction()
 		// TODOS 考虑店不同，需要重新计算价格， 以及去除缺货产品
 		wx.getStorage({
 			key: 'CART_LIST',
@@ -105,7 +111,7 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-
+		this.fetchLoaction()
 	},
 
 	/**
@@ -122,6 +128,10 @@ Page({
 	 * 用户点击右上角分享
 	 */
 	onShareAppMessage() {},
+	checkLogin() {
+		let info = wx.getStorageSync('token') || {}
+		return info.token
+	},
 	/**
 	 * 验证是否获得授权
 	 */
@@ -129,14 +139,20 @@ Page({
 		wx.getSetting({
 			success(res) {
 				const { authSetting } = res
-				// if (!authSetting.scope.userLocation) {
-				// 	// console.log('need auth')
-				// 	wx.showModal({
-				// 		title: '提示',
-				// 		content: '需要您的授权才能推荐附近的店铺信息',
-				// 		showCancel: false
-				// 	})
-				// }
+				// console.log(authSetting, 'setting');
+				if (!authSetting['scope.userLocation']) {
+					console.log('need auth')
+					wx.showModal({
+						title: '提示',
+						content: '需要您的授权才能推荐附近的店铺信息',
+						showCancel: false,
+						success(res) {
+							if (res.confirm) {
+								wx.openSetting()
+							}
+						}
+					})
+				}
 			}
 		})
 	},
@@ -216,7 +232,7 @@ Page({
 		})
 	},
 	/*
-	 * 生成价格对照表 
+	 * 生成价格信息对照表 
 	 */
 	generatePriceMap() {
 		let list = this.data.menuList
@@ -459,6 +475,7 @@ Page({
 			return 
 		}
 		// 验证skuid， propids, productId一致性
+		// count total price
 
 		let cartList = list
 		let obj = {}
@@ -487,9 +504,10 @@ Page({
 		let val = wx.getStorageSync('CART_ADD')
 		if (val) {
 			/*
-			 *{ customedKey, count }
+			 *{ customedKey, count, productid-skuid  }
 			 */
 			let list = JSON.parse(val)
+			
 		}
 	},
 	handleTouchStart(e) {
