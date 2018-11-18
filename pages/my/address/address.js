@@ -78,7 +78,7 @@ Page({
   addUserAddress () {
     if (this.data.name && this.data.phone && this.data.name && this.data.region && this.data.address) {
         model('my/address/add', {
-            userId: 1,
+            userId: wx.getStorageSync('token').user.id,
             prov: this.data.region[0],
             city: this.data.region[1],
             area: this.data.region[2],
@@ -108,7 +108,7 @@ Page({
             model('my/address/edit', {
                 contact: this.data.name,
                 tel: this.data.phone,
-                userId: 1,
+                userId: wx.getStorageSync('token').user.id,
                 id: this.data.id,
                 prov: this.data.region[0],
                 city: this.data.region[1],

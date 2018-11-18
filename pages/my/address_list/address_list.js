@@ -37,8 +37,8 @@ Page({
 
     getAddressList () {
         model('my/address/list', {
-            userId: 1,
-            // openid: wx.getStorageSync('openid')
+            userId: wx.getStorageSync('token').user.id,
+            // openid: wx.getStorageSync('token').user.id
         }).then(data => {
             if (data.data) {
                 let list = data.data;
