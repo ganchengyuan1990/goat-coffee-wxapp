@@ -110,8 +110,8 @@ checkbox {
 }
 
 .address-item.address-empty{
-  line-height: 75rpx;
-  text-align: center;
+  line-height: 130rpx;
+  /* text-align: center; */
 }
 
 

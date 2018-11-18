@@ -1,7 +1,9 @@
 <view class='input-line'>
     <view class="section flex {{addline1 ? 'selected' : ''}}">
-        <view class="title">收货人:</view>
-        <input model="name" value="{{name}}" bindtap="addLine1" bindinput="dealName"></input>
+        <view class="title">收货人</view>
+        <view class="input">
+            <input model="name" value="{{name}}" bindtap="addLine1" bindinput="dealName"></input>
+        </view>
     </view>
 
     <!-- <view class="section flex {{addline2 ? 'selected' : ''}}">
@@ -9,31 +11,42 @@
         <input model="gender" value="{{gender}}" bindtap="addLine2" bindinput="dealGender"></input>
     </view> -->
     <view class="section flex {{addline2 ? 'selected' : ''}}">
-        <view class="title">手机号码:</view>
-        <input model="phone" value="{{phone}}" bindtap="addLine2" bindinput="dealPhone"></input>
+        <view class="title">手机号码</view>
+        <view class="input">
+            <input model="phone" value="{{phone}}" bindtap="addLine2" bindinput="dealPhone"></input>
+        </view>
     </view>
 
     <view class="section flex {{addline3 ? 'selected' : ''}}">
-      <view class="title">地区信息:</view>
-      <picker mode="region" bindtap="addLine3" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-        <view class="picker">
-          {{region[0]}}，{{region[1]}}，{{region[2]}}
-        </view>
-      </picker>
+      <view class="title">地址</view>
+      <view class="input">
+        <picker class='picker' mode="region" bindtap="addLine3" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+            <view class="picker">
+            {{region[0]}}，{{region[1]}}，{{region[2]}}
+            </view>
+            <!-- <view class="picker" wx:if="{{region.length == 0}}">
+            </view> -->
+        </picker>
+      </view>
     </view>
 
     <view class="section flex {{addline4 ? 'selected' : ''}}">
-        <view class="title">门牌号:</view>
-        <input model="address" bindtap="addLine4" bindinput="dealAddress" value="{{address}}"></input>
+        <view class="title">门牌号</view>
+        <view class="input">
+            <input model="address" bindtap="addLine4" bindinput="dealAddress" value="{{address}}"></input>
+        </view>
     </view>
 
     <view class="protocol">
         <image src="../../../images/checkbox.png" />
-        <text class="name">我已同意《咖啡支付协议》</text>
+        <text class="name">设为默认地址</text>
     </view>
 
+    <view class="button">
+        <button bindtap="updateUserAddress">保存</button>
 
-    <button bindtap="updateUserAddress">保存</button>
+        <button bindtap="deleteUserAddress" wx:if="{{!newAdd}}">删除</button>
+    </view>
 
     <toast wx:if="{{toastShown}}" is-show="{{toastShown}}" title="{{toastInfo}}" disappear-sec="3"></toast>
 

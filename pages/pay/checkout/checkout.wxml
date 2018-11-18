@@ -40,7 +40,7 @@
             </view> -->
         </view>
 
-        <view class="address-item" bindtap="selectAddress" wx:if="{{chooseExpress}}">
+        <view class="address-item" bindtap="selectAddress" wx:if="{{chooseExpress && checkedExpress.id}}">
             <view class="address">
                 配送地址
             </view>
@@ -58,14 +58,14 @@
                 <image src="/static/images/address_right.png"></image>
             </view> -->
         </view>
-        <!-- <view class="address-item address-empty" bindtap="addAddress" wx:if="{{!chooseExpress.contact}}">
+        <view class="address-item address-empty" catchtap="addAddress" wx:if="{{chooseExpress && !checkedExpress.id}}">
             <view class="m">
                还没有收货地址，去添加
             </view>
             <view class="r">
                 <image src="/static/images/address_right.png"></image>
             </view>
-        </view> -->
+        </view>
     </view>
 
     <!-- <view class="coupon-box">
@@ -111,23 +111,27 @@
             </view>
         </view>
 
-        <view class="transport-item" bindtap="goCoupon">
+        <view class="transport-item" bindtap="goVoucher">
             <view class="l">
                 <text class="name">兑换券</text>
             </view>
             <view class="r">
-                <text class="txt">无可用</text>
+                <text class="txt" wx:if="{{voucherList.length === 0}}">无可用</text>
+                <text class="txt" wx:if="{{voucherList.length !== 0 && chooseNoVoucher}}">有{{voucherList.length}}张可用</text>
+                <text class="txt" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher}}"> - ￥{{couponMoney}}</text>
                 <view class="arrow"></view>
                 <!-- <image class="txt" src="../../../images/arrow.png"/> -->
             </view>
         </view>
 
-        <view class="transport-item" bindtap="goPromotion">
+        <view class="transport-item" bindtap="goCoupon">
             <view class="l">
                 <text class="name">优惠券</text>
             </view>
             <view class="r">
-                <text class="txt"> - ￥{{couponMoney}}</text>
+                <text class="txt" wx:if="{{couponList.length > 0 && !chooseNoCoupon}}"> - ￥{{couponMoney}}</text>
+                <text class="txt" wx:if="{{couponList.length > 0 && chooseNoCoupon}}">有{{couponList.length}}张可用</text>
+                <text class="txt" wx:if="{{couponList.length === 0}}">无可用</text>
                 <image class="arrow" src="../../../images/arrow.png"/>
                 <!-- <image class="txt" src="../../../images/arrow.png"/> -->
             </view>

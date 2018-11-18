@@ -16,29 +16,52 @@
 
 .section {
     margin: 30rpx;
-    padding-bottom: 15rpx;
+    margin-bottom: 1.8rem;
     font-size: 28rpx;
-    height:1.4rem;
-    line-height: 1.4rem;
+    height:1.8rem;
+    line-height: 1.8rem;
+    margin-left: 0rpx;
+    /* margin-bottom: 0.9rem; */
+    /* border-bottom: 1rpx solid #eee; */
 }
-
+.input {
+    border-bottom: 1rpx solid #eee;
+    flex: 1;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    padding-bottom: 0.9rem;
+    margin-top:0.15rem;
+}
 .section input {
     width:70%;
 }
 
-.selected {
-    border-bottom: 1rpx solid #f63;
+.picker {
+    position: relative;
+    top: -2.34rpx;
 }
 
-button {
+.selected {
+    /* border-bottom: 1rpx solid #f63; */
+}
+
+.button {
     position: fixed;
     bottom: 76rpx;
     /* width: 100%; */
     left: 40rpx;
     right: 40rpx;
+    color: #fff;
+    display: flex;
+}
+
+.button button {
     border-radius: 10rpx;
     background: #000;
+    flex: 1;
     color: #fff;
+    margin-right: 15rpx;
+    margin-left: 15rpx;
 }
 
 .protocol {

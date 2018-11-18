@@ -43,7 +43,17 @@ Page({
     discountType: 1,
     couponUserRelation: '',
     checkedExpress: {},
-    deliverFee: 0
+    deliverFee: 0,
+    couponList: [],
+    voucherList: [],
+    chosenCoupon: -1,
+    chosenVoucher: -1,
+    chooseType: -1,
+    goBackFromChildPage: false,
+    fromAddress: false,
+    chosenInfo: {},
+    chooseNoCoupon: false,
+    chooseNoVoucher: false
   },
   onLoad: function (options) {
 
@@ -52,6 +62,8 @@ Page({
     this.getBestCouponByProduct();
 
     this.getAddressList();
+
+    this.getAvailableCoupon();
 
     // this.setData({
     //   goodsTotalPrice: parseInt(options.price)
@@ -82,14 +94,48 @@ Page({
 
   getAddressList () {
     model('my/address/list', {
-      userId: 1,
+      userId: wx.getStorageSync('token').user.id,
       // openid: wx.getStorageSync('openid')
     }).then(data => {
       if (data.data) {
         let list = data.data;
+        wx.setStorageSync('addressList', list);
         this.setData({
-          checkedExpress: list[0]
+          checkedExpress: list[0] || {}
         });
+      }
+    })
+  },
+
+  getAvailableCoupon () {
+    model(`home/coupon/getAvailableCoupon`, {
+      uid: wx.getStorageSync('token').user.id,
+      list: this.data.product
+      // list: [{
+      //   "productId": 28,
+      //   "skuId": 121,
+      //   "num": 1
+      // }]
+    }).then(data => {
+      let a = new BigNumber(2048.8);
+      let b = a.times(100);
+      console.log(parseInt(b));
+      console.log(2048.8 * 100);
+      if (data.data) {
+        let result = data.data;
+        let couponList = result.filter(item => {
+          return item.type === 1; 
+        });
+        let voucherList = result.filter(item => {
+          return item.type === 2;
+        });
+        this.setData({
+          couponList: couponList,
+          voucherList: voucherList
+        })
+        
+      } else {
+        
       }
     })
   },
@@ -97,7 +143,7 @@ Page({
   getBestCouponByProduct () {
     
     model(`home/coupon/getBestCouponByProduct`, {
-      uid: 1,
+      uid: wx.getStorageSync('token').user.id,
       list: this.data.product
     }).then(data => {
       if (data.data) {
@@ -111,10 +157,19 @@ Page({
         couponArr.forEach(item => {
           couponUserRelation += item.userRelation + ','
         });
+        if (data.data[0].type === 1) {
+          this.setData({
+            chosenCoupon: couponArr[0].id
+          })
+        } else if (data.data[0].type === 2) {
+          this.setData({
+            chosenVoucher: couponArr[0].id
+          })
+        }
         this.setData({
           couponMoney: result,
           actualPrice: parseFloat(actualPrice),
-          discountType: 1,
+          discountType: data.data[0].type,
           couponUserRelation: couponUserRelation
         });
       } else {
@@ -145,6 +200,12 @@ Page({
         item.num = item.number;
         item.totalPrice = item.number * item.price;
         payAmount += item.totalPrice;
+        // delete item.skuName;
+        // delete item.totalPrice;
+        // delete item.productName;
+        // delete item.price;
+        // delete item.number;
+        // delete item.productPropIds;
       });
       this.setData({
         options: options,
@@ -193,25 +254,75 @@ Page({
 
   goAddressList () {
     wx.navigateTo({
-      url: '/pages/transport/transport',
+      url: `/pages/transport/transport?type=${this.data.chooseSelf ? 1 : 2}`,
     })
+  },
+
+  goVoucher () {
+    if (this.data.chosenInfo.id) {
+      wx.navigateTo({
+        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.id}&list=${JSON.stringify(this.data.voucherList)}`,
+      })
+    } else {
+      wx.navigateTo({
+        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.goBackFromChildPage ? '' : this.data.chosenVoucher}&list=${JSON.stringify(this.data.voucherList)}`,
+      })
+    }
+    
   },
 
   goCoupon () {
-    wx.navigateTo({
-      url: `/pages/pay/promotion-list/promotion-list?type=1&products=${encodeURIComponent(JSON.stringify(this.data.options.product))}`,
-    })
-  },
-
-  goPromotion () {
-    wx.navigateTo({
-      url: `/pages/pay/promotion-list/promotion-list?type=2&products=${encodeURIComponent(JSON.stringify(this.data.options.product))}`,
-    })
+    if (this.data.chosenInfo.id) {
+      wx.navigateTo({
+        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.id}&list=${JSON.stringify(this.data.voucherList)}`,
+      })
+    } else {
+      wx.navigateTo({
+        url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? '' : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList)}`,
+      })
+    }
   },
   addAddress() {
     wx.navigateTo({
-      url: '/pages/shopping/addressAdd/addressAdd',
+      url: '/pages/my/address/address',
     })
+  },
+
+  dealChildPageInfo () {
+    let products = this.data.product;
+    products.forEach(item => {
+      delete item.skuName;
+      delete item.totalPrice;
+      delete item.productName;
+      delete item.price;
+      delete item.number;
+      delete item.productPropIds;
+    });
+    if (!this.data.chosenInfo.id) {
+      this.setData({
+        chooseNoCoupon: true,
+        chooseNoVoucher: true,
+        discountType: 0,
+      })
+    } else {
+      this.setData({
+        chooseNoCoupon: false,
+        chooseNoVoucher: false
+      })
+    }
+    model(`home/coupon/calculatePriceWithCoupon`, {
+      couponList: this.data.chosenInfo.id ? [this.data.chosenInfo] : [],
+      productList: this.data.product,
+      uid: wx.getStorageSync('token').user.id
+    }).then(data => {
+      let result = parseFloat(data.data[0].discountPrice).toFixed(2);
+      this.setData({
+        actualPrice: data.data[0].resultPrice + this.data.deliverFee,
+        couponMoney: result,
+        couponUserRelation: this.data.chosenInfo.relationId + ',',
+        discountType: data.data[0].type,
+      })
+    });
   },
   onReady: function () {
     // 页面渲染完成
@@ -223,6 +334,11 @@ Page({
     //   title: '加载中...',
     // })
     // this.getCheckoutInfo();
+    if (this.data.goBackFromChildPage) {
+      this.dealChildPageInfo() ;
+    } else if (this.data.fromAddress) {
+      this.getAddressList();
+    }
 
   },
   onHide: function () {
@@ -238,7 +354,7 @@ Page({
       openId: wx.getStorageSync('openid'),
       storeId: this.data.options.storeId,
       userAddressId: 3,
-      userId: 1,
+      userId: wx.getStorageSync('token').user.id,
       discountType: this.data.discountType,
       deliverFee: this.data.deliverFee,
       payAmount: this.data.actualPrice,

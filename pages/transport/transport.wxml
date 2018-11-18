@@ -4,7 +4,7 @@
         <view bindtap="goExpress" class="header-tab-item {{showExpress ? 'tab-item-active' : ''}}">外送</view>
     </view>
 
-    <view class="searchEntry" bindtap="onSearchShow" data-source="0">
+    <view class="searchEntry" bindtap="onSearchShow" data-source="0" wx:if="{{!isGeoAuth}}">
         <view class="searchIcon">定位失败</view>
         <view class="searchKeyword" wx:if="{{keyword}}">{{ keyword }}</view>
         <view class="searchText" >输入地址寻找附近门店</view>
@@ -12,7 +12,7 @@
     </view>
 
     <view class="search-find-container">
-        <view class="suggestListWrap" wx:if="{{searchSuggest && searchSuggest.length}}"  data-id="{{item.id}}" bindtap="goStore">
+        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{!showExpress && searchSuggest && searchSuggest.length}}"  data-id="{{item.id}}" bindtap="goStore">
             <scroll-view class="suggestList" scroll-y="true">
                 <view wx:key="suggestItem" wx:for="{{searchSuggest}}" class="suggest-container">
                     <view class="direct-item border-bottom" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
@@ -40,9 +40,36 @@
                 </view>
             </scroll-view>
         </view>
+
+        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{showExpress && searchSuggest && searchSuggest.length}}"  data-id="{{item.id}}">
+            <scroll-view class="suggestList" scroll-y="true">
+                <view wx:key="suggestItem" wx:for="{{searchSuggest}}" class="suggest-container">
+                    <view class="direct-item border-bottom" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
+                        <view class="suggest-icon point-icon"></view>
+                        <view class="direct-content">
+                            <view class="direct-name">
+                                <view class="direct-name-container">
+                                    <text class="direct-name-text {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.area}}</text>
+                                    <text class="second direct-name-text {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.address}}</text>
+                                </view>
+                            </view>
+         
+                            <view class="direct-bottom">
+                                <view class="direct-category">{{item.categoryname}}</view>
+                                <view class="split-line" wx:if="{{item.categoryname}}">|</view>
+                                <view class="direct-address">
+                                    <text class="direct-address-region">{{item.contact}}</text>
+                                    <text wx:if="{{item.tel}}" class="direct-address-text second {{item.regionname ? 'before-content' : ''}}">{{item.tel}}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </scroll-view>
+        </view>
     </view>
 
-     <view class="addNewAddress" bindtap="goAddAddress" data-source="0">
+     <view class="addNewAddress" bindtap="goAddAddress" data-source="0" wx:if="{{showExpress}}">
         <view class="text"> + 添加新的收货地址</view>
     </view>
 </view>

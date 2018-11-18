@@ -18,7 +18,8 @@ Page({
       addline4: false,
       newAdd: true,
       toastShown: false,
-      toastInfo: ''
+      toastInfo: '',
+      id: -1
   },
 
   /**
@@ -27,19 +28,19 @@ Page({
   onLoad: function (options) {
     let self = this;
     let chosenAddress = wx.getStorageSync('chosenAddress');
+
     
-    if (!options.id) {
+    if (options.id) {
         this.setData({
-            newAdd: false
+            newAdd: false,
+            id: parseInt(options.id)
         })
-    } else {
         if (chosenAddress) {
             this.setData({
                 name: chosenAddress.contact,
                 phone: chosenAddress.tel,
                 address: chosenAddress.address,
                 region: [chosenAddress.prov, chosenAddress.city, chosenAddress.area],
-                id: parseInt(options.id)
             })
             wx.removeStorageSync({
                 key: 'chosenAddress'
@@ -78,7 +79,9 @@ Page({
   addUserAddress () {
     if (this.data.name && this.data.phone && this.data.name && this.data.region && this.data.address) {
         model('my/address/add', {
-            userId: 1,
+            contact: this.data.name,
+            tel: this.data.phone,
+            userId: wx.getStorageSync('token').user.id,
             prov: this.data.region[0],
             city: this.data.region[1],
             area: this.data.region[2],
@@ -103,12 +106,12 @@ Page({
 
   updateUserAddress () {
       let self = this;
-      if (this.data.newAdd) {
+      if (!this.data.newAdd) {
         if (this.data.name && this.data.phone && this.data.name && this.data.region && this.data.address) {
             model('my/address/edit', {
                 contact: this.data.name,
                 tel: this.data.phone,
-                userId: 1,
+                userId: wx.getStorageSync('token').user.id,
                 id: this.data.id,
                 prov: this.data.region[0],
                 city: this.data.region[1],
@@ -135,6 +138,25 @@ Page({
       }
       
       
+  },
+
+  deleteUserAddress () {
+    model('my/address/del', {
+        id: this.data.id
+    }, 'POST').then(res => {
+        if (res.code === 'suc') {
+            this.setData({
+                toastShown: true,
+                toastInfo: '删除成功'
+            })
+        }
+        setTimeout(() => {
+            wx.navigateBack({
+                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+            });
+        }, 2000);
+        this.setPrevPage();
+    })
   },
 
   setPrevPage () {
