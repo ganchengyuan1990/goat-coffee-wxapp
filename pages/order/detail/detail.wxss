@@ -115,7 +115,8 @@ page {
 }
 
 .center .txt {
-    font-size: 32rpx;
+    font-size: 24rpx;
+    color: #333;
 }
 
 .special-item .r {

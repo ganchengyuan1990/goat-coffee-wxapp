@@ -21,7 +21,7 @@
     </view>
     <view class="delivery">
       <view class="btn-delivery">
-        <view class="item {{isSelfTaking ? 'active':''}}" bind:tap="selectAddress" data-delivery="taking">自提</view>
+        <view class="item {{isSelfTaking ? 'active':''}}" bind:tap="selectAddress" data-delivery="selftaking">自提</view>
         <view class="item {{!isSelfTaking ? 'active':''}}" bind:tap="selectAddress" data-delivery="delivery">外送</view>
       </view>
     </view>
