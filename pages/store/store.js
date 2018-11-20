@@ -446,7 +446,6 @@ Page({
 		})
 	},
 	selectAddress(e) {
-
 		console.log(e, 'select')
 		let type = e.target.dataset.delivery
 		wx.navigateTo({
