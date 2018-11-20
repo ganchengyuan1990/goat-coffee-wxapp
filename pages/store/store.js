@@ -53,20 +53,20 @@ Page({
 			return
 		}
 		// TODOS
-		let self = this
-		let addrId = options.userAddressId
-		let fromPage = options.from
-		if (fromPage === 'selfExtraction') {
-			this.setData({
-				isSelfTaking: true
-			})
-		}
-		if (fromPage === 'delivery') {
-			this.setData({
-				userAddressId: addrId,
-				isSelfTaking: false
-			})
-		}
+		// let self = this
+		// let addrId = options.userAddressId
+		// let fromPage = options.from
+		// if (fromPage === 'selfExtraction') {
+		// 	this.setData({
+		// 		isSelfTaking: true
+		// 	})
+		// }
+		// if (fromPage === 'delivery') {
+		// 	this.setData({
+		// 		userAddressId: addrId,
+		// 		isSelfTaking: false
+		// 	})
+		// }
 
 		// TODOS 考虑店不同，需要重新计算价格， 以及去除缺货产品
 		wx.getStorage({
@@ -225,7 +225,7 @@ Page({
 			this.setData({
 				menuList: list
 			})
-			this.generatePriceMap()
+			// this.generatePriceMap()
 			this.calculateHeight()
 		}).catch(e => {
 			console.log(e)
@@ -439,19 +439,21 @@ Page({
 		}
 		console.log(obj);
 		// return
-		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
+		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}&tab=${isSelfTaking?'selftaking':'delivery'}`
 		this.toggleCart()
 		wx.navigateTo({
 			url: url
 		})
 	},
 	selectAddress(e) {
-		// wx.navigateTo({
-		// 	url: '/pages/my/address_list/address_list?from=store'
-		// })
+
 		console.log(e, 'select')
 		let type = e.target.dataset.delivery
-		if (type === 'taking') {
+		wx.navigateTo({
+			url: `/pages/transport/transport?from=store&tab=${type}`
+		})
+		return
+		if (type === 'selftaking') {
 			// TODOS callback set address
 			// wx.navigateTo({
 			// 	url: '/pages/transport/transport?from=store&type=2'
@@ -498,18 +500,18 @@ Page({
 			data: JSON.stringify(arr)
 		})
 	},
-	addAdditional() {
-		let menu = this.data.menuList
+	// addAdditional() {
+	// 	let menu = this.data.menuList
 
-		let val = wx.getStorageSync('CART_ADD')
-		if (val) {
-			/*
-			 *{ customedKey, count, productid-skuid  }
-			 */
-			let list = JSON.parse(val)
+	// 	let val = wx.getStorageSync('CART_ADD')
+	// 	if (val) {
+	// 		/*
+	// 		 *{ customedKey, count, productid-skuid  }
+	// 		 */
+	// 		let list = JSON.parse(val)
 			
-		}
-	},
+	// 	}
+	// },
 	handleTouchStart(e) {
 		// console.log(e, 'touch');
 		touchTimer = e.timeStamp
