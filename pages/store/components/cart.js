@@ -104,7 +104,6 @@ Component({
       if (!val) {
         return
       }
-
       let count = 0
       let totalPrice = 0
       let cartTotalPrice = 0
@@ -115,7 +114,7 @@ Component({
       }, 0)
       remain = totalPrice > 30 ? 0 : BN(30).minus(totalPrice).valueOf()
       if (remain > 0 && totalPrice > 0 && !this.data.isSelfTaking) {
-        cartTotalPrice = BN(totalPrice).plus(this.data.fee).valueOf()
+        cartTotalPrice = BN(totalPrice).plus(this.data.fee || 0).valueOf()
       } else {
         cartTotalPrice = totalPrice
       }

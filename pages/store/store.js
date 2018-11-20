@@ -528,11 +528,12 @@ Page({
 			})
 		}
 	},
-	// TODOS 合并相同品类
+	// 合并购物车
 	mergeCart(list) {
 		if (!Array.isArray(list)) {
 			return 
 		}
+		// debugger
 		// 验证skuid， propids, productId一致性
 		// count total price
 
