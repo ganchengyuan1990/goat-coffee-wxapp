@@ -6,11 +6,15 @@
         </view>
     </view>
 
-    <!-- <view class="section flex {{addline2 ? 'selected' : ''}}">
-        <view class="title">性别:</view>
-        <input model="gender" value="{{gender}}" bindtap="addLine2" bindinput="dealGender"></input>
-    </view> -->
     <view class="section flex {{addline2 ? 'selected' : ''}}">
+        <view class="title">性别:</view>
+        <view class="input">
+            <!-- <input model="gender" value="{{gender}}" bindtap="addLine2" bindinput="dealGender"></input> -->
+            <text class='changeGender'>男士</text>
+            <text class='changeGender'>女士</text>
+        </view>
+    </view>
+    <view class="section flex {{addline5 ? 'selected' : ''}}">
         <view class="title">手机号码</view>
         <view class="input">
             <input model="phone" value="{{phone}}" bindtap="addLine2" bindinput="dealPhone"></input>

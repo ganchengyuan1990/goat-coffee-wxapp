@@ -53,7 +53,7 @@ Page({
 			return
 		}
 		// TODOS
-		// let self = this
+		let self = this
 		// let addrId = options.userAddressId
 		// let fromPage = options.from
 		// if (fromPage === 'selfExtraction') {
@@ -439,7 +439,7 @@ Page({
 		}
 		console.log(obj);
 		// return
-		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}&tab=${isSelfTaking?'selftaking':'delivery'}`
+		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
 		this.toggleCart()
 		wx.navigateTo({
 			url: url

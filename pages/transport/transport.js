@@ -22,17 +22,19 @@ Page({
 
     if (options.from === 'store') {
       this.setData({
-        from: 'selfExtracting',
-        isGeoAuth: getApp().globalData.isGeoAuth
+        from: options.tab === 'delivery' ? 'delivery' : 'selfExtracting',
+        showSelfGet: options.tab !== 'delivery',
+        showExpress: options.tab === 'delivery',
+        isGeoAuth: app.globalData.isGeoAuth
+      })
+    } else {
+      this.setData({
+        goodsTotalPrice: parseInt(options.price),
+        type: parseInt(options.type),
+        showExpress: parseInt(options.type) === 2,
+        showSelfGet: parseInt(options.type) === 1
       })
     }
-
-    this.setData({
-      goodsTotalPrice: parseInt(options.price),
-      type: parseInt(options.type),
-      showExpress: parseInt(options.type) === 2,
-      showSelfGet: parseInt(options.type) === 1
-    })
 
     // 页面初始化 options为页面跳转所带来的参数
 
@@ -106,18 +108,17 @@ Page({
     });
   },
 
-  goStore () {
-    // if (this.data.from) {
-    //   wx.navigateTo({
-    //     url: `/pages/store/store?from=${this.data.from}`
-    //   });
-    // } else {
-    //   wx.navigateBack({
-    //     delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-    //   });
-    // }
+  goStore (e) {
+    var globalData = app.globalData;
+
+    globalData.fromTransport = {
+      type: this.data.chooseSelf ? 'selftaking' : 'deliver',
+      detail: {
+        detail: this.data.searchSuggest[parseInt(e.currentTarget.dataset.idx)]
+      }
+    }
     wx.switchTab({
-      url: `/pages/store/store?from=${this.data.from}`
+      url: `/pages/store/store`
     });
     
   },

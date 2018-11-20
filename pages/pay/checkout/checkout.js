@@ -53,9 +53,12 @@ Page({
     fromAddress: false,
     chosenInfo: {},
     chooseNoCoupon: false,
-    chooseNoVoucher: false
+    chooseNoVoucher: false,
+    tab: ''
   },
   onLoad: function (options) {
+
+    // options.tab = 'delivery';
 
     this.dealOptions(options);
 
@@ -210,8 +213,12 @@ Page({
       this.setData({
         options: options,
         product: product,
-        payAmount: payAmount
+        payAmount: payAmount,
+        tab: items.tab
       });
+      if (this.data.tab === 'delivery') {
+        this.chooseExpress();
+      }
     }
     if (wx.getStorageSync('STORE_INFO')) {
       this.setData({
@@ -246,11 +253,11 @@ Page({
     })
     this.getBestCouponByProduct();
   },
-  selectAddress() {
-    wx.navigateTo({
-      url: '/pages/address/address',
-    })
-  },
+  // selectAddress() {
+  //   wx.navigateTo({
+  //     url: '/pages/address/address',
+  //   })
+  // },
 
   goAddressList () {
     wx.navigateTo({

@@ -12,9 +12,9 @@
     </view>
 
     <view class="search-find-container">
-        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{!showExpress && searchSuggest && searchSuggest.length}}"  data-id="{{item.id}}" bindtap="goStore">
+        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{!showExpress && searchSuggest && searchSuggest.length}}">
             <scroll-view class="suggestList" scroll-y="true">
-                <view wx:key="suggestItem" wx:for="{{searchSuggest}}" class="suggest-container">
+                <view wx:key="index" wx:for="{{searchSuggest}}" class="suggest-container" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goStore">
                     <view class="direct-item border-bottom" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
                         <view class="suggest-icon point-icon"></view>
                         <view class="direct-content">
@@ -44,7 +44,7 @@
         <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{showExpress && searchSuggest && searchSuggest.length}}"  data-id="{{item.id}}">
             <scroll-view class="suggestList" scroll-y="true">
                 <view wx:key="suggestItem" wx:for="{{searchSuggest}}" class="suggest-container">
-                    <view class="direct-item border-bottom" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
+                    <view class="direct-item border-bottom" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goStore">
                         <view class="suggest-icon point-icon"></view>
                         <view class="direct-content">
                             <view class="direct-name">
