@@ -22,17 +22,19 @@ Page({
 
     if (options.from === 'store') {
       this.setData({
-        from: 'selfExtracting',
+        from: options.tab === 'delivery' ? 'delivery' : 'selfExtracting',
+        showSelfGet: options.tab !== 'delivery',
+        showExpress: options.tab === 'delivery',
         isGeoAuth: app.globalData.isGeoAuth
       })
+    } else {
+      this.setData({
+        goodsTotalPrice: parseInt(options.price),
+        type: parseInt(options.type),
+        showExpress: parseInt(options.type) === 2,
+        showSelfGet: parseInt(options.type) === 1
+      })
     }
-
-    this.setData({
-      goodsTotalPrice: parseInt(options.price),
-      type: parseInt(options.type),
-      showExpress: parseInt(options.type) === 2,
-      showSelfGet: parseInt(options.type) === 1
-    })
 
     // 页面初始化 options为页面跳转所带来的参数
 

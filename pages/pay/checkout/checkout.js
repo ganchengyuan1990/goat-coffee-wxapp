@@ -53,7 +53,8 @@ Page({
     fromAddress: false,
     chosenInfo: {},
     chooseNoCoupon: false,
-    chooseNoVoucher: false
+    chooseNoVoucher: false,
+    tab: ''
   },
   onLoad: function (options) {
 
@@ -66,10 +67,6 @@ Page({
     this.getAddressList();
 
     this.getAvailableCoupon();
-
-    if (true) {
-      this.chooseExpress();
-    }
 
     // this.setData({
     //   goodsTotalPrice: parseInt(options.price)
@@ -216,8 +213,12 @@ Page({
       this.setData({
         options: options,
         product: product,
-        payAmount: payAmount
+        payAmount: payAmount,
+        tab: items.tab
       });
+      if (this.data.tab === 'delivery') {
+        this.chooseExpress();
+      }
     }
     if (wx.getStorageSync('STORE_INFO')) {
       this.setData({
