@@ -26,15 +26,25 @@ page {
 }
 
 .store-addr {
+  flex: none;
+  max-width: 60%;
   padding-left: 58rpx;
   font-size: 24rpx;
   line-height: 1.4;
+
 }
 
 .store-addr .tt {
   position: relative;
 }
-
+.store-addr .tt .addr {
+  display: -webkit-box;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-overflow:ellipsis;
+  overflow: hidden;
+}
 .store-addr .tt::before {
   content: "";
   position: absolute;

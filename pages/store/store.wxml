@@ -16,8 +16,19 @@
 <view class="store-container">
   <view class="hd-wrap J_hd_wrap">
     <view class="store-addr">
-      <view class="tt">{{storeInfo.storeName}}</view>
-      <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
+      <block wx:if="{{!isSelfTaking}}">
+        <view class="tt">
+          <view class="addr">{{userAddressInfo.city}}{{userAddressInfo.area}}{{userAddressInfo.address}}</view>
+        </view>
+        <view class="distance">{{userAddressInfo.contact}} {{userAddressInfo.tel}}</view>
+      </block>
+      <block wx:else>
+        <view class="tt">
+          <view class="addr">{{storeInfo.storeName}}</view>
+        </view>
+        <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
+      </block>
+
     </view>
     <view class="delivery">
       <view class="btn-delivery">
@@ -43,7 +54,7 @@
     <view class="list-cnt"> 
       <view class="list-cover"> 
       </view> 
-      <scroll-view scroll-y scroll-with-animation style="height:{{listHeight}}px" scroll-into-view="{{viewToList}}" bindscroll="scroll">
+      <scroll-view scroll-y scroll-with-animation style="height:{{listHeight}}px" scroll-into-view="{{viewToList}}" scroll-top="{{scrollTop}}" bindscroll="scroll">
         <view style="padding-bottom: 50rpx">
           <view wx:for="{{menuList}}" wx:key="item.id" class="title-group J_group" wx:for-index="idx" id="{{'list'+item.id}}">
             <view class="title">
