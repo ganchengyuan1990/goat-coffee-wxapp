@@ -23,7 +23,7 @@ Page({
     if (options.from === 'store') {
       this.setData({
         from: 'selfExtracting',
-        isGeoAuth: getApp().globalData.isGeoAuth
+        isGeoAuth: app.globalData.isGeoAuth
       })
     }
 
@@ -106,18 +106,17 @@ Page({
     });
   },
 
-  goStore () {
-    // if (this.data.from) {
-    //   wx.navigateTo({
-    //     url: `/pages/store/store?from=${this.data.from}`
-    //   });
-    // } else {
-    //   wx.navigateBack({
-    //     delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-    //   });
-    // }
+  goStore (e) {
+    var globalData = app.globalData;
+
+    globalData.fromTransport = {
+      type: this.data.chooseSelf ? 'selftaking' : 'deliver',
+      detail: {
+        detail: this.data.searchSuggest[parseInt(e.currentTarget.dataset.idx)]
+      }
+    }
     wx.switchTab({
-      url: `/pages/store/store?from=${this.data.from}`
+      url: `/pages/store/store`
     });
     
   },

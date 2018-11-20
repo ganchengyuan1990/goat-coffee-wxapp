@@ -57,6 +57,8 @@ Page({
   },
   onLoad: function (options) {
 
+    // options.tab = 'delivery';
+
     this.dealOptions(options);
 
     this.getBestCouponByProduct();
@@ -64,6 +66,10 @@ Page({
     this.getAddressList();
 
     this.getAvailableCoupon();
+
+    if (true) {
+      this.chooseExpress();
+    }
 
     // this.setData({
     //   goodsTotalPrice: parseInt(options.price)
@@ -246,11 +252,11 @@ Page({
     })
     this.getBestCouponByProduct();
   },
-  selectAddress() {
-    wx.navigateTo({
-      url: '/pages/address/address',
-    })
-  },
+  // selectAddress() {
+  //   wx.navigateTo({
+  //     url: '/pages/address/address',
+  //   })
+  // },
 
   goAddressList () {
     wx.navigateTo({
