@@ -1,11 +1,22 @@
 
 import model from '../../../utils/model.js'
+  const OCLASSIFY = {
+    default: 1,
+    normal: 1,
+    group: 2
+  }
+  const OSTATUS = {
+    default: -1,
+    unfinish: 0,
+    finished: 1
+  }
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    userInfo: {},
     // 订单列表
     orderList: [],
     // 当前页码
@@ -17,9 +28,9 @@ Page({
     // 是否已显示全部数据
     isCompleted: false,
     // 订单类型  1： 普通订单  2： 拼团订单
-    orderClassify: 1,
-    // 订单状态
-    orderState: 0,
+    orderClassify: OCLASSIFY.default,
+    // 订单状态 0: 未完成 1： 已完成
+    orderState: OSTATUS.default,
     // 显示筛选面板 order/订单类型 state/订单状态
     currentPanel: 'order',
     filterList: [{
@@ -28,11 +39,11 @@ Page({
       cls: 'category',
       list: [{
         tt: '外卖订单',
-        code: 1,
+        code: OCLASSIFY.normal,
         active: true
       }, {
         tt: '团购订单',
-        code: 2,
+        code: OCLASSIFY.group,
         active: false
       }]
     }, 
@@ -42,11 +53,11 @@ Page({
       cls: 'type',
       list: [{
         tt: '已完成',
-        code: 1,
+        code: OSTATUS.finished,
         active: false
       }, {
         tt: '未完成',
-        code: 2,
+        code: OSTATUS.unfinish,
         active: false
       }]
     }],
@@ -68,7 +79,6 @@ Page({
     this.setData({
       userInfo: userInfo
     })
-    this.fetchOrderList(1)
   },
 
   /**
@@ -82,7 +92,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    // this.fetchOrderList(1)
+    this.refreshList()
   },
 
   /**
@@ -93,7 +104,7 @@ Page({
     this.setData({
       page: 1
     })
-    setTimeout(() => this.refreshList, 2000)
+    setTimeout(() => {this.refreshList()}, 1500)
   },
   onReachBottom() {
     let isCompleted = this.data.isCompleted
@@ -119,11 +130,15 @@ Page({
     this.setData({
       isLoading: true
     })
-    model('order/detail/list', {
+    let obj = {
       page: page,
-      userId: 1, // TODOS
-      orderClassify: this.data.orderClassify || 1
-    }).then(res => {
+      userId: this.data.userInfo.user.id,
+      orderClassify: this.data.orderClassify || OCLASSIFY.normal
+    }
+    if (this.data.orderState > -1) {
+      obj.oStatus = this.data.orderState
+    }
+    model('order/detail/list', obj).then(res => {
       console.log('order res', res)
       const {data} = res
       if (data && Array.isArray(data)) {
@@ -182,6 +197,9 @@ Page({
       })
     }
   },
+  /**
+   * handler 点击筛选
+   */
   chooseFilterItem(e) {
     let dataset = e.currentTarget.dataset
     let code = dataset.code
@@ -197,10 +215,13 @@ Page({
     }
     this.setFilterState()
   },
+  /**
+   * 重置筛选条件
+   */
   resetFilterState() {
     this.setData({
-      orderClassify: 1,
-      orderState: 0
+      orderClassify: OCLASSIFY.default,
+      orderState: OSTATUS.default
     })
     this.setFilterState()
   },
@@ -216,7 +237,7 @@ Page({
           code = this.data.orderClassify
         } else if (i.tab === 'state') {
           code = this.data.orderState
-          code === 0 ? i.tt = '状态' : ''
+          code === OSTATUS.default ? i.tt = '状态' : ''
         }
         if (j.code === code) {
           j.active = true
@@ -266,8 +287,15 @@ Page({
 	    url: url
 	  })
 	},
-  goPay() {
+  goPay(e) {
+    let order = e.currentTarget.dataset.item
+    if (!order) {
+      return
+    }
 
+    wx.navigateTo({
+      url: `/pages/pay/normalPay/normalPay?timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${order.prepayId}&nonceStr=${order.nonceStr}&price=${order.totalAmount}`
+    })
   },
   confirm() {
     this.refreshList()

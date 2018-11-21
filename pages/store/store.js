@@ -509,31 +509,14 @@ Page({
 		wx.navigateTo({
 			url: `/pages/transport/transport?from=store&tab=${type}`
 		})
-		return
-		if (type === 'selftaking') {
-			// TODOS callback set address
-			// wx.navigateTo({
-			// 	url: '/pages/transport/transport?from=store&type=2'
-			// })
-			this.setData({
-				isSelfTaking: true
-			})
-		}
-		if (type === 'delivery') {
-			// wx.navigateTo({
-			// 	url: '/pages/transport/transport?from=store&type=1'
-			// })
-			this.setData({
-				isSelfTaking: false
-			})
-		}
 	},
-	// 合并购物车
+	/*
+	 * 合并相同品类
+	 */
 	mergeCart(list) {
 		if (!Array.isArray(list)) {
 			return 
 		}
-		// debugger
 		// 验证skuid， propids, productId一致性
 		// count total price
 
