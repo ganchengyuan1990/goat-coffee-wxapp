@@ -18,6 +18,7 @@ Page({
 	data: {
 		viewToList: "",
 		viewToNav: "",
+		scrollTop: 0,
 		// scrollview 设定高度
 		listHeight: 300,
 		activeIndex: 0,
@@ -35,7 +36,7 @@ Page({
 		// 当前选中产品定制化
 		currentSpecific: {},
 		// 配送地址id
-		userAddressId: '',
+		userAddressInfo: {},
 		// 是否自提
 		isSelfTaking: true
 	},
@@ -111,7 +112,13 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-		this.fetchLoaction()
+		console.log(app.globalData, 'globalData')
+		let fromTransport = app.globalData.fromTransport
+		if (fromTransport) {
+			this.loadAddress(fromTransport)
+		} else {
+			this.fetchLoaction()
+		}
 	},
 
 	/**
@@ -157,10 +164,34 @@ Page({
 		})
 	},
 	/**
+	 * 选择地址后重加载
+	 */
+	loadAddress(data) {
+		const { type, detail } = data
+		let info = detail.detail
+		if (type === 'deliver') {
+			this.setData({
+				userAddressInfo: info || {},
+				isSelfTaking: false
+			})
+			this.fetchLoaction()
+		} else if (type === 'selftaking') {
+			this.setData({
+				isSelfTaking: true
+			})
+			this.formatStoreInfo(info)
+		} else {
+			this.fetchLoaction()
+		}
+	},
+	/**
 	 * 获取经纬度
 	 */
 	fetchLoaction() {
 		let self = this
+		wx.showLoading({
+			title: '加载中',
+		})
 		wx.getLocation({
 			type: 'wgs84',
 			success(res) {
@@ -175,6 +206,12 @@ Page({
 			fail() {
 				self.checkAuth()
 				app.globalData.isGeoAuth = false
+				wx.hideLoading()
+				wx.showToast({
+					title: '加载失败',
+					icon: 'fail',
+					duration: 2000
+				})
 			}
 		})
 	},
@@ -193,29 +230,41 @@ Page({
 			const {data} = res
 			if (data && data.length > 0) {
 				let storeInfo = data[0]
-				// console.log(storeInfo, 'storeInfo');
-				wx.setStorage({
-					key: 'STORE_INFO',
-					data: JSON.stringify(storeInfo)
-				})
-				let distance = storeInfo.distance
-				if (distance) {
-					distance = distance > 1 ? `${distance.toFixed(1)}km` : `${Math.round(distance * 1000)}m`
-				}
-				storeInfo.distance = distance
-				this.setData({
-					storeInfo: storeInfo
-				})
-				this.fetchProduct()
+				this.formatStoreInfo(storeInfo)
 			}
 		}).catch(e => {
 			console.log(e)
+			wx.hideLoading()
+			wx.showToast({
+				title: '加载失败',
+				icon: 'fail',
+				duration: 2000
+			})
 		})
+	},
+	formatStoreInfo(storeInfo) {
+		if (!storeInfo) {
+			return
+		}
+		wx.setStorage({
+			key: 'STORE_INFO',
+			data: JSON.stringify(storeInfo)
+		})
+		let distance = storeInfo.distance
+		if (distance) {
+			distance = distance > 1 ? `${distance.toFixed(1)}km` : `${Math.round(distance * 1000)}m`
+		}
+		storeInfo.distance = distance
+		this.setData({
+			storeInfo: storeInfo
+		})
+		// console.log(storeInfo, 'storeinfo')
+		this.fetchProduct(storeInfo.id)
 	},
 	/**
 	 * 获取商品信息
 	 */
-	fetchProduct(storeId = 29) {
+	fetchProduct(storeId) {
 		model('home/product/all', {
 			storeId: storeId 
 		}).then(res => {
@@ -223,14 +272,23 @@ Page({
 			const {data} = res
 			const list = data.classify_list
 			this.setData({
+				scrollTop: 0,
 				menuList: list
 			})
 			// this.generatePriceMap()
 			this.calculateHeight()
+			wx.hideLoading()
 		}).catch(e => {
 			console.log(e)
+			wx.hideLoading()
+			wx.showToast({
+				title: '加载失败',
+				icon: 'fail',
+				duration: 2000
+			})
 		})
 	},
+
 	/*
 	 * 生成价格信息对照表 
 	 */
@@ -431,7 +489,7 @@ Page({
 		let fee = info.storeInfo.deliverFee
 		let obj = {
 			storeId: info.storeInfo.id,
-			userAddressId: info.userAddressId,
+			userAddressId: this.data.userAddressInfo.id || info.userAddressId,
 			deliverFee: fee,
 			payAmount: totalPrice,
 			orderType: info.isSelfTaking ? 2 : 1,
@@ -446,32 +504,15 @@ Page({
 		})
 	},
 	selectAddress(e) {
-
 		console.log(e, 'select')
 		let type = e.target.dataset.delivery
 		wx.navigateTo({
 			url: `/pages/transport/transport?from=store&tab=${type}`
 		})
-		return
-		if (type === 'selftaking') {
-			// TODOS callback set address
-			// wx.navigateTo({
-			// 	url: '/pages/transport/transport?from=store&type=2'
-			// })
-			this.setData({
-				isSelfTaking: true
-			})
-		}
-		if (type === 'delivery') {
-			// wx.navigateTo({
-			// 	url: '/pages/transport/transport?from=store&type=1'
-			// })
-			this.setData({
-				isSelfTaking: false
-			})
-		}
 	},
-	// TODOS 合并相同品类
+	/*
+	 * 合并相同品类
+	 */
 	mergeCart(list) {
 		if (!Array.isArray(list)) {
 			return 
