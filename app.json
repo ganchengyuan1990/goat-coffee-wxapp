@@ -11,6 +11,7 @@
     "pages/pay/share_success/share_success",
     "pages/pay/share_coupon/share_coupon",
     "pages/pay/promotion-list/promotion-list",
+    "pages/pay/remark/remark",
     "pages/pin/checkout/checkout",
     "pages/pin/pay_success/pay_success",
     "pages/pin/pin_list/pin_list",

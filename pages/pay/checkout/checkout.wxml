@@ -138,11 +138,12 @@
         </view>
 
 
-        <view class="special-item">
+        <view class="special-item" bindtap="goRemark">
             <view class="l">
                 <text class="name">备注特殊要求</text>
             </view>
             <view class="r">
+                <text>{{remark}}</text>
                 <image class="arrow" src="../../../images/arrow.png"/>
             </view>
         </view>

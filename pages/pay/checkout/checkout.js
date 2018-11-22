@@ -50,11 +50,13 @@ Page({
     chosenVoucher: -1,
     chooseType: -1,
     goBackFromChildPage: false,
+    goBackFromRemark: false,
     fromAddress: false,
     chosenInfo: {},
     chooseNoCoupon: false,
     chooseNoVoucher: false,
-    tab: ''
+    tab: '',
+    remark: ''
   },
   onLoad: function (options) {
 
@@ -265,6 +267,12 @@ Page({
     })
   },
 
+  goRemark () {
+    wx.navigateTo({
+      url: `/pages/pay/remark/remark?remark=${this.data.remark}`,
+    })
+  },
+
   goVoucher () {
     if (this.data.chosenInfo.id) {
       wx.navigateTo({
@@ -345,6 +353,8 @@ Page({
       this.dealChildPageInfo() ;
     } else if (this.data.fromAddress) {
       this.getAddressList();
+    } else if (this.data.goBackFromRemark) {
+      this.getRemark();
     }
 
   },
@@ -355,6 +365,12 @@ Page({
   onUnload: function () {
     // 页面关闭
 
+  },
+
+  getRemark () {
+    this.setData({
+      remark: wx.getStorageSync('remark')
+    });
   },
   submitOrder: function () {
     let param = {
@@ -402,6 +418,7 @@ Page({
     }).then(data => {
         if (data.code === 'suc') {
           wx.removeStorageSync('CART_LIST');
+          wx.removeStorageSync('remark');
           let payParamStr = '';
           let params = data.data;
           for (let key of Object.keys(params)) {

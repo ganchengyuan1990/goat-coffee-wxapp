@@ -112,7 +112,7 @@ Page({
     var globalData = app.globalData;
 
     globalData.fromTransport = {
-      type: this.data.chooseSelf ? 'selftaking' : 'deliver',
+      type: this.data.showSelfGet ? 'selftaking' : 'deliver',
       detail: {
         detail: this.data.searchSuggest[parseInt(e.currentTarget.dataset.idx)]
       }
