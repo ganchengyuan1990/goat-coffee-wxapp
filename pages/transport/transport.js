@@ -25,7 +25,8 @@ Page({
         from: options.tab === 'delivery' ? 'delivery' : 'selfExtracting',
         showSelfGet: options.tab !== 'delivery',
         showExpress: options.tab === 'delivery',
-        isGeoAuth: app.globalData.isGeoAuth
+        isGeoAuth: app.globalData.isGeoAuth,
+        type: options.tab === 'delivery' ? 2 : 1
       })
     } else {
       this.setData({
