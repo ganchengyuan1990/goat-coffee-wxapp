@@ -5,14 +5,17 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    token: {}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    let token = wx.getStorageSync('token')
+    this.setData({
+      token: token
+    })
   },
 
   /**
@@ -28,9 +31,11 @@ Page({
   onShow: function () {
     this.getProfile()
   },
-
+  onPullDownRefresh() {
+    wx.stopPullDownRefresh()
+  },
   getProfile() {
-    let info = wx.getStorageSync('token')
+    let info = this.data.token
     let userInfo = info.user
     let userInfoWechat = app.globalData.userInfo || {}
     if (info.token) {

@@ -53,7 +53,6 @@ Page({
 			})
 			return
 		}
-		// TODOS
 		let self = this
 		// let addrId = options.userAddressId
 		// let fromPage = options.from
@@ -250,9 +249,11 @@ Page({
 			key: 'STORE_INFO',
 			data: JSON.stringify(storeInfo)
 		})
-		let distance = storeInfo.distance
-		if (distance) {
-			distance = distance > 1 ? `${distance.toFixed(1)}km` : `${Math.round(distance * 1000)}m`
+		let distance = storeInfo.distance || 0
+		try {
+			distance = distance > 1 ? `${parseFloat(distance).toFixed(1)}km` : `${Math.round(distance * 1000)}m`
+		} catch(e) {
+			console.log(e);
 		}
 		storeInfo.distance = distance
 		this.setData({
