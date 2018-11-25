@@ -29,6 +29,7 @@ Page({
     isCompleted: false,
     // 订单类型  1： 普通订单  2： 拼团订单
     orderClassify: OCLASSIFY.default,
+    currentPanelList: OCLASSIFY.default,
     // 订单状态 0: 未完成 1： 已完成
     orderState: OSTATUS.default,
     // 显示筛选面板 order/订单类型 state/订单状态
@@ -142,6 +143,8 @@ Page({
       console.log('order res', res)
       const {data} = res
       if (data && Array.isArray(data)) {
+        let uid = this.data.userInfo.user.id
+        
         let len = data.length
         let list = isResetList ? [] : this.data.orderList
         if (len === 0) {
@@ -151,9 +154,23 @@ Page({
         } else {
           list = list.concat(data)
         }
+        let arr = []
+        if (this.data.orderClassify === OCLASSIFY.normal) {
+          arr = list
+        }
+        if (this.data.orderClassify === OCLASSIFY.group) {
+          arr = list.map(item => {
+            let groupList = item.group_user_order
+            let obj = groupList.find(i => i.userId === uid)
+            obj.payAmount = item.group_order.payAmount
+            obj.state = item.group_order.state
+            return obj
+          })
+        }
         this.setData({
-          orderList: list,
-          page: page
+          orderList: arr,
+          page: page,
+          currentPanelList: this.data.orderClassify
         })
       }
       this.setData({
@@ -309,7 +326,11 @@ Page({
    */
   showDetail(e) {
     let item = e.currentTarget.dataset.item
+    let dtype = e.currentTarget.dataset.dtype
+    console.log(item, 'show detail item');
+    
     if (item) {
+      item.dtype = dtype
       wx.navigateTo({
         url: `/pages/order/detail/detail?data=${encodeURIComponent(JSON.stringify(item))}`
       })

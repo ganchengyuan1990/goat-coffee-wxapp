@@ -1,68 +1,104 @@
 <wxs src="../filter.wxs" module="filter"></wxs>
 <view class="container">
-    <view class="hd-wrap">
-        <view class="tt">{{filter.getOrderState(detail.orderState)}}</view>
-        <view class="desc">感谢您的光临</view>
-    </view>
-    <view class="panel order-box">
-        <view class="border-line">
-            <view class="order-title border-line">
-                <text class="name">外卖单号{{detail.orderNo}}</text>
-                <text>{{detail.CreateTime}}</text>
-            </view>
-            <view class="order-item" wx:for="{{detail.orderDetail_list}}" wx:key="{{index}}">
-                <view class="l">
-                    <text class="name">{{item.productName}}</text>
-                    <text class="format">{{item.spec}}</text>
+    <block wx:if="{{dtype === 'order'}}">
+        <view class="hd-wrap">
+            <view class="tt">{{filter.getOrderState(detail.orderState)}}</view>
+            <view class="desc">感谢您的光临</view>
+        </view>
+        <view class="panel order-box">
+            <view class="border-line">
+                <view class="order-title border-line">
+                    <text class="name">外卖单号{{detail.orderNo}}</text>
+                    <text>{{detail.CreateTime}}</text>
                 </view>
-                <view class="center">
-                    <text class="txt">X {{item.number}}</text>
+                <view class="order-item" wx:for="{{detail.orderDetail_list}}" wx:key="{{index}}">
+                    <view class="l">
+                        <text class="name">{{item.productName}}</text>
+                        <text class="format">{{item.spec}}</text>
+                    </view>
+                    <view class="center">
+                        <text class="txt">X {{item.number}}</text>
+                    </view>
+                    <view class="r">
+                        <text class="txt">￥{{item.skuPrice}}</text>
+                    </view>
+                </view>
+            </view>
+            <view class="transport-item">
+                <view class="l">
+                    <text class="name">配送费</text>
                 </view>
                 <view class="r">
-                    <text class="txt">￥{{item.skuPrice}}</text>
+                    <text class="txt">￥{{detail.deliverFee}}</text>
                 </view>
             </view>
-        </view>
-        <view class="transport-item">
-            <view class="l">
-                <text class="name">配送费</text>
+            <view class="transport-item" bindtap="goCoupon">
+                <view class="l">
+                    <text class="name">兑换券</text>
+                </view>
+                <view class="r">
+                    <text class="txt">{{filter.getDiscountType(detail).discount}}</text>
+                    <!-- <image class="arrow" /> -->
+                    <!-- <image class="txt" src="../../../images/arrow.png"/> -->
+                </view>
             </view>
-            <view class="r">
-                <text class="txt">￥{{detail.deliverFee}}</text>
+            <view class="transport-item" bindtap="goPromotion">
+                <view class="l">
+                    <text class="name">优惠券</text>
+                </view>
+                <view class="r">
+                    <text class="txt">{{filter.getDiscountType(detail).coupon}}</text>
+                    <!-- <image class="arrow" src="../../../images/arrow.png" /> -->
+                    <!-- <image class="txt" src="../../../images/arrow.png"/> -->
+                </view>
             </view>
-        </view>
-        <view class="transport-item" bindtap="goCoupon">
-            <view class="l">
-                <text class="name">兑换券</text>
-            </view>
-            <view class="r">
-                <text class="txt">{{filter.getDiscountType(detail).discount}}</text>
-                <!-- <image class="arrow" /> -->
-                <!-- <image class="txt" src="../../../images/arrow.png"/> -->
-            </view>
-        </view>
-        <view class="transport-item" bindtap="goPromotion">
-            <view class="l">
-                <text class="name">优惠券</text>
-            </view>
-            <view class="r">
-                <text class="txt">{{filter.getDiscountType(detail).coupon}}</text>
-                <!-- <image class="arrow" src="../../../images/arrow.png" /> -->
-                <!-- <image class="txt" src="../../../images/arrow.png"/> -->
+            <view class="special-item">
+                <view class="l">
+                    <text class="name">共{{filter.getSum(detail.orderDetail_list)}}件商品</text>
+                </view>
+                <view class="r">实付￥{{detail.payAmount}}</view>
             </view>
         </view>
-        <view class="special-item">
-            <view class="l">
-                <text class="name">共{{filter.getSum(detail.orderDetail_list)}}件商品</text>
+        <view class="panel addr-box">
+            <view class="name">{{detail.userName}} {{detail.contactTel}}</view>
+            <view class="addr">{{filter.getAddr(detail)}}</view>
+            <view class="date">配送时间 {{detail.UpdateTime}}</view>
+        </view>
+    </block>
+    <block wx:if="{{dtype === 'group'}}">
+        <view class="hd-wrap">
+            <view class="tt">拼团成功</view>
+            <view class="desc">感谢您的光临</view>
+        </view>
+        <view class="panel order-box">
+            <view class="border-line">
+                <view class="order-title border-line">
+                    <text class="name">外卖单号{{detail.groupOrderNo}}</text>
+                    <text>{{detail.CreateTime}}</text>
+                </view>
+                <view class="order-item">
+                    <view class="l">
+                        <text class="name">{{detail.groupName}}</text>
+                        <!-- <text class="format">{{item.spec}}</text> -->
+                    </view>
+                    <view class="center">
+                        <text class="txt"></text>
+                    </view>
+                    <view class="r">
+                        <text class="txt">￥{{detail.payAmount}}</text>
+                    </view>
+                </view>
             </view>
-            <view class="r">
-                实付￥{{detail.payAmount}}
+            <view class="special-item">
+                <view class="l">
+                    <text class="name">共1件商品</text>
+                </view>
+                <view class="r">实付￥{{detail.payAmount}}</view>
             </view>
         </view>
-    </view>
-    <view class="panel addr-box">
-        <view class="name">{{detail.userName}} {{detail.contactTel}}</view>
-        <view class="addr">{{filter.getAddr(detail)}}</view>
-        <view class="date">配送时间 {{detail.UpdateTime}}</view>
-    </view>
+        <view class="panel tip-box">
+            <view class="name">温馨提示</view>
+            <view class="desc">您拼团成功后的兑换券已存入咖啡库，您可以直接在购买咖啡时使用～～</view>
+        </view>
+    </block>
 </view>

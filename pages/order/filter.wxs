@@ -25,6 +25,18 @@
                     return ''
             }
         },
+        getGroupState: function(code) {
+            switch(code) {
+                case 'p1':
+                    return '拼团中'
+                case 'p2':
+                    return '拼团完成'
+                case 'p3':
+                    return '拼团失败'
+                default:
+                    return ''
+            }
+        },
         getAddr: function (item) {
             var type = item.orderType
             switch (type) {
@@ -37,7 +49,9 @@
         },
         getOrderBrief: function (item) {
             var orders = item.order_detail
-            
+            if (!orders) {
+                return ''
+            }
             var len = orders.length
             if (len > 0) {
                 var firstName = orders[0].productName

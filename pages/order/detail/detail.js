@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    detail: {}
+    detail: {},
+    dtype: ''
   },
 
   /**
@@ -39,16 +40,27 @@ Page({
   formatData(data) {
     let detail = JSON.parse(data || '{}')
     console.log(detail, 'data');
-    let list = detail.orderDetail_list || []
-    list.forEach(item => {
-      let props = JSON.parse(item.props || '[]')
-      let propArr = props.map(i => {
-        return i.val.val
-      }, '')
-      item.spec = propArr.join('/')
-    })
-    this.setData({
-      detail: detail
-    })
+    let dtype = detail.dtype
+    if (dtype === 'order') {
+      let list = detail.orderDetail_list || []
+      list.forEach(item => {
+        let props = JSON.parse(item.props || '[]')
+        let propArr = props.map(i => {
+          return i.val.val
+        }, '')
+        item.spec = propArr.join('/')
+      })
+      this.setData({
+        dtype: 'order',
+        detail: detail
+      })
+    }
+    if (dtype === 'group') {
+      this.setData({
+        dtype: 'group',
+        detail: detail
+      })
+    }
+
   }
 })

@@ -47,7 +47,6 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		console.log(options, 'options');
 		let isLogin = this.checkLogin()
 		if (!isLogin) {
 			wx.redirectTo({
@@ -83,7 +82,7 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-		console.log(app.globalData, 'globalData')
+		// console.log(app.globalData, 'globalData')
 		let fromTransport = app.globalData.fromTransport
 		if (fromTransport) {
 			this.loadAddress(fromTransport)
@@ -295,7 +294,6 @@ Page({
 				})
 			})
 		})
-		console.log(obj);
 		this.setData({
 			priceMap: obj
 		})
@@ -330,7 +328,6 @@ Page({
 				return item
 			}
 		})
-		// console.log(remainList, 'remainList');
 		
 		if (remainList.length !== list.length) {
 			wx.showModal({
@@ -350,7 +347,7 @@ Page({
 		var query = wx.createSelectorQuery();
 		query.selectAll(".J_group").boundingClientRect();
 		query.exec(res => {
-			console.log(res, 'res')
+			// console.log(res, 'res')
 			for (let i = 0; i < res[0].length; i++) {
 				height += parseInt(res[0][i].height);
 				heigthArr.push(height);
@@ -404,7 +401,6 @@ Page({
 		this.setData({
 			currentSpecific: detail
 		})
-		console.log(detail, 'prodde')
 		this.toggleSpecific()
 	},
 	toggleSpecific() {
@@ -498,7 +494,6 @@ Page({
 			let propList = item.key_list
 			let propIds = []
 			propList.forEach(i => {
-				// console.log(i, 'i');
 				let idObj = i.val_list.find(j => {
 					return j.id === i.default_val_id
 				})
@@ -507,7 +502,6 @@ Page({
 					propIds.push(idObj.prop_id)
 				}
 			})
-			console.log(propIds, 'propdis')
 			return Object.assign({},{
 				productName: item.productName,
 				productId: item.id,
@@ -527,8 +521,7 @@ Page({
 			orderType: info.isSelfTaking ? 2 : 1,
 			product: products
 		}
-		console.log(obj);
-		// return
+		
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
 		this.toggleCart()
 		wx.navigateTo({
@@ -536,7 +529,6 @@ Page({
 		})
 	},
 	selectAddress(e) {
-		console.log(e, 'select')
 		let type = e.target.dataset.delivery
 		wx.navigateTo({
 			url: `/pages/transport/transport?from=store&tab=${type}`
@@ -573,26 +565,15 @@ Page({
 			data: JSON.stringify(arr)
 		})
 	},
-	// addAdditional() {
-	// 	let menu = this.data.menuList
-
-	// 	let val = wx.getStorageSync('CART_ADD')
-	// 	if (val) {
-	// 		/*
-	// 		 *{ customedKey, count, productid-skuid  }
-	// 		 */
-	// 		let list = JSON.parse(val)
-			
-	// 	}
-	// },
+	/**
+	 * 滑动关闭功能
+	 */
 	handleTouchStart(e) {
-		// console.log(e, 'touch');
 		touchTimer = e.timeStamp
 		touchObj = e.touches[0]
 		touchDy = 0
 	},
 	handleTouchMove(e) {
-		// console.log(e, 'move')
 		let touch = e.touches[0]
 		let id = touchObj.identifier
 		let curId = touch.identifier
@@ -602,7 +583,6 @@ Page({
 		}
 	},
 	handleTouchEnd(e) {
-		// console.log(e, 'end');
 		let touch = e.changedTouches[0]
 		let id = touchObj.identifier
 		let curId = touch.identifier
