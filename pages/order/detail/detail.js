@@ -56,6 +56,7 @@ Page({
       })
     }
     if (dtype === 'group') {
+      
       this.setData({
         dtype: 'group',
         detail: detail

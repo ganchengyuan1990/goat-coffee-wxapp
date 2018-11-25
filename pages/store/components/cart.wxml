@@ -19,7 +19,7 @@
           <view class="bottom">
               <view class="hd">
                   <view>{{filter.getFeeCnt(remain, isSelfTaking)}}</view>
-                  <view class="btn-more">去凑单<text>></text></view>
+                  <view class="btn-more" bindtap="toggleCart">去凑单<text>></text></view>
               </view>
               <view class="bd">
                   <view class="overview">
