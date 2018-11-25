@@ -33,12 +33,14 @@ Page({
 		},
 		menuList: [],
 		cartList: [],
+		priceMap: {},
 		// 当前选中产品定制化
 		currentSpecific: {},
 		// 配送地址id
 		userAddressInfo: {},
 		// 是否自提
-		isSelfTaking: true
+		isSelfTaking: true,
+		isLoadStorageCart: true
 	},
 
 	/**
@@ -53,36 +55,6 @@ Page({
 			})
 			return
 		}
-		let self = this
-		// let addrId = options.userAddressId
-		// let fromPage = options.from
-		// if (fromPage === 'selfExtraction') {
-		// 	this.setData({
-		// 		isSelfTaking: true
-		// 	})
-		// }
-		// if (fromPage === 'delivery') {
-		// 	this.setData({
-		// 		userAddressId: addrId,
-		// 		isSelfTaking: false
-		// 	})
-		// }
-
-		// TODOS 考虑店不同，需要重新计算价格， 以及去除缺货产品
-		wx.getStorage({
-			key: 'CART_LIST',
-			success(res) {
-				// console.log(res, 'storage');
-				let data = JSON.parse(res.data)
-				if (data && Array.isArray(data)) {
-					let arr = self.data.cartList
-					arr = arr.concat(data)
-					
-					self.mergeCart(arr)
-				}
-				
-			}
-		})
 	},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -147,7 +119,6 @@ Page({
 				const { authSetting } = res
 				// console.log(authSetting, 'setting');
 				if (!authSetting['scope.userLocation']) {
-					console.log('need auth')
 					wx.showModal({
 						title: '提示',
 						content: '需要您的授权才能推荐附近的店铺信息',
@@ -228,8 +199,23 @@ Page({
 		}).then(res => {
 			const {data} = res
 			if (data && data.length > 0) {
-				let storeInfo = data[0]
-				this.formatStoreInfo(storeInfo)
+				// if (data.length > 1) {
+				// 	wx.showModal({
+				// 		title: '提示',
+				// 		content: '请选择店铺',
+				// 		showCancel: false,
+				// 		success(res) {
+				// 			if (res.confirm) {
+				// 				wx.navigateTo({
+				// 					url: `/pages/transport/transport?from=store&tab=delivery`
+				// 				})
+				// 			}
+				// 		}
+				// 	})
+				// } else {
+					let storeInfo = data[0]
+					this.formatStoreInfo(storeInfo)
+				// }
 			}
 		}).catch(e => {
 			console.log(e)
@@ -276,7 +262,7 @@ Page({
 				scrollTop: 0,
 				menuList: list
 			})
-			// this.generatePriceMap()
+			this.generatePriceMap()
 			this.calculateHeight()
 			wx.hideLoading()
 		}).catch(e => {
@@ -297,20 +283,65 @@ Page({
 		let list = this.data.menuList
 		let obj = {}
 		// 使用 productid-skuid 对应价格map表
-		console.log(list, 'list');
+		// console.log(list, 'list');
 		
 		list.forEach(i => {
 			let pList = i.product_list
 			pList.forEach(j => {
 				let sList = j.sku_list
 				sList.forEach(k => {
-					let key = k.productId + '-' + k.id
+					let key = k.productId + '-' + k.propSkuId
 					obj[key] = k.price
 				})
 			})
 		})
 		console.log(obj);
+		this.setData({
+			priceMap: obj
+		})
+		if (this.data.isLoadStorageCart) {
+			this.getStorageCart()
+		}
+	},
+	/**
+	 *  
+	 */
+	getStorageCart() {
+		// TODOS 考虑店不同，需要重新计算价格， 以及去除缺货产品
+		let data = wx.getStorageSync('CART_LIST')
+		let list = JSON.parse(data || '[]')
+		let priceMap = this.data.priceMap
+		this.setData({
+			isLoadStorageCart: false
+		})
+		let remainList = list.filter(item => {
+			let customedKey = item.customedKey
+			let key = ''
+			let keys = customedKey.match(/\d+-\d+/)
+			if (keys) {
+				key = keys[0]
+			}
+			
+			if (key && priceMap[key]) {
+				// TODOS 此处可添加重新计算价格逻辑
+				// 同时需要计算总价格
+				// item.price = priceMap[key]
+				// item.totalPrice = BN(item.price).mul...
+				return item
+			}
+		})
+		// console.log(remainList, 'remainList');
 		
+		if (remainList.length !== list.length) {
+			wx.showModal({
+				title: '提示',
+				content: '购物车部分商品缺货',
+				confirmText: '我知道了'
+			})
+		}
+		let arr = this.data.cartList
+		arr = arr.concat(remainList)
+		this.mergeCart(arr)
 	},
 	calculateHeight() {
 		let heigthArr = [];

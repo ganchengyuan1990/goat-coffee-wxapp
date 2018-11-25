@@ -36,7 +36,8 @@
             }
         },
         getOrderBrief: function (item) {
-            var orders = item.orderDetail_list
+            var orders = item.order_detail
+            
             var len = orders.length
             if (len > 0) {
                 var firstName = orders[0].productName
@@ -44,7 +45,7 @@
             }
             return ''
         },
-                getDiscountType: function(item) {
+        getDiscountType: function(item) {
             var val =  item.discountAmount === 0 ?  '无可用' : '-￥'+item.discountAmount
             switch(item.discountType) {
                 case 0: 
