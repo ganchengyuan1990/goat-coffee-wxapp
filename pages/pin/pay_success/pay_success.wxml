@@ -4,7 +4,17 @@
       <view class="coupon-sn">
         <image src="../../../images/chenggong_2@2x.png" />
       </view>
-      <view class="coupon-sn">您有9份咖啡券待领取</view>
+      <view class="coupon-sn">
+        <view class="title">您有9份咖啡券待领取</view>
+        <view class="text">咖啡兑换券直接存入账户，直接兑换指定咖啡</view>
+        <view class='info'>
+            <view class='text'>¥ 
+                <text class='bigger'>{{price}}</text>
+            </view>
+            <view class='text gray_text'>¥ {{originalPrice}}</view>
+            <view class='text added'>{{number}}人团</view>
+        </view>
+      </view>
     </view>
     <!-- <view class="go-button">
       邀请好友共享优惠
@@ -48,6 +58,12 @@
       <view class="rule">1.此处展示参与流程</view>
       <view class="rule">1.此处展示参与流程</view>
 
+  </view>
+
+  <view class='function_bar'>
+      <view class='button' open-type="share" bindtap="goPinList">
+          更多超值体验
+      </view>
   </view>
 
 

@@ -114,7 +114,7 @@ checkbox {
     margin-left: 31.25rpx;
     padding-right: 31.25rpx;
     padding-top: 26rpx;
-    border-bottom: 1px solid #d9d9d9;
+    /* border-bottom: 1px solid #d9d9d9; */
 }
 
 .order-box .order-title {
@@ -126,7 +126,7 @@ checkbox {
     flex-direction: column;
     /* float: left; */
     /* height: 52rpx; */
-    width: 35%;
+    width: 75%;
     line-height: 52rpx;
     overflow: hidden;
     font-size: 32rpx;
@@ -267,7 +267,7 @@ checkbox {
     width: 333rpx;
     height: 100rpx;
     background: #333;
-    border: 1px solid #b4282d;
+    /* border: 1px solid #b4282d; */
     line-height: 100rpx;
     text-align: center;
     color: #fff;

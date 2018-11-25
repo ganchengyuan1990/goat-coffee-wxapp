@@ -30,6 +30,9 @@
     border-radius: 5px;
     margin-left: 5%;
     width: 93%;
+    background:rgba(245, 245, 245, 1);
+    color: #999999;
+    height: 308rpx;
 }
 
 .section input {
@@ -54,7 +57,7 @@
 
 .button {
     position: fixed;
-    bottom: 76rpx;
+    bottom: 576rpx;
     /* width: 100%; */
     left: 40rpx;
     right: 40rpx;
@@ -100,4 +103,6 @@ textarea {
     padding: 20rpx;
     font-size: 27rpx;
     line-height: 27rpx;
+    width: 95%;
+    /* background:rgba(245, 245, 245, 1); */
 }

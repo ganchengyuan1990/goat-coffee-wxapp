@@ -14,14 +14,14 @@
             </view>
             <view class="order-item">
                 <view class="l">
-                    <text class="name">美式咖啡</text>
-                    <text class="format">大/无奶/无糖/热</text>
+                    <text class="name">限时分享 | {{groupName}}</text>
+                    <!-- <text class="format">大/无奶/无糖/热</text> -->
                 </view>
-                <view class="center">
+                <!-- <view class="center">
                     <text class="txt">X 2</text>
-                </view>
+                </view> -->
                 <view class="r">
-                    <text class="txt">￥{{goodsTotalPrice}}</text>
+                    <text class="txt">￥{{price}}</text>
                 </view>
             </view>
 
@@ -29,14 +29,14 @@
 
 
 
-        <view class="transport-item">
+        <!-- <view class="transport-item">
             <view class="l">
                 <text class="name">优惠券</text>
             </view>
             <view class="r">
                 <text class="txt">无可用优惠</text>
             </view>
-        </view>
+        </view> -->
 
 
     </view>
@@ -70,8 +70,8 @@
     <view class="order-total">
         <view class="l">
             <text>合计</text>
-            <text class='price'>￥{{actualPrice}}</text>
+            <text class='price'>￥{{price}}</text>
         </view>
-        <view class="r" bindtap="submitOrder">去结算</view>
+        <view class="r" bindtap="submitOrder">去支付</view>
     </view>
 </view>

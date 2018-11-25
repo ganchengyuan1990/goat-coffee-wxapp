@@ -372,7 +372,8 @@ Page({
       remark: wx.getStorageSync('remark')
     });
   },
-  submitOrder: function () {
+
+  submit () {
     let param = {
       openId: wx.getStorageSync('openid'),
       storeId: this.data.options.storeId,
@@ -383,6 +384,7 @@ Page({
       payAmount: this.data.actualPrice,
       orderType: 1,
       payType: 1,
+      remark: this.data.remark,
       discountIds: this.data.couponUserRelation.substr(0, this.data.couponUserRelation.length - 1)
       // discountIds: '1,2,3'
     }
@@ -416,20 +418,20 @@ Page({
       'authorization': 'Bearer ' + wx.getStorageSync('token').token,
       'Accept': 'application/json'
     }).then(data => {
-        if (data.code === 'suc') {
-          wx.removeStorageSync('CART_LIST');
-          wx.removeStorageSync('remark');
-          let payParamStr = '';
-          let params = data.data;
-          for (let key of Object.keys(params)) {
-            payParamStr += `${key}=${params[key]}&`;
-          }
-          payParamStr += `price=${this.data.actualPrice}`
-          wx.navigateTo({
-            // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
-            url: `/pages/pay/normalPay/normalPay?${payParamStr}`
-          });
+      if (data.code === 'suc') {
+        wx.removeStorageSync('CART_LIST');
+        wx.removeStorageSync('remark');
+        let payParamStr = '';
+        let params = data.data;
+        for (let key of Object.keys(params)) {
+          payParamStr += `${key}=${params[key]}&`;
         }
+        payParamStr += `price=${this.data.actualPrice}`
+        wx.navigateTo({
+          // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
+          url: `/pages/pay/normalPay/normalPay?${payParamStr}`
+        });
+      }
     }).catch(e => {
       this.setData({
         errorToast: true,
@@ -439,7 +441,27 @@ Page({
       //   url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
       // });
     })
-    
-
+  },
+  submitOrder: function () {
+    if (this.data.chooseSelf) {
+      wx.showModal({
+        // title: '提示', //提示的标题,
+        content: `是否确认前往${this.data.checkedAddress.storeName}店自提？订单确认后将无法更改`, //提示的内容,
+        showCancel: true, //是否显示取消按钮,
+        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+        cancelColor: '#000000', //取消按钮的文字颜色,
+        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+        confirmColor: '#3CC51F', //确定按钮的文字颜色,
+        success: res => {
+          if (res.confirm) {
+            this.submit();
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      });
+    } else {
+      this.submit();
+    }
 }
 })

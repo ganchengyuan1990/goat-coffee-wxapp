@@ -14,7 +14,10 @@ Page({
         prepayId: '',
         signType: '',
         timeStamp: '',
-        price: '',
+        price: 0,
+        originalPrice: 0,
+        number: 0,
+        groupName: '',
         type: 'normal'
     },
     onLoad: function (option) {
@@ -27,11 +30,14 @@ Page({
             signType: option.signType,
             timeStamp: option.timeStamp,
             price: option.price,
+            originalPrice: option.originalPrice,
+            number: option.number,
+            groupName: option.groupName,
             type: option.type ? option.type : 'normal'
         });
 
         this.payFunc(this);
-  
+
     },
 
 
@@ -46,7 +52,7 @@ Page({
             'success': function (res) {
                 if (self.data.type === 'pin') {
                     wx.redirectTo({
-                        url: `/pages/pin/pay_success/pay_success?price=${self.data.price}`
+                        url: `/pages/pin/pay_success/pay_success?price=${self.data.price}&originalPrice=${self.data.originalPrice}&number=${self.data.number}&groupName=${self.data.groupName}`
                     });
                 } else {
                     wx.redirectTo({

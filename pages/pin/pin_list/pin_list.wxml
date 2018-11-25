@@ -1,17 +1,17 @@
 <view class="wrapper">
-  <view class="group-wrapper">
+  <view class="group-wrapper" wx:for="{{pinList}}" wx:key="index" data-id="{{item.id}}" bindtap="goPinDetail">
     <view class="group">
       <view class="img_wrapper">
-        <image src="http://p0.meituan.net/hoteladmin/ade3aadb9baab85e35e77cbb759e499e164310.jpg" />
+        <image src="{{item.groupImg}}" />
       </view>
       <view class="info">
         <view class="item">
           <view class="text">限时分享</view>
-          <view class="text bigger">¥ 21</view>
+          <view class="text bigger">¥ {{item.realAmount}}</view>
         </view>
         <view class="item">
-          <view class="text">标准美式 4杯装</view>
-          <view class="text">三人团</view>
+          <view class="text">{{item.groupName}}</view>
+          <view class="text">{{item.maxPeople}}人团</view>
 
         </view>
         <view class="item button">
@@ -21,25 +21,4 @@
     </view>
   </view>
 
-  <view class="group-wrapper">
-    <view class="group">
-      <view class="img_wrapper">
-        <image src="http://p0.meituan.net/hoteladmin/ade3aadb9baab85e35e77cbb759e499e164310.jpg" />
-      </view>
-      <view class="info">
-        <view class="item">
-          <view class="text">限时分享</view>
-          <view class="text bigger">¥ 21</view>
-        </view>
-        <view class="item">
-          <view class="text">标准美式 4杯装</view>
-          <view class="text">三人团</view>
-
-        </view>
-        <view class="item button">
-          去开团
-        </view>
-      </view>
-    </view>
-  </view>
 </view>

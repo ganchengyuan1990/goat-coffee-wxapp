@@ -1,13 +1,13 @@
 <view class='input-line'>
     <view class="section">
         <view class="remark">
-            <textarea model="content" value="{{content}}" bindinput="dealName" placeholder='请备注您的特殊要求' placeholder-style="font-size: 27rpx;position: relative; top: 5rpx;"></textarea>
+            <textarea model="content" value="{{content}}" bindinput="dealName" placeholder='输入备注内容（口味备注不在此留言）' placeholder-style="font-size: 27rpx;position: relative; top: 5rpx;"></textarea>
         </view>
     </view>
 
 
     <view class="button">
-        <button bindtap="commitRemark">保存</button>
+        <button bindtap="commitRemark">确定</button>
     </view>
 
     <toast wx:if="{{toastShown}}" is-show="{{toastShown}}" title="{{toastInfo}}" disappear-sec="3"></toast>

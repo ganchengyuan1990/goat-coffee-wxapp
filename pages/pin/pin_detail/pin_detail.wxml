@@ -6,9 +6,9 @@
     </view>
     <swiper style="height:400rpx;" indicator-dots="{{indicatorDots}}"
         autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-        <block wx:for="{{poiInfo.img}}" wx:key="idx" class='img_wrapper'>
+        <block class='img_wrapper'>
             <swiper-item>
-                <image src="{{item}}" class="image" lazy-load='true'/>
+                <image src="{{detailInfo.groupIcon}}" class="image" lazy-load='true'/>
             </swiper-item>
         </block>
     </swiper>
@@ -21,34 +21,36 @@
     <view class='info'>
         <view class='word'>
             <view class='title'>
-                <text>¥ 21</text>
-                <text>¥ 36</text>
-                <text>三人团</text>
+                <view class='text'>¥ 
+                    <text class='bigger'>{{detailInfo.realAmount}}</text>
+                </view>
+                <view class='text gray_text'>¥{{detailInfo.voucherAmount}}</view>
+                <view class='text added'>{{detailInfo.maxPeople}}人团</view>
             </view>
-            <view class='title'>标准美式咖啡3杯，限50份</view>
-            <view class='title_content'>标准美式咖啡3杯，限50份</view>
+            <view class='title'>{{detailInfo.groupName}}</view>
+            <view class='title_content'>咖啡兑换券直接存入账户，直接兑换指定咖啡</view>
         </view>
 
-        <view class='pin_list' wx:if="{{pinOrders.length > 0}}">
-            <view class="pin_list_title">    
-                {{pinOrders.length}}人正在发起拼团
+        <view class='pin_list' wx:if="{{orderInfoArr.length > 0}}">
+            <view class="pin_list_title" >    
+                {{orderInfoArr.length}}人在拼团，可直接参与
             </view>
-            <view wx:for="{{pinOrders}}" wx:key="index" class="pin_order">
-                <image class="avatar" src="{{item.owner_avatar}}" lazy-load='true'/>
+            <view class="pin_order" wx:for="{{orderInfoArr}}" wx-key="index">
+                <image class="avatar" src="{{item.userAvatar}}" lazy-load='true'/>
                 <view class='go_pin'>
-                    <text class="normal">{{item.owner_name}}</text>
+                    <text class="normal">{{item.userName}}</text>
                 </view>
                 <view class='go_pin righter'>
                     <text class="normal left_time}}">还差一人</text>
-                    <text class='left_time smaller' wx:if="{{item.leftTime}}">剩余{{item.leftTime}}</text>
+                    <text class='left_time smaller' wx:if="{{leftTime}}">剩余{{leftTime}}</text>
                 </view>
-                <view data-index="{{index}}" type="warn" class='goPay' catchtap="goAttendPin" >参加拼团</view>  
+                <view type="warn" data-index="{{index}}" class='goPay' catchtap="goAttendPin" >参加拼团</view>  
             </view>
         </view>
 
         <view class='intro'>
-            <view class="subtitle">课程简介：</view>
-            <view class='intro_detail'>商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情</view>
+            <view class="subtitle">商品详情：</view>
+            <view class='intro_detail'><image src="{{detailInfo.groupBriefImg}}"/></view>
         </view>
 
     </view>
@@ -57,14 +59,14 @@
         <!-- <button class='item share' open-type="share">
             分享
         </button> -->
-        <view class="bar_item" wx:if="{{!poiInfo.isMart}}">
+        <view class="bar_item">
             <view class='item apply alone' bindtap="goCreate">
-                <text class='pin-title'>￥{{poiInfo.price}}</text>
-                <text class='sub-title'>单独购买</text>
+                <text class='pin-title gray_text_normal'>￥{{detailInfo.voucherAmount}}</text>
+                <text class='sub-title gray_text_normal'>单独购买</text>
             </view>
-            <view class='item apply' bindtap="goPin" wx:if="{{poiInfo.isGroup > 0 && poiInfo.amount >= poiInfo.groupMember}}">
-                <text class='pin-title'>￥{{poiInfo.pinPrice}}</text>
-                <text class='sub-title'>发起{{poiInfo.groupMember}}人拼团</text>
+            <view class='item apply' bindtap="goPin" >
+                <text class='pin-title'>￥{{detailInfo.realAmount}}</text>
+                <text class='sub-title'>发起拼团</text>
             </view>
             <view class='item apply gray' wx:if="{{poiInfo.isGroup > 0 && poiInfo.amount < poiInfo.groupMember}}">
                 <text class='pin-title'>活动已结束</text>

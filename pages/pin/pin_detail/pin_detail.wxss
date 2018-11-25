@@ -1,6 +1,6 @@
 .index-container {
     position: relative;
-    height: calc(100vh - 100rpx);
+    height: calc(100vh - 112rpx);
     overflow-y: scroll;
 }
 
@@ -126,9 +126,28 @@
 
 .title {
     /* margin-top: 50rpx; */
-    font-size: 32rpx;
+    font-size: 14px;
     font-weight: bolder;
     margin: 22rpx 0;
+}
+
+.title .bigger {
+    font-size: 21px;
+}
+
+.title .text {
+    margin-right: 15rpx;
+    display: inline-block;
+}
+.added {
+    font-size: 14px;
+}
+
+.gray_text {
+    color: #CCCCCC;
+    text-decoration: line-through;
+    font-weight: normal;
+    font-size: 12px;
 }
 
 .title_content {
@@ -209,7 +228,7 @@
 }
 .bar_item {
     display: flex;
-    height: 100rpx;
+    height: 112rpx;
     background: #333;
     color: #fff;
     font-size: 35rpx;
@@ -250,7 +269,7 @@
      color: #999;
  }
 .pin-title {
-    margin-top: 15rpx;
+    margin-top: 22rpx;
     display: block;
     height: 40rpx;
     line-height: 40rpx;
@@ -260,7 +279,10 @@
     display: block;
     height: 40rpx;
     line-height: 40rpx;
-    font-size: 30rpx;
+    font-size: 22rpx;
+}
+.gray_text_normal {
+    color: #999999;
 }
 .introduction {
     min-height: 80rpx;
@@ -291,7 +313,12 @@
 .intro_detail {
     color: #999;
     font-size: 26rpx;
-    text-indent: 52rpx;
+    /* text-indent: 52rpx; */
+    /* margin-right: 50rpx; */
+}
+
+.intro_detail image {
+    width: 100%;
 }
 
 .introduction .right image {

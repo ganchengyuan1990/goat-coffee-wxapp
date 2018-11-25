@@ -35,11 +35,56 @@ page {
 .coupon-sn {
   /* height: 50rpx; */
   margin: 20rpx;
+  margin-left: 10rpx;
   margin-bottom: 10rpx;
   color: #999999;
   line-height: 50rpx;
-  font-size: 24rpx;
+  font-size: 22rpx;
+  text-align: left;
+}
+
+.coupon-sn .title {
+  font-size: 32rpx;
+  color: #333;
+}
+
+.coupon-sn .info {
+  /* margin-top: 50rpx; */
+  font-size: 14px;
+  font-weight: bolder;
+  margin: 22rpx 0;
+  color: #333;
+  font-weight: normal;
+  position: relative;
+}
+
+.coupon-sn .info .bigger {
+  font-size: 21px;
+  font-weight: bolder;
+}
+.gray_text {
+  color: #CCCCCC;
+  text-decoration: line-through;
+  font-weight: normal;
+  font-size: 12px;
+}
+.coupon-sn .info .text {
+  margin-right: 20rpx;
+  display: inline-block;
+}
+
+.info .added {
+  position: absolute;
+  top: 5rpx;
+  right: 0rpx;
+  width: 132rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  border-radius: 22rpx;
+  background: #eee;
   text-align: center;
+  font-size: 24rpx;
+  color: #999;
 }
 
 .closer {
@@ -59,14 +104,16 @@ page {
 
 
 .pin_wrapper {
-  padding: 30rpx;
+  padding: 20rpx 30rpx;
   font-size: 32rpx;
 }
 
 .rule_wrapper {
-  padding: 30rpx;
+  margin: 30rpx;
+  padding-top: 40rpx;
   font-size: 28rpx;
   color: #333333;
+  border-top: 1rpx solid #eee;
 }
 
 .rule {
@@ -230,4 +277,23 @@ page {
   position: relative;
   top: -6rpx;
   left: 5rpx;
+}
+
+
+.function_bar {
+  position: fixed;
+  bottom: 0;
+  background: rgba(245, 245, 245, 0.5);
+  /* height: 100rpx; */
+  width: 100%;
+
+}
+
+.button {
+  height: 112rpx;
+  line-height: 112rpx;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  font-size: 28rpx;
 }
