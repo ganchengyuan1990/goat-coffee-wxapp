@@ -138,3 +138,14 @@ page {
 .addr-box .date {
     margin: 30rpx 0;
 }
+.tip-box .name {
+    margin-top: 40rpx;
+    font-size: 28rpx;
+    line-height: 40rpx;
+}
+.tip-box .desc {
+    margin-top: 30rpx;
+    font-size: 26rpx;
+    color: #999;
+    line-height: 36rpx;
+}

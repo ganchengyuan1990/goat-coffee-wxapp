@@ -86,7 +86,7 @@ Page({
         const tempFiles = res.tempFiles[0]
         let path = tempFiles.path
         let size = tempFiles.size
-        if (size > 1024 * 1024 * 5) {
+        if (size > 1024 * 1024 * 8) {
           wx.showModal({
             title: '提示',
             content: '图片太大了',
@@ -99,14 +99,55 @@ Page({
             }
           })
         } else {
-          const imgData = wx.getFileSystemManager().readFileSync(path, "base64")
-          self.setData({
-            img: path,
-            imgData: imgData
+          // show loading
+          wx.showLoading({
+            title: '上传中',
+            mask: true
           })
+          wx.uploadFile({
+            url: 'http://47.100.233.24:6688/api/v1/server/my/user/fileUpload',
+            filePath: path,
+            name: 'file',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded',
+              'Accept': 'application/json',
+              'authorization': 'Bearer ' + wx.getStorageSync('token').token || ''
+            },
+            formData: {
+              'user': 'avatar'
+            },
+            success(res) {
+              const data = res.data
+              wx.hideLoading()
+              console.log(data, 'upload data');
+              if (data) {
+                self.setData({
+                  img: path,
+                  // imgData: imgData
+                })
+              } else {
+                wx.showModal({
+                  title: '提示',
+                  content: '上传失败'
+                })
+              }
+            },
+            fail() {
+              wx.hideLoading()
+              wx.showModal({
+                title: '提示',
+                content: '上传失败'
+              })
+            }
+          })
+          // const imgData = wx.getFileSystemManager().readFileSync(path, "base64")
+
         }
       }
     })
+  },
+  upLoadImg() {
+
   },
   updateCurrentInfo(obj) {
     try {
@@ -129,7 +170,9 @@ Page({
     if (data.name) {
       obj.userName = data.name
     }
-    obj.avatar = data.imgData || data.img
+    if (data.img) {
+      obj.avatar = data.img
+    }
     if (data.gender) {
       obj.sex = data.gender
     }
