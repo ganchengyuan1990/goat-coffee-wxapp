@@ -1,5 +1,5 @@
 const app = getApp()
-import model from '../../../utils/model'
+import model, { BASE_URL } from '../../../utils/model'
 Page({
 
   /**
@@ -105,7 +105,7 @@ Page({
             mask: true
           })
           wx.uploadFile({
-            url: 'http://47.100.233.24:6688/api/v1/server/my/user/fileUpload',
+            url: `${BASE_URL}/my/user/fileUpload`,
             filePath: path,
             name: 'file',
             header: {
@@ -119,12 +119,14 @@ Page({
             success(res) {
               const data = res.data
               wx.hideLoading()
-              console.log(data, 'upload data');
+              
               if (data) {
-                self.setData({
-                  img: path,
-                  // imgData: imgData
-                })
+                let detail = JSON.parse(data || '{}')
+                if (detail.data) {
+                  self.setData({
+                    img: detail.data
+                  })
+                }
               } else {
                 wx.showModal({
                   title: '提示',
@@ -153,9 +155,7 @@ Page({
     try {
       let token = wx.getStorageSync('token')
       let userInfo = token.user
-      userInfo.userName = obj.userName
-      userInfo.avatar = obj.avatar
-      userInfo.sex = obj.gender
+      token.user = Object.assign(userInfo, obj)
       wx.setStorageSync('token', token)
     } catch(e) {
       console.log(e);
@@ -177,6 +177,8 @@ Page({
       obj.sex = data.gender
     }
     obj.id = this.data.userInfo.id
+    console.log(obj, 'objjjj');
+    
     model('my/user/updateUser', obj, 'POST').then(res => {
       wx.showToast({
         title: '修改成功',
