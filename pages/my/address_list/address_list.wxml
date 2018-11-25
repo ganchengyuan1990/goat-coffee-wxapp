@@ -3,20 +3,15 @@
     <!-- <view class="line">
         <text>您的订单</text>
     </view> -->
-    <view class="list_wrapper" wx:if="{{!loading}}" wx:for="{{addressList}}" wx:key="index">
-        <!-- <view class="item">
-            <text>收货人： {{item.contact}}</text>
-            <text>手机号： {{item.tel}}</text>
-            <view>
-                <text>区域： {{item.region}}</text>
-            </view>
-            <view>
-                <text>具体地址： {{item.address}}</text>
-            </view>
-            <button data-index="{{index}}" type="warn" class='goPay' catchtap="changeAddress">修改</button>  
-        </view> -->
+    <view class="list_wrapper" wx:if="{{!loading && addressList.length > 0}}" wx:for="{{addressList}}" wx:key="index">
+        <view class='express_title'>我的收货地址</view>
         <view class="item">
             <address-item item="{{item}}" data-id="{{item.id}}"></address-item>
         </view>
+    </view>
+
+    <view class="no_address" wx:if="{{!loading && addressList.length === 0}}">
+        <image src="../../../images/no_address.png"/>
+        <view>暂未设置配送地址</view>
     </view>
 </view>

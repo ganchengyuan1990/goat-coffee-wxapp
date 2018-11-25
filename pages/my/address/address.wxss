@@ -71,6 +71,9 @@
     margin-left: 15rpx;
 }
 
+.checked {
+    color: #f63;
+}
 .protocol {
     background: #fff;
     height: 80rpx;

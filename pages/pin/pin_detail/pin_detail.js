@@ -97,9 +97,13 @@ Page({
             if (data.data) {
                 let endTime = data.data.group.endTime;
                 let calcLeftTime = this.calcLeftTime(new Date(endTime).getTime());
+                let orderInfoArr = data.data.group_order;
+                orderInfoArr.forEach(item => {
+                    item.userAvatar = item.userAvatar ? item.userAvatar : wx.getStorageSync('personal_info').avatarUrl
+                });
                 this.setData({
                     detailInfo: data.data.group,
-                    orderInfoArr: data.data.group_order,
+                    orderInfoArr: orderInfoArr,
                     group_voucher: data.data.group_voucher,
                     leftTime: calcLeftTime.time
                 })

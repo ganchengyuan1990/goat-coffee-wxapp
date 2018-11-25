@@ -21,4 +21,7 @@
             </view>
         </view>
     </view>
+    <view class='icon'>
+        <image src='../../images/bianji.png'/> 
+    </view>
 </view>

@@ -19,7 +19,8 @@ Page({
       newAdd: true,
       toastShown: false,
       toastInfo: '',
-      id: -1
+      id: -1,
+      gender: 1
   },
 
   /**
@@ -84,6 +85,7 @@ Page({
             userId: wx.getStorageSync('token').user.id,
             prov: this.data.region[0],
             city: this.data.region[1],
+            sex: this.data.gender,
             area: this.data.region[2],
             address: this.data.address,
             isdefault: 1
@@ -112,6 +114,7 @@ Page({
                 contact: this.data.name,
                 tel: this.data.phone,
                 userId: wx.getStorageSync('token').user.id,
+                sex: this.data.gender,
                 id: this.data.id,
                 prov: this.data.region[0],
                 city: this.data.region[1],
@@ -138,6 +141,12 @@ Page({
       }
       
       
+  },
+
+  changeGender (e) {
+    this.setData({
+        gender: e.currentTarget.dataset.gender
+    })
   },
 
   deleteUserAddress () {

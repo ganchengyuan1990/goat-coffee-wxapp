@@ -148,8 +148,23 @@ Page({
         })
       }
     } else {
-      this.showExpressList();
+      model('my/address/list', {
+        userId: wx.getStorageSync('token').user.id,
+      }).then(data => {
+        wx.setStorageSync('addressList', data.data);
+        this.setData({
+          searchSuggest: data.data
+        });
+      }).catch(e => {
+        console.log(e);
+      });
     }
+  },
+
+  goAddressList () {
+    wx.navigateTo({
+      url: '/pages/my/address_list/address_list'
+    });
   },
   onReady: function () {
     // 页面渲染完成

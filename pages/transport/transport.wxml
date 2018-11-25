@@ -41,8 +41,12 @@
             </scroll-view>
         </view>
 
-        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{showExpress && searchSuggest && searchSuggest.length}}"  data-id="{{item.id}}">
+        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{showExpress && searchSuggest && searchSuggest.length > 0}}"  data-id="{{item.id}}">
             <scroll-view class="suggestList" scroll-y="true">
+                <view class='express_title'>
+                    我的收货地址
+                    <view class='right' bindtap="goAddressList">管理收货地址</view>
+                </view>
                 <view wx:key="suggestItem" wx:for="{{searchSuggest}}" class="suggest-container">
                     <view class="direct-item border-bottom" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goStore">
                         <view class="suggest-icon point-icon"></view>
@@ -66,6 +70,13 @@
                     </view>
                 </view>
             </scroll-view>
+        </view>
+
+        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{showExpress && searchSuggest && searchSuggest.length === 0}}"  data-id="{{item.id}}">
+            <view class="no_address">
+                <image src="../../../images/no_address.png"/>
+                <view>暂未设置配送地址</view>
+            </view>
         </view>
     </view>
 

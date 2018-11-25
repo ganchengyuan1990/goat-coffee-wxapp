@@ -1,6 +1,7 @@
 .direct-item {
     display: flex;
-    padding: 20rpx 28rpx 20rpx 20rpx;
+    padding: 0 10rpx;
+    position: relative;
 }
 
 .direct-item .direct-content {
@@ -103,4 +104,15 @@
     font-family: PingFangSC-Regular;
     font-size: 24rpx;
     color: #c6c6c6;
+}
+
+.icon {
+    position: absolute;
+    right: 50rpx;
+    top: 10rpx;
+}
+
+.icon image {
+    width: 30rpx;
+    height: 30rpx;
 }

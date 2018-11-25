@@ -10,8 +10,8 @@
         <view class="title">性别:</view>
         <view class="input">
             <!-- <input model="gender" value="{{gender}}" bindtap="addLine2" bindinput="dealGender"></input> -->
-            <text class='changeGender'>男士</text>
-            <text class='changeGender'>女士</text>
+            <text class="changeGender {{gender == 1 ? 'checked' : ''}}" bindtap="changeGender" data-gender="1">男士</text>
+            <text class="changeGender {{gender == 2 ? 'checked' : ''}}" bindtap="changeGender" data-gender="2">女士</text>
         </view>
     </view>
     <view class="section flex {{addline5 ? 'selected' : ''}}">
