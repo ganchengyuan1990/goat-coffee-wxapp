@@ -36,10 +36,10 @@ Page({
     currentPanel: 'order',
     filterList: [{
       tab: 'order',
-      tt: '外卖订单',
+      tt: '普通订单',
       cls: 'category',
       list: [{
-        tt: '外卖订单',
+        tt: '普通订单',
         code: OCLASSIFY.normal,
         active: true
       }, {
@@ -120,6 +120,7 @@ Page({
    */
   refreshList() {
     this.setData({
+      orderList: [],
       isCompleted: false
     })
     this.fetchOrderList(1, true)
@@ -147,25 +148,28 @@ Page({
         
         let len = data.length
         let list = isResetList ? [] : this.data.orderList
+        let arr = []
+
+        // 为0的时候认定没有更多
         if (len === 0) {
           this.setData({
             isCompleted: true
           })
-        } else {
-          list = list.concat(data)
-        }
-        let arr = []
-        if (this.data.orderClassify === OCLASSIFY.normal) {
           arr = list
-        }
-        if (this.data.orderClassify === OCLASSIFY.group) {
-          arr = list.map(item => {
-            let groupList = item.group_user_order
-            let obj = groupList.find(i => i.userId === uid)
-            obj.payAmount = item.group_order.payAmount
-            obj.state = item.group_order.state
-            return obj
-          })
+        } else {
+          if (this.data.orderClassify === OCLASSIFY.normal) {
+            arr = list.concat(data)
+          }
+          if (this.data.orderClassify === OCLASSIFY.group) {
+            arr = data.map(item => {
+              let groupList = item.group_user_order
+              let obj = groupList.find(i => i.userId === uid)
+              obj.payAmount = item.group_order.payAmount
+              obj.state = item.group_order.state
+              return obj
+            })
+            arr = list.concat(arr)
+          }
         }
         this.setData({
           orderList: arr,
