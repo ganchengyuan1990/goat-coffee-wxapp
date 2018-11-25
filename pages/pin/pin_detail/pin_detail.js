@@ -91,7 +91,8 @@ Page({
         })
         
         model('group/action/info', {
-            groupId: parseInt(option.id)
+            groupId: parseInt(option.id),
+            userId: wx.getStorageSync('token').user.id
         }).then(data => {
             if (data.data) {
                 let endTime = data.data.group.endTime;
