@@ -22,6 +22,12 @@ Page({
         });
     },
 
+    onShow () {
+        wx.showTabBar({
+            animation: true
+        })
+    },
+
     onLoad: function (option) {
 
         model('group/action/list', {
