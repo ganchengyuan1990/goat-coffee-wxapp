@@ -4,17 +4,17 @@
  * 开发： dev
  */
 const CONFIG = {
-    env: 'dev',
-    version: 'v1'
+    env: 'dev'
 }
-const BASE_URL = (() => {
+export const BASE_URL = (() => {
     let url = {
         prod: '',
         test: '',
-        dev: `http://47.100.233.24:6688/api/${CONFIG.version}/server/`
+        dev: `http://47.100.233.24:6688/api/v1/server/`
     }
     return url[CONFIG.env]
 })()
+
 const model = (name = '', data = {}, method = 'GET', header, ip) => {
     let url = `${BASE_URL}${name}`
     if (ip) {
@@ -49,4 +49,4 @@ const model = (name = '', data = {}, method = 'GET', header, ip) => {
         })
     })
 }
-module.exports = model
+export default model

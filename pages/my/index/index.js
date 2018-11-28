@@ -29,13 +29,15 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    console.log('onshow');
+    
     this.getProfile()
   },
   onPullDownRefresh() {
     wx.stopPullDownRefresh()
   },
   getProfile() {
-    let info = this.data.token
+    let info = wx.getStorageSync('token')
     let userInfo = info.user
     let userInfoWechat = app.globalData.userInfo || {}
     if (info.token) {
