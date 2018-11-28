@@ -70,7 +70,7 @@ Page({
         });
 
         wx.navigateTo({
-            url: `/pages/pin/checkout/checkout?groupName=${this.data.detailInfo.groupName}&price=${this.data.detailInfo.realAmount}&originalPrice=${this.data.detailInfo.voucherAmount}&number=${this.data.detailInfo.maxPeople}`
+            url: `/pages/pin/checkout/checkout?isOwner=1&groupName=${this.data.detailInfo.groupName}&price=${this.data.detailInfo.realAmount}&originalPrice=${this.data.detailInfo.voucherAmount}&number=${this.data.detailInfo.maxPeople}`
         });
 
         // model(`group/action/start?${paramStr}`, voucherParamArr, 'POST', {
@@ -149,21 +149,51 @@ Page({
     },
 
     goAttendPin (e) {
-        let item = this.data.pinOrders[parseInt(e.currentTarget.dataset.index)]
-        if (this.data.tool_id) {
-            this.setData({
-                tokenPrice: this.data.poiInfo.pinPrice,
-                totalPrice: this.data.poiInfo.pinPrice,
-                totalPrice: this.data.poiInfo.pinPrice + this.data.transFee,
-                showToast: true,
-                choosenType: 'pin',
-                attendOthers: item
+        let voucherParamArr = [];
+        this.data.group_voucher.forEach(item => {
+            voucherParamArr.push({
+                voucherId: item.voucher.id,
+                number: item.number
             })
-        } else {
-            wx.navigateTo({
-                url: `/pages/pin/pin?name=${this.data.poiInfo.lesson_name}&lessonId=${item.lesson_id}&qrcode=${item.qrcode}&pinOrderId=${item.id}`
-            });
-        }
+        });
+
+        let param = {
+            userId: wx.getStorageSync('token').user.id,
+            groupOrderId: this.data.orderInfoArr[parseInt(e.currentTarget.dataset.index)].id,
+            openId: wx.getStorageSync('openid'),
+            payAmount: this.data.detailInfo.realAmount,
+            remark: ''
+        };
+
+        let paramStr = '';
+
+        let keys = Object.keys(param);
+        keys.forEach((item, index) => {
+            if (index !== keys.length - 1) {
+                paramStr += item + '=' + param[item] + '&';
+            } else {
+                paramStr += item + '=' + param[item];
+            }
+        })
+
+        wx.setStorageSync('pinOrderInfo', {
+            paramStr: paramStr,
+            voucherParamArr: voucherParamArr
+        });
+        debugger
+
+        wx.navigateTo({
+            url: `/pages/pin/checkout/checkout?isOwner=0&groupName=${this.data.detailInfo.groupName}&price=${this.data.detailInfo.realAmount}&originalPrice=${this.data.detailInfo.voucherAmount}&number=${this.data.detailInfo.maxPeople}`
+        });
+
+        // model(`group/action/start?${paramStr}`, voucherParamArr, 'POST', {
+        //     'authorization': 'Bearer ' + wx.getStorageSync('token').token,
+        //     'Accept': 'application/json'
+        // }).then(data => {
+        //     debugger
+        // }).catch(e => {
+        //     debugger
+        // });
     },
 
     goToAddAddress () {

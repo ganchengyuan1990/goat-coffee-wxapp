@@ -35,7 +35,7 @@
             <view class="pin_list_title" >    
                 {{orderInfoArr.length}}人在拼团，可直接参与
             </view>
-            <view class="pin_order" wx:for="{{orderInfoArr}}" wx-key="index">
+            <view class="pin_order" wx:for="{{orderInfoArr}}" wx:key="{{index}}">
                 <image class="avatar" src="{{item.userAvatar}}" lazy-load='true'/>
                 <view class='go_pin'>
                     <text class="normal">{{item.userName}}</text>

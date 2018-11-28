@@ -13,6 +13,7 @@ Page({
     price: 0,
     originalPrice: 0,
     number: 0,
+    isOwner: -1,
     errorToast: false,
     toastInfo: ''
   },
@@ -23,7 +24,8 @@ Page({
       groupName: options.groupName,
       price: options.price,
       originalPrice: options.originalPrice,
-      number: options.number
+      number: options.number,
+      isOwner: options.isOwner
     })
 
     // 页面初始化 options为页面跳转所带来的参数
@@ -107,21 +109,38 @@ Page({
   },
   submitOrder: function () {
     let paramStr = this.data.pinOrderInfo.paramStr;
-    let voucherParamArr = this.data.pinOrderInfo.voucherParamArr
-    model(`group/action/start?${paramStr}`, voucherParamArr, 'POST', {
+    let voucherParamArr = this.data.pinOrderInfo.voucherParamArr;
+    if (this.data.isOwner == 1) {
+      model(`group/action/start?${paramStr}`, voucherParamArr, 'POST', {
         'authorization': 'Bearer ' + wx.getStorageSync('token').token,
         'Accept': 'application/json'
-    }).then(data => {
+      }).then(data => {
         let order = data.data;
-        debugger
         wx.navigateTo({
           url: `/pages/pay/pinPay/pinPay?type=pin&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${order.prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}`
         })
-    }).catch(e => {
+      }).catch(e => {
         this.setData({
           errorToast: true,
           toastInfo: e
         })
-    });
+      });
+    } else {
+      model(`group/action/join?${paramStr}`, voucherParamArr, 'POST', {
+        'authorization': 'Bearer ' + wx.getStorageSync('token').token,
+        'Accept': 'application/json'
+      }).then(data => {
+        let order = data.data;
+        wx.navigateTo({
+          url: `/pages/pay/pinPay/pinPay?type=pin&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${order.prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}`
+        })
+      }).catch(e => {
+        this.setData({
+          errorToast: true,
+          toastInfo: e
+        })
+      });
+    }
+    
 }
 })

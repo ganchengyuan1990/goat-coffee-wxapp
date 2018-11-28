@@ -47,7 +47,7 @@
                     我的收货地址
                     <view class='right' bindtap="goAddressList">管理收货地址</view>
                 </view>
-                <view wx:key="suggestItem" wx:for="{{searchSuggest}}" class="suggest-container">
+                <view wx:key="index" wx:for="{{searchSuggest}}" class="suggest-container">
                     <view class="direct-item border-bottom" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goStore">
                         <view class="suggest-icon point-icon"></view>
                         <view class="direct-content">
@@ -66,6 +66,8 @@
                                     <text wx:if="{{item.tel}}" class="direct-address-text second {{item.regionname ? 'before-content' : ''}}">{{item.tel}}</text>
                                 </view>
                             </view>
+
+                            <view class='text added' wx:if="{{index === 0}}">默认</view>
                         </view>
                     </view>
                 </view>

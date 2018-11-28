@@ -56,7 +56,8 @@ Page({
     chooseNoCoupon: false,
     chooseNoVoucher: false,
     tab: '',
-    remark: ''
+    remark: '',
+    userAddressId: 0,
   },
   onLoad: function (options) {
 
@@ -377,7 +378,7 @@ Page({
     let param = {
       openId: wx.getStorageSync('openid'),
       storeId: this.data.options.storeId,
-      userAddressId: 3,
+      userAddressId: this.data.options.userAddressId,
       userId: wx.getStorageSync('token').user.id,
       discountType: this.data.discountType,
       deliverFee: this.data.deliverFee,
@@ -394,9 +395,6 @@ Page({
     let paramStr = '';
     let keys = Object.keys(param);
     keys.forEach((item, index) => {
-      if (item === 'storeId') {
-        param[item] = 29;
-      }
       if (index !== keys.length - 1) {
         paramStr += item + '=' + param[item] + '&';
       } else {
