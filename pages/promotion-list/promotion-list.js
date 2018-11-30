@@ -93,7 +93,7 @@ Page({
         if (this.data.type === 2) {
             // 优惠券
             model('my/coupon/list', {
-                userId: 1
+                userId: wx.getStorageSync('token').user.id
             }).then(data => {
                 let result = data.data;
                 result.forEach(element => {

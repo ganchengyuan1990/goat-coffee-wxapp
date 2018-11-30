@@ -38,7 +38,7 @@ Page({
   },
   fetchCouponList() {
     model('my/coupon/list', {
-      userId: 1
+      userId: wx.getStorageSync('token').user.id
     }).then(data => {
       let result = data.data;
       result.forEach(element => {
@@ -53,7 +53,7 @@ Page({
   fetchVoucherList() {
     // 兑换券
     model('my/voucher/list', {
-      userId: 1
+      userId: wx.getStorageSync('token').user.id
     }).then(data => {
       let result = data.data;
       result.forEach(element => {

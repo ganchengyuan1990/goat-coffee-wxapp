@@ -375,10 +375,18 @@ Page({
   },
 
   submit () {
+    let userAddressId = this.data.options.userAddressId;
+    if (!userAddressId) {
+      if (wx.getStorageSync('addressList') && wx.getStorageSync('addressList')[0].id) {
+        userAddressId = wx.getStorageSync('addressList')[0].id
+      } else {
+        userAddressId = 3;
+      }
+    }
     let param = {
       openId: wx.getStorageSync('openid'),
       storeId: this.data.options.storeId,
-      userAddressId: this.data.options.userAddressId,
+      userAddressId: userAddressId,
       userId: wx.getStorageSync('token').user.id,
       discountType: this.data.discountType,
       deliverFee: this.data.deliverFee,
@@ -389,6 +397,9 @@ Page({
       discountIds: this.data.couponUserRelation.substr(0, this.data.couponUserRelation.length - 1)
       // discountIds: '1,2,3'
     }
+    // if (!this.data.options.userAddressId) {
+    //   delete param.userAddressId;
+    // }
     if (!param.discountIds) {
       delete param.discountIds;
     }
