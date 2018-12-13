@@ -64,7 +64,7 @@ Page({
                     clearInterval(interval);
                 }
             }, 1000);
-            model('my/sms/sendPhoneCode', {
+            model('my/sms/send-phone-code', {
                 phoneNum: this.data.phoneNum
             }, 'POST').then(data => {
                 this.setData({
@@ -76,11 +76,13 @@ Page({
     },
 
     register () {
-        model(`my/user/login?phoneNum=${this.data.phoneNum}&sms_code=${this.data.phoneCode}&openId=${wx.getStorageSync('openid')}&user_name=${wx.getStorageSync('personal_info').nickName}`, {
-            sysinfo: JSON.stringify(this.data.sysinfo)
-        }, 'POST', {
-            'Accept': 'application/json'
-        }).then(data => {
+        model(`my/user/login`, {
+            sysinfo: JSON.stringify(this.data.sysinfo),
+            phoneNum: this.data.phoneNum,
+            sms_code: this.data.phoneCode,
+            openId: wx.getStorageSync('openid'),
+            user_name: wx.getStorageSync('personal_info').nickName
+        }, 'POST').then(data => {
             this.setData({
                 token: data.data
             })
@@ -98,7 +100,7 @@ Page({
         wx.login({
             success: function (res) {
                 if (res.code) {
-                    model('my/user/getOpenId', {
+                    model('my/user/get-open-id', {
                         code: res.code
                     }).then(res => {
                         wx.setStorageSync('openid', res.data);

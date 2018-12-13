@@ -189,7 +189,7 @@ Page({
 	 * 
 	 */
 	fetchStore(geo) {
-		model('home/lbs/getStoreListByLocation', {
+		model('home/lbs/get-store-list-by-location', {
 			// lng: geo.lng,
 			// lat: geo.lat,
 			lng: 121.419114,

@@ -10,7 +10,7 @@ export const BASE_URL = (() => {
     let url = {
         prod: '',
         test: '',
-        dev: `http://47.100.233.24:6688/api/v1/server/`
+        dev: `http://heibanbao.wang/api/v1/server/`
     }
     return url[CONFIG.env]
 })()
@@ -30,8 +30,9 @@ const model = (name = '', data = {}, method = 'GET', header, ip) => {
             method: method,
             header: header  || {
                 'content-type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json',
-                'authorization': 'Bearer ' + wx.getStorageSync('token').token || ''
+                // 'Accept': 'application/json',
+                // 'authorization': 'Bearer ' + wx.getStorageSync('token').token || ''
+                'X-Requested-With': 'XMLHttpRequest'
             },
             success(res) {
                 const { statusCode, errMsg, data} = res

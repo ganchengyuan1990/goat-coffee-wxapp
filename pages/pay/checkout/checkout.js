@@ -148,8 +148,9 @@ Page({
 
   getBestCouponByProduct () {
     
-    model(`home/coupon/getBestCouponByProduct`, {
-      uid: wx.getStorageSync('token').user.id,
+    model(`home/coupon/get-best-coupon-by-product`, {
+      // uid: wx.getStorageSync('token').user.id,
+      uid: 1,
       list: this.data.product
     }).then(data => {
       if (data.data) {
