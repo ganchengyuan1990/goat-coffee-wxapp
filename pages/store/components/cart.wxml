@@ -8,6 +8,7 @@
     }
     module.exports.getFeeCnt = getFeeCnt
   </wxs>
+  <view class="mask {{isCartPanelShow ? 'active' : ''}}"></view>
   <view class="cart-wrap">
       <view class="cart-entry" bindtap="toggleCart">
           <view class="tt">去结算</view>

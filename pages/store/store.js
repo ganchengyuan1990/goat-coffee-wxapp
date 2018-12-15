@@ -178,7 +178,7 @@ Page({
 				wx.hideLoading()
 				wx.showToast({
 					title: '加载失败',
-					icon: 'fail',
+					icon: 'none',
 					duration: 2000
 				})
 			}
@@ -221,7 +221,7 @@ Page({
 			wx.hideLoading()
 			wx.showToast({
 				title: '加载失败',
-				icon: 'fail',
+				icon: 'none',
 				duration: 2000
 			})
 		})
@@ -269,7 +269,7 @@ Page({
 			wx.hideLoading()
 			wx.showToast({
 				title: '加载失败',
-				icon: 'fail',
+				icon: 'none',
 				duration: 2000
 			})
 		})
