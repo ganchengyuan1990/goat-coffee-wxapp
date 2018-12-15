@@ -109,15 +109,23 @@ Page({
   },
   submitOrder: function () {
     let paramStr = this.data.pinOrderInfo.paramStr;
+    let paramArr = paramStr.split('&');
+    let param = {};
+    paramArr.forEach(element => {
+      let key = element.split('=')[0];
+      let value = element.split('=')[1];
+      param[key] = value;
+    });
     let voucherParamArr = this.data.pinOrderInfo.voucherParamArr;
+    param.list = voucherParamArr;
     if (this.data.isOwner == 1) {
-      model(`group/action/start?${paramStr}`, voucherParamArr, 'POST', {
-        'authorization': 'Bearer ' + wx.getStorageSync('token').token,
-        'Accept': 'application/json'
-      }).then(data => {
+      model(`group/action/start`, param, 'POST').then(data => {
         let order = data.data;
+        let _package = order.package;
+        let prepayId = _package.split('=')[1];
+        debugger
         wx.navigateTo({
-          url: `/pages/pay/pinPay/pinPay?type=pin&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${order.prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}`
+          url: `/pages/pay/pinPay/pinPay?type=pin&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}`
         })
       }).catch(e => {
         this.setData({
@@ -126,13 +134,12 @@ Page({
         })
       });
     } else {
-      model(`group/action/join?${paramStr}`, voucherParamArr, 'POST', {
-        'authorization': 'Bearer ' + wx.getStorageSync('token').token,
-        'Accept': 'application/json'
-      }).then(data => {
+      model(`group/action/join`, param, 'POST').then(data => {
         let order = data.data;
+        let _package = order._package;
+        let prepayId = _package.split('=')[1]
         wx.navigateTo({
-          url: `/pages/pay/pinPay/pinPay?type=pin&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${order.prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}`
+          url: `/pages/pay/pinPay/pinPay?type=pin&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}`
         })
       }).catch(e => {
         this.setData({

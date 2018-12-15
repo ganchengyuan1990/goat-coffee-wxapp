@@ -91,6 +91,7 @@ Page({
     onMyEvent: function (e) {
         // 选择一项就返回，并用setData把选中的那项以外的其他项checked设为空
         let idArray = e.detail.value;
+        debugger
         let newValue = idArray.splice(idArray.length - 1, 1);
         let chosenInfo = {};
         console.log(e.target.dataset.id);
@@ -166,7 +167,7 @@ Page({
         if (this.data.type === 1) {
             let list = JSON.parse(option.list);
             list.forEach(item => {
-                if (item.tCoreUserCoupon.couponId == option.chosenCoupon) {
+                if (item.tCoreUserCoupon.id == option.chosenCoupon) {
                     item.checked = true;
                 } else {
                     item.checked = false;
@@ -192,7 +193,7 @@ Page({
         } else {
             let list = JSON.parse(option.list);
             list.forEach(item => {
-                if (item.tCoreUserVoucher.voucherId == option.chosenVoucher) {
+                if (item.tCoreUserVoucher.id == option.chosenVoucher) {
                     item.checked = true;
                 } else {
                     item.checked = false;

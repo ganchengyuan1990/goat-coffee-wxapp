@@ -64,12 +64,12 @@
             <image class='no_coupon' src="../../images/no_coupon.png" />
         </view> -->
 
-        <view class="no_coupon_wrapper" wx:if="{{couponItems.length === 0 && type === 1}}">
+        <view class="no_coupon_wrapper" wx:if="{{voucherItems.length === 0 && couponItems.length === 0 && type === 1}}">
             <image class='no_coupon' src="../../../images/no_coupon.png" />
             <view class="mention">暂无可用优惠券</view>
         </view>
 
-        <view class="no_coupon_wrapper" wx:if="{{voucherItems.length === 0 && type === 2}}">
+        <view class="no_coupon_wrapper" wx:if="{{voucherItems.length === 0 && couponItems.length === 0 && type === 2}}">
             <image class='no_coupon' src="../../../images/no_voucher.png" />
             <view class="mention">暂无可用兑换券</view>
         </view>

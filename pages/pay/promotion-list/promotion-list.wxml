@@ -10,8 +10,8 @@
         <text class="title">可用促销优惠（{{activedItems.length}}）</text>
       </view> -->
       <checkbox-group class="radio-group" bindchange="onMyEvent">
-        <label wx:for="{{couponItems}}" wx:key="idx" wx:for-item="item" class="list-item" wx:if="{{type === 1}}">
-        <!-- <label wx:for="{{couponItems}}" wx:for-index="idx" wx:key="{{idx}}" wx:for-item="item" class="list-item" wx:if="{{type === 1}}"> -->
+        <!-- <label wx:for="{{couponItems}}" wx:key="{{idx}}" wx:for-item="item" class="list-item" wx:if="{{type === 1}}"> -->
+        <label wx:for="{{couponItems}}" wx:for-index="idx" wx:key="{{idx}}" wx:for-item="item" class="list-item" wx:if="{{type === 1}}">
 
           <view class='cover-top'></view>
           <view class='cover-bottom'></view>
@@ -22,7 +22,7 @@
             <view class="list-item-deal {{item.coupon.couponType === 1 ? 'no_margin_left' : ''}}">
               <label class="deal-icon"></label>
               <label class="deal-num" wx:if="{{item.type === 2}}">{{item.tCoreCoupon.discount}}折</label>
-              <label class="deal-num" wx:if="{{item.type === 1}}">￥{{item.tCoreCoupon.discount}}</label>
+              <label class="deal-num" wx:if="{{item.type === 1}}"><text class='money'>￥</text>{{item.tCoreCoupon.discount}}</label>
             </view>
           </view>
 
@@ -40,8 +40,8 @@
           
         </label>
 
-        <label wx:for="{{voucherItems}}" wx:key="idx" wx:for-item="item" class="list-item" wx:if="{{type === 2}}">
-        <!-- <label wx:for="{{voucherItems}}" wx:for-index="idx" wx:for-item="item" class="list-item" wx:if="{{type === 2}}"> -->
+        <!-- <label wx:for="{{voucherItems}}" wx:key="idx" wx:for-item="item" class="list-item" wx:if="{{type === 2}}"> -->
+        <label wx:for="{{voucherItems}}" wx:for-index="idx" wx:for-item="item" class="list-item" wx:if="{{type === 2}}">
 
           <view class='cover-top'></view>
           <view class='cover-bottom'></view>
@@ -51,7 +51,7 @@
 
             <view class="list-item-deal no_margin_left">
               <label class="deal-icon"></label>
-              <label class="deal-num">￥{{item.tCoreVoucher.voucherPrice}}</label>
+              <label class="deal-num"><text class='money'>￥</text>{{item.tCoreVoucher.voucherPrice}}</label>
             </view>
           </view>
 

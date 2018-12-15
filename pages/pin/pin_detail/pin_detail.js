@@ -39,10 +39,12 @@ Page({
         let voucherParamArr = [];
 
         this.data.group_voucher.forEach(item => {
-            voucherParamArr.push({
-                voucherId: item.voucher.id,
-                number: item.number
-            })
+            if (item.voucher && item.voucher.id && item.number) {
+                voucherParamArr.push({
+                    voucherId: item.voucher.id,
+                    number: item.number
+                })
+            }
         });
 
         let param = {
@@ -101,6 +103,7 @@ Page({
                 orderInfoArr.forEach(item => {
                     item.userAvatar = item.userAvatar ? item.userAvatar : wx.getStorageSync('personal_info').avatarUrl
                 });
+                debugger
                 this.setData({
                     detailInfo: data.data.group,
                     orderInfoArr: orderInfoArr,

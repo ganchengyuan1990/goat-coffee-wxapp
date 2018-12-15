@@ -154,21 +154,21 @@ Page({
       list: this.data.product
     }).then(data => {
       if (data.data) {
-        let result = parseFloat(data.data[0].discountPrice).toFixed(2);
+        let result = parseFloat(data.data.discountPrice).toFixed(2);
         let _a = new BigNumber(this.data.payAmount);
         let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
         let actualPrice = _a.plus(_b).minus(result);
-        let couponArr = data.data[0].solutionList;
+        let couponArr = data.data.solutionList;
         let couponUserRelation = ''
         
         couponArr.forEach(item => {
           couponUserRelation += item.userRelation + ','
         });
-        if (data.data[0].type === 1) {
+        if (data.data.type === 1) {
           this.setData({
             chosenCoupon: couponArr[0].id
           })
-        } else if (data.data[0].type === 2) {
+        } else if (data.data.type === 2) {
           this.setData({
             chosenVoucher: couponArr[0].id
           })
@@ -176,7 +176,7 @@ Page({
         this.setData({
           couponMoney: result,
           actualPrice: parseFloat(actualPrice),
-          discountType: data.data[0].type,
+          discountType: data.data.type,
           couponUserRelation: couponUserRelation
         });
       } else {
@@ -201,6 +201,7 @@ Page({
 
   dealOptions (items) {
     if (items.data) {
+      
       let options = JSON.parse(decodeURIComponent(items.data));
       // let transportFee = 0;
       // options.product.forEach(item => {
@@ -284,26 +285,28 @@ Page({
   },
 
   goVoucher () {
-    if (this.data.chosenInfo.id) {
+    if (this.data.chosenInfo.type == 2) {
       wx.navigateTo({
-        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.id}&list=${JSON.stringify(this.data.voucherList)}`,
+        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.voucherList)}`,
       })
     } else {
       wx.navigateTo({
-        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.goBackFromChildPage ? '' : this.data.chosenVoucher}&list=${JSON.stringify(this.data.voucherList)}`,
+        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.relationId : this.data.chosenVoucher}&list=${JSON.stringify(this.data.voucherList)}`,
       })
     }
     
   },
 
   goCoupon () {
-    if (this.data.chosenInfo.id) {
+    debugger
+    if (this.data.chosenInfo.type == 2) {
       wx.navigateTo({
-        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.id}&list=${JSON.stringify(this.data.voucherList)}`,
+        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
       })
     } else {
       wx.navigateTo({
-        url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? '' : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList)}`,
+        // url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
+        url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.relationId : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList)}`,
       })
     }
   },
@@ -335,17 +338,17 @@ Page({
         chooseNoVoucher: false
       })
     }
-    model(`home/coupon/calculatePriceWithCoupon`, {
+    model(`home/coupon/calculate-price-with-coupon`, {
       couponList: this.data.chosenInfo.id ? [this.data.chosenInfo] : [],
       productList: this.data.product,
       uid: wx.getStorageSync('token').user.id
     }).then(data => {
-      let result = parseFloat(data.data[0].discountPrice).toFixed(2);
+      let result = parseFloat(data.data.discountPrice).toFixed(2);
       this.setData({
-        actualPrice: data.data[0].resultPrice + this.data.deliverFee,
+        actualPrice: data.data.resultPrice + this.data.deliverFee,
         couponMoney: result,
         couponUserRelation: this.data.chosenInfo.relationId + ',',
-        discountType: data.data[0].type,
+        discountType: data.data.type,
       })
     });
   },
@@ -400,7 +403,7 @@ Page({
       discountType: this.data.discountType,
       deliverFee: this.data.deliverFee,
       payAmount: this.data.actualPrice,
-      orderType: 1,
+      orderType: this.data.chooseSelf ? 3 : 1,
       payType: 1,
       remark: this.data.remark,
       discountIds: this.data.couponUserRelation.substr(0, this.data.couponUserRelation.length - 1)
@@ -445,7 +448,7 @@ Page({
         discountType: this.data.discountType,
         deliverFee: this.data.deliverFee,
         payAmount: this.data.actualPrice,
-        orderType: 1,
+        orderType: this.data.chooseSelf ? 3 : 1,
         payType: 1,
         remark: this.data.remark,
         discountIds: this.data.couponUserRelation.substr(0, this.data.couponUserRelation.length - 1),

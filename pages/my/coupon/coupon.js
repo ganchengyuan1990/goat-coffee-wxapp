@@ -45,8 +45,12 @@ Page({
     }).then(data => {
       let result = data.data;
       result.forEach(element => {
-        element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0]
-        element.coupon.availabileEndTime = element.coupon.availabileEndTime.split('.')[0]
+        if (element.coupon.availabileStartTime) {
+          element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0]
+        }
+        if (element.coupon.availabileEndTime) {
+          element.coupon.availabileEndTime = element.coupon.availabileEndTime.split('.')[0]
+        }
       });
       this.setData({
         couponItems: data.data
@@ -60,8 +64,12 @@ Page({
     }).then(data => {
       let result = data.data;
       result.forEach(element => {
-        element.voucher.availabileStartTime = element.voucher.availabileStartTime.split('.')[0];
-        element.voucher.availabileEndTime = element.voucher.availabileEndTime.split('.')[0];
+        if (element.voucher.availabileStartTime) {
+          element.voucher.availabileStartTime = element.voucher.availabileStartTime.split('.')[0];
+        }
+        if (element.voucher.availabileEndTime) {
+          element.voucher.availabileEndTime = element.voucher.availabileEndTime.split('.')[0];
+        }
         element.counpon = element.voucher;
       });
       this.setData({

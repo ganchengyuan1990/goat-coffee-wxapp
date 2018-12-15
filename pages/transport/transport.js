@@ -98,9 +98,14 @@ Page({
 
   showShopList() {
     let addressList = wx.getStorageSync('shopList');
-    this.setData({
-      searchSuggest: addressList
-    });
+    if (addressList) {
+      this.setData({
+        searchSuggest: addressList
+      });
+    } else {
+      this.getAllShopList();
+    }
+    
   },
 
   goAddAddress () {
@@ -129,23 +134,7 @@ Page({
 
     if (this.data.type === 1) {
       if (this.data.init) {
-        model('home/lbs/get-store-list-by-location', {
-          // lng: geo.lng,
-          // lat: geo.lat,
-          lng: 121.483821,
-          lat: 31.265335,
-          page: 1
-        }).then(data => {
-          let result = data.data;
-          // result = result.concat(result);
-          result.forEach(item => {
-            item.distance = parseFloat(item.distance).toFixed(2);
-          });
-          wx.setStorageSync('shopList', result);
-          this.setData({
-            searchSuggest: result
-          })
-        })
+        this.getAllShopList();
       }
     } else {
       model('my/address/list', {
@@ -159,6 +148,26 @@ Page({
         console.log(e);
       });
     }
+  },
+
+  getAllShopList () {
+    model('home/lbs/get-store-list-by-location', {
+      // lng: geo.lng,
+      // lat: geo.lat,
+      lng: 121.483821,
+      lat: 31.265335,
+      page: 1
+    }).then(data => {
+      let result = data.data;
+      // result = result.concat(result);
+      result.forEach(item => {
+        item.distance = parseFloat(item.distance).toFixed(2);
+      });
+      wx.setStorageSync('shopList', result);
+      this.setData({
+        searchSuggest: result
+      })
+    })
   },
 
   goAddressList () {

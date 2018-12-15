@@ -36,7 +36,9 @@ Page({
             if (data.data) {
                 let result = data.data;
                 result.forEach(item => {
-                    item.groupImg = item.groupImg.split(',')[0]
+                    if (item.groupImg) {
+                        item.groupImg = item.groupImg.split(',')[0];
+                    }
                 });
                 this.setData({
                     pinList: data.data
