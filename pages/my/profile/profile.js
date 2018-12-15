@@ -9,6 +9,7 @@ Page({
     name: '',
     gender: '',
     img: '',
+    imgKey: '',
     userInfo: {}
   },
 
@@ -104,14 +105,16 @@ Page({
             title: '上传中',
             mask: true
           })
+          let _token = wx.getStorageSync('token')
           wx.uploadFile({
-            url: `${BASE_URL}/my/user/file-upload`,
+            url: `${BASE_URL}my/user/file-upload`,
             filePath: path,
             name: 'file',
             header: {
-              'content-type': 'application/x-www-form-urlencoded',
-              'Accept': 'application/json',
-              'authorization': 'Bearer ' + wx.getStorageSync('token').token || ''
+              // 'content-type': 'application/x-www-form-urlencoded',
+              // 'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest',
+              'Authorization': _token ? `${_token.user.id} ${_token.token}` : '',
             },
             formData: {
               'user': 'avatar'
@@ -119,14 +122,13 @@ Page({
             success(res) {
               const data = res.data
               wx.hideLoading()
-              
-              if (data) {
-                let detail = JSON.parse(data || '{}')
-                if (detail.data) {
-                  self.setData({
-                    img: detail.data
-                  })
-                }
+              let detail = JSON.parse(data || '{}')
+              if (detail.data) {
+                const { key, url} = detail.data
+                self.setData({
+                  img: url,
+                  imgKey: key
+                })
               } else {
                 wx.showModal({
                   title: '提示',
@@ -148,10 +150,10 @@ Page({
       }
     })
   },
-  upLoadImg() {
-
-  },
   updateCurrentInfo(obj) {
+    if (obj.avatar) {
+      obj.avatar = this.data.img
+    }
     try {
       let token = wx.getStorageSync('token')
       let userInfo = token.user
@@ -170,14 +172,13 @@ Page({
     if (data.name) {
       obj.userName = data.name
     }
-    if (data.img) {
-      obj.avatar = data.img
+    if (data.imgKey) {
+      obj.avatar = data.imgKey
     }
     if (data.gender) {
       obj.sex = data.gender
     }
     obj.id = this.data.userInfo.id
-    console.log(obj, 'objjjj');
     
     model('my/user/update-user', obj, 'POST').then(res => {
       wx.showToast({

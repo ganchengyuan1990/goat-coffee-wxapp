@@ -32,7 +32,7 @@
                   <view class="opt-tt">{{item.name}}</view>
                   <view class="opt-bd">
                       <view 
-                        class="J_opt_item item {{item.default_val_id === tag.id ? 'active':''}}" 
+                        class="J_opt_item item {{item.default_val_id == tag.id ? 'active':''}}" 
                         wx:for="{{item.val_list}}" 
                         wx:for-item="tag"
                         wx:key="{{tag.id}}"

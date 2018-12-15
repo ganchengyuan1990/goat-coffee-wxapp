@@ -149,8 +149,14 @@ Page({
         let len = data.length
         let list = isResetList ? [] : this.data.orderList
         let arr = []
-
-        // 为0的时候认定没有更多
+        // 因为没有判断数据总数量的字段
+        // 所以为0的时候认定没有更多
+        // 另一种情况，第一页的数据条数少的情况隐藏加载中的状态
+        if ( len < 5 && page === 1) {
+          this.setData({
+            isCompleted: true
+          })
+        }
         if (len === 0) {
           this.setData({
             isCompleted: true

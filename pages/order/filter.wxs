@@ -1,29 +1,18 @@
     var filters = {
         getOrderState: function (code) {
-            switch (code) {
-                case '00':
-                    return '待支付';
-                case '01':
-                    return '待接单';
-                case '02':
-                    return '制作中';
-                case '03':
-                    return '待配送';
-                case '04':
-                    return '配送中';
-                case '100':
-                    return '已完成';
-                case '30':
-                    return '慢必赔';
-                case '31':
-                    return '取消订单';
-                case '40':
-                    return '退款中';
-                case '41':
-                    return '退款完成';
-                default:
-                    return ''
+            var map = {
+                '00': '待支付',
+                '01': '待接单',
+                '02': '制作中',
+                '03': '待配送',
+                '04': '配送中',
+                '100': '已完成',
+                '30': '慢必赔',
+                '31': '取消订单',
+                '40': '退款中',
+                '41': '退款完成'
             }
+            return map[code] ? map[code]: ''
         },
         getGroupState: function(code) {
             switch(code) {
@@ -59,39 +48,9 @@
             }
             return ''
         },
-        getDiscountType: function(item) {
-            var val =  item.discountAmount === 0 ?  '无可用' : '-￥'+item.discountAmount
-            switch(item.discountType) {
-                case 0: 
-                    return {
-                        discount: '无可用',
-                        coupon: '无可用'
-                    }
-                case 1: 
-                    return {
-                        discount: val,
-                        coupon: '无可用'
-                    }
-                case 2: 
-                    return {
-                        discount: val,
-                        coupon:'无可用'  
-                    }
-                default:
-                    return {
-                        discount:'无可用',
-                        coupon: '无可用'
-                    }
-            }
-        },
         getDiscountType: function (item) {
             var val = item.discountAmount === 0 ? '无可用' : '-￥' + item.discountAmount
             switch (item.discountType) {
-                case 0:
-                    return {
-                        discount: '无可用',
-                        coupon: '无可用'
-                    }
                 case 1:
                     return {
                         discount: val,
