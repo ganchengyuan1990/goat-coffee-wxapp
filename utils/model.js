@@ -23,6 +23,10 @@ const model = (name = '', data = {}, method = 'GET', header, ip) => {
     // if (wx.getStorageSync('token')) {
     //     data.token = wx.getStorageSync('token');
     // }
+    let _token = false;
+    if (wx.getStorageSync('token')) {
+        _token = wx.getStorageSync('token');
+    }
     return new Promise((resolve, reject) => {
         wx.request({
             url: url,
@@ -31,7 +35,7 @@ const model = (name = '', data = {}, method = 'GET', header, ip) => {
             header: header  || {
                 'content-type': 'application/x-www-form-urlencoded',
                 // 'Accept': 'application/json',
-                // 'authorization': 'Bearer ' + wx.getStorageSync('token').token || ''
+                'Authorization': _token ? `${_token.user.id} ${_token.token}` : '',
                 'X-Requested-With': 'XMLHttpRequest'
             },
             success(res) {

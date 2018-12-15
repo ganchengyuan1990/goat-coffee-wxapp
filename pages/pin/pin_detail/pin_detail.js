@@ -139,8 +139,8 @@ Page({
 
     goCreateMartOrder () {
         this.setData({
-            tokenPrice: this.data.poiInfo.price,
-            totalPrice: this.data.poiInfo.price,
+            // tokenPrice: this.data.poiInfo.price,
+            // totalPrice: this.data.poiInfo.price,
             totalPrice: this.data.poiInfo.price + this.data.transFee,
             showToast: true,
             choosenType: 'normal',
@@ -159,7 +159,7 @@ Page({
 
         let param = {
             userId: wx.getStorageSync('token').user.id,
-            groupOrderId: this.data.orderInfoArr[parseInt(e.currentTarget.dataset.index)].id,
+            activityId: this.data.orderInfoArr[parseInt(e.currentTarget.dataset.index)].id,
             openId: wx.getStorageSync('openid'),
             payAmount: this.data.detailInfo.realAmount,
             remark: ''

@@ -15,6 +15,9 @@ Page({
    */
   onLoad: function (options) {
     let type = options.type
+    this.setData({
+      type: parseInt(options.type)
+    });
     if (type == 2) {
       // 优惠券
       this.fetchCouponList()

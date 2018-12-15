@@ -4,7 +4,7 @@ page{
 }
 
 .container {
-    height:calc(100vh - 110rpx);
+    height:calc(100vh - 90rpx);
     overflow-y:scroll;
 
 }
@@ -278,9 +278,8 @@ checkbox {
     
 }
 .center {
-    height:52rpx;
-    line-height:52rpx;
-
+    height:48rpx;
+    line-height:48rpx;
 }
 .center .txt {
     font-size: 32rpx;

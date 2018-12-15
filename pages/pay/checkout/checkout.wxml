@@ -119,7 +119,8 @@
                 <text class="txt" wx:if="{{voucherList.length === 0}}">无可用</text>
                 <text class="txt" wx:if="{{voucherList.length !== 0 && chooseNoVoucher}}">有{{voucherList.length}}张可用</text>
                 <text class="txt" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher}}"> - ￥{{couponMoney}}</text>
-                <view class="arrow"></view>
+                <!-- <view class="arrow"></view> -->
+                <image class="arrow" src="../../../images/arrow.png"/>
                 <!-- <image class="txt" src="../../../images/arrow.png"/> -->
             </view>
         </view>

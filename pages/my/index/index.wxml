@@ -16,14 +16,14 @@
             </view>
             <view class="icon-arrow"></view>
         </view>
-        <view class="item" bindtap="goCoupon" data-type="2">
+        <view class="item" bindtap="goCoupon" data-type="1">
             <view class="tt">
                 <image mode="widthFix" class="prefix-icon" src="../../../icons/user-coupon.png"></image>
                 <text>优惠券</text>
             </view>
             <view class="icon-arrow"></view>
         </view>
-        <view class="item" bindtap="goCoupon" data-type="1">
+        <view class="item" bindtap="goCoupon" data-type="2">
             <view class="tt">
                 <image mode="widthFix" class="prefix-icon" src="../../../icons/user-discount.png"></image>
                 <text>兑换券</text>

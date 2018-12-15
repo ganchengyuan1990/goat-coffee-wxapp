@@ -1,4 +1,4 @@
-<view class="wrapper">
+<view class="wrapper {{couponItems.length === 0 && voucherItems.length === 0 ? 'no_list_data' : ''}}">
     <view class="group-wrapper">
         <view class="group">
             <!-- <view class="title-box" wx:if="{{activedItems.length > 0}}">
@@ -60,8 +60,18 @@
             </checkbox-group>
             <!-- <promotion promotions="{{array}}" category="promotion" bind:myevent="onMyEvent"></promotion> -->
         </view>
-        <view class="no_coupon_wrapper" wx:if="{{activedItems.length === 0}}">
+        <!-- <view class="no_coupon_wrapper" wx:if="{{activedItems.length === 0}}">
             <image class='no_coupon' src="../../images/no_coupon.png" />
+        </view> -->
+
+        <view class="no_coupon_wrapper" wx:if="{{couponItems.length === 0 && type === 1}}">
+            <image class='no_coupon' src="../../../images/no_coupon.png" />
+            <view class="mention">暂无可用优惠券</view>
+        </view>
+
+        <view class="no_coupon_wrapper" wx:if="{{voucherItems.length === 0 && type === 2}}">
+            <image class='no_coupon' src="../../../images/no_voucher.png" />
+            <view class="mention">暂无可用兑换券</view>
         </view>
         <!-- <view class="group">
       <view class="title-box">
@@ -71,7 +81,7 @@
         <view wx:for="{{unActivedItems}}" wx:key="idx" class="list-item">
           <view class="list-item-name">
             <text class="promotion-description disable-promotion">{{item.title}}</text>
-            <text class="promotion-limit-tip">该活动不可以与抵用券共同使用</text>
+            <text class="promotion-limit-tip">该活动不可以与兑换券共同使用</text>
           </view>
         </view>
       </view>

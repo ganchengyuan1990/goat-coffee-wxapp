@@ -4,6 +4,11 @@
   background: #f4f4f4;
 }
 
+.no_list_data {
+  padding: 0;
+  background: #fff;
+}
+
 .group-wrapper {
   padding: 20rpx;
   background: #fff;

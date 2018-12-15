@@ -83,7 +83,7 @@
         <view wx:for="{{unActivedItems}}" wx:key="idx" class="list-item">
           <view class="list-item-name">
             <text class="promotion-description disable-promotion">{{item.title}}</text>
-            <text class="promotion-limit-tip">该活动不可以与抵用券共同使用</text>
+            <text class="promotion-limit-tip">该活动不可以与兑换券共同使用</text>
           </view>
         </view>
       </view>

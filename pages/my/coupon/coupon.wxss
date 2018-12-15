@@ -3,6 +3,11 @@
     padding-bottom: 30rpx;
     /* height: 100vh; */
 }
+
+.no_list_data {
+    padding: 0;
+    background: #fff;
+}
 .group-wrapper {
     padding: 20rpx 0;
 }
@@ -174,8 +179,19 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
 .no_coupon {
     height: 200rpx;
     width: 200rpx;
+}
+
+.mention {
+    text-align: center;
+    font-size: 28rpx;
+    color: #999;
+}
+
+.no_coupon_wrapper {
+    /* height: 200rpx; */
+    width: 210rpx;
     position: fixed;
-    top: 50%;
+    top: 40%;
     left: 50%;
     margin-top: -100rpx;
     margin-left: -100rpx;

@@ -1,4 +1,4 @@
-<view class="wrapper">
+<view class="wrapper {{pinList.length === 0 ? 'no_list_data' : ''}}">
   <view class="group-wrapper" wx:for="{{pinList}}" wx:key="index" data-id="{{item.id}}" bindtap="goPinDetail">
     <view class="group">
       <view class="img_wrapper">

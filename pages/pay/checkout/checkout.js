@@ -114,7 +114,7 @@ Page({
   },
 
   getAvailableCoupon () {
-    model(`home/coupon/getAvailableCoupon`, {
+    model(`home/coupon/get-available-coupon`, {
       uid: wx.getStorageSync('token').user.id,
       list: this.data.product
       // list: [{
@@ -149,8 +149,8 @@ Page({
   getBestCouponByProduct () {
     
     model(`home/coupon/get-best-coupon-by-product`, {
-      // uid: wx.getStorageSync('token').user.id,
-      uid: 1,
+      uid: wx.getStorageSync('token').user.id,
+      // uid: 1,
       list: this.data.product
     }).then(data => {
       if (data.data) {
@@ -188,7 +188,15 @@ Page({
            discountType: 0
          });
       }
-    })
+    }).catch(e => {
+      let _a = new BigNumber(this.data.payAmount);
+      let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
+      let actualPrice = _a.plus(_b);
+      this.setData({
+        actualPrice: parseFloat(actualPrice),
+        discountType: 0
+      });
+    });
   },
 
   dealOptions (items) {
@@ -378,10 +386,10 @@ Page({
   submit () {
     let userAddressId = this.data.options.userAddressId;
     if (!userAddressId) {
-      if (wx.getStorageSync('addressList') && wx.getStorageSync('addressList')[0].id) {
+      if (wx.getStorageSync('addressList') && wx.getStorageSync('addressList')[0]  && wx.getStorageSync('addressList')[0].id) {
         userAddressId = wx.getStorageSync('addressList')[0].id
       } else {
-        userAddressId = 3;
+        // userAddressId = 3;
       }
     }
     let param = {
@@ -404,6 +412,9 @@ Page({
     if (!param.discountIds) {
       delete param.discountIds;
     }
+    if (!param.userAddressId) {
+      delete param.userAddressId;
+    }
     let paramStr = '';
     let keys = Object.keys(param);
     keys.forEach((item, index) => {
@@ -423,11 +434,23 @@ Page({
       delete item.price;
     })
 
+    
+
     // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
-    model(`order/detail/submit?${paramStr}`, products, 'POST', {
-      'authorization': 'Bearer ' + wx.getStorageSync('token').token,
-      'Accept': 'application/json'
-    }).then(data => {
+    model(`order/detail/submit`, {
+        openId: wx.getStorageSync('openid'),
+        storeId: this.data.options.storeId,
+        userAddressId: userAddressId,
+        userId: wx.getStorageSync('token').user.id,
+        discountType: this.data.discountType,
+        deliverFee: this.data.deliverFee,
+        payAmount: this.data.actualPrice,
+        orderType: 1,
+        payType: 1,
+        remark: this.data.remark,
+        discountIds: this.data.couponUserRelation.substr(0, this.data.couponUserRelation.length - 1),
+        list: JSON.stringify(products)
+    }, 'POST').then(data => {
       if (data.code === 'suc') {
         wx.removeStorageSync('CART_LIST');
         wx.removeStorageSync('remark');

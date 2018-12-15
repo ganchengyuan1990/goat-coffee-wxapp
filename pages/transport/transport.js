@@ -129,7 +129,7 @@ Page({
 
     if (this.data.type === 1) {
       if (this.data.init) {
-        model('home/lbs/getStoreListByLocation', {
+        model('home/lbs/get-store-list-by-location', {
           // lng: geo.lng,
           // lat: geo.lat,
           lng: 121.483821,
