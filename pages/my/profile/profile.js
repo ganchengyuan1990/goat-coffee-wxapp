@@ -105,7 +105,7 @@ Page({
             mask: true
           })
           wx.uploadFile({
-            url: `${BASE_URL}/my/user/fileUpload`,
+            url: `${BASE_URL}/my/user/file-upload`,
             filePath: path,
             name: 'file',
             header: {
@@ -179,7 +179,7 @@ Page({
     obj.id = this.data.userInfo.id
     console.log(obj, 'objjjj');
     
-    model('my/user/updateUser', obj, 'POST').then(res => {
+    model('my/user/update-user', obj, 'POST').then(res => {
       wx.showToast({
         title: '修改成功',
         icon: 'success',
@@ -198,7 +198,7 @@ Page({
     }).catch(e => {
       wx.showToast({
         title: '修改失败',
-        icon: 'fail',
+        icon: 'none',
         duration: 1500
       })
     })

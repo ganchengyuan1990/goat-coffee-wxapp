@@ -2,7 +2,7 @@
   var getSpecific = function(product) {
     var arr = []
     var size =   product.default_sku ? product.default_sku.name : ''
-    var props =  product.default_prop ? product.default_prop.val : ''
+    var props =  product.default_prop ? product.default_prop.value : ''
     if (size) {
       arr.push(size)
     }

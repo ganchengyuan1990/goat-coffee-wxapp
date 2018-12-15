@@ -256,6 +256,7 @@ Page({
 		}).then(res => {
 			console.log(res, 'detail')
 			const {data} = res
+
 			const list = data.classify_list
 			this.setData({
 				scrollTop: 0,
@@ -484,6 +485,7 @@ Page({
 		let info = this.data
 		let cartList = e.detail.cart
 		let totalPrice = e.detail.totalPrice
+
 		// console.log(cartList, 'cartList')
 		if (cartList.length === 0) {
 			return
@@ -509,7 +511,8 @@ Page({
 				skuName: obj.propSkuName,
 				number: item.count,
 				price: obj.price,
-				productPropIds: propIds.join(',')
+				productPropIds: propIds.join(','),
+				spec: item.spec
 			})
 		})
 		let fee = info.storeInfo.deliverFee
@@ -521,7 +524,6 @@ Page({
 			orderType: info.isSelfTaking ? 2 : 1,
 			product: products
 		}
-		
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
 		this.toggleCart()
 		wx.navigateTo({
