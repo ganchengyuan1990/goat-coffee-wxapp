@@ -11,6 +11,7 @@ Page({
         appId: '',
         nonceStr: '',
         paySign: '',
+        package: '',
         prepayId: '',
         signType: '',
         timeStamp: '',
@@ -24,6 +25,7 @@ Page({
             nonceStr: option.nonceStr,
             paySign: option.paySign,
             prepayId: option.prepayId,
+            package: option.package,
             signType: option.signType,
             timeStamp: option.timeStamp,
             price: option.price,
@@ -40,7 +42,7 @@ Page({
         wx.requestPayment({
             'timeStamp': this.data.timeStamp,
             'nonceStr': this.data.nonceStr,
-            'package': `prepay_id=${this.data.prepayId}`,
+            'package': `prepay_id=${this.data.package}`,
             'signType': this.data.signType,
             'paySign': this.data.paySign,
             'success': function (res) {

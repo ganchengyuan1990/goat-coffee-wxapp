@@ -457,6 +457,9 @@ Page({
         let payParamStr = '';
         let params = data.data;
         for (let key of Object.keys(params)) {
+          if (key === 'package') {
+            params[key] = params[key].split('=')[1];
+          }
           payParamStr += `${key}=${params[key]}&`;
         }
         payParamStr += `price=${this.data.actualPrice}`

@@ -67,9 +67,9 @@ Page({
             model('my/sms/send-phone-code', {
                 phoneNum: this.data.phoneNum
             }, 'POST').then(data => {
-                console.log(data.data);
+                console.log(data.data.code);
                 this.setData({
-                    phoneCode: data.data
+                    phoneCode: data.data.code
                 });
             })
         }
