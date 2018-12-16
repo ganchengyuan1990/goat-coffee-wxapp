@@ -101,7 +101,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-    console.log('fetching');
+    // console.log('fetching');
     this.setData({
       page: 1
     })
@@ -141,7 +141,7 @@ Page({
       obj.oStatus = this.data.orderState
     }
     model('order/detail/list', obj).then(res => {
-      console.log('order res', res)
+      // console.log('order res', res)
       const {data} = res
       if (data && Array.isArray(data)) {
         let uid = this.data.userInfo.user.id
@@ -163,15 +163,18 @@ Page({
           })
           arr = list
         } else {
+          // 普通订单
           if (this.data.orderClassify === OCLASSIFY.normal) {
             arr = list.concat(data)
           }
+          // 拼团订单
           if (this.data.orderClassify === OCLASSIFY.group) {
             arr = data.map(item => {
               let groupList = item.group_user_order
               let obj = groupList.find(i => i.userId === uid)
-              obj.payAmount = item.group_order.payAmount
-              obj.state = item.group_order.state
+              // obj.payAmount = item.group_order.payAmount
+              // obj.state = item.group_order.state
+              obj = Object.assign({}, obj, item.group_order)
               return obj
             })
             arr = list.concat(arr)
@@ -304,28 +307,78 @@ Page({
 	    return
 	  }
     let item = e.currentTarget.dataset.item
-    if (!item) {
+    let products = e.currentTarget.dataset.list
+    if (!item || !products) {
+      wx.showToast({
+        title: '获取订单信息失败',
+        icon: 'none'
+      })
       return
     }
-    item.product = item.orderDetail_list
-    item.product.forEach(i => {
+    console.log(item, products);
+    products.forEach(i => {
+      i.spec = i.skuName + i.props
       i.price = i.skuPrice
     })
+    let obj = {
+      storeId: item.storeId,
+      userAddressId: item.userAddressId,
+      deliverFee: item.deliverFee,
+      payAmount: item.payAmount,
+      orderType: item.orderType,
+      product: products
+    }
+    // return
+    // item.product = item.orderDetail_list
+    // item.product.forEach(i => {
+    //   i.price = i.skuPrice
+    // })
 	  // return
-	  const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(item))}`
+	  const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
 	  wx.navigateTo({
 	    url: url
 	  })
-	},
+  },
+  goPageGroup() {
+    wx.switchTab({
+      url: '/pages/pin/pin_list/pin_list'
+    })
+  },
   goPay(e) {
     let order = e.currentTarget.dataset.item
+    let type = e.currentTarget.dataset.type
     if (!order) {
       return
     }
-
-    wx.navigateTo({
-      url: `/pages/pay/normalPay/normalPay?timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${order.prepayId}&nonceStr=${order.nonceStr}&price=${order.totalAmount}`
+    let userInfo = this.data.userInfo
+    let { wxOpenid } = userInfo.user
+    let target = type === 'group' ? 'pay/wx/wx-pre-pay-group' : 'pay/wx/wx-pre-pay'
+    model(target, {
+      openId: wxOpenid,
+      orderNo: order.id,
+      // orderMsg: ''
+    }, 'POST').then(res => {
+      let obj = res.data
+      if (!obj.paySign) {
+        // show model
+        return
+      }
+      let prepayId = obj.package.split('=')[1]
+      obj.msg = 'suc'
+      obj.prepayId = prepayId
+      delete obj.package
+      // let str = Object.entries(obj).map(i => `${i[0]&i[1]}`).join('&')
+      let str = Object.entries(obj).reduce((acc, arr) => acc +'&'+ arr.join('='), '')
+      str = str.slice(1)
+      wx.navigateTo({
+        url: `/pages/pay/normalPay/normalPay?${str}`
+      })
+    }).catch(e => {
+      // show model
+      console.log(e)
     })
+    // return
+
   },
   confirm() {
     this.refreshList()
@@ -340,7 +393,7 @@ Page({
   showDetail(e) {
     let item = e.currentTarget.dataset.item
     let dtype = e.currentTarget.dataset.dtype
-    console.log(item, 'show detail item');
+    // console.log(item, 'show detail item');
     
     if (item) {
       item.dtype = dtype

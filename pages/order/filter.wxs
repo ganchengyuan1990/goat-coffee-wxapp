@@ -49,22 +49,22 @@
             return ''
         },
         getDiscountType: function (item) {
-            var val = item.discountAmount === 0 ? '无可用' : '-￥' + item.discountAmount
+            var val = item.discountAmount === 0 ? '未使用' : '-￥' + item.discountAmount
             switch (item.discountType) {
                 case 1:
                     return {
                         discount: val,
-                        coupon: '无可用'
+                        coupon: '未使用'
                     }
                 case 2:
                     return {
                         discount: val,
-                        coupon: '无可用'
+                        coupon: '未使用'
                     }
                 default:
                     return {
-                        discount: '无可用',
-                        coupon: '无可用'
+                        discount: '未使用',
+                        coupon: '未使用'
                     }
             }
         },

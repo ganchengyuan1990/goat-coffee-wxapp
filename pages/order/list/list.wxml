@@ -67,17 +67,18 @@
                 </view>
                 <view class="panel-ft">
                     <view class="price">￥{{item.order.payAmount}}</view>
-                    <view class="btn-buy" wx:if="{{item.order.orderState === '00'}}" data-item="{{item.order}}" catchtap="goPay">去支付</view>
-                    <view class="btn-buy" wx:else data-item="{{item.order}}" catchtap="goCheckout">再来一单</view>
+                    <view class="btn-buy" wx:if="{{item.order.orderState === '00'}}" data-item="{{item.order}}" data-type="normal" catchtap="goPay">去支付</view>
+                    <!-- <view class="btn-buy" wx:if="{{true}}" data-item="{{item.order}}" catchtap="goPay">去支付</view> -->
+                    <view class="btn-buy" wx:else data-item="{{item.order}}" data-list="{{item.order_detail}}" catchtap="goCheckout">再来一单</view>
                 </view>
             </view>
         </block>
         <block wx:if="{{currentPanelList === 2}}">
-            <view class="panel" wx:for="{{orderList}}" wx:key="{{item.id}}" bind:tap="showDetail" data-item="{{item}}" data-dtype="group">
+            <view class="panel" wx:for="{{orderList}}" wx:key="{{item.index}}" bind:tap="showDetail" data-item="{{item}}" data-dtype="group">
                 <view class="panel-hd">
                     <view>团购订单：{{item.groupOrderNo}}</view>
-                    <view class="{{item.state === 'p1' ? 'active':''}}">
-                        {{filter.getGroupState(item.state)}}
+                    <view class="{{item.payState === '00' ? 'active':''}}">
+                        {{filter.getOrderState(item.payState)}}
                     </view>
                 </view>
                 <view class="panel-bd">
@@ -86,11 +87,11 @@
                     <view class="date">{{item.CreateTime}}</view>
                 </view>
                 <view class="panel-ft">
-                    <view class="price">￥{{item.amount}}</view>
-                    <view class="btn-buy" wx:if="{{item.state === 'p1'}}" data-item="{{item}}" catchtap="goPay">
+                    <view class="price">￥{{item.payAmount}}</view>
+                    <view class="btn-buy" wx:if="{{item.payState === '00'}}" data-item="{{item}}" data-type="group" catchtap="goPay">
                         去支付
                     </view>
-                    <view class="btn-buy" wx:else data-item="{{item}}" catchtap="goCheckout">
+                    <view class="btn-buy" wx:else data-item="{{item}}" catchtap="goPageGroup">
                         再来一单
                     </view>
                 </view>
