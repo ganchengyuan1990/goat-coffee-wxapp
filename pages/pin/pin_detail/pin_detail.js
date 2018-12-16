@@ -8,18 +8,6 @@ import model from '../../../utils/model';
 
 
 Page({
-     onShareAppMessage: function (res) {
-        return {
-            title: `堤旁树-${this.data.poiInfo.name || this.data.poiInfo.lesson_name}`,
-            path: `pages/lesson/lesson?lesson_id=${this.data.lesson_id}`,
-            success: function (res) {
-                // 转发成功
-            },
-            fail: function (res) {
-                // 转发失败
-            }
-        }
-    },
 
     data: {
         detailInfo: {},
@@ -103,10 +91,9 @@ Page({
                 orderInfoArr.forEach(item => {
                     item.userAvatar = item.userAvatar ? item.userAvatar : wx.getStorageSync('personal_info').avatarUrl
                 });
-                debugger
                 this.setData({
                     detailInfo: data.data.group,
-                    orderInfoArr: orderInfoArr,
+                    orderInfoArr: orderInfoArr.slice(-3),
                     group_voucher: data.data.group_voucher,
                     leftTime: calcLeftTime.time
                 })
@@ -162,7 +149,7 @@ Page({
 
         let param = {
             userId: wx.getStorageSync('token').user.id,
-            activityId: this.data.orderInfoArr[parseInt(e.currentTarget.dataset.index)].id,
+            activityId: this.data.orderInfoArr[parseInt(e.currentTarget.dataset.index)].activityId,
             openId: wx.getStorageSync('openid'),
             payAmount: this.data.detailInfo.realAmount,
             remark: ''
@@ -183,10 +170,9 @@ Page({
             paramStr: paramStr,
             voucherParamArr: voucherParamArr
         });
-        debugger
 
         wx.navigateTo({
-            url: `/pages/pin/checkout/checkout?isOwner=0&groupName=${this.data.detailInfo.groupName}&price=${this.data.detailInfo.realAmount}&originalPrice=${this.data.detailInfo.voucherAmount}&number=${this.data.detailInfo.maxPeople}`
+            url: `/pages/pin/checkout/checkout?isOwner=0&activityId=${param.activityId}&groupName=${this.data.detailInfo.groupName}&price=${this.data.detailInfo.realAmount}&originalPrice=${this.data.detailInfo.voucherAmount}&number=${this.data.detailInfo.maxPeople}`
         });
 
         // model(`group/action/start?${paramStr}`, voucherParamArr, 'POST', {

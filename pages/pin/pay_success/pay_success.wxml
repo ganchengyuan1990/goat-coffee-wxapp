@@ -21,8 +21,8 @@
     </view> -->
   </view>
 
-  <view class="pin_wrapper">
-      <view class="title">三人团，仅剩1个名额</view>
+  <view class="pin_wrapper" wx:if="{{type === 1}}">
+      <view class="title">{{number}}人团，仅剩{{number - groupOrder.length}}个名额</view>
       <view class="time_left">距离结束还剩</view>
 
       <view class="clock">
@@ -34,25 +34,27 @@
       </view>
   </view>
 
+  <view class="pin_wrapper" wx:if="{{type === 2}}">
+      <view class="title">拼团成功</view>
+  </view>
+
   <view class="team">
       <view class="member" wx:for="{{teamMembers}}" wx:for-item="item" wx:for-index="index">
           <view class="owner" wx:if="{{index === 0}}">
               <text>团长</text>
           </view>
-          <image src="{{item.avatal}}" wx:if="{{!item.empty}}" lazy-load='true'/>
+          <image src="{{item.avatar}}" wx:if="{{!item.empty}}" lazy-load='true'/>
 
           <image src='../../../images/pin_empty.png' wx:if="{{item.empty}}" />
 
-          <text class='text' wx:if="{{item.empty}}">?</text>
+          <!-- <text class='text' wx:if="{{item.empty}}">?</text> -->
       </view>
   </view>
 
-  <view class="mention">快去邀请好友一起拼团吧</view>
+  <view class="mention" wx:if="{{type !== 2}}">快去邀请好友一起拼团吧</view>
 
   <view class="rule_wrapper">
       <view class="title">拼团流程</view>
-      <view class="time_left">距离结束还剩</view>
-
       <view class="rule">1.此处展示参与流程</view>
       <view class="rule">1.此处展示参与流程</view>
       <view class="rule">1.此处展示参与流程</view>
@@ -61,9 +63,15 @@
   </view>
 
   <view class='function_bar'>
-      <view class='button' open-type="share" bindtap="goPinList">
+      <view class='button' catchtap="goPinList" wx:if="{{type === 2}}">
           更多超值体验
       </view>
+      <view class='button' catchtap="goAttenPin" wx:if="{{type === 3}}">
+          参加拼团
+      </view>
+      <button class='button' open-type="share" wx:if="{{type === 1}}">
+          邀请好友参团
+      </button>
   </view>
 
 

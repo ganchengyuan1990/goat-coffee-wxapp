@@ -18,11 +18,13 @@ Page({
         originalPrice: 0,
         number: 0,
         groupName: '',
-        type: 'normal'
+        type: 'normal',
+        activityId: ''
     },
     onLoad: function (option) {
         let openid = wx.getStorageSync('openid');
         this.setData({
+            activityId: option.activityId,
             appId: option.appId,
             nonceStr: option.nonceStr,
             paySign: option.paySign,
@@ -52,7 +54,7 @@ Page({
             'success': function (res) {
                 if (self.data.type === 'pin') {
                     wx.redirectTo({
-                        url: `/pages/pin/pay_success/pay_success?price=${self.data.price}&originalPrice=${self.data.originalPrice}&number=${self.data.number}&groupName=${self.data.groupName}`
+                        url: `/pages/pin/pay_success/pay_success?activityId=${self.data.activityId}&price=${self.data.price}&originalPrice=${self.data.originalPrice}&number=${self.data.number}&groupName=${self.data.groupName}`
                     });
                 } else {
                     wx.redirectTo({

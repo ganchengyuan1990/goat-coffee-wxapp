@@ -58,6 +58,7 @@ Page({
     tab: '',
     remark: '',
     userAddressId: 0,
+    getTime: ''
   },
   onLoad: function (options) {
 
@@ -70,7 +71,7 @@ Page({
     this.getAddressList();
 
     this.getAvailableCoupon();
-
+    this.calGetTime();
     // this.setData({
     //   goodsTotalPrice: parseInt(options.price)
     // })
@@ -96,6 +97,21 @@ Page({
     }
 
 
+  },
+
+  calGetTime () {
+    let nowTime = Date.parse(new Date());
+    let getTime = this.calcLeftTime(nowTime + 20 * 60 * 1000);
+    console.log(getTime);
+  },
+
+  calcLeftTime(time) {
+    var timeStr = parseFloat(time);
+    var left = parseInt((timeStr % 864e5) / 1000);
+    var hours = parseInt(left / 3600);
+    var minutes = parseInt((left - hours * 3600) / 60);
+    var seconds = parseInt((left - hours * 3600 - minutes * 60));
+    return `${hours}:${minutes}`;
   },
 
   getAddressList () {
@@ -298,7 +314,6 @@ Page({
   },
 
   goCoupon () {
-    debugger
     if (this.data.chosenInfo.type == 2) {
       wx.navigateTo({
         url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
@@ -324,7 +339,7 @@ Page({
       delete item.productName;
       delete item.price;
       delete item.number;
-      delete item.productPropIds;
+      // delete item.productPropIds;
     });
     if (!this.data.chosenInfo.id) {
       this.setData({
@@ -412,8 +427,9 @@ Page({
     // if (!this.data.options.userAddressId) {
     //   delete param.userAddressId;
     // }
-    if (!param.discountIds) {
-      delete param.discountIds;
+    debugger
+    if (!param.discountIds || param.discountIds === 'undefined') {
+      param.discountIds = '';
     }
     if (!param.userAddressId) {
       delete param.userAddressId;
@@ -430,6 +446,9 @@ Page({
 
     let products = this.data.options.product;
     products.forEach(item => {
+      if (!item.number) {
+        item.number = item.num;
+      }
       delete item.num;
       delete item.skuName;
       delete item.totalPrice;
@@ -437,23 +456,12 @@ Page({
       delete item.price;
     })
 
+    param.list = JSON.stringify(products);
+
     
 
     // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
-    model(`order/detail/submit`, {
-        openId: wx.getStorageSync('openid'),
-        storeId: this.data.options.storeId,
-        userAddressId: userAddressId,
-        userId: wx.getStorageSync('token').user.id,
-        discountType: this.data.discountType,
-        deliverFee: this.data.deliverFee,
-        payAmount: this.data.actualPrice,
-        orderType: this.data.chooseSelf ? 3 : 1,
-        payType: 1,
-        remark: this.data.remark,
-        discountIds: this.data.couponUserRelation.substr(0, this.data.couponUserRelation.length - 1),
-        list: JSON.stringify(products)
-    }, 'POST').then(data => {
+    model(`order/detail/submit`, param, 'POST').then(data => {
       if (data.code === 'suc') {
         wx.removeStorageSync('CART_LIST');
         wx.removeStorageSync('remark');

@@ -91,7 +91,6 @@ Page({
     onMyEvent: function (e) {
         // 选择一项就返回，并用setData把选中的那项以外的其他项checked设为空
         let idArray = e.detail.value;
-        debugger
         let newValue = idArray.splice(idArray.length - 1, 1);
         let chosenInfo = {};
         console.log(e.target.dataset.id);
