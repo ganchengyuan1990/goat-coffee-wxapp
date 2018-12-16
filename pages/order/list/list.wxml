@@ -86,7 +86,7 @@
                     <view class="date">{{item.CreateTime}}</view>
                 </view>
                 <view class="panel-ft">
-                    <view class="price">￥{{item.payAmount}}</view>
+                    <view class="price">￥{{item.amount}}</view>
                     <view class="btn-buy" wx:if="{{item.state === 'p1'}}" data-item="{{item}}" catchtap="goPay">
                         去支付
                     </view>

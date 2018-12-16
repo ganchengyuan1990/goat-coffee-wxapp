@@ -188,6 +188,9 @@ Page({
       })
       wx.stopPullDownRefresh()
     }).catch(e => {
+      this.setData({
+        isLoading: false
+      })
       wx.stopPullDownRefresh()
     })
   },
