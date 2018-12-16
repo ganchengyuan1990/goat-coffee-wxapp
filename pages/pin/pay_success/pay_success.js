@@ -8,18 +8,34 @@ var app = getApp();
 
 Page({
     data: {
-        teamMembers: [{
-            avatal: "https://wx.qlogo.cn/mmopen/vi_32/UOwK8HSzl0jTn7Lq21cBAwiaictaXJ6T9vRlgCXUrrytk6WHjE0W8en8Dic7FrhmssBBpBQicMhKBg9JOUKPicT6GSQ/132"
-        }, {
-            avatal: "https://wx.qlogo.cn/mmopen/vi_32/UOwK8HSzl0jTn7Lq21cBAwiaictaXJ6T9vRlgCXUrrytk6WHjE0W8en8Dic7FrhmssBBpBQicMhKBg9JOUKPicT6GSQ/132"
-        }, {
-            empty: true,
-            avatal: "https://wx.qlogo.cn/mmopen/vi_32/UOwK8HSzl0jTn7Lq21cBAwiaictaXJ6T9vRlgCXUrrytk6WHjE0W8en8Dic7FrhmssBBpBQicMhKBg9JOUKPicT6GSQ/132"
-        }],
+        teamMembers: [],
         price: 0,
         originalPrice: 0,
         number: 0,
         groupName: '',
+        activityId: '',
+        type: 1,
+        owner: {},
+        groupOrder: [],
+        errorToast: false,
+        toastInfo: '',
+    },
+
+     onShareAppMessage: function (res) {
+         if (res.from === 'button') {
+             // 来自页面内转发按钮
+             console.log(res.target)
+         }
+        return {
+            title: `快来参加拼团啦！`,
+            path: `pages/pin/pay_success/pay_success?price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&activityId=${this.data.activityId}`,
+            success: function (res) {
+                // 转发成功
+            },
+            fail: function (res) {
+                // 转发失败
+            }
+        }
     },
 
     goPinList () {
@@ -27,14 +43,80 @@ Page({
             url: '/pages/pin/pin_list/pin_list'
         });
     },
+
     onLoad: function (option) {
         this.setData({
             price: option.price,
             originalPrice: option.originalPrice,
             number: option.number,
             groupName: option.groupName,
+            activityId: option.activityId,
+            type: parseInt(option.type)
+        });
+        model(`group/action/user-list`, {
+                activityId: this.data.activityId
+            }, 'POST').then(data => {
+                let groupOrder = data.data.groupOrder;
+                let teamMembers = [];
+                let type = 1; //已支付
+                if (groupOrder.length >= this.data.number) {
+                    type = 2; //已成团
+                }
+                if (this.data.type === 3) {
+                    type = 3; //分享，邀请好友下单
+                }
+                for (let i = 0; i < this.data.number; i++) {
+                    if (groupOrder[i]) {
+                        teamMembers.push(groupOrder[i].user);
+                    } else {
+                        teamMembers.push({
+                            empty: true,
+                            avatar: "https://wx.qlogo.cn/mmopen/vi_32/UOwK8HSzl0jTn7Lq21cBAwiaictaXJ6T9vRlgCXUrrytk6WHjE0W8en8Dic7FrhmssBBpBQicMhKBg9JOUKPicT6GSQ/132"
+                        });
+                    }
+                }
+                this.setData({
+                    groupOrder: groupOrder,
+                    teamMembers: teamMembers,
+                    type: type
+                })
+        }).catch(e => {
+            let result = data.data
+            // this.setData({
+            //     errorToast: true,
+            //     toastInfo: e
+            // })
         });
     },
+
+    goAttenPin () {
+        if (!wx.getStorageSync('token')) {
+            wx.navigateTo({ url: '/pages/login/login' });
+            return ;
+        }
+        let param = {
+            userId: wx.getStorageSync('token').user.id,
+            activityId: this.data.activityId,
+            openId: wx.getStorageSync('openid'),
+            payAmount: this.data.price,
+            remark: '',
+            list: []
+        };
+        model(`group/action/join`, param, 'POST').then(data => {
+            let order = data.data;
+            let _package = order.package;
+            let prepayId = _package.split('=')[1]
+            wx.navigateTo({
+                url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${this.data.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}`
+            })
+        }).catch(e => {
+            this.setData({
+                errorToast: true,
+                toastInfo: e
+            })
+        });
+    },
+
     onReady: function () {
 
     },
