@@ -26,10 +26,9 @@ Page({
 		isCartPanelShow: false,
 		heigthArr: [],
 		storeInfo: {
-			//服务端获取信息
-			// storeId: 1,
-			// storeName: "美式咖啡",
-			storeImgUrl: "/images/store.png",
+			banner: {
+				pic: ''
+			}
 		},
 		menuList: [],
 		cartList: [],

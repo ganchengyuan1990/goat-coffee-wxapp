@@ -340,9 +340,11 @@ Page({
 	  })
   },
   goPageGroup() {
-    wx.switchTab({
-      url: '/pages/pin/pin_list/pin_list'
-    })
+    if (this.data.currentPanelList === OCLASSIFY.group) {
+      wx.switchTab({
+        url: '/pages/pin/pin_list/pin_list'
+      })
+    }
   },
   goPay(e) {
     let order = e.currentTarget.dataset.item
@@ -355,7 +357,7 @@ Page({
     let target = type === 'group' ? 'pay/wx/wx-pre-pay-group' : 'pay/wx/wx-pre-pay'
     model(target, {
       openId: wxOpenid,
-      orderNo: order.id,
+      orderNo: order.id
       // orderMsg: ''
     }, 'POST').then(res => {
       let obj = res.data
@@ -365,11 +367,14 @@ Page({
       }
       let prepayId = obj.package.split('=')[1]
       obj.msg = 'suc'
+      obj.package = prepayId
       obj.prepayId = prepayId
-      delete obj.package
+      obj.price = order.payAmount      
       // let str = Object.entries(obj).map(i => `${i[0]&i[1]}`).join('&')
       let str = Object.entries(obj).reduce((acc, arr) => acc +'&'+ arr.join('='), '')
       str = str.slice(1)
+      console.log(str);
+      // return
       wx.navigateTo({
         url: `/pages/pay/normalPay/normalPay?${str}`
       })
