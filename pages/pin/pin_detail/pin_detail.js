@@ -27,10 +27,11 @@ Page({
         let voucherParamArr = [];
 
         this.data.group_voucher.forEach(item => {
-            if (item.voucher && item.voucher.id && item.number) {
+            debugger
+            if (item.voucher && item.voucher.id && item.num) {
                 voucherParamArr.push({
                     voucherId: item.voucher.id,
-                    number: item.number
+                    number: item.num
                 })
             }
         });
@@ -40,7 +41,8 @@ Page({
             groupId: this.data.groupId,
             openId: wx.getStorageSync('openid'),
             payAmount: this.data.detailInfo.realAmount,
-            remark: ''
+            remark: '',
+            list: voucherParamArr
         };
 
         let paramStr = '';

@@ -119,14 +119,14 @@ Page({
       param[key] = value;
     });
     let voucherParamArr = this.data.pinOrderInfo.voucherParamArr;
-    param.list = voucherParamArr;
+    param.list = JSON.stringify(voucherParamArr);
     if (this.data.isOwner == 1) {
       model(`group/action/start`, param, 'POST').then(data => {
         let order = data.data;
         let _package = order.package;
         let prepayId = _package.split('=')[1];
         wx.navigateTo({
-          url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${order.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}`
+          url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${order.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${param.list}`
         })
       }).catch(e => {
         this.setData({
@@ -136,12 +136,11 @@ Page({
       });
     } else {
       model(`group/action/join`, param, 'POST').then(data => {
-        debugger
         let order = data.data;
         let _package = order.package;
         let prepayId = _package.split('=')[1]
         wx.navigateTo({
-          url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${this.data.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}`
+          url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${this.data.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${param.list}`
         })
       }).catch(e => {
         this.setData({

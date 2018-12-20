@@ -427,7 +427,6 @@ Page({
     // if (!this.data.options.userAddressId) {
     //   delete param.userAddressId;
     // }
-    debugger
     if (!param.discountIds || param.discountIds === 'undefined') {
       param.discountIds = '';
     }

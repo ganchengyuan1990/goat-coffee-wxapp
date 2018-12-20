@@ -13,7 +13,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.4.0",
 	"appid": "wx95a4dca674b223e1",
-	"projectname": "%E5%B1%B1%E7%BE%8A%E5%92%96%E5%95%A1",
+	"projectname": "%E5%B1%B1%E7%BE%8A%E5%92%96%E5%95%A1%E7%BA%BF%E4%B8%8A",
 	"isGameTourist": false,
 	"condition": {
 		"search": {
@@ -123,7 +123,7 @@
 					"id": 14,
 					"name": "pin_detail",
 					"pathName": "pages/pin/pin_detail/pin_detail",
-					"query": "lesson_id=1"
+					"query": "id=6"
 				},
 				{
 					"id": 15,

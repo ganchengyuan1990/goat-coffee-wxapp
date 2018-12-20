@@ -19,6 +19,7 @@ Page({
         groupOrder: [],
         errorToast: false,
         toastInfo: '',
+        list: {}
     },
 
      onShareAppMessage: function (res) {
@@ -51,7 +52,8 @@ Page({
             number: option.number,
             groupName: option.groupName,
             activityId: option.activityId,
-            type: parseInt(option.type)
+            type: parseInt(option.type),
+            list: JSON.parse(option.list)
         });
         model(`group/action/user-list`, {
                 activityId: this.data.activityId
