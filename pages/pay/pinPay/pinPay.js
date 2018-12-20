@@ -19,7 +19,8 @@ Page({
         number: 0,
         groupName: '',
         type: 'normal',
-        activityId: ''
+        activityId: '',
+        list: ''
     },
     onLoad: function (option) {
         let openid = wx.getStorageSync('openid');
@@ -35,7 +36,8 @@ Page({
             originalPrice: option.originalPrice,
             number: option.number,
             groupName: option.groupName,
-            type: option.type ? option.type : 'normal'
+            type: option.type ? option.type : 'normal',
+            list: option.list
         });
 
         this.payFunc(this);
@@ -54,7 +56,7 @@ Page({
             'success': function (res) {
                 if (self.data.type === 'pin') {
                     wx.redirectTo({
-                        url: `/pages/pin/pay_success/pay_success?activityId=${self.data.activityId}&price=${self.data.price}&originalPrice=${self.data.originalPrice}&number=${self.data.number}&groupName=${self.data.groupName}`
+                        url: `/pages/pin/pay_success/pay_success?activityId=${self.data.activityId}&price=${self.data.price}&originalPrice=${self.data.originalPrice}&number=${self.data.number}&groupName=${self.data.groupName}&list=${self.data.list}`
                     });
                 } else {
                     wx.redirectTo({
