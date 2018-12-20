@@ -10,7 +10,7 @@ export const BASE_URL = (() => {
     let url = {
         prod: '',
         test: '',
-        dev: `http://heibanbao.wang/api/v1/server/`
+        dev: `https://heibanbao.wang/api/v1/server/`
     }
     return url[CONFIG.env]
 })()
