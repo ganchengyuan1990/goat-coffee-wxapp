@@ -26,7 +26,7 @@ Page({
 		isCartPanelShow: false,
 		heigthArr: [],
 		storeInfo: {
-			banner: {
+			banners: {
 				pic: ''
 			}
 		},
