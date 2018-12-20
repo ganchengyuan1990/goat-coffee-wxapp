@@ -106,6 +106,7 @@ Page({
             mask: true
           })
           let _token = wx.getStorageSync('token')
+          
           wx.uploadFile({
             url: `${BASE_URL}my/user/file-upload`,
             filePath: path,
@@ -161,9 +162,7 @@ Page({
       wx.setStorageSync('token', token)
     } catch(e) {
       console.log(e);
-      
     }
-
   },
   saveProfile() {
     let self = this
