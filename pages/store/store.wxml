@@ -38,7 +38,7 @@
     </view>
   </view>
   <view class="img-wrap J_img_wrap">
-    <image src="/images/holder.jpeg" class="img-caption"></image>
+    <image src="{{storeInfo.banner.pic}}" class="img-caption"></image>
   </view>
   <view class="list-wrap" style="height:{{listHeight}}px">
     <view class="list-nav">
