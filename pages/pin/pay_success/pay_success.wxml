@@ -26,11 +26,11 @@
       <view class="time_left">距离结束还剩</view>
 
       <view class="clock">
-        <view class="time_hour">16</view>
+        <view class="time_hour">{{end_at.hours}}</view>
         <view class="">:</view>
-        <view class="time_minute">32</view>
+        <view class="time_minute">{{end_at.minutes}}</view>
         <view class="">:</view>
-        <view class="time_second">07</view>
+        <view class="time_second">{{end_at.seconds}}</view>
       </view>
   </view>
 

@@ -27,7 +27,6 @@ Page({
         let voucherParamArr = [];
 
         this.data.group_voucher.forEach(item => {
-            debugger
             if (item.voucher && item.voucher.id && item.num) {
                 voucherParamArr.push({
                     voucherId: item.voucher.id,
@@ -88,21 +87,25 @@ Page({
         }).then(data => {
             if (data.data) {
                 let endTime = data.data.group.endTime;
-                let calcLeftTime = this.calcLeftTime(new Date(endTime).getTime());
                 let orderInfoArr = data.data.group_order;
                 orderInfoArr.forEach(item => {
+                    item.leftTime = this.calcLeftTime(new Date(item.groupActivity.end_at).getTime()).time;
                     item.userAvatar = item.userAvatar ? item.userAvatar : wx.getStorageSync('personal_info').avatarUrl
                 });
                 this.setData({
                     detailInfo: data.data.group,
                     orderInfoArr: orderInfoArr.slice(-3),
-                    group_voucher: data.data.group_voucher,
-                    leftTime: calcLeftTime.time
+                    group_voucher: data.data.group_voucher
+                    // leftTime: calcLeftTime.time
                 })
                 setInterval(() => {
-                    let calcLeftTime = this.calcLeftTime(new Date(endTime).getTime());
+                    let orderInfoArr = Object.assign(this.data.orderInfoArr);
+                    orderInfoArr.forEach(item => {
+                        item.leftTime = this.calcLeftTime(new Date(item.groupActivity.end_at).getTime()).time;
+                    });
+                    // let calcLeftTime = this.calcLeftTime(new Date(endTime).getTime());
                     this.setData({
-                        leftTime: calcLeftTime.time
+                        orderInfoArr: orderInfoArr.slice(-3)
                     })
                 }, 1000);
             }
@@ -145,13 +148,13 @@ Page({
         this.data.group_voucher.forEach(item => {
             voucherParamArr.push({
                 voucherId: item.voucher.id,
-                number: item.number
+                number: item.num
             })
         });
 
         let param = {
             userId: wx.getStorageSync('token').user.id,
-            activityId: this.data.orderInfoArr[parseInt(e.currentTarget.dataset.index)].activityId,
+            activityId: this.data.orderInfoArr[parseInt(e.currentTarget.dataset.index)].groupActivity.id,
             openId: wx.getStorageSync('openid'),
             payAmount: this.data.detailInfo.realAmount,
             remark: ''

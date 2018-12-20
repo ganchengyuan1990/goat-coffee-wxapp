@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 14,
+			"current": 12,
 			"list": [
 				{
 					"id": -1,
@@ -108,10 +108,10 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 12,
 					"name": "拼图pay_success",
 					"pathName": "pages/pin/pay_success/pay_success",
-					"query": ""
+					"query": "activityId=66&list={}"
 				},
 				{
 					"id": -1,

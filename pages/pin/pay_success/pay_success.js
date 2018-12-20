@@ -19,7 +19,8 @@ Page({
         groupOrder: [],
         errorToast: false,
         toastInfo: '',
-        list: {}
+        list: {},
+        end_at: {}
     },
 
      onShareAppMessage: function (res) {
@@ -40,7 +41,7 @@ Page({
     },
 
     goPinList () {
-        wx.navigateTo({
+        wx.switchTab({
             url: '/pages/pin/pin_list/pin_list'
         });
     },
@@ -80,8 +81,18 @@ Page({
                 this.setData({
                     groupOrder: groupOrder,
                     teamMembers: teamMembers,
-                    type: type
-                })
+                    type: type,
+                    end_time: data.data.groupActivity.end_at,
+                    end_at: this.calcLeftTime(new Date(data.data.groupActivity.end_at).getTime()).timeObj
+                });
+                setInterval(() => {
+                    let end_at = Object.assign(this.data.end_at);
+                    end_at = this.calcLeftTime(new Date(data.data.groupActivity.end_at).getTime()).timeObj;
+                    // let calcLeftTime = this.calcLeftTime(new Date(endTime).getTime());
+                    this.setData({
+                        end_at: end_at
+                    })
+                }, 1000);
         }).catch(e => {
             let result = data.data
             // this.setData({
@@ -89,6 +100,22 @@ Page({
             //     toastInfo: e
             // })
         });
+    },
+
+    calcLeftTime(time) {
+        var timeStr = parseFloat(time) - new Date().getTime();
+        var left = parseInt((timeStr % 864e5) / 1000);
+        var hours = parseInt(left / 3600);
+        var minutes = parseInt((left - hours * 3600) / 60);
+        var seconds = parseInt((left - hours * 3600 - minutes * 60));
+        return {
+            timeObj: {
+                hours: hours ,
+                minutes: minutes,
+                seconds: seconds
+            },
+            time: `${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`
+        };
     },
 
     goAttenPin () {
