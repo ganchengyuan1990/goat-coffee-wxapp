@@ -4,6 +4,7 @@ import { BigNumber } from '../../../utils/bignumber.min';
 function BN(...args) {
   return new BigNumber(...args)
 }
+const LIMIT_FEE = 36
 Component({
   /**
    * 组件的属性列表
@@ -112,7 +113,7 @@ Component({
         totalPrice = BN(totalPrice).plus(item.totalPrice).valueOf()
         count = BN(count).plus(item.count).valueOf()
       }, 0)
-      remain = totalPrice > 30 ? 0 : BN(30).minus(totalPrice).valueOf()
+      remain = totalPrice > LIMIT_FEE ? 0 : BN(LIMIT_FEE).minus(totalPrice).valueOf()
       if (remain > 0 && totalPrice > 0 && !this.data.isSelfTaking) {
         cartTotalPrice = BN(totalPrice).plus(this.data.fee || 0).valueOf()
       } else {

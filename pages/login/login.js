@@ -87,6 +87,15 @@ Page({
             this.setData({
                 token: data.data
             })
+            try {
+                let avatar = data.data.user.avatar
+                if (!avatar) {
+                    let imgUrl = wx.getStorageSync('personal_info').avatarUrl
+                    this.saveUserAvatar(imgUrl)
+                }
+            } catch(e) {
+                console.log(e);
+            }
             wx.setStorageSync('token', data.data);
             wx.switchTab({
                 url: '/pages/store/store'
@@ -128,7 +137,45 @@ Page({
             }
         });
     },
-
+    saveUserAvatar(avatar) {
+        if (!avatar) {
+            return
+        }
+        let avatarUrl = avatar
+        model('file/qiniu/fetch', {
+            sourceUrl: avatarUrl
+        }, 'POST').then(res => {
+            const {code, data} = res
+            if (code === 'suc') {
+                let { key, url } = data
+                if (key) {
+                    model('my/user/update-user', {
+                        avatar: key
+                    }, 'POST').then(res => {
+                        console.log(res);
+                        if (res.code === 'suc') {
+                            this.updateCurrentInfo(url)
+                        }
+                    }).catch(e => {
+                        console.log(e, '[exception]: my/user/update-user');
+                    })
+                }
+            }
+        })
+    },
+    updateCurrentInfo(avatar) {
+        if (!avatar) {
+            return
+        }
+        try {
+            let token = wx.getStorageSync('token')
+            let userInfo = token.user
+            token.user = Object.assign(userInfo, {avatar: avatar})
+            wx.setStorageSync('token', token)
+        } catch (e) {
+            console.log(e);
+        }
+    },
     /**
      * 页面的初始数据
      */
