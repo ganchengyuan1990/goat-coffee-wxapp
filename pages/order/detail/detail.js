@@ -39,7 +39,7 @@ Page({
   },
   formatData(data) {
     let detail = JSON.parse(data || '{}')
-    console.log(detail, 'data');
+    // console.log(detail, 'data');
     let dtype = detail.dtype
     if (dtype === 'order') {
       let list = detail.detailList || []

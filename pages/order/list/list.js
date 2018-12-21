@@ -70,7 +70,7 @@ Page({
    */
   onLoad(options) {
     let userInfo = wx.getStorageSync('token')
-    console.log(userInfo);
+    // console.log(userInfo);
     if (!userInfo.token) {
       wx.navigateTo({
         url: '/pages/login/login'
@@ -315,7 +315,7 @@ Page({
       })
       return
     }
-    console.log(item, products);
+    // console.log(item, products);
     products.forEach(i => {
       i.spec = i.skuName + i.props
       i.price = i.skuPrice
@@ -373,7 +373,7 @@ Page({
       // let str = Object.entries(obj).map(i => `${i[0]&i[1]}`).join('&')
       let str = Object.entries(obj).reduce((acc, arr) => acc +'&'+ arr.join('='), '')
       str = str.slice(1)
-      console.log(str);
+      // console.log(str);
       // return
       wx.navigateTo({
         url: `/pages/pay/normalPay/normalPay?${str}`

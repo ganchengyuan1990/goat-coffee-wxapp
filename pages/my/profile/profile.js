@@ -1,5 +1,7 @@
 const app = getApp()
-import model, { BASE_URL } from '../../../utils/model'
+import model, {
+  BASE_URL
+} from '../../../utils/model'
 Page({
 
   /**
@@ -23,7 +25,7 @@ Page({
     if (info.token) {
       console.log(userInfo, 'userinfo');
       console.log(userInfoWechat, 'wechat');
-      
+
       this.setData({
         userInfo: userInfo,
         userInfoWechat: userInfoWechat
@@ -80,14 +82,20 @@ Page({
     let self = this
     wx.chooseImage({
       count: 1,
-      sizeType: ['original', 'compressed'],
+      sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success(res) {
         // tempFilePath可以作为img标签的src属性显示图片
         const tempFiles = res.tempFiles[0]
+            wx.getImageInfo({
+              src: res.tempFilePaths[0],
+              success(res) {
+                console.log(res, 'img info')
+              }
+            })
         let path = tempFiles.path
         let size = tempFiles.size
-        if (size > 1024 * 1024 * 8) {
+        if (size > 1024 * 1024 * 10) {
           wx.showModal({
             title: '提示',
             content: '图片太大了',
@@ -105,49 +113,57 @@ Page({
             title: '上传中',
             mask: true
           })
-          let _token = wx.getStorageSync('token')
-          
-          wx.uploadFile({
-            url: `${BASE_URL}my/user/file-upload`,
-            filePath: path,
-            name: 'file',
-            header: {
-              // 'content-type': 'application/x-www-form-urlencoded',
-              // 'Accept': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest',
-              'Authorization': _token ? `${_token.user.id} ${_token.token}` : '',
-            },
-            formData: {
-              'user': 'avatar'
-            },
-            success(res) {
-              const data = res.data
-              wx.hideLoading()
-              let detail = JSON.parse(data || '{}')
-              if (detail.data) {
-                const { key, url} = detail.data
-                self.setData({
-                  img: url,
-                  imgKey: key
-                })
-              } else {
-                wx.showModal({
-                  title: '提示',
-                  content: '上传失败'
-                })
-              }
-            },
-            fail() {
-              wx.hideLoading()
-              wx.showModal({
-                title: '提示',
-                content: '上传失败'
-              })
-            }
-          })
+          self.uploadFile(path)
           // const imgData = wx.getFileSystemManager().readFileSync(path, "base64")
-
         }
+      }
+    })
+  },
+  uploadFile(path) {
+    let self = this
+    // console.log(path, 'path');
+    
+    let _token = wx.getStorageSync('token')
+    wx.uploadFile({
+      url: `${BASE_URL}my/user/file-upload`,
+      filePath: path,
+      name: 'file',
+      header: {
+        // 'content-type': 'application/x-www-form-urlencoded',
+        // 'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'Authorization': _token ? `${_token.user.id} ${_token.token}` : '',
+      },
+      formData: {
+        'user': 'avatar'
+      },
+      success(res) {
+        const data = res.data
+        wx.hideLoading()
+        // console.log(res, 'load data');
+        let detail = JSON.parse(data || '{}')
+        if (detail.code === 'suc') {
+          const { key, url } = detail.data
+          self.setData({
+            img: url,
+            imgKey: key
+          })
+        } else {
+          wx.showModal({
+            title: '提示',
+            showCancel: false,
+            content: '上传失败'
+          })
+        }
+      },
+      fail(e) {
+        console.log('[exception]: upload fail', e);
+        wx.hideLoading()
+        wx.showModal({
+          title: '提示',
+          showCancel: false,
+          content: '上传失败'
+        })
       }
     })
   },
@@ -160,7 +176,7 @@ Page({
       let userInfo = token.user
       token.user = Object.assign(userInfo, obj)
       wx.setStorageSync('token', token)
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   },
@@ -178,7 +194,7 @@ Page({
       obj.sex = data.gender
     }
     obj.id = this.data.userInfo.id
-    
+
     model('my/user/update-user', obj, 'POST').then(res => {
       wx.showToast({
         title: '修改成功',
@@ -188,7 +204,7 @@ Page({
           // 更新global data里面的信息
           // 更新localstorage 信息
           self.updateCurrentInfo(obj)
-          setTimeout(()=>{
+          setTimeout(() => {
             wx.navigateBack({
               delta: 1
             })

@@ -2,7 +2,10 @@
 const app = getApp();
 import model from '../../utils/model.js'
 import util from '../../utils/util.js'
-import { BigNumber } from '../../utils/bignumber.min';
+import {
+	BigNumber
+} from '../../utils/bignumber.min';
+
 function BN(...args) {
 	return new BigNumber(...args)
 }
@@ -114,7 +117,9 @@ Page({
 	checkAuth() {
 		wx.getSetting({
 			success(res) {
-				const { authSetting } = res
+				const {
+					authSetting
+				} = res
 				// console.log(authSetting, 'setting');
 				if (!authSetting['scope.userLocation']) {
 					wx.showModal({
@@ -135,7 +140,10 @@ Page({
 	 * 选择地址后重加载
 	 */
 	loadAddress(data) {
-		const { type, detail } = data
+		const {
+			type,
+			detail
+		} = data
 		let info = detail.detail
 		if (type === 'deliver') {
 			this.setData({
@@ -163,7 +171,10 @@ Page({
 		wx.getLocation({
 			type: 'wgs84',
 			success(res) {
-				const { latitude, longitude } = res
+				const {
+					latitude,
+					longitude
+				} = res
 				let geo = {
 					lng: longitude,
 					lat: latitude
@@ -195,7 +206,9 @@ Page({
 			// lat: 31.239629,
 			page: 1
 		}).then(res => {
-			const {data} = res
+			const {
+				data
+			} = res
 			if (data && data.length > 0) {
 				// if (data.length > 1) {
 				// 	wx.showModal({
@@ -211,8 +224,8 @@ Page({
 				// 		}
 				// 	})
 				// } else {
-					let storeInfo = data[0]
-					this.formatStoreInfo(storeInfo)
+				let storeInfo = data[0]
+				this.formatStoreInfo(storeInfo)
 				// }
 			}
 		}).catch(e => {
@@ -234,15 +247,25 @@ Page({
 			data: JSON.stringify(storeInfo)
 		})
 		let distance = storeInfo.distance || 0
+		let formatDistance = ''
 		try {
-			distance = distance > 1 ? `${parseFloat(distance).toFixed(1)}km` : `${Math.round(distance * 1000)}m`
-		} catch(e) {
+			formatDistance = distance > 1 ? `${parseFloat(distance).toFixed(1)}km` : `${Math.round(distance * 1000)}m`
+		} catch (e) {
 			console.log(e);
 		}
-		storeInfo.distance = distance
+		storeInfo.distance = formatDistance
 		this.setData({
 			storeInfo: storeInfo
 		})
+		if (parseFloat(storeInfo.distance) > 3) {
+			wx.showModal({
+				title: '提示',
+				showCancel: false,
+				content: `您与店铺的距离超过3公里，请确认店铺是${storeInfo.storeName}`,
+				confirmText: '我知道了'
+			})
+		}
+
 		// console.log(storeInfo, 'storeinfo')
 		this.fetchProduct(storeInfo.id)
 	},
@@ -251,10 +274,12 @@ Page({
 	 */
 	fetchProduct(storeId) {
 		model('home/product/all', {
-			storeId: storeId 
+			storeId: storeId
 		}).then(res => {
-			console.log(res, 'detail')
-			const {data} = res
+			// console.log(res, 'detail')
+			const {
+				data
+			} = res
 
 			const list = data.classify_list
 			this.setData({
@@ -283,7 +308,7 @@ Page({
 		let obj = {}
 		// 使用 productid-skuid 对应价格map表
 		// console.log(list, 'list');
-		
+
 		list.forEach(i => {
 			let pList = i.product_list
 			pList.forEach(j => {
@@ -318,7 +343,7 @@ Page({
 			if (keys) {
 				key = keys[0]
 			}
-			
+
 			if (key && priceMap[key]) {
 				// TODOS 此处可添加重新计算价格逻辑
 				// 同时需要计算总价格
@@ -327,7 +352,7 @@ Page({
 				return item
 			}
 		})
-		
+
 		if (remainList.length !== list.length) {
 			wx.showModal({
 				title: '提示',
@@ -355,7 +380,7 @@ Page({
 				heigthArr: heigthArr
 			});
 		});
-		
+
 	},
 	selectNav(e) {
 		// console.log(e.currentTarget.dataset.index, e.currentTarget.dataset.navid)
@@ -436,40 +461,46 @@ Page({
 		}
 		this.mergeCart(cart)
 	},
-    toggleCart() {
-    	let isShow = this.data.isCartPanelShow
-    	let self = this
+	toggleCart() {
+		let isShow = this.data.isCartPanelShow
+		let self = this
 
-    	if (!isShow) {
-    		this.toggleTabBar(false, () => {
-    			self.setData({
-    				isCartPanelShow: !isShow
-    			})
-    		})
-    	} else {
-    		this.toggleTabBar(true)
-    		self.setData({
-    			isCartPanelShow: !isShow
-    		})
-    	}
-    },
+		if (!isShow) {
+			this.toggleTabBar(false, () => {
+				self.setData({
+					isCartPanelShow: !isShow
+				})
+			})
+		} else {
+			this.toggleTabBar(true)
+			self.setData({
+				isCartPanelShow: !isShow
+			})
+		}
+	},
 	toggleTabBar(isShow, callback) {
 		if (!isShow) {
 			wx.hideTabBar({
 				animation: true,
 				success() {
-					callback && callback()
+					setTimeout(() => {
+						callback && callback()
+					}, 200)
 				},
 				fail() {}
 			})
 		} else {
-			wx.showTabBar({
-				animation: true,
-				success() {
-					callback && callback()
-				},
-				fail() {}
-			})
+			callback && callback()
+			setTimeout(() => {
+				wx.showTabBar({
+					animation: true,
+					success() {
+
+					},
+					fail() {}
+				})
+			}, 200)
+
 		}
 	},
 	checkout(e) {
@@ -498,12 +529,12 @@ Page({
 				let idObj = i.val_list.find(j => {
 					return j.id === i.default_val_id
 				})
-				
+
 				if (idObj) {
 					propIds.push(idObj.prop_id)
 				}
 			})
-			return Object.assign({},{
+			return Object.assign({}, {
 				productName: item.productName,
 				productId: item.id,
 				skuId: obj.id,
@@ -546,7 +577,7 @@ Page({
 	 */
 	mergeCart(list) {
 		if (!Array.isArray(list)) {
-			return 
+			return
 		}
 		// 验证skuid， propids, productId一致性
 		// count total price

@@ -10,7 +10,7 @@
   </wxs>
   <view class="mask {{isCartPanelShow ? 'active' : ''}}"></view>
   <view class="cart-wrap">
-      <view class="cart-entry" bindtap="toggleCart">
+      <view class="cart-entry" bindtap="toggleCart" >
           <view class="tt">去结算</view>
           <view class="price">￥{{cartTotalPrice}}</view>
       </view>
