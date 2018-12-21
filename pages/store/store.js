@@ -189,10 +189,10 @@ Page({
 	 */
 	fetchStore(geo) {
 		model('home/lbs/get-store-list-by-location', {
-			// lng: geo.lng,
-			// lat: geo.lat,
-			lng: 121.419114,
-			lat: 31.239629,
+			lng: geo.lng,
+			lat: geo.lat,
+			// lng: 121.419114,
+			// lat: 31.239629,
 			page: 1
 		}).then(res => {
 			const {data} = res
@@ -305,7 +305,6 @@ Page({
 	 *  
 	 */
 	getStorageCart() {
-		// TODOS 考虑店不同，需要重新计算价格， 以及去除缺货产品
 		let data = wx.getStorageSync('CART_LIST')
 		let list = JSON.parse(data || '[]')
 		let priceMap = this.data.priceMap
@@ -474,6 +473,7 @@ Page({
 		}
 	},
 	checkout(e) {
+		let self = this
 		let token = wx.getStorageSync('token').token
 		if (!token) {
 			wx.navigateTo({
@@ -526,7 +526,13 @@ Page({
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
 		this.toggleCart()
 		wx.navigateTo({
-			url: url
+			url: url,
+			success() {
+				self.setData({
+					cartList: [],
+					isLoadStorageCart: true
+				})
+			}
 		})
 	},
 	selectAddress(e) {

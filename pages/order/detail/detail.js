@@ -42,13 +42,9 @@ Page({
     console.log(detail, 'data');
     let dtype = detail.dtype
     if (dtype === 'order') {
-      let list = detail.orderDetail_list || []
+      let list = detail.detailList || []
       list.forEach(item => {
-        let props = JSON.parse(item.props || '[]')
-        let propArr = props.map(i => {
-          return i.val.val
-        }, '')
-        item.spec = propArr.join('/')
+        item.spec = item.skuName + '/' + item.props
       })
       this.setData({
         dtype: 'order',
