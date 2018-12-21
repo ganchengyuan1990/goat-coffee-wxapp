@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 12,
+			"current": 20,
 			"list": [
 				{
 					"id": -1,
@@ -66,10 +66,10 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 5,
 					"name": "pay_success",
 					"pathName": "pages/pay/pay_success/pay_success",
-					"query": ""
+					"query": "price=0"
 				},
 				{
 					"id": -1,
@@ -111,7 +111,7 @@
 					"id": 12,
 					"name": "拼图pay_success",
 					"pathName": "pages/pin/pay_success/pay_success",
-					"query": "activityId=66&list={}"
+					"query": "type=3&price=40.00&originalPrice=54.00&number=2&groupName=拼团活动&activityId=70&list={}"
 				},
 				{
 					"id": -1,
@@ -154,6 +154,12 @@
 					"name": "remark",
 					"pathName": "pages/pay/remark/remark",
 					"query": "data=%7B%22storeId%22%3A37%2C%22userAddressId%22%3A%22%22%2C%22deliverFee%22%3A23%2C%22payAmount%22%3A4%2C%22orderType%22%3A2%2C%22product%22%3A%5B%7B%22productName%22%3A%22%E5%92%96%E5%95%A124%22%2C%22productId%22%3A10%2C%22skuId%22%3A5%2C%22skuName%22%3A%22%E4%B8%AD%E6%9D%AF%22%2C%22number%22%3A1%2C%22price%22%3A4%7D%5D%7D"
+				},
+				{
+					"id": -1,
+					"name": "index",
+					"pathName": "pages/index/index",
+					"query": "price=0"
 				}
 			]
 		}

@@ -173,7 +173,7 @@ Page({
         let result = parseFloat(data.data.discountPrice).toFixed(2);
         let _a = new BigNumber(this.data.payAmount);
         let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
-        let actualPrice = _a.plus(_b).minus(result);
+        let actualPrice = _a.plus(_b).minus(parseFloat(result));
         let couponArr = data.data.solutionList;
         let couponUserRelation = ''
         
@@ -191,7 +191,7 @@ Page({
         }
         this.setData({
           couponMoney: result,
-          actualPrice: parseFloat(actualPrice),
+          actualPrice: parseFloat(actualPrice).toFixed(2),
           discountType: data.data.type,
           couponUserRelation: couponUserRelation
         });
@@ -360,7 +360,7 @@ Page({
     }).then(data => {
       let result = parseFloat(data.data.discountPrice).toFixed(2);
       this.setData({
-        actualPrice: data.data.resultPrice + this.data.deliverFee,
+        actualPrice: parseFloat(data.data.resultPrice + parseFloat(this.data.deliverFee)).toFixed(2),
         couponMoney: result,
         couponUserRelation: this.data.chosenInfo.relationId + ',',
         discountType: data.data.type,

@@ -496,7 +496,8 @@ Page({
 			let propIds = []
 			propList.forEach(i => {
 				let idObj = i.val_list.find(j => {
-					return j.id === i.default_val_id
+					debugger
+					return parseInt(j.id) === parseInt(i.default_val_id)
 				})
 				
 				if (idObj) {

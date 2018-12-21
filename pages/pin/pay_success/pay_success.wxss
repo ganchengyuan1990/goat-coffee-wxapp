@@ -296,4 +296,5 @@ page {
   color: #fff;
   text-align: center;
   font-size: 28rpx;
+  border-radius:0;
 }

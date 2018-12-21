@@ -2,7 +2,7 @@
   <view class="success-container">
     <view class="success-form">
       <view class="coupon-sn">
-        <image src="../../../images/chenggong_2@2x.png" />
+        <image src="http://pjmdp6xaa.bkt.clouddn.com/upload/1/%E7%84%A6%E7%B3%96%E7%8E%9B%E5%90%89%E5%A4%9A.png" />
       </view>
       <view class="coupon-sn">
         <view class="title">您有{{list[0].number}}份咖啡券待领取</view>
@@ -55,10 +55,12 @@
 
   <view class="rule_wrapper">
       <view class="title">拼团流程</view>
+      <view class="rule">课课家拼团是一种全新的购物体验方式，顾客对每一门课程的选择，能够影响产品价格。凝聚更多人的力量，顾客通过发起和朋友、同事、家人、邻居等一起拼团，以更低的价格，拼团买到更优质商品。课课家拼团中，不是特价的课程都有直接购买价和拼团价。当用户通过拼团价购买时，需要在成功支付开团后再邀请朋友参团，参团人数达到组团规定时，订单才会生效。若人数不足则将会在24小时后收到退款。</view>
+      <!-- <view class="rule">1.此处展示参与流程</view>
       <view class="rule">1.此处展示参与流程</view>
-      <view class="rule">1.此处展示参与流程</view>
-      <view class="rule">1.此处展示参与流程</view>
-      <view class="rule">1.此处展示参与流程</view>
+      <view class="rule">1.此处展示参与流程</view> -->
+      
+
 
   </view>
 

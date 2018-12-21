@@ -2,7 +2,7 @@
   <view class="group-wrapper" wx:for="{{pinList}}" wx:key="index" data-id="{{item.id}}" bindtap="goPinDetail">
     <view class="group">
       <view class="img_wrapper">
-        <image src="{{item.groupImg}}" />
+        <image src="{{item.groupIcon}}" />
       </view>
       <view class="info">
         <view class="item">
