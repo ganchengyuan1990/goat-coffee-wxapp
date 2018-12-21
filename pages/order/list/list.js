@@ -397,6 +397,8 @@ Page({
    */
   showDetail(e) {
     let item = e.currentTarget.dataset.item
+    let list = e.currentTarget.dataset.list
+    item.detailList = list
     let dtype = e.currentTarget.dataset.dtype
     // console.log(item, 'show detail item');
     

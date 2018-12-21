@@ -55,7 +55,7 @@
             </view>
         </view> -->
         <block wx:if="{{currentPanelList === 1}}">
-            <view class="panel" wx:for="{{orderList}}" wx:key="{{item.order.orderNo}}" bind:tap="showDetail" data-item="{{item.order}}" data-dtype="order">
+            <view class="panel" wx:for="{{orderList}}" wx:key="{{item.order.orderNo}}" bind:tap="showDetail" data-item="{{item.order}}" data-list="{{item.order_detail}}" data-dtype="order">
                 <view class="panel-hd">
                     <view>{{item.order.consumeType}}订单：{{item.order.orderNo}}</view>
                     <view class="{{item.order.orderState === '00' ? 'active':''}}">{{filter.getOrderState(item.order.orderState)}}</view>

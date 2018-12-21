@@ -11,7 +11,7 @@
                     <text class="name">外卖单号{{detail.orderNo}}</text>
                     <text>{{detail.CreateTime}}</text>
                 </view>
-                <view class="order-item" wx:for="{{detail.orderDetail_list}}" wx:key="{{index}}">
+                <view class="order-item" wx:for="{{detail.detailList}}" wx:key="{{index}}">
                     <view class="l">
                         <text class="name">{{item.productName}}</text>
                         <text class="format">{{item.spec}}</text>
