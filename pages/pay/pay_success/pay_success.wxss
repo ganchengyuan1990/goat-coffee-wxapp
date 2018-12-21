@@ -211,3 +211,16 @@ page{
   width: 24rpx;
   height: 24rpx;
 }
+
+.button {
+  height: 92rpx;
+  width: 300rpx;
+  margin: 0 auto;
+  line-height: 92rpx;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  font-size: 34rpx;
+  border-radius: 0;
+  border-radius: 10rpx;
+}

@@ -35,11 +35,11 @@ Page({
         }).then(data => {
             if (data.data) {
                 let result = data.data;
-                result.forEach(item => {
-                    if (item.groupImg) {
-                        item.groupImg = item.groupImg.split(',')[0];
-                    }
-                });
+                // result.forEach(item => {
+                //     if (item.groupImg) {
+                //         item.groupImg = item.groupImg.split(',')[0];
+                //     }
+                // });
                 this.setData({
                     pinList: data.data
                 });

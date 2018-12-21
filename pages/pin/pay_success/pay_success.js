@@ -30,7 +30,7 @@ Page({
          }
         return {
             title: `快来参加拼团啦！`,
-            path: `pages/pin/pay_success/pay_success?price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&activityId=${this.data.activityId}`,
+            path: `pages/pin/pay_success/pay_success?type=3&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&activityId=${this.data.activityId}&list=${JSON.stringify(this.data.list)}`,
             success: function (res) {
                 // 转发成功
             },
@@ -129,14 +129,14 @@ Page({
             openId: wx.getStorageSync('openid'),
             payAmount: this.data.price,
             remark: '',
-            list: []
+            list: this.data.list
         };
         model(`group/action/join`, param, 'POST').then(data => {
             let order = data.data;
             let _package = order.package;
             let prepayId = _package.split('=')[1]
             wx.navigateTo({
-                url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${this.data.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}`
+                url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${this.data.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${JSON.stringify(this.data.list)}`
             })
         }).catch(e => {
             this.setData({

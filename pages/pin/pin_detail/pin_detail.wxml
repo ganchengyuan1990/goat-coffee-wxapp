@@ -50,7 +50,8 @@
 
         <view class='intro'>
             <view class="subtitle">商品详情：</view>
-            <view class='intro_detail'><image src="{{detailInfo.groupBriefImg}}"/></view>
+            <view class='intro_detail' wx:for="{{detailInfo.imgs}}" wx:key="index"><image src="{{item}}"/></view>
+            <view style="font-size: 28rpx; color: #a9a9a9;">{{detailInfo.groupBrief}}</view>
         </view>
 
     </view>

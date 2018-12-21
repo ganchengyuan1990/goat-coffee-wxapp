@@ -32,5 +32,11 @@ Page({
         wx.navigateTo({
             url: '/pages/pay/share_coupon/share_coupon'
         });
+    },
+
+    goIndex () {
+        wx.switchTab({
+            url: '/pages/store/store'
+        });
     }
 })
