@@ -127,7 +127,7 @@ page {
   text-align: center;
   max-height: 80rpx;
   overflow: hidden;
-  line-height: 1;
+  line-height: 1.2;
   color: #787878;
 }
 .list-nav .list-nav-item.active .tt {
