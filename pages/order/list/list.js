@@ -93,6 +93,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    let userInfo = wx.getStorageSync('token')
+    if (!userInfo.token) {return}
     // this.fetchOrderList(1)
     this.refreshList()
   },

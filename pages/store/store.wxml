@@ -115,5 +115,11 @@
       bind:togglemenu="toggleSpecific" 
       bind:save="addCart"></menu-wrap>
   </view>
-
+  <view class="act-wrap" wx:if="{{isActWrapShow}}">
+    <view class="mask {{isActWrapShow ? 'active':''}}"></view>
+    <view class="cnt">
+      <view class="btn-close" bind:tap="hideActWrap"></view>
+      <image src="{{actImage}}" mode="widthFix" bind:tap="goPageCoupon"></image>
+    </view>
+  </view>
 </view>

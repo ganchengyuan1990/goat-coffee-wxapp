@@ -42,19 +42,30 @@ Page({
 		userAddressInfo: {},
 		// 是否自提
 		isSelfTaking: true,
-		isLoadStorageCart: true
+		isLoadStorageCart: true,
+		actImage: '',
+		isActWrapShow: false
 	},
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		let isLogin = this.checkLogin()
+		let info = wx.getStorageSync('token') || {}
+		let isLogin = info.token
 		if (!isLogin) {
 			wx.redirectTo({
 				url: '/pages/login/login'
 			})
 			return
+		}
+		let isNew = info.ifNew
+		let configPic = info.config.newUserPic
+		if (isNew && configPic) {
+			this.setData({
+				actImage: configPic,
+				isActWrapShow: true
+			})
 		}
 	},
 	/**
@@ -84,6 +95,10 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
+		let isLogin = this.checkLogin()
+		if (!isLogin) {
+			return
+		}
 		// console.log(app.globalData, 'globalData')
 		let fromTransport = app.globalData.fromTransport
 		if (fromTransport) {
@@ -634,5 +649,18 @@ Page({
 				this.toggleCart()
 			}
 		}
+	},
+	hideActWrap() {
+		this.setData({
+			isActWrapShow: false
+		})
+	},
+	goPageCoupon() {
+		this.setData({
+			isActWrapShow: false
+		})
+		wx.navigateTo({
+			url: `/pages/my/coupon/coupon?type=coupon`
+		})
 	}
 });
