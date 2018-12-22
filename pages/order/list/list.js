@@ -284,20 +284,6 @@ Page({
       filterList: list
     })
   },
-  // addCart(e) {
-  //   let detail = e.currentTarget.dataset.item
-  //   console.log(detail, 'detail');
-  //   let orders = detail.orderDetail_list
-  //   let arr = []
-  //   orders.forEach(item => {
-  //     let obj = {}
-  //     let props = JSON.parse(item.props || '[]')
-  //     let key = `${item.productId}-${item.skuId}-${item.productPropIds.replace(/,/g, '-')}`
-  //     let val = Object.assign({}, item, {
-  //       // spec: 
-  //     })
-  //   })
-  // },
 	goCheckout(e) {
 	  let token = wx.getStorageSync('token').token
 	  if (!token) {

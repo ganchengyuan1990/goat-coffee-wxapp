@@ -54,7 +54,7 @@
             </view>
             <view class="special-item">
                 <view class="l">
-                    <text class="name">共{{filter.getSum(detail.orderDetail_list)}}件商品</text>
+                    <text class="name">共{{filter.getSum(detail.detailList)}}件商品</text>
                 </view>
                 <view class="r">实付￥{{detail.payAmount}}</view>
             </view>
