@@ -38,9 +38,9 @@ Page({
     }
 
     this.setData({
-      name: userInfo.userName ? userInfo.userName : userInfoWechat.nickName,
-      gender: userInfo.sex ? userInfo.sex : userInfoWechat.gender,
-      img: userInfo.avatar ? userInfo.avatar : userInfoWechat.avatarUrl
+      name: userInfo.userName || userInfoWechat.nickName,
+      gender: userInfo.sex || userInfoWechat.gender,
+      img: userInfo.avatar || userInfoWechat.avatarUrl
     })
   },
 
@@ -73,7 +73,7 @@ Page({
     })
   },
   goEdit() {
-    let name = this.data.userInfo.userName
+    let name = this.data.userInfo.userName || this.data.userInfoWechat.nickName
     wx.navigateTo({
       url: `/pages/my/profile/edit?name=${name}`
     })

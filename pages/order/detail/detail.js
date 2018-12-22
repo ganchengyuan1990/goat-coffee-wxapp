@@ -44,7 +44,7 @@ Page({
     if (dtype === 'order') {
       let list = detail.detailList || []
       list.forEach(item => {
-        item.spec = item.skuName + '/' + item.props
+        item.spec = item.skuName + (item.props && `/${item.props}`)
       })
       this.setData({
         dtype: 'order',
