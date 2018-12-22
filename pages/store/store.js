@@ -577,7 +577,11 @@ Page({
 			product: products
 		}
 		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
-		this.toggleCart()
+		this.setData({
+			isCartPanelShow: false
+		})
+		wx.showTabBar()
+		// this.toggleCart()
 		wx.navigateTo({
 			url: url,
 			success() {
