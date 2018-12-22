@@ -60,7 +60,13 @@ Page({
 			return
 		}
 		let isNew = info.ifNew
-		let configPic = info.config.newUserPic
+		let configPic = ''
+
+		try {
+			configPic = info.config.newUserPic
+		} catch(e) {
+			console.log(e);
+		}
 		if (isNew && configPic) {
 			this.setData({
 				actImage: configPic,
