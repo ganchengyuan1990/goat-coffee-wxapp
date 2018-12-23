@@ -110,7 +110,8 @@ Page({
 		if (fromTransport) {
 			this.loadAddress(fromTransport)
 		} else {
-			this.fetchLoaction()
+			this.fetchLoaction();
+			this.toggleTabBar(true);
 		}
 	},
 
@@ -548,7 +549,6 @@ Page({
 			let propIds = []
 			propList.forEach(i => {
 				let idObj = i.val_list.find(j => {
-					debugger
 					return parseInt(j.id) === parseInt(i.default_val_id)
 				})
 

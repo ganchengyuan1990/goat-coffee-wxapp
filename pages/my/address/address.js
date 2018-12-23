@@ -102,6 +102,22 @@ Page({
                 }, 2000);
                 this.setPrevPage();
             }
+        }).catch(e => {
+            wx.showModal({
+                title: '提示', //提示的标题,
+                showCancel: false, //是否显示取消按钮,
+                content: e, //提示的内容,
+                cancelColor: '#000000', //取消按钮的文字颜色,
+                confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                success: res => {
+                    if (res.confirm) {
+                        console.log('用户点击确定')
+                    } else if (res.cancel) {
+                        console.log('用户点击取消')
+                    }
+                }
+            });
         })
     }
   },
@@ -127,13 +143,29 @@ Page({
                         toastShown: true,
                         toastInfo: '更新成功'
                     })
+                    setTimeout(() => {
+                        wx.navigateBack({
+                            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                        });
+                    }, 2000);
+                    this.setPrevPage();
                 }
-                setTimeout(() => {
-                    wx.navigateBack({
-                      delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-                    });
-                }, 2000);
-                this.setPrevPage();
+            }).catch(e => {
+                wx.showModal({
+                    title: '提示', //提示的标题,
+                    showCancel: false, //是否显示取消按钮,
+                    content: e, //提示的内容,
+                    cancelColor: '#000000', //取消按钮的文字颜色,
+                    confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                    confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                    success: res => {
+                        if (res.confirm) {
+                            console.log('用户点击确定')
+                        } else if (res.cancel) {
+                            console.log('用户点击取消')
+                        }
+                    }
+                });
             })
         }
       } else {

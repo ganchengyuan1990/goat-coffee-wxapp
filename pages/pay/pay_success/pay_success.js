@@ -38,5 +38,8 @@ Page({
         wx.switchTab({
             url: '/pages/store/store'
         });
+        wx.showTabBar({
+            animation: true
+        })
     }
 })
