@@ -93,3 +93,7 @@ button {
     color: #fff;
     font-size: 32rpx;
 }
+
+.black {
+    color: #333;
+}

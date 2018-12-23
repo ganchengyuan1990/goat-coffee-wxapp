@@ -36,7 +36,12 @@ Page({
         this.setData({
             phoneNum: e.detail.value,
             actived: this.data.phoneCode.length > 0 && e.detail.value.length > 0
-        })
+        });
+        if (this.data.phoneNum.length === 11) {
+            this.setData({
+                canGetVerify: true
+            })
+        }
     },
 
     dealVerify (e) {
@@ -49,7 +54,7 @@ Page({
     getMessage () {
 
         
-        if (!this.data.showSeconds) {
+        if (!this.data.showSeconds && this.data.phoneNum && this.data.phoneNum.length === 11) {
             this.setData({
                 showSeconds: true
             });
@@ -61,6 +66,9 @@ Page({
                         leftSeconds: timeRemain
                     })
                 } else {
+                    this.setData({
+                        showSeconds: false
+                    });
                     clearInterval(interval);
                 }
             }, 1000);
@@ -73,7 +81,6 @@ Page({
                 });
             })
         }
-        
     },
 
     register () {
@@ -181,7 +188,8 @@ Page({
      */
     data: {
         title: "hbchjejh",
-        phoneNum: 17602183915,
+        canGetVerify: false,
+        phoneNum: '',
         placeOrderNotice: '23232323',
         placeOrderNoticeShown: true,
         leftButtonText: '去登录',
