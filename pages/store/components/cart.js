@@ -4,7 +4,7 @@ import { BigNumber } from '../../../utils/bignumber.min';
 function BN(...args) {
   return new BigNumber(...args)
 }
-const LIMIT_FEE = 36
+// const LIMIT_FEE = 36
 Component({
   /**
    * 组件的属性列表
@@ -22,6 +22,10 @@ Component({
     fee: {
       type: String,
       value: ''
+    },
+    rules: {
+      type: Array,
+      value: []
     },
     isCartPanelShow: {
       type: Boolean,
@@ -44,7 +48,9 @@ Component({
     totalPrice: 0,
     cartTotalPrice: 0,
     count: 1,
-    remain: 0
+    remain: 0,
+    needDeliveryFee: true,
+    deliveryMoneyAmount: 36
   },
   attached() {
 
@@ -95,25 +101,72 @@ Component({
       this.saveCart([])
     },
     saveCart(info) {
-      
       this.triggerEvent('save', {
         cartList: info
       })
+    },
+    checkDeliverFee(totalPrice=0, idList = [], rules=[]) {
+      let isNeedFee = true
+      let moneyAmount = this.data.deliveryMoneyAmount
+      for (let i = 0; i < rules.length; i++) {
+        const rule = rules[i];
+        if (rule.money_amount) {
+          moneyAmount = rule.money_amount
+          if (totalPrice < BN(rule.money_amount).valueOf()) {
+            continue
+          }
+        }
+        if (rule.cup_amount) {
+          let count = 0
+          let cList = rule.classifyIds
+          idList.forEach(i => {
+            if (cList.includes(i.cid)) {
+              count += i.count
+            }
+          })
+          console.log(idList, 'id list', count);
+          if (count < rule.cup_amount) {
+            continue
+          }
+        }
+        isNeedFee = false
+      }
+      console.log(isNeedFee, 'isNeedFee');
+      return {
+        isNeedFee,
+        moneyAmount
+      } 
     },
     setTotalResult() {
       let val = this.data.info
       if (!val) {
         return
       }
+
+      console.log(val, 'cart');
+      
       let count = 0
       let totalPrice = 0
       let cartTotalPrice = 0
       let remain = 0
+      let classifyIds = []
       val.forEach((item) => {
         totalPrice = BN(totalPrice).plus(item.totalPrice).valueOf()
         count = BN(count).plus(item.count).valueOf()
+        classifyIds.push({
+          cid: item.classifyId+'',
+          count: item.count
+        })
       }, 0)
-      remain = totalPrice > LIMIT_FEE ? 0 : BN(LIMIT_FEE).minus(totalPrice).valueOf()
+      let feeObj = this.checkDeliverFee(totalPrice, classifyIds, this.data.rules)
+      
+      if (feeObj.isNeedFee) {
+        this.setData({
+          deliveryMoneyAmount: parseFloat(feeObj.moneyAmount)
+        })
+        remain = BN(feeObj.moneyAmount).minus(totalPrice).valueOf()
+      }
+      // remain = totalPrice > LIMIT_FEE ? 0 : BN(LIMIT_FEE).minus(totalPrice).valueOf()
       if (remain > 0 && totalPrice > 0 && !this.data.isSelfTaking) {
         cartTotalPrice = BN(totalPrice).plus(this.data.fee || 0).valueOf()
       } else {

@@ -17,15 +17,25 @@ page {
 
 .img-wrap {
   width: 100%;
+  height: 290rpx;
+}
+.img-wrap swiper {
   height: 240rpx;
 }
-
 .img-caption {
   display: block;
   width: 100%;
   height: 240rpx;
 }
-
+.info-wrap {
+  height: 50rpx;
+  padding: 0 10rpx;
+  background: #fef9d9;
+  font-size: 24rpx;
+  font-weight: normal;
+  line-height: 50rpx;
+  color: #999;
+}
 .store-addr {
   flex: none;
   max-width: 60%;
