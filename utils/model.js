@@ -4,11 +4,11 @@
  * 开发： dev
  */
 const CONFIG = {
-    env: 'dev'
+    env: 'prod'
 }
 export const BASE_URL = (() => {
     let url = {
-        prod: '',
+        prod: 'https://mofafang.cn/api/v1/server/',
         test: '',
         dev: `https://heibanbao.wang/api/v1/server/`
     }
