@@ -45,6 +45,7 @@
         </swiper-item>
       </block>
     </swiper>
+    <view class="info-wrap">全场任意饮品购买2杯或36元免配送费</view>
   </view>
   <view class="list-wrap" style="height:{{listHeight}}px">
     <view class="list-nav">
@@ -105,6 +106,7 @@
       isCartPanelShow="{{isCartPanelShow}}" 
       info="{{cartList}}" 
       fee="{{storeInfo.deliverFee}}" 
+      rules="{{storeInfo.deliverFees}}"
       isSelfTaking="{{isSelfTaking}}"
       bind:checkout="checkout" 
       bind:togglecart="toggleCart"

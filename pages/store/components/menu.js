@@ -72,7 +72,7 @@ Component({
     save() {
       let info = this.data.info
       let spec = this.data.customed
-      console.log(spec, 'spec')
+      // console.log(spec, 'spec')
       this.triggerEvent('save', Object.assign({}, info, {
         count: this.data.count,
         totalPrice: this.data.totalPrice,
@@ -153,7 +153,7 @@ Component({
     setPrice() {
       let count = this.data.count
       let price = Number(this.data.price)
-      console.log(BN('0.98').valueOf());
+      // console.log(BN('0.98').valueOf());
       
       if (!isNaN(price)) {
         this.setData({
