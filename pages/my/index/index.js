@@ -55,9 +55,9 @@ Page({
       return
     }
     this.setData({
-      name: userInfo.userName ? userInfo.userName : userInfoWechat.nickName,
-      gender: userInfo.sex ? userInfo.sex : userInfoWechat.gender,
-      img: userInfo.avatar ? userInfo.avatar : userInfoWechat.avatarUrl
+      name: userInfo.userName || userInfoWechat.nickName || '',
+      gender: userInfo.sex || userInfoWechat.gender || '',
+      img: userInfo.avatar || userInfoWechat.avatarUrl || ''
     })
   },
   goProfile() {

@@ -38,9 +38,9 @@ Page({
     }
 
     this.setData({
-      name: userInfo.userName || userInfoWechat.nickName,
-      gender: userInfo.sex || userInfoWechat.gender,
-      img: userInfo.avatar || userInfoWechat.avatarUrl
+      name: userInfo.userName || userInfoWechat.nickName || '',
+      gender: userInfo.sex || userInfoWechat.gender || '',
+      img: userInfo.avatar || userInfoWechat.avatarUrl || ''
     })
   },
 
