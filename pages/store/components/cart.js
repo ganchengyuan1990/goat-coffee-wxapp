@@ -72,7 +72,6 @@ Component({
       let count = info[idx].count
       let price = info[idx].price
       count++
-      console.log(idx, count, 'count')
       info[idx].count = count
       info[idx].totalPrice = BN(price).multipliedBy(count).valueOf()
       // this.setData({
@@ -124,14 +123,12 @@ Component({
               count += i.count
             }
           })
-          console.log(idList, 'id list', count);
           if (count < rule.cup_amount) {
             continue
           }
         }
         isNeedFee = false
       }
-      console.log(isNeedFee, 'isNeedFee');
       return {
         isNeedFee,
         moneyAmount
@@ -142,9 +139,6 @@ Component({
       if (!val) {
         return
       }
-
-      console.log(val, 'cart');
-      
       let count = 0
       let totalPrice = 0
       let cartTotalPrice = 0
