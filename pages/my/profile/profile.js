@@ -21,7 +21,8 @@ Page({
   onLoad: function (options) {
     let info = wx.getStorageSync('token')
     let userInfo = info.user
-    let userInfoWechat = app.globalData.userInfo
+    // let userInfoWechat = app.globalData.userInfo
+    let userInfoWechat = wx.getStorageSync('personal_info') || {}
     if (info.token) {
       console.log(userInfo, 'userinfo');
       console.log(userInfoWechat, 'wechat');
@@ -41,6 +42,7 @@ Page({
       name: userInfo.userName || userInfoWechat.nickName || '',
       gender: userInfo.sex || userInfoWechat.gender || '',
       img: userInfo.avatar || userInfoWechat.avatarUrl || ''
+
     })
   },
 
@@ -73,7 +75,7 @@ Page({
     })
   },
   goEdit() {
-    let name = this.data.userInfo.userName || this.data.userInfoWechat.nickName
+    let name = this.data.userInfo.userName || this.data.userInfoWechat.nickName || ''
     wx.navigateTo({
       url: `/pages/my/profile/edit?name=${name}`
     })
