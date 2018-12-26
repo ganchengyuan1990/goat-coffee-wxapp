@@ -25,7 +25,7 @@
                 <text>性别</text>
             </view>
             <view class="cnt">
-                <view class="desc">{{gender == 1 ? '男': '女'}}</view>
+                <view class="desc">{{gender == 1 ? '男': gender == 2 ? '女': '保密'}}</view>
                 <view class="icon-arrow"></view>
             </view>
         </view>

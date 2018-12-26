@@ -45,7 +45,7 @@
         </swiper-item>
       </block>
     </swiper>
-    <view class="info-wrap">全场任意饮品购买2杯或36元免配送费</view>
+    <view class="info-wrap">公告：全场任意饮品购买2杯或消费金额满36元免配送费</view>
   </view>
   <view class="list-wrap" style="height:{{listHeight}}px">
     <view class="list-nav">

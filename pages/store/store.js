@@ -670,7 +670,7 @@ Page({
 			isActWrapShow: false
 		})
 		wx.navigateTo({
-			url: `/pages/my/coupon/coupon?type=coupon`
+			url: `/pages/my/coupon/coupon?type=2`
 		})
 	}
 });
