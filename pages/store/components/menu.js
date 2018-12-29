@@ -52,7 +52,7 @@ Component({
         let obj = this.data.info.sku_list.find(item => {
           return item.isdefault === 1
         })
-        let price = obj.price || '暂无报价'
+        let price = obj.sale_price || '暂无报价'
         this.setData({
           price: price,
           count: 1
@@ -98,7 +98,7 @@ Component({
         })
         this.setData({
           [skuKey]: skuList,
-          price: currentSku.price,
+          price: currentSku.sale_price,
           currentSku: currentSku
         })
         this.setPrice()
