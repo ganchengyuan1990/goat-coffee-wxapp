@@ -228,8 +228,9 @@ page {
 }
 
 .price-count {
-  display: flex;
-  align-items: center;
+  position: relative;
+  /* display: flex; */
+  /* align-items: center; */
   /* height: 50rpx;
   line-height: 50rpx; */
 }
@@ -240,7 +241,12 @@ page {
   flex-grow: 1;
   color: #000;
 }
-
+.price-count .price-del {
+  margin-left: 8rpx;
+  font-size: 26rpx;
+  color: #999;
+  text-decoration: line-through;
+}
 .price-count .count {
   display: flex;
   line-height: 60rpx;
@@ -252,7 +258,12 @@ page {
   line-height: 50rpx;
   font-size: 30rpx;
 }
-
+.price-count .btn {
+  position: absolute;
+  right: 40rpx;
+  top: 50%;
+  transform: translateY(-50%);
+}
 .btn {
   width: 36rpx;
   height: 36rpx;
@@ -263,7 +274,6 @@ page {
   text-align: center;
   line-height: 30rpx;
   background-color: #d8d8d8;
-  margin: 0 40rpx 0 16rpx;
 }
 
 .price-wrap .price {

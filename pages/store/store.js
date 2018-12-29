@@ -337,7 +337,7 @@ Page({
 				let sList = j.sku_list
 				sList.forEach(k => {
 					let key = k.productId + '-' + k.propSkuId
-					obj[key] = k.price
+					obj[key] = k.sale_price
 				})
 			})
 		})
@@ -562,7 +562,7 @@ Page({
 				skuId: obj.id,
 				skuName: obj.propSkuName,
 				number: item.count,
-				price: obj.price,
+				price: obj.sale_price,
 				productPropIds: propIds.join(','),
 				spec: item.spec
 			})
@@ -670,7 +670,7 @@ Page({
 			isActWrapShow: false
 		})
 		wx.navigateTo({
-			url: `/pages/my/coupon/coupon?type=coupon`
+			url: `/pages/my/coupon/coupon?type=2`
 		})
 	}
 });

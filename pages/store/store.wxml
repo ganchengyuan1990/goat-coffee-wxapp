@@ -45,7 +45,7 @@
         </swiper-item>
       </block>
     </swiper>
-    <view class="info-wrap">全场任意饮品购买2杯或36元免配送费</view>
+    <view class="info-wrap">公告：全场任意饮品购买2杯或消费金额满36元免配送费</view>
   </view>
   <view class="list-wrap" style="height:{{listHeight}}px">
     <view class="list-nav">
@@ -87,12 +87,13 @@
                   <view class="note">默认：{{filter.getSpecific(product)}}</view>
                 </view>
                 <view class="price-count">
-                  <view class="price">{{product.default_sku.price > 0 ? '￥'+product.default_sku.price:'暂无价格'}}</view>
-                  <view class="count">
+                  <view class="price">{{product.default_sku.sale_price > 0 ? '￥'+product.default_sku.sale_price:'暂无价格'}}<text class="price-del" wx:if="{{product.default_sku.price}}">￥{{product.default_sku.price}}</text></view>
+                  
+                  <!-- <view class="count"> -->
                     <view class="add btn" data-item="{{item}}">
                       +
                     </view>
-                  </view>
+                  <!-- </view> -->
                 </view>
               </view>
             </view>

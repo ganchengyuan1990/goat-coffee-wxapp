@@ -27,6 +27,11 @@
     "pages/order/detail/detail",
     "pages/my/coupon/coupon"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将会用于获取附近店铺信息"
+    }
+  },
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",

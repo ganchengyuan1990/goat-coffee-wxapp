@@ -39,11 +39,11 @@ Page({
   getProfile() {
     let info = wx.getStorageSync('token')
     let userInfo = info.user
-    let userInfoWechat = app.globalData.userInfo || {}
+    // let userInfoWechat = app.globalData.userInfo || {}
+    let userInfoWechat = wx.getStorageSync('personal_info') || {}
     if (info.token) {
-      console.log(info.user, 'userinfo');
-      console.log(userInfoWechat, 'wechat');
-
+      // console.log(info.user, 'userinfo');
+      // console.log(userInfoWechat, 'wechat');
       this.setData({
         userInfo: userInfo,
         userInfoWechat: userInfoWechat
@@ -55,9 +55,8 @@ Page({
       return
     }
     this.setData({
-      name: userInfo.userName ? userInfo.userName : userInfoWechat.nickName,
-      gender: userInfo.sex ? userInfo.sex : userInfoWechat.gender,
-      img: userInfo.avatar ? userInfo.avatar : userInfoWechat.avatarUrl
+      name: userInfo.userName || userInfoWechat.nickName || '',
+      img: userInfo.avatar || userInfoWechat.avatarUrl
     })
   },
   goProfile() {
