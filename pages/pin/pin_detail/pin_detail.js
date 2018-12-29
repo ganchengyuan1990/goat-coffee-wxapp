@@ -5,6 +5,46 @@ import {
 
 import model from '../../../utils/model';
 
+// import renderer from '../../../utils/quilljs-renderer/index';
+
+// var Document = renderer.Document;
+
+// // Load the built-in HTML formatter
+// renderer.loadFormat('html');
+
+// // Create a document instance
+// var doc = new Document([{
+//         insert: 'Hello, World!',
+//         attributes: {
+//             bold: true
+//         }
+//     },
+//     {
+//         insert: '\n',
+//         attributes: {
+//             align: 'right'
+//         }
+//     },
+//     {
+//         insert: 'This is a demo of the Quilljs Renderer'
+//     },
+//     {
+//         insert: '\n',
+//         attributes: {
+//             align: 'left'
+//         }
+//     },
+//     {
+//         insert: 1,
+//         attributes: {
+//             image: 'monkey.png',
+//             alt: 'Funny monkey picture'
+//         }
+//     }
+// ]);
+
+// console.log(doc.convertTo('html'));
+
 
 
 Page({
@@ -92,6 +132,8 @@ Page({
                     item.leftTime = this.calcLeftTime(new Date(item.groupActivity.end_at).getTime()).time;
                     item.userAvatar = item.userAvatar ? item.userAvatar : wx.getStorageSync('personal_info').avatarUrl
                 });
+                let detailInfo = data.data.group;
+                detailInfo.groupBrief = detailInfo.groupBrief.replace(/<img /g, "<img style='width: 100%' ");
                 this.setData({
                     detailInfo: data.data.group,
                     orderInfoArr: orderInfoArr.slice(-3),

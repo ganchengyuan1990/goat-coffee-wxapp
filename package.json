@@ -18,6 +18,9 @@
   "homepage": "https://github.com/ganchengyuan1990/goat-coffee-wxapp#readme",
   "dependencies": {
     "bignumber.js": "^8.0.1",
+    "merge-recursive": "0.0.3",
+    "quilljs-renderer": "0.0.8",
+    "stringformat": "0.0.5",
     "wx2swan": "^1.2.6"
   }
 }

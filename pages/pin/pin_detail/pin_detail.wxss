@@ -313,6 +313,7 @@
 .intro_detail {
     color: #999;
     font-size: 26rpx;
+    max-width: 100%;
     /* text-indent: 52rpx; */
     /* margin-right: 50rpx; */
 }

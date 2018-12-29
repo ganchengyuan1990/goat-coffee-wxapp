@@ -5,11 +5,11 @@
         <image src="{{item.groupIcon}}" />
       </view>
       <view class="info">
-        <view class="item">
+        <view class="item little">
           <view class="text">限时分享</view>
           <view class="text bigger">¥ {{item.realAmount}}</view>
         </view>
-        <view class="item">
+        <view class="item content">
           <view class="text">{{item.groupName}}</view>
           <view class="text">{{item.maxPeople}}人团</view>
 

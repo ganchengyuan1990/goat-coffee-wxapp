@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 20,
+			"current": 14,
 			"list": [
 				{
 					"id": -1,
@@ -123,7 +123,7 @@
 					"id": 14,
 					"name": "pin_detail",
 					"pathName": "pages/pin/pin_detail/pin_detail",
-					"query": "id=6"
+					"query": "id=1"
 				},
 				{
 					"id": 15,

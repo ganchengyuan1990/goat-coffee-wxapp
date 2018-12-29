@@ -29,12 +29,15 @@ Page({
   onLoad: function (options) {
     let self = this;
     let chosenAddress = wx.getStorageSync('chosenAddress');
-
+    let personalInfo = wx.getStorageSync('token') && wx.getStorageSync('token').user;
+    this.setData({
+        phone: personalInfo && personalInfo.tel
+    })
     
     if (options.id) {
         this.setData({
             newAdd: false,
-            id: parseInt(options.id)
+            id: parseInt(options.id),
         })
         if (chosenAddress) {
             this.setData({

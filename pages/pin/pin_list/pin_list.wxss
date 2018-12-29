@@ -26,18 +26,27 @@
 }
 
 .item {
+  flex: 1;
   height: 120rpx;
   line-height: 60rpx;
   display: flex;
   flex-direction: column;
   color: #333;
   font-size: 32rpx;
-  margin-right: 40rpx;
+  margin-right: 20rpx;
 }
+
 
 .bigger {
   font-size: 36rpx;
   font-weight: 600;
+}
+
+.content {
+  font-size: 28rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .button {
@@ -45,12 +54,22 @@
   background: #333;
   line-height: 90rpx;
   height: 90rpx;
-  width: 200rpx;
-  position: absolute;
+  max-width: 180rpx;
+  /* position: absolute; */
   right: 10rpx;
   top: 15rpx;
   border-radius: 5rpx;
   text-align: center;
   font-size: 28rpx;
   margin-right: 0 !important;
+}
+
+.little {
+  max-width: 150rpx;
+}
+
+.text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

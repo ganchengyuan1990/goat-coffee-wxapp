@@ -58,7 +58,8 @@ Page({
     tab: '',
     remark: '',
     userAddressId: 0,
-    getTime: ''
+    getTime: '',
+    waitProcessTime: ''
   },
   onLoad: function (options) {
 
@@ -71,7 +72,7 @@ Page({
     this.getAddressList();
 
     this.getAvailableCoupon();
-    this.calGetTime();
+    this.getWaitTime();
     // this.setData({
     //   goodsTotalPrice: parseInt(options.price)
     // })
@@ -99,9 +100,13 @@ Page({
 
   },
 
-  calGetTime () {
+  calGetTime (waitTime) {
     let nowTime = Date.parse(new Date());
-    let getTime = this.calcLeftTime(nowTime + 20 * 60 * 1000);
+    waitTime = this.data.chooseSelf ? (waitTime + 5) : (waitTime + 15);
+    let getTime = this.calcLeftTime(nowTime + waitTime * 60 * 1000);
+    this.setData({
+      getTime: getTime
+    })
     console.log(getTime);
   },
 
@@ -111,7 +116,7 @@ Page({
     var hours = parseInt(left / 3600);
     var minutes = parseInt((left - hours * 3600) / 60);
     var seconds = parseInt((left - hours * 3600 - minutes * 60));
-    return `${hours}:${minutes}`;
+    return `${hours + 8 < 10 ? ('0' + hours + 8) : (hours + 8)}:${minutes < 10 ? ('0' + minutes) : minutes}`;
   },
 
   getAddressList () {
@@ -215,6 +220,18 @@ Page({
     });
   },
 
+  getWaitTime () {
+    model(`home/lbs/get-wait-time`, {
+      storeId: this.data.options.storeId,
+    }).then(data => {
+      let waitProcessTime = data.data.waitProcessTime;
+      this.setData({
+        waitProcessTime: waitProcessTime
+      });
+      this.calGetTime(waitProcessTime);
+    })
+  },
+
   dealOptions (items) {
     if (items.data) {
       
@@ -272,6 +289,7 @@ Page({
       deliverFee: 0,
     })
     this.getBestCouponByProduct();
+    this.getWaitTime();
   },
 
   chooseExpress () {
@@ -281,6 +299,7 @@ Page({
       deliverFee: this.data.options.deliverFee
     })
     this.getBestCouponByProduct();
+    this.getWaitTime();
   },
   // selectAddress() {
   //   wx.navigateTo({
