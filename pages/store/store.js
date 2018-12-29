@@ -64,7 +64,7 @@ Page({
 
 		try {
 			configPic = info.config.newUserPic
-		} catch(e) {
+		} catch (e) {
 			console.log(e);
 		}
 		if (isNew && configPic) {
@@ -73,6 +73,7 @@ Page({
 				isActWrapShow: true
 			})
 		}
+		this.fetchLoaction()
 	},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -109,8 +110,9 @@ Page({
 		let fromTransport = app.globalData.fromTransport
 		if (fromTransport) {
 			this.loadAddress(fromTransport)
+			app.globalData.fromTransport = ''
 		} else {
-			this.fetchLoaction();
+			// this.fetchLoaction();
 			this.toggleTabBar(true);
 		}
 	},
@@ -271,7 +273,13 @@ Page({
 		let distance = storeInfo.distance || 0
 		let formatDistance = ''
 		try {
-			formatDistance = distance > 1 ? `${parseFloat(distance).toFixed(1)}km` : `${Math.round(distance * 1000)}m`
+			if (distance < 1000) {
+				formatDistance = `${Math.round(distance)}m`
+			} else if (distance < 10000) {
+				formatDistance = `${parseFloat(distance/1000).toFixed(1)}km`
+			} else {
+				formatDistance = `>10km`
+			}
 		} catch (e) {
 			console.log(e);
 		}
@@ -477,6 +485,10 @@ Page({
 		}
 	},
 	addCart(e) {
+		let isOpen = this.checkStoreState()
+		if (!isOpen) {
+			return
+		}
 		let cart = this.data.cartList
 		if (e.detail) {
 			cart.push(e.detail)
@@ -525,6 +537,18 @@ Page({
 
 		}
 	},
+	checkStoreState() {
+		let isOpen = this.data.storeInfo.state === 1
+		if (!isOpen) {
+			wx.showModal({
+				title: '提示',
+				content: '我们已经打烊了呦，请明天再来呦。',
+				showCancel: false
+			})
+			return false
+		}
+		return true
+	},
 	checkout(e) {
 		let self = this
 		let token = wx.getStorageSync('token').token
@@ -532,6 +556,10 @@ Page({
 			wx.navigateTo({
 				url: '/pages/login/login'
 			})
+			return
+		}
+		let isOpen = this.checkStoreState()
+		if (!isOpen) {
 			return
 		}
 		let info = this.data
