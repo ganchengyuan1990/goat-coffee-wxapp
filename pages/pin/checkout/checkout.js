@@ -122,6 +122,7 @@ Page({
     param.list = JSON.stringify(voucherParamArr);
     if (this.data.isOwner == 1) {
       model(`group/action/start`, param, 'POST').then(data => {
+        console.log(data);
         let order = data.data;
         let _package = order.package;
         let prepayId = _package.split('=')[1];
@@ -129,6 +130,7 @@ Page({
           url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${order.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${param.list}`
         })
       }).catch(e => {
+        console.log(e);
         this.setData({
           errorToast: true,
           toastInfo: e

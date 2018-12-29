@@ -133,6 +133,7 @@ Page({
                     item.userAvatar = item.userAvatar ? item.userAvatar : wx.getStorageSync('personal_info').avatarUrl
                 });
                 let detailInfo = data.data.group;
+                console.log(data.data.group_voucher);
                 detailInfo.groupBrief = detailInfo.groupBrief.replace(/<img /g, "<img style='width: 100%' ");
                 this.setData({
                     detailInfo: data.data.group,

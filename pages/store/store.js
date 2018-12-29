@@ -53,17 +53,17 @@ Page({
 	onLoad(options) {
 		let info = wx.getStorageSync('token') || {}
 		let isLogin = info.token
-		if (!isLogin) {
-			wx.redirectTo({
-				url: '/pages/login/login'
-			})
-			return
-		}
+		// if (!isLogin) {
+		// 	wx.redirectTo({
+		// 		url: '/pages/login/login'
+		// 	})
+		// 	return
+		// }
 		let isNew = info.ifNew
 		let configPic = ''
 
 		try {
-			configPic = info.config.newUserPic
+			configPic = info.config && info.config.newUserPic
 		} catch(e) {
 			console.log(e);
 		}
@@ -102,9 +102,9 @@ Page({
 	 */
 	onShow() {
 		let isLogin = this.checkLogin()
-		if (!isLogin) {
-			return
-		}
+		// if (!isLogin) {
+		// 	return
+		// }
 		// console.log(app.globalData, 'globalData')
 		let fromTransport = app.globalData.fromTransport
 		if (fromTransport) {

@@ -10,6 +10,13 @@ Page({
     },
 
     goPinDetail (e) {
+        let token = wx.getStorageSync('token').token
+        if (!token) {
+            wx.redirectTo({
+                url: '/pages/login/login'
+            })
+            return
+        }
         wx.hideTabBar({
             animation: true,
             success() {
