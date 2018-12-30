@@ -67,7 +67,7 @@
 }
 
 .cate-panel .bd {
-  height: 550rpx;
+  max-height: 550rpx;
   padding-top: 26rpx;
   border-bottom: 1rpx solid #c6c6c6;
   overflow-y: scroll;

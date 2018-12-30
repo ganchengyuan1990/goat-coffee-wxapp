@@ -5,7 +5,7 @@
           <view class="hd">
               <view class="tt">
                   <view class="cn">{{info.productName}}</view>
-                  <view class="en">{{info.productEnName}}</view>
+                  <view class="en">{{info.brief}}</view>
               </view>
               <view class="fig">
                 <image src="{{info.icon}}" mode="aspectFill" class="img-caption"></image>

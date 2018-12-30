@@ -306,7 +306,7 @@ Page({
 		model('home/product/all', {
 			storeId: storeId
 		}).then(res => {
-			// console.log(res, 'detail')
+			console.log(res, 'detail')
 			const {
 				data
 			} = res

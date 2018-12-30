@@ -83,7 +83,7 @@
               <view class="info">
                 <view>
                   <view class="name">{{product.productName}}</view>
-                  <view class="note">{{product.productEnName}}</view>
+                  <view class="note">{{product.brief}}</view>
                   <view class="note">默认：{{filter.getSpecific(product)}}</view>
                 </view>
                 <view class="price-count">
