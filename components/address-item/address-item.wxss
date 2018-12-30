@@ -25,6 +25,10 @@
 .direct-item .direct-name-text {
     font-family: PingFangSC-Regular;
     font-size: 30rpx;
+    max-width: 68%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     color: #333333;
 }
 

@@ -101,6 +101,10 @@
     font-family: PingFangSC-Regular;
     font-size: 33rpx;
     color: #333333;
+    max-width: 68%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .direct-item .text-overflow {

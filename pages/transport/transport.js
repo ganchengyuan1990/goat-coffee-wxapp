@@ -161,7 +161,7 @@ Page({
       let result = data.data;
       // result = result.concat(result);
       result.forEach(item => {
-        item.distance = parseFloat(item.distance).toFixed(2);
+        item.distance = item.distance > 10 ? '>10' : item.distance;
       });
       wx.setStorageSync('shopList', result);
       this.setData({
