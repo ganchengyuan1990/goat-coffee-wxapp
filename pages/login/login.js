@@ -104,6 +104,17 @@ Page({
                 console.log(e);
             }
             wx.setStorageSync('token', data.data);
+            if (this.data.fromPin) {
+                let pages = getCurrentPages();
+                let prevPage = pages[pages.length - 2];
+                prevPage.setData({
+                    fromLogin: true,
+                    pinType: this.data.pinType
+                });
+                wx.navigateTo({
+                  url: `/pages/pin/pin_detail/pin_detail?id=${this.data.pinId}&fromLogin=1&pinType=${this.data.pinType}` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                });
+            }
             wx.switchTab({
                 url: '/pages/store/store'
             });
@@ -204,13 +215,21 @@ Page({
         sysinfo: {},
         auth: false,
         showSeconds: false,
-        actived: false
+        actived: false,
+        fromPin: false
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        if (options.from === 'pin') {
+            this.setData({
+                fromPin: true,
+                pinType: options.pinType,
+                pinId: options.pinType
+            })
+        }
         let self = this;
         if (wx.getStorageSync('token')) {
             wx.switchTab({ url: '/pages/store/store' });

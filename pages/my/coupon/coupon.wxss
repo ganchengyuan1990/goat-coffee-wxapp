@@ -186,7 +186,9 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
     font-size: 28rpx;
     color: #999;
 }
-
+.money {
+    font-size: 20rpx;
+}
 .no_coupon_wrapper {
     /* height: 200rpx; */
     width: 210rpx;

@@ -10,10 +10,10 @@
         </view>
 
         <view class="float_right" wx:if="{{chooseSelf}}">
-            约{{getTime}}送达
+            约{{getTime}}可取
         </view>
         <view class="float_right" wx:if="{{chooseExpress}}">
-            约{{getTime}}可取餐
+            约{{getTime}}送达
         </view>
     </view>
     <view class="address-box" bindtap="goAddressList">

@@ -1,7 +1,7 @@
 <view class="wrapper">
   <view class="promotion-tip">
-    <view class='radio' color="#ccc"></view>
-    <text>不使用优惠券</text>
+    <!-- <view class='radio' color="#ccc"></view>
+    <text>不使用优惠券</text> -->
   </view>
   <view class="group-wrapper">
     <view class="group">
@@ -19,10 +19,10 @@
           <view class='left-part'>
             <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
 
-            <view class="list-item-deal {{item.coupon.couponType === 1 ? 'no_margin_left' : ''}}">
+            <view class="list-item-deal {{item.coupon.couponType === 2 ? 'no_margin_left' : ''}}">
               <label class="deal-icon"></label>
-              <label class="deal-num" wx:if="{{item.type === 2}}">{{item.tCoreCoupon.discount}}折</label>
-              <label class="deal-num" wx:if="{{item.type === 1}}"><text class='money'>￥</text>{{item.tCoreCoupon.discount}}</label>
+              <label class="deal-num" wx:if="{{item.type === 1}}">{{item.tCoreCoupon.discount}}折</label>
+              <label class="deal-num" wx:if="{{item.type === 2}}"><text class='money'>￥</text>{{item.tCoreCoupon.discount}}</label>
             </view>
           </view>
 
@@ -30,7 +30,7 @@
             <view class="list-item-name">
               <text class="promotion-description">{{item.tCoreCoupon.couponName}}</text>
               <text class="promotion-limit-tip">{{item.tCoreCoupon.couponBref}}</text>
-              <text class="promotion-limit-tip">{{item.tCoreCoupon.availabileStartTime}} - {{item.tCoreCoupon.availabileEndTime}}</text>
+              <text class="promotion-limit-tip" wx:show="{{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime && item.tCoreCoupon.availabileEndTime}}">{{item.tCoreCoupon.availabileStartTime}} - {{item.tCoreCoupon.availabileEndTime}}</text>
             </view>
           </view>
 
@@ -59,7 +59,7 @@
             <view class="list-item-name">
               <text class="promotion-description">{{item.tCoreVoucher.voucherName}}</text>
               <text class="promotion-limit-tip"></text>
-              <text class="promotion-limit-tip">{{item.tCoreVoucher.availabileStartTime}} - {{item.tCoreVoucher.availabileEndTime}}</text>
+              <text class="promotion-limit-tip" wx:if="{{item.tCoreVoucher && item.tCoreVoucher.availabileStartTime && item.tCoreVoucher.availabileEndTime}}">{{item.tCoreVoucher.availabileStartTime}} - {{item.tCoreVoucher.availabileEndTime}}</text>
             </view>
           </view>
 

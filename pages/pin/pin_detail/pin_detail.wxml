@@ -42,7 +42,7 @@
                 </view>
                 <view class='go_pin righter'>
                     <text class="normal left_time}}">还差一人</text>
-                    <text class='left_time smaller' wx:if="{{item.leftTime}}">剩余{{item.leftTime}}</text>
+                    <text class='left_time smaller' wx:if="{{item.leftTime}}">{{item.leftTime}}</text>
                 </view>
                 <view type="warn" data-index="{{index}}" class='goPay' catchtap="goAttendPin" >参加拼团</view>  
             </view>

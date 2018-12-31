@@ -54,16 +54,36 @@ Page({
         orderInfoArr: [],
         group_voucher: [],
         leftTime: '',
-        groupId: 0
+        groupId: 0,
+        fromLogin: false,
+        pinType: 0
     },
 
     onShow () {
         if (this.data.isFromAddress) {
             this.getTransFee(this.data.addressObj, this);
         }
+        // if (this.data.fromLogin) {
+        //     if (this.data.pinType == 1) {
+        //         this.goPinCallback();
+        //     } else if (this.data.pinType == 2) {
+        //         this.goAttendPinCallback();
+        //     }
+        // }
     },
 
     goPin () {
+        let token = wx.getStorageSync('token').token
+        if (!token) {
+            wx.redirectTo({
+                url: `/pages/login/login?from=pin&pinType=1&pinId=${this.data.groupId}`
+            })
+            return
+        }
+        this.goPinCallback();
+    },
+
+    goPinCallback () {
         let voucherParamArr = [];
 
         this.data.group_voucher.forEach(item => {
@@ -103,34 +123,27 @@ Page({
         wx.navigateTo({
             url: `/pages/pin/checkout/checkout?isOwner=1&groupName=${this.data.detailInfo.groupName}&price=${this.data.detailInfo.realAmount}&originalPrice=${this.data.detailInfo.voucherAmount}&number=${this.data.detailInfo.maxPeople}`
         });
-
-        // model(`group/action/start?${paramStr}`, voucherParamArr, 'POST', {
-        //     'authorization': 'Bearer ' + wx.getStorageSync('token').token,
-        //     'Accept': 'application/json'
-        // }).then(data => {
-        //     debugger
-        // }).catch(e => {
-        //     debugger
-        // });
     },
 
     onLoad: function (option) {
         let self = this;
 
         this.setData({
-            groupId: parseInt(option.id)
+            groupId: parseInt(option.id),
+            fromLogin: option.fromLogin,
+            pinType: option.pinType
         })
         
         model('group/action/info', {
             groupId: parseInt(option.id),
-            userId: wx.getStorageSync('token').user.id
+            // userId: wx.getStorageSync('token').user.id
         }).then(data => {
             if (data.data) {
                 let endTime = data.data.group.endTime;
                 let orderInfoArr = data.data.group_order;
                 orderInfoArr.forEach(item => {
                     item.leftTime = this.calcLeftTime(new Date(item.groupActivity.end_at).getTime()).time;
-                    item.userAvatar = item.userAvatar ? item.userAvatar : wx.getStorageSync('personal_info').avatarUrl
+                    item.userAvatar = item.userAvatar ? item.userAvatar : wx.getStorageSync('personal_info')  && wx.getStorageSync('personal_info').avatarUrl
                 });
                 let detailInfo = data.data.group;
                 console.log(data.data.group_voucher);
@@ -162,9 +175,16 @@ Page({
         var hours = parseInt(left / 3600);
         var minutes = parseInt((left - hours * 3600) / 60);
         var seconds = parseInt((left - hours * 3600 - minutes * 60));
+        var result = {}
+        if (hours < 0 || timeStr < 0) {
+            return {
+                left: left,
+                time: '即将结束'
+            }
+        }
         return {
             left: left,
-            time: `${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`
+            time: `剩余${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`
         };
     },
 
@@ -176,6 +196,13 @@ Page({
 
 
     goCreateMartOrder () {
+        let token = wx.getStorageSync('token').token
+        if (!token) {
+            wx.redirectTo({
+                url: `/pages/login/login`
+            })
+            return
+        }
         this.setData({
             // tokenPrice: this.data.poiInfo.price,
             // totalPrice: this.data.poiInfo.price,
@@ -187,6 +214,17 @@ Page({
     },
 
     goAttendPin (e) {
+        let token = wx.getStorageSync('token').token
+        if (!token) {
+            wx.redirectTo({
+                url: `/pages/login/login?from=pin&pinType=2&pinId=${this.data.groupId}`
+            })
+            return
+        }
+        this.goAttendPinCallback();
+    },
+
+    goAttendPinCallback () {
         let voucherParamArr = [];
         this.data.group_voucher.forEach(item => {
             voucherParamArr.push({
@@ -222,15 +260,6 @@ Page({
         wx.navigateTo({
             url: `/pages/pin/checkout/checkout?isOwner=0&activityId=${param.activityId}&groupName=${this.data.detailInfo.groupName}&price=${this.data.detailInfo.realAmount}&originalPrice=${this.data.detailInfo.voucherAmount}&number=${this.data.detailInfo.maxPeople}`
         });
-
-        // model(`group/action/start?${paramStr}`, voucherParamArr, 'POST', {
-        //     'authorization': 'Bearer ' + wx.getStorageSync('token').token,
-        //     'Accept': 'application/json'
-        // }).then(data => {
-        //     debugger
-        // }).catch(e => {
-        //     debugger
-        // });
     },
 
     goToAddAddress () {

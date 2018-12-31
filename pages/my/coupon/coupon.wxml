@@ -11,13 +11,13 @@
                     <view class='cover-bottom'></view>
                     <view class='left-part'>
                         <!-- <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}" /> -->
-                        <view class="list-item-deal {{item.coupon.couponType === 1 ? 'no_margin_left' : ''}}">
+                        <view class="list-item-deal {{item.coupon.couponType === 2 ? 'no_margin_left' : ''}}">
                             <label class="deal-icon"></label>
-                            <label class="deal-num" wx:if="{{item.coupon.couponType === 2}}">
+                            <label class="deal-num" wx:if="{{item.coupon.couponType === 1}}">
                                 {{item.coupon.discount}}折
                             </label>
-                            <label class="deal-num" wx:if="{{item.coupon.couponType === 1}}">
-                                ￥{{item.coupon.saveAmount}}
+                            <label class="deal-num" wx:if="{{item.coupon.couponType === 2}}">
+                                <text class='money'>￥</text>{{item.coupon.saveAmount}}
                             </label>
                         </view>
                     </view>
@@ -25,7 +25,7 @@
                         <view class="list-item-name">
                             <text class="promotion-description">{{item.coupon.couponName}}</text>
                             <text class="promotion-limit-tip">{{item.couponBref}}</text>
-                            <text class="promotion-limit-tip">
+                            <text class="promotion-limit-tip" wx:if="{{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime && item.tCoreCoupon.availabileEndTime}}">
                                 {{item.coupon.availabileStartTime}} - {{item.coupon.availabileEndTime}}
                             </text>
                         </view>
@@ -41,14 +41,14 @@
                         <!-- <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}" /> -->
                         <view class="list-item-deal no_margin_left">
                             <label class="deal-icon"></label>
-                            <label class="deal-num">￥{{item.voucher.voucherPrice}}</label>
+                            <label class="deal-num"><text class='money'>￥</text>{{item.voucher.voucherPrice}}</label>
                         </view>
                     </view>
                     <view class='right-part'>
                         <view class="list-item-name">
                             <text class="promotion-description">{{item.voucher.voucherName}}</text>
                             <text class="promotion-limit-tip"></text>
-                            <text class="promotion-limit-tip">
+                            <text class="promotion-limit-tip" wx:if="{{item.tCoreVoucher && item.tCoreVoucher.availabileStartTime && item.tCoreVoucher.availabileEndTime}}">
                                 {{item.voucher.availabileStartTime}} - {{item.voucher.availabileEndTime}}
                             </text>
                         </view>
@@ -64,12 +64,12 @@
             <image class='no_coupon' src="../../images/no_coupon.png" />
         </view> -->
 
-        <view class="no_coupon_wrapper" wx:if="{{voucherItems.length === 0 && couponItems.length === 0 && type === 1}}">
+        <view class="no_coupon_wrapper" wx:if="{{couponItems.length === 0 && type === 2}}">
             <image class='no_coupon' src="../../../images/no_coupon.png" />
             <view class="mention">暂无可用优惠券</view>
         </view>
 
-        <view class="no_coupon_wrapper" wx:if="{{voucherItems.length === 0 && couponItems.length === 0 && type === 2}}">
+        <view class="no_coupon_wrapper" wx:if="{{voucherItems.length === 0  && type === 1}}">
             <image class='no_coupon' src="../../../images/no_voucher.png" />
             <view class="mention">暂无可用兑换券</view>
         </view>
