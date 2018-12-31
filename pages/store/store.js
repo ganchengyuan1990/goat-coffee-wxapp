@@ -283,11 +283,7 @@ Page({
 		} catch (e) {
 			console.log(e);
 		}
-		storeInfo.distance = formatDistance
-		this.setData({
-			storeInfo: storeInfo
-		})
-		if (parseFloat(storeInfo.distance) > 3) {
+		if (parseFloat(storeInfo.distance) > 3000) {
 			wx.showModal({
 				title: '提示',
 				showCancel: false,
@@ -295,6 +291,10 @@ Page({
 				confirmText: '我知道了'
 			})
 		}
+		storeInfo.distance = formatDistance
+		this.setData({
+			storeInfo: storeInfo
+		})
 
 		// console.log(storeInfo, 'storeinfo')
 		this.fetchProduct(storeInfo.id)
