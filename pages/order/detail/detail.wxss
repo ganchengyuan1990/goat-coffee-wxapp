@@ -124,6 +124,7 @@ page {
 }
 
 .addr-box {
+    padding-bottom: 50rpx;
     font-size: 28rpx;
     line-height: 40rpx;
 }
