@@ -73,6 +73,7 @@ Page({
 				isActWrapShow: true
 			})
 		}
+		// this.checkAuth()
 		this.fetchLoaction()
 	},
 	/**
@@ -108,11 +109,16 @@ Page({
 		// }
 		// console.log(app.globalData, 'globalData')
 		let fromTransport = app.globalData.fromTransport
+		let isGeoAuth = app.globalData.isGeoAuth
 		if (fromTransport) {
 			this.loadAddress(fromTransport)
 			app.globalData.fromTransport = ''
 		} else {
 			// this.fetchLoaction();
+			if (!isGeoAuth) {
+				this.checkAuth()
+			}
+			
 			this.toggleTabBar(true);
 		}
 	},
