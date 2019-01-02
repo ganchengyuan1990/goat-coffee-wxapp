@@ -1,4 +1,7 @@
+<canvas style="margin:20rpx auto; width: 200px; height: 200px;" canvas-id="myQrcode" wx:if="{{detail.orderType == 3}}"></canvas>
+
 <wxs src="../filter.wxs" module="filter"></wxs>
+
 <view class="container">
     <block wx:if="{{dtype === 'order'}}">
         <view class="hd-wrap">
@@ -103,3 +106,4 @@
         </view>
     </block>
 </view>
+
