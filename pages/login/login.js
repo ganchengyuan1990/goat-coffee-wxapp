@@ -97,8 +97,9 @@ Page({
             try {
                 let avatar = data.data.user.avatar
                 if (!avatar) {
-                    let imgUrl = wx.getStorageSync('personal_info').avatarUrl
-                    this.saveUserAvatar(imgUrl)
+                    // let imgUrl = wx.getStorageSync('personal_info').avatarUrl
+                    let info = wx.getStorageSync('personal_info')
+                    this.saveUserAvatar(info)
                 }
             } catch(e) {
                 console.log(e);
@@ -155,11 +156,16 @@ Page({
             }
         });
     },
-    saveUserAvatar(avatar) {
-        if (!avatar) {
+    saveUserAvatar(info) {
+        if (!info) {
             return
         }
-        let avatarUrl = avatar
+        let avatarUrl = info.avatarUrl
+        const {
+            avatarUrl,
+            nickName,
+            gender
+        } = info
         model('file/qiniu/fetch', {
             sourceUrl: avatarUrl
         }, 'POST').then(res => {
@@ -168,7 +174,9 @@ Page({
                 let { key, url } = data
                 if (key) {
                     model('my/user/update-user', {
-                        avatar: key
+                        avatar: key,
+                        userName: nickName,
+                        sex: gender
                     }, 'POST').then(res => {
                         console.log(res);
                         if (res.code === 'suc') {
