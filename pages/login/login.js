@@ -99,7 +99,7 @@ Page({
                 if (!avatar) {
                     // let imgUrl = wx.getStorageSync('personal_info').avatarUrl
                     let info = wx.getStorageSync('personal_info')
-                    this.saveUserAvatar(info)
+                    this.saveUser(info)
                 }
             } catch(e) {
                 console.log(e);
@@ -156,7 +156,7 @@ Page({
             }
         });
     },
-    saveUserAvatar(info) {
+    saveUser(info) {
         if (!info) {
             return
         }
