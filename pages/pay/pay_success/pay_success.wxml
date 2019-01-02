@@ -7,7 +7,7 @@
       <!-- <view class="coupon-sn">￥{{price}}</view> -->
       
       <view class="coupon-sn">支付成功</view> 
-      <view class="button" bindtap="goIndex">回到首页</view>
+      <view class="button" bindtap="goIndex">查看订单</view>
     </view>
     <!-- <button class="add-btn disabled">兑换</button> -->
   </view>

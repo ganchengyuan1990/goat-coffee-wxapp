@@ -36,7 +36,7 @@ Page({
 
     goIndex () {
         wx.switchTab({
-            url: '/pages/store/store'
+            url: '/pages/order/list/list'
         });
         wx.showTabBar({
             animation: true

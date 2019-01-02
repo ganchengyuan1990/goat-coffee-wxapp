@@ -95,6 +95,7 @@ page {
     background: #fff;
     color: #999;
     font-size: 22rpx;
+    position: relative;
 }
 .panel .panel-hd {
     display: flex;
@@ -166,4 +167,12 @@ page {
 .btn-group .confirm {
     background: #333;
     color: #fff;
+}
+
+.order_numer {
+    position: absolute;
+    top: 90rpx;
+    right: 30rpx;
+    font-size: 32rpx;
+    color: #999;
 }

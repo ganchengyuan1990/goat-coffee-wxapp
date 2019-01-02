@@ -149,3 +149,18 @@ page {
     color: #999;
     line-height: 36rpx;
 }
+
+.order_numer {
+    text-align: center;
+    width: 200rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    background: #F9504C;
+    color: #fff;
+    position: absolute;
+    top: 30rpx;
+    right: 30rpx;
+    font-size: 42rpx;
+    /* color: #999; */
+    font-weight: bold;
+}

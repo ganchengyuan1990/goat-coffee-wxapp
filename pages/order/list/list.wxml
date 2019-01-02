@@ -64,6 +64,7 @@
                     <view class="tt">{{filter.getAddr(item.order)}}</view>
                     <view class="desc">{{filter.getOrderBrief(item)}}</view>
                     <view class="date">{{item.order.CreateTime}}</view>
+                    <view class="order_numer">{{item.order.varCode}}</view>
                 </view>
                 <view class="panel-ft">
                     <view class="price">￥{{item.order.payAmount}}</view>

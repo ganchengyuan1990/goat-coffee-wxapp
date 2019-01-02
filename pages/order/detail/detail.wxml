@@ -4,6 +4,7 @@
         <view class="hd-wrap">
             <view class="tt">{{filter.getOrderState(detail.orderState)}}</view>
             <view class="desc">感谢您的光临</view>
+            <view class="order_numer">NO.{{detail.varCode}}</view>
         </view>
         <view class="panel order-box">
             <view class="border-line">

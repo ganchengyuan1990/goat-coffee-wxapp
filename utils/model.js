@@ -4,7 +4,7 @@
  * 开发： dev
  */
 const CONFIG = {
-    env: 'prod'
+    env: 'dev'
 }
 export const BASE_URL = (() => {
     let url = {
