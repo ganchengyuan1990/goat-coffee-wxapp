@@ -1,4 +1,6 @@
 // pages/order/detail.js
+import drawQrcode from '../../../utils/qrcode.js'
+
 Page({
 
   /**
@@ -35,7 +37,23 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    console.log(this.data.detail.orderNo);
+    drawQrcode({
+      width: 200,
+      height: 200,
+      canvasId: 'myQrcode',
+      // ctx: wx.createCanvasContext('myQrcode'),
+      text: this.data.detail.orderNo,
+      // text: 'https://www.jasongan.cn/index.html',
+      // v1.0.0+版本支持在二维码上绘制图片
+      image: {
+        imageResource: '../../images/icon.png',
+        dx: 70,
+        dy: 70,
+        dWidth: 60,
+        dHeight: 60
+      }
+    })
   },
   formatData(data) {
     let detail = JSON.parse(data || '{}')
