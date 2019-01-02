@@ -160,7 +160,6 @@ Page({
         if (!info) {
             return
         }
-        let avatarUrl = info.avatarUrl
         const {
             avatarUrl,
             nickName,
