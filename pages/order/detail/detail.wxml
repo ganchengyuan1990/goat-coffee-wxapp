@@ -66,7 +66,7 @@
         <view class="panel addr-box">
             <view class="name">{{detail.userName ? detail.userName: ''}} {{detail.contactTel}}</view>
             <view class="addr">{{filter.getAddr(detail)}}</view>
-            <view class="date">配送时间 {{detail.UpdateTime}}</view>
+            <!-- <view class="date">配送时间 {{detail.UpdateTime}}</view> -->
         </view>
     </block>
     <block wx:if="{{dtype === 'group'}}">
