@@ -68,6 +68,7 @@
 }
 
 .promotion-description {
+    width: 256rpx;
     font-size: 32rpx;
     font-weight: normol;
     color: #333333;
@@ -79,6 +80,7 @@
 }
 
 .left-part {
+    flex: none;
     padding: 66rpx 15rpx 66rpx 30rpx;
     display: flex;
 }

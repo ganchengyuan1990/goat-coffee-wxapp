@@ -52,13 +52,13 @@ Page({
 	 */
 	onLoad(options) {
 		let info = wx.getStorageSync('token') || {}
-		let isLogin = info.token
-		// if (!isLogin) {
-		// 	wx.redirectTo({
-		// 		url: '/pages/login/login'
-		// 	})
-		// 	return
-		// }
+		let isLogin = this.checkLogin()
+		if (!isLogin) {
+			wx.redirectTo({
+				url: '/pages/login/login'
+			})
+			return
+		}
 		let isNew = info.ifNew
 		let configPic = ''
 
@@ -72,9 +72,16 @@ Page({
 				actImage: configPic,
 				isActWrapShow: true
 			})
+			try {
+				let token = wx.getStorageSync('token')
+				token.ifNew = false
+				wx.setStorageSync('token', token)
+			} catch (e) {
+				console.log(e);
+			}
 		}
-		// this.checkAuth()
 		this.fetchLoaction()
+		this.checkSaveUser()
 	},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -103,22 +110,25 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-		// let isLogin = this.checkLogin()
-		// if (!isLogin) {
-		// 	return
-		// }
+		let isLogin = this.checkLogin()
+		if (!isLogin) {
+			return
+		}
 		// console.log(app.globalData, 'globalData')
 		let fromTransport = app.globalData.fromTransport
-		let isGeoAuth = app.globalData.isGeoAuth
+		// let isGeoAuth = app.globalData.isGeoAuth
 		if (fromTransport) {
 			this.loadAddress(fromTransport)
 			app.globalData.fromTransport = ''
 		} else {
 			// this.fetchLoaction();
-			if (!isGeoAuth) {
-				this.checkAuth()
+			// if (!isGeoAuth) {
+			// 	this.checkAuth()
+			// }
+			let storeInfo = wx.getStorageSync('STORE_INFO')
+			if (!storeInfo) {
+				this.fetchLoaction()
 			}
-			
 			this.toggleTabBar(true);
 		}
 	},
@@ -706,5 +716,50 @@ Page({
 		wx.navigateTo({
 			url: `/pages/my/coupon/coupon?type=2`
 		})
+	},
+	checkSaveUser() {
+		let token = wx.getStorageSync('token')
+		let userName = ''
+		try {
+			let userInfo = token.user
+			userName = userInfo.userName
+		} catch(e) {
+			console.log(e);
+		}
+		if (userName) {
+			return
+		}
+		let info = wx.getStorageSync('personal_info')
+		if (!info) {
+			return
+		}
+		const { nickName, gender } = info
+		model('my/user/update-user', {
+			userName: nickName,
+			sex: gender
+		}, 'POST').then(res => {
+			console.log(res);
+			if (res.code === 'suc') {
+				this.updateCurrentInfo(nickName, gender)
+			}
+		}).catch(e => {
+			console.log(e, '[exception]: my/user/update-user');
+		})
+	},
+	updateCurrentInfo(nickName, gender) {
+		if (!nickName) {
+			return
+		}
+		try {
+			let token = wx.getStorageSync('token')
+			let userInfo = token.user
+			token.user = Object.assign(userInfo, {
+				userName: nickName,
+				sex: gender
+			})
+			wx.setStorageSync('token', token)
+		} catch (e) {
+			console.log(e);
+		}
 	}
 });
