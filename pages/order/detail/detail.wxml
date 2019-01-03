@@ -12,7 +12,7 @@
         <view class="panel order-box">
             <view class="border-line">
                 <view class="order-title border-line">
-                    <text class="name">外卖单号{{detail.orderNo}}</text>
+                    <text class="name">单号{{detail.orderNo}}</text>
                     <text>{{detail.CreateTime}}</text>
                 </view>
                 <view class="order-item" wx:for="{{detail.detailList}}" wx:key="{{index}}">

@@ -422,7 +422,7 @@ Page({
 
   submit () {
     let userAddressId = this.data.options.userAddressId;
-    if (!userAddressId) {
+    if (!userAddressId && this.data.chooseExpress) {
       if (wx.getStorageSync('addressList') && wx.getStorageSync('addressList')[0]  && wx.getStorageSync('addressList')[0].id) {
         userAddressId = wx.getStorageSync('addressList')[0].id
       } else {

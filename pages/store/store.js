@@ -53,12 +53,13 @@ Page({
 	onLoad(options) {
 		let info = wx.getStorageSync('token') || {}
 		let isLogin = this.checkLogin()
-		if (!isLogin) {
-			wx.redirectTo({
-				url: '/pages/login/login'
-			})
-			return
-		}
+		// 登录检查逻辑后移
+		// if (!isLogin) {
+		// 	wx.redirectTo({
+		// 		url: '/pages/login/login'
+		// 	})
+		// 	return
+		// }
 		let isNew = info.ifNew
 		let configPic = ''
 
