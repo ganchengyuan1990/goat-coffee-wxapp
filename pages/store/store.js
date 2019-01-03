@@ -116,15 +116,15 @@ Page({
 		}
 		// console.log(app.globalData, 'globalData')
 		let fromTransport = app.globalData.fromTransport
-		let isGeoAuth = app.globalData.isGeoAuth
+		// let isGeoAuth = app.globalData.isGeoAuth
 		if (fromTransport) {
 			this.loadAddress(fromTransport)
 			app.globalData.fromTransport = ''
 		} else {
 			// this.fetchLoaction();
-			if (!isGeoAuth) {
-				this.checkAuth()
-			}
+			// if (!isGeoAuth) {
+			// 	this.checkAuth()
+			// }
 			let storeInfo = wx.getStorageSync('STORE_INFO')
 			if (!storeInfo) {
 				this.fetchLoaction()
