@@ -721,6 +721,9 @@ Page({
 	checkSaveUser() {
 		let token = wx.getStorageSync('token')
 		let userName = ''
+		if (!token) {
+			return
+		}
 		try {
 			let userInfo = token.user
 			userName = userInfo.userName
