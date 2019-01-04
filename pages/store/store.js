@@ -118,12 +118,12 @@ Page({
 		}
 		// console.log(app.globalData, 'globalData')
 		let fromTransport = app.globalData.fromTransport
-		this.setData({
-			fromTransport: fromTransport
-		})
 		// let isGeoAuth = app.globalData.isGeoAuth
 		if (fromTransport) {
 			this.loadAddress(fromTransport)
+			this.setData({
+				fromTransport: fromTransport
+			})
 			app.globalData.fromTransport = ''
 		} else {
 			// this.fetchLoaction();
