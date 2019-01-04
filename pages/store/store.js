@@ -44,7 +44,8 @@ Page({
 		isSelfTaking: true,
 		isLoadStorageCart: true,
 		actImage: '',
-		isActWrapShow: false
+		isActWrapShow: false,
+		fromTransport: ''
 	},
 
 	/**
@@ -117,6 +118,9 @@ Page({
 		}
 		// console.log(app.globalData, 'globalData')
 		let fromTransport = app.globalData.fromTransport
+		this.setData({
+			fromTransport: fromTransport
+		})
 		// let isGeoAuth = app.globalData.isGeoAuth
 		if (fromTransport) {
 			this.loadAddress(fromTransport)
@@ -621,7 +625,7 @@ Page({
 			orderType: info.isSelfTaking ? 2 : 1,
 			product: products
 		}
-		const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
+		const url = `/pages/pay/checkout/checkout?fromTransportIndex=${this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
 		this.setData({
 			isCartPanelShow: false
 		})

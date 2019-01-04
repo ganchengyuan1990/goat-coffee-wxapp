@@ -74,16 +74,23 @@
   margin-left: 1rem;
 }
 .promotion-description {
-  font-size: 32rpx;
+  height: 60rpx;
+  line-height: 30rpx;
+  width: 256rpx;
+  font-size: 30rpx;
   font-weight: normol;
   color: #333333;
   margin-bottom: 10rpx;
-  max-width:400rpx;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  max-width: 400rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
 }
 
+.higher {
+  margin-bottom: 25rpx;
+}
 .left-part {
   padding: 66rpx 15rpx 66rpx 30rpx;
   display: flex;
@@ -160,7 +167,7 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
 .list-item-deal {
   color: #333;
   font-size: 28rpx;
-  margin-left: 0.3rem;
+  margin-left: 0.15rem;
 }
 
 .list-item-deal .deal-num {

@@ -108,7 +108,7 @@ page {
     color: #7ED321;
 }
 .panel .panel-bd .tt {
-    width: 100%;
+    width: 80%;
     overflow: hidden;
     text-overflow: ellipsis;
     margin-top: 30rpx;

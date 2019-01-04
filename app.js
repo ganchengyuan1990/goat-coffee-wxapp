@@ -1,4 +1,6 @@
 //app.js
+const ald = require('./utils/sdk/ald-stat.js')
+
 App({
   onLaunch: function () {
     // 展示本地存储能力

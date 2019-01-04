@@ -45,6 +45,7 @@ Page({
     }).then(data => {
       let result = data.data;
       result.forEach(element => {
+        // element.couponBref = '21123123123';
         if (element.coupon.availabileStartTime) {
           element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0]
         }

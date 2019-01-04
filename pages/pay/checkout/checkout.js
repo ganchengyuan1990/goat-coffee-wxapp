@@ -59,11 +59,17 @@ Page({
     remark: '',
     userAddressId: 0,
     getTime: '',
-    waitProcessTime: ''
+    waitProcessTime: '',
+    fromTransportIndex: -1
   },
   onLoad: function (options) {
 
     // options.tab = 'delivery';
+
+    wx.showLoading({
+      title: 'Loading...', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+    });
 
     this.dealOptions(options);
 
@@ -128,7 +134,7 @@ Page({
         let list = data.data;
         wx.setStorageSync('addressList', list);
         this.setData({
-          checkedExpress: list[0] || {}
+          checkedExpress: list[this.data.fromTransportIndex || 0] || {}
         });
       }
     })
@@ -164,6 +170,10 @@ Page({
       } else {
         
       }
+      wx.hideLoading({
+        title: 'Loading...', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+      });
     })
   },
 
@@ -260,7 +270,8 @@ Page({
         options: options,
         product: product,
         payAmount: payAmount,
-        tab: items.tab
+        tab: items.tab,
+        fromTransportIndex: parseInt(items.fromTransportIndex)
       });
       if (this.data.tab === 'delivery') {
         this.chooseExpress();
@@ -421,7 +432,12 @@ Page({
   },
 
   submit () {
-    let userAddressId = this.data.options.userAddressId;
+    wx.showLoading({
+      title: 'Loading...', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
+    let userAddressId = this.data.options.userAddressId || this.data.fromTransportIndex;
     if (!userAddressId && this.data.chooseExpress) {
       if (wx.getStorageSync('addressList') && wx.getStorageSync('addressList')[0]  && wx.getStorageSync('addressList')[0].id) {
         userAddressId = wx.getStorageSync('addressList')[0].id

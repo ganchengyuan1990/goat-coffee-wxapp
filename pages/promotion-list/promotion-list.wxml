@@ -55,14 +55,15 @@
 
           <view class='right-part'>
             <view class="list-item-name">
-              <text class="promotion-description">{{item.voucher.voucherName}}</text>
+              <view class="promotion-description {{item.voucher && item.voucher.availabileStartTime ? '' : 'higher'}}">{{item.voucher.voucherName}}</view>
+              <!-- <text class="promotion-description">{{item.voucher.voucherName}}</text> -->
               <text class="promotion-limit-tip"></text>
               <text class="promotion-limit-tip">{{item.voucher.availabileStartTime}} - {{item.voucher.availabileEndTime}}</text>
             </view>
           </view>
 
           <view class="coupon-right">
-            <image src="../../images/coffee_cup_2@2x.png" />
+            <image src="../../../images/coffee_cup_2@2x.png" />
           </view>
           
         </label>
@@ -72,7 +73,7 @@
 
 
     <view class="no_coupon_wrapper" wx:if="{{activedItems.length === 0}}">
-      <image class='no_coupon' src="../../images/no_coupon.png" />
+      <image class='no_coupon' src="../../../images/no_coupon.png" />
     </view>
 
     <!-- <view class="group">

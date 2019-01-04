@@ -68,17 +68,23 @@
 }
 
 .promotion-description {
+    height: 60rpx;
+    line-height: 30rpx;
     width: 256rpx;
-    font-size: 32rpx;
+    font-size: 30rpx;
     font-weight: normol;
     color: #333333;
-    margin-bottom: 10rpx;
+    margin-bottom: 0rpx;
     max-width: 400rpx;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     overflow: hidden;
 }
 
+.higher {
+    margin-bottom: 25rpx;
+}
 .left-part {
     flex: none;
     padding: 66rpx 15rpx 66rpx 30rpx;

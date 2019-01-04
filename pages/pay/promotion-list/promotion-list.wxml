@@ -21,21 +21,22 @@
 
             <view class="list-item-deal {{item.coupon.couponType === 2 ? 'no_margin_left' : ''}}">
               <label class="deal-icon"></label>
-              <label class="deal-num" wx:if="{{item.type === 1}}">{{item.tCoreCoupon.discount}}折</label>
+              <label class="deal-num" wx:if="{{item.type === 1}}">{{item.tCoreCoupon.discount}}<text style="font-size:28rpx;">折</text></label>
               <label class="deal-num" wx:if="{{item.type === 2}}"><text class='money'>￥</text>{{item.tCoreCoupon.discount}}</label>
             </view>
           </view>
 
           <view class='right-part'>
             <view class="list-item-name">
-              <text class="promotion-description">{{item.tCoreCoupon.couponName}}</text>
+              <view class="promotion-description {{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime || item.tCoreCoupon.couponBref ? '' : 'higher'}}">{{item.tCoreCoupon.couponName}}</view>
+              <!-- <text class="promotion-description">{{item.tCoreCoupon.couponName}}</text> -->
               <text class="promotion-limit-tip">{{item.tCoreCoupon.couponBref}}</text>
               <text class="promotion-limit-tip" wx:show="{{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime && item.tCoreCoupon.availabileEndTime}}">{{item.tCoreCoupon.availabileStartTime}} - {{item.tCoreCoupon.availabileEndTime}}</text>
             </view>
           </view>
 
           <view class="coupon-right">
-            <image src="../../images/coffee_cup_2@2x.png" />
+            <image src="../../../images/coffee_cup_2@2x.png" />
           </view>
           
         </label>
@@ -57,14 +58,14 @@
 
           <view class='right-part'>
             <view class="list-item-name">
-              <text class="promotion-description">{{item.tCoreVoucher.voucherName}}</text>
+              <view class="promotion-description {{item.tCoreVoucher && item.tCoreVoucher.availabileStartTime ? '' : 'higher'}}">{{item.tCoreVoucher.voucherName}}</view>
               <text class="promotion-limit-tip"></text>
               <text class="promotion-limit-tip" wx:if="{{item.tCoreVoucher && item.tCoreVoucher.availabileStartTime && item.tCoreVoucher.availabileEndTime}}">{{item.tCoreVoucher.availabileStartTime}} - {{item.tCoreVoucher.availabileEndTime}}</text>
             </view>
           </view>
 
           <view class="coupon-right">
-            <image src="../../images/coffee_cup_2@2x.png" />
+            <image src="../../../images/coffee_cup_2@2x.png" />
           </view>
           
         </label>

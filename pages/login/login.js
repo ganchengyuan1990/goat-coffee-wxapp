@@ -79,7 +79,16 @@ Page({
                 this.setData({
                     phoneCode: data.data.code
                 });
-            })
+            }).catch(e => {
+                wx.showModal({
+                  title: '提示', //提示的标题,
+                  content: e, //提示的内容,
+                  showCancel: false, //是否显示取消按钮,
+                  cancelColor: '#000000', //取消按钮的文字颜色,
+                  confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                  confirmColor: '#3CC51F', //确定按钮的文字颜色
+                });
+            });
         }
     },
 

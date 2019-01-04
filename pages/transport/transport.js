@@ -121,7 +121,8 @@ Page({
       type: this.data.showSelfGet ? 'selftaking' : 'deliver',
       detail: {
         detail: this.data.searchSuggest[parseInt(e.currentTarget.dataset.idx)]
-      }
+      },
+      idx: parseInt(e.currentTarget.dataset.idx)
     }
     wx.switchTab({
       url: `/pages/store/store`
