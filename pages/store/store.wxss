@@ -274,7 +274,7 @@ page {
   color: #fff;
   text-align: center;
   line-height: 30rpx;
-  background-color: #d8d8d8;
+  background-color: #E50113;
 }
 
 .price-wrap .price {
@@ -327,7 +327,6 @@ page {
 }
 .icon-crown {
   display: inline-block;
-
   vertical-align: bottom;
   width: 36rpx;
   height: 30rpx;
