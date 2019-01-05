@@ -52,7 +52,7 @@
       <scroll-view scroll-y scroll-with-animation scroll-into-view="{{viewToNav}}" style="height:{{listHeight}}px">
         <view class="list-nav-item {{activeIndex==index?'active':''}}" wx:for="{{menuList}}" wx:key="item.id" bindtap="selectNav" data-index="{{index}}" data-navid="{{'list'+item.id}}" id="{{'nav'+item.id}}">
           <view class="tt">
-            <view class="icon-crown"></view>
+            <!-- <view class="icon-crown"></view> -->
             {{item.name}}
           </view>
         </view>
