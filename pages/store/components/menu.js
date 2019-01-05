@@ -14,6 +14,10 @@ Component({
       type: Object,
       value: {}
     },
+    salesTotalPrice: {
+      type: Number,
+      value: 0
+    },
     isShow: {
       type: Boolean,
       value: false,

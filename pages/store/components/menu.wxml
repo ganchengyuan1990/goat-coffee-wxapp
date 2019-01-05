@@ -48,7 +48,14 @@
           <view class="ft">
               <view class="counter-wrap">
                   <view class="price-wrap">
-                      <view class="price">￥{{totalPrice}}</view>
+                      <view class="price" wx:if="{{!salesTotalPrice}}">
+                        ￥{{totalPrice}}
+                        <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
+                      </view>
+                      <view class="price" wx:if="{{salesTotalPrice}}">
+                        ￥{{totalPrice}}
+                        <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
+                      </view>
                       <view class="desc">{{customed}}</view>
                   </view>
                   <view class="counter">

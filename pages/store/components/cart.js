@@ -30,6 +30,10 @@ Component({
     isCartPanelShow: {
       type: Boolean,
       value: false
+    }, 
+    salesTotalPrice: {
+      type: Number,
+      value: 0
     },
     isSelfTaking: {
       type: Boolean,
@@ -70,7 +74,7 @@ Component({
       let idx = e.currentTarget.dataset.idx
       let info = this.data.info
       let count = info[idx].count
-      let price = info[idx].sale_price
+      let price = info[idx].sale_price || info[idx].price
       count++
       info[idx].count = count
       info[idx].totalPrice = BN(price).multipliedBy(count).valueOf()
@@ -83,7 +87,7 @@ Component({
       let idx = e.currentTarget.dataset.idx
       let info = this.data.info
       let count = info[idx].count
-      let price = info[idx].sale_price
+      let price = info[idx].sale_price || info[idx].price
       count--
       if (count > 0) {
         info[idx].count = count
@@ -98,11 +102,14 @@ Component({
     */
     clearCart() {
       this.saveCart([])
+      this.setData({
+        salesTotalPrice: 0
+      })
     },
     saveCart(info) {
       this.triggerEvent('save', {
         cartList: info
-      })
+      });
     },
     checkDeliverFee(totalPrice=0, idList = [], rules=[]) {
       let isNeedFee = true

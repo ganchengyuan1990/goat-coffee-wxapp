@@ -12,7 +12,7 @@
   <view class="cart-wrap">
       <view class="cart-entry" bindtap="toggleCart" >
           <view class="tt">去结算</view>
-          <view class="price">￥{{cartTotalPrice}}</view>
+          <view class="price">￥{{salesTotalPrice || cartTotalPrice}}</view>
       </view>
       <!-- <view class="panel cart-panel" wx:if="{{isCartPanelShow}}"> -->
       <view class="panel cart-panel {{isCartPanelShow ? 'active' : ''}}">
@@ -48,7 +48,8 @@
               <view class="ft">
                   <view class="total">
                       合计
-                      <text class="price">￥{{cartTotalPrice}}</text>
+                      <text class="price {{salesTotalPrice > 0 ? 'line-through' : ''}}">￥{{cartTotalPrice}}</text>
+                      <text style="color: #F63; font-size: 44rpx;margin-left: 10rpx;" wx:if="{{salesTotalPrice > 0}}">￥{{salesTotalPrice}}</text>
                   </view>
                   <view class="btn-check" bind:tap="checkout">去结算</view>
               </view>

@@ -104,6 +104,7 @@
   </view>
   <view bind:touchstart="handleTouchStart" catch:touchend="handleTouchEnd" catch:touchmove="handleTouchMove">
     <cart 
+      salesTotalPrice="{{resultPrice}}"
       isCartPanelShow="{{isCartPanelShow}}" 
       info="{{cartList}}" 
       fee="{{storeInfo.deliverFee}}" 
@@ -113,6 +114,7 @@
       bind:togglecart="toggleCart"
       bind:save="saveCart"></cart>
     <menu-wrap 
+      salesTotalPrice="{{resultPrice}}"
       info="{{currentSpecific}}" 
       isShow="{{isCatePanelShow}}" 
       bind:togglemenu="toggleSpecific" 

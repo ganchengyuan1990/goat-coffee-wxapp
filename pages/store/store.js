@@ -45,7 +45,9 @@ Page({
 		isLoadStorageCart: true,
 		actImage: '',
 		isActWrapShow: false,
-		fromTransport: ''
+		fromTransport: '',
+		products: [],
+		resultPrice: 0
 	},
 
 	/**
@@ -181,6 +183,24 @@ Page({
 			}
 		})
 	},
+
+
+	getBestCouponByProduct() {
+		model(`home/coupon/get-best-coupon-by-product`, {
+			uid: wx.getStorageSync('token').user.id,
+			list: this.data.products
+		}).then(data => {
+			let {resultPrice} = data.data;
+			if (data.data && data.data.discountPrice > 0) {
+				this.setData({
+					resultPrice: resultPrice
+				})
+			}
+		}).catch(e => {
+			debugger
+		});
+	},
+
 	/**
 	 * 选择地址后重加载
 	 */
@@ -414,6 +434,7 @@ Page({
 		let arr = this.data.cartList
 		arr = arr.concat(remainList)
 		this.mergeCart(arr)
+		this.getBestPaySolution();
 	},
 	calculateHeight() {
 		let heigthArr = [];
@@ -476,7 +497,7 @@ Page({
 		this.setData({
 			currentSpecific: detail
 		})
-		this.toggleSpecific()
+		this.toggleSpecific();
 	},
 	toggleSpecific() {
 		let isShow = this.data.isCatePanelShow
@@ -503,6 +524,7 @@ Page({
 		let cart = e.detail.cartList
 		if (e.detail) {
 			this.mergeCart(cart)
+			this.getBestPaySolution();
 		}
 	},
 	addCart(e) {
@@ -515,6 +537,7 @@ Page({
 			cart.push(e.detail)
 		}
 		this.mergeCart(cart)
+		this.getBestPaySolution();
 	},
 	toggleCart() {
 		let isShow = this.data.isCartPanelShow
@@ -678,6 +701,45 @@ Page({
 			data: JSON.stringify(arr)
 		})
 	},
+
+	/**
+	 * 实时获取最优下单方案
+	 */
+	getBestPaySolution () {
+		let _cartList = Object.assign(this.data.cartList)
+		let products = _cartList.map(item => {
+			let skuList = item.sku_list
+			let obj = skuList.find(item => item.isdefault === 1) || {}
+			let propList = item.key_list
+			let propIds = []
+			propList.forEach(i => {
+				let idObj = i.val_list.find(j => {
+					return parseInt(j.id) === parseInt(i.default_val_id)
+				})
+
+				if (idObj) {
+					propIds.push(idObj.prop_id)
+				}
+			})
+			return Object.assign({}, {
+				productName: item.productName,
+				productId: item.id,
+				skuId: obj.id,
+				skuName: obj.propSkuName,
+				number: item.count,
+				price: obj.sale_price,
+				productPropIds: propIds.join(','),
+				spec: item.spec,
+				num: item.count,
+				// totalPrice: item.count * obj.sale_price
+			})
+		})
+		this.setData({
+			products: products
+		})
+		this.getBestCouponByProduct();
+	},
+
 	/**
 	 * 滑动关闭功能
 	 */
