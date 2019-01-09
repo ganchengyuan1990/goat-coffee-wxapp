@@ -1,3 +1,6 @@
 {
-      "navigationBarTitleText": "支付成功"
+      "navigationBarTitleText": "随机大包花落谁家",
+      "usingComponents": {
+            "toast": "../../../components/toast/toast"
+      }
 }

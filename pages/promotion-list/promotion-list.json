@@ -1,8 +1,0 @@
-{
-    "navigationBarTitleText": "促销活动列表",
-    "backgroundColor": "#181818",
-    "backgroundTextStyle": "light",
-    "usingComponents": {
-        "promotion": "../../../components/promotion/promotion"
-    }
-}

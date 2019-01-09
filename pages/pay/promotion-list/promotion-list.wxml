@@ -21,8 +21,8 @@
 
             <view class="list-item-deal {{item.coupon.couponType === 2 ? 'no_margin_left' : ''}}">
               <label class="deal-icon"></label>
-              <label class="deal-num" wx:if="{{item.type === 1}}">{{item.tCoreCoupon.discount}}<text style="font-size:28rpx;">折</text></label>
-              <label class="deal-num" wx:if="{{item.type === 2}}"><text class='money'>￥</text>{{item.tCoreCoupon.discount}}</label>
+              <label class="deal-num" wx:if="{{item.tCoreCoupon.couponType === 1}}">{{item.tCoreCoupon.discount}}<text style="font-size:28rpx;">折</text></label>
+              <label class="deal-num" wx:if="{{item.tCoreCoupon.couponType === 2}}"><text class='money'>￥</text>{{item.tCoreCoupon.saveAmount}}</label>
             </view>
           </view>
 

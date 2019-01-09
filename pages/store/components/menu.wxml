@@ -5,7 +5,7 @@
           <view class="hd">
               <view class="tt">
                   <view class="cn">{{info.productName}}</view>
-                  <view class="en">{{info.brief}}</view>
+                  <view class="en" wx:if="{{info.brief}}">{{info.brief}}</view>
               </view>
               <view class="fig">
                 <image src="{{info.icon}}" mode="aspectFill" class="img-caption"></image>
@@ -48,11 +48,11 @@
           <view class="ft">
               <view class="counter-wrap">
                   <view class="price-wrap">
-                      <view class="price" wx:if="{{!salesTotalPrice}}">
+                      <view class="price" wx:if="{{salesTotalPrice < 0}}">
                         ￥{{totalPrice}}
                         <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
                       </view>
-                      <view class="price" wx:if="{{salesTotalPrice}}">
+                      <view class="price" wx:if="{{salesTotalPrice > -1}}">
                         ￥{{totalPrice}}
                         <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
                       </view>

@@ -47,7 +47,7 @@ Page({
 		isActWrapShow: false,
 		fromTransport: '',
 		products: [],
-		resultPrice: 0
+		resultPrice: -1
 	},
 
 	/**
@@ -659,6 +659,7 @@ Page({
 			success() {
 				self.setData({
 					cartList: [],
+					resultPrice: -1,
 					isLoadStorageCart: true
 				})
 			}
@@ -736,8 +737,10 @@ Page({
 		})
 		this.setData({
 			products: products
-		})
-		this.getBestCouponByProduct();
+		});
+		if (wx.getStorageSync('token') && wx.getStorageSync('token').user) {
+			this.getBestCouponByProduct();
+		}
 	},
 
 	/**
@@ -785,48 +788,86 @@ Page({
 		})
 	},
 	checkSaveUser() {
+		let self = this;
 		let token = wx.getStorageSync('token')
-		let userName = ''
+		let userName = '';
+		let avatar = '';
 		if (!token) {
 			return
 		}
 		try {
 			let userInfo = token.user
+			avatar = userInfo.avatar;
 			userName = userInfo.userName
 		} catch(e) {
 			console.log(e);
 		}
-		if (userName) {
+		if (userName && avatar) {
 			return
 		}
 		let info = wx.getStorageSync('personal_info')
 		if (!info) {
 			return
 		}
-		const { nickName, gender } = info
-		model('my/user/update-user', {
-			userName: nickName,
-			sex: gender
+		// const { nickName, gender } = info
+		const {
+			avatarUrl,
+			nickName,
+			gender
+		} = info
+		model('file/qiniu/fetch', {
+			sourceUrl: avatarUrl
 		}, 'POST').then(res => {
-			console.log(res);
-			if (res.code === 'suc') {
-				this.updateCurrentInfo(nickName, gender)
+			const {
+				code,
+				data
+			} = res
+			if (code === 'suc') {
+				let {
+					key,
+					url
+				} = data
+				if (key) {
+					let _param = {};
+					if (nickName) {
+						_param.userName = nickName
+					}
+					if (gender) {
+						_param.sex = gender
+					}
+					if (key) {
+						_param.avatar = key
+					}
+					model('my/user/update-user', _param, 'POST').then(res => {
+						console.log(res);
+						if (res.code === 'suc') {
+							self.updateCurrentInfo(nickName, gender, url)
+						}
+					}).catch(e => {
+						console.log(e, '[exception]: my/user/update-user');
+					})
+				}
 			}
-		}).catch(e => {
-			console.log(e, '[exception]: my/user/update-user');
-		})
+		});
 	},
-	updateCurrentInfo(nickName, gender) {
-		if (!nickName) {
+	updateCurrentInfo(nickName, gender, avatar) {
+		if (!nickName && !gender && !avatar) {
 			return
 		}
 		try {
 			let token = wx.getStorageSync('token')
 			let userInfo = token.user
-			token.user = Object.assign(userInfo, {
-				userName: nickName,
-				sex: gender
-			})
+			let newParam = {};
+			if (nickName) {
+				newParam.userName = nickName
+			}
+			if (gender) {
+				newParam.sex = gender
+			}
+			if (avatar) {
+				newParam.avatar = avatar
+			}
+			token.user = Object.assign(userInfo, newParam)
 			wx.setStorageSync('token', token)
 		} catch (e) {
 			console.log(e);

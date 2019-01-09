@@ -6,7 +6,7 @@
         <text class="title">可用促销优惠（{{activedItems.length}}）</text>
       </view> -->
             <checkbox-group class="radio-group">
-                <label wx:for="{{couponItems}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" class="list-item">
+                <label wx:for="{{couponItems}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" class="list-item" bindtap="goStore">
                     <view class='cover-top'></view>
                     <view class='cover-bottom'></view>
                     <view class='left-part'>
@@ -34,7 +34,7 @@
                         <image src="../../../images/coffee_cup_2@2x.png" />
                     </view>
                 </label>
-                <label wx:for="{{voucherItems}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" class="list-item">
+                <label wx:for="{{voucherItems}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" class="list-item" bindtap="goStore">
                     <view class='cover-top'></view>
                     <view class='cover-bottom'></view>
                     <view class='left-part'>

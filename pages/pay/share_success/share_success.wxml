@@ -1,48 +1,127 @@
 <view class="container">
   <view class="success-container">
-    <view class="success-form">
-      <view class="coupon-left">
-        <view class="coupon-sn">恭喜你获得一张咖啡券</view>
-        <view class="coupon-sn gray">满25减10</view>
+    <view class="image_wrapper">
+      <image src="../../../images/share/banner.jpeg" style="height: 430rpx;"/>
+      <!-- <view class="money">
+        {{randRedEnvelopeActivitys[0] && randRedEnvelopeActivitys[0].name}}
+      </view> -->
+      <view class="money">
+        {{randRedEnvelopeActivity.name}}
+      </view>
+      
+    </view>
+    <view class="ready_wrapper" wx:if="{{auth}}">
+      <image class='ready' src="../../../images/share/already-get.png" />
+      <image class='red-pack' src="../../../images/share/red-pack.png" />
+      <view wx:if="{{phone}}"  class="phone">{{phone}}</view>
+      <view class="success-form" wx:if="{{rRandredenvelopeactUser.coupon}}">
+        <view class="coupon-left">
+          <view class="coupon-sn red not_long" style="max-width: 400rpx;">{{rRandredenvelopeactUser.coupon && rRandredenvelopeactUser.coupon.coupon_name}}</view>
+          <view class="coupon-sn gray left not_long">{{rRandredenvelopeactUser.coupon && rRandredenvelopeactUser.coupon.coupon_bref}}</view>
+        </view>
+        <view class="coupon-right">
+          <view class="coupon-sn red no_margin">{{rRandredenvelopeactUser.coupon && rRandredenvelopeactUser.coupon.voucher_cash}}<text>元</text></view>
+        </view>
+      </view>
+       <view style="width: 100%;position: absolute;top: 30rpx;" wx:if="{{!rRandredenvelopeactUser.coupon}}">
+        <view class="red" style="margin-top: 80rpx;  text-align: center;">
+          {{toastInfo}}
+        </view>
+      </view>
+      <view class="success-form" wx:if="{{!rRandredenvelopeactUser.coupon && !loading}}">
+        <view class="fail_mention">下次早点来哦！</view>
       </view>
 
-      <view class="coupon-right">
-        <image src="../../../images/coffee_cup_2@2x.png" />
+      <view class="share_button to_use" bindtap="goStore">立即使用
+      </view>
+      <button class="share_button" open-type="share">分享好友
+      </button>
+    </view>
+
+    <view class="login_wrapper" wx:if="{{!auth}}">
+      <image class='login_ready' src="../../../images/share/ready-to-get.png" />
+      <view class="section_wrapper">
+        <view class="section {{showButtonLineName ? 'tapped' : ''}}">
+                        <!-- <view >用户名</view> -->
+            <input name="username" type='number' placeholder="请输入手机号码" auto-focus bindinput="dealPhone" bindtap="dealTapPhone"/>
+        </view>
+        <view class="section {{showButtonLinePhone ? 'tapped' : ''}}" style="margin-bottom: 20rpx;">
+            <!-- <view >密码</view> -->
+            <input type='number' name="password" placeholder="请输入验证码"  bindinput="dealVerify" bindtap="dealTapVerify"/>
+            <button class="getVerify {{canGetVerify ? 'black' : ''}}" open-type="getUserInfo"
+            bindgetuserinfo="getUserInfo" wx:if="{{!showSeconds && canGetVerify}}">获取验证码</button>
+            <button class="getVerify {{canGetVerify ? 'black' : ''}}" open-type="getUserInfo"
+            bindgetuserinfo="getUserInfo" wx:if="{{!canGetVerify}}" disabled>获取验证码</button>
+            <view class='getVerify' wx:if="{{showSeconds}}">{{leftSeconds}}秒</view> 
+        </view>
+        <view class="btn-area">
+            <view class="button {{actived ? 'actived' : ''}}" bindtap='register'>立即领取</view>
+        </view>
       </view>
     </view>
+
+    
+    
   </view>
 
-  <view class="success-container">
-    <view class="go-button" bindtap="goStore">
-      去喝一杯
+  <view class="share-list-wrapper topper" wx:if="{{auth}}">
+    <view class="coupon-title" style="margin-bottom: 0rpx;">
+      <image class="coupon_all" src="../../../images/share/all.png"></image>
     </view>
+    <view wx:for="{{rRandredenvelopeactUsers}}" wx:key="index">
+      <view class="share-list" >
+        <image class="avatar" src="{{item.user.avatar}}"></image>
+        <view class="nickname">
+          <view class='user_name'>{{item.user.name}}</view>
+          <view>{{item.create_time}}</view>
+        </view>
+        <view class="coupon-sn coupon-sn-money">{{item.coupon.voucher_cash}}元</view>
+      </view>
+      <view class="coupon-line"></view>
+    </view>
+
+    <!-- <view class="share-list">
+      <image class="avatar" src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJTA5BZT4zapIOo2G2QRAibsDpSQ42iaicxBibKyXxCjUBxia6DSkumtpbKHicTOw0ZstDdUeNiaACSQAprw/0"></image>
+      <view class="nickname">
+        <view>刘镇</view>
+        <view>2019-01-06</view>
+      </view>
+      <view class="coupon-sn coupon-sn-money">10元</view>
+    </view>
+    <view class="coupon-line"></view> -->
+
+    <view class="mention" wx:if="{{rRandredenvelopeactUsers.length < 7}}">
+      最佳手气尚未出现，稍候揭晓~
+    </view>
+
   </view>
 
-  <view class="coupon-title">
-    <view>
-      共9份，已领取2份
+  <view class="share-list-wrapper">
+    <view class="coupon-title">
+      <image class="coupon_all" src="../../../images/share/activity.png"></image>
     </view>
-    <view class='title-right'>
-      邀请好友一起领券
+
+    <view class="coupon-content">
+      <view>1. 下单即可分享红包给好友或者微信群；</view>
+      <view>2. 每个分享红包链接仅限7人领取；</view>
+      <view>3. 每个分享红包链接会按照领取顺序发放一个随机面额的大额红包，最高可达12元；</view>
+      <view>4. 每人每天有3次领取红包机会；</view>
+      <view>5. 红包仅限在线支付使用，且收餐人手机号,领取红包时输入的手机号和账号中的手机号需为同一手机号；</view>
+      <view>6. 红包可以与折扣商品优惠叠加使用，不可与其他优惠券叠加使用；</view>
+      <view>7. 红包可以在山羊咖啡小程序中全场使用；</view>
+      <view>8. 其他未尽事宜，请咨询客服18684817543。</view>
     </view>
+
   </view>
 
-  <view class="share-list">
-    <view class="user-info">
-      <view class="avatar">sdsd</view>
-      <view class="nickname">123</view>
+
+  <toast wx:if="{{errorToast}}" is-show="{{errorToast}}" title="{{toastInfo}}" disappear-sec="3"></toast>
+
+
+  <view class="go_back" bindtap="goStore">
+      <text>回首页</text>
     </view>
-    <view class="coupon-info">
-      <view class="coupon-sn">10元券</view>
-    </view>
-  </view>
-  <view class="share-list">
-    <view class="user-info">
-      <view class="avatar">sdsd</view>
-      <view class="nickname">123</view>
-    </view>
-    <view class="coupon-info">
-      <view class="coupon-sn">10元券</view>
-    </view>
-  </view>
 </view>
+
+
+

@@ -33,7 +33,7 @@ Component({
     }, 
     salesTotalPrice: {
       type: Number,
-      value: 0
+      value: -1
     },
     isSelfTaking: {
       type: Boolean,
@@ -103,7 +103,7 @@ Component({
     clearCart() {
       this.saveCart([])
       this.setData({
-        salesTotalPrice: 0
+        salesTotalPrice: -1
       })
     },
     saveCart(info) {

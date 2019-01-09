@@ -16,7 +16,7 @@ Component({
     },
     salesTotalPrice: {
       type: Number,
-      value: 0
+      value: -1
     },
     isShow: {
       type: Boolean,

@@ -4,11 +4,12 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"autoAudits": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.4.0",
@@ -33,7 +34,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 14,
+			"current": 21,
 			"list": [
 				{
 					"id": -1,
@@ -160,6 +161,12 @@
 					"name": "index",
 					"pathName": "pages/index/index",
 					"query": "price=0"
+				},
+				{
+					"id": 21,
+					"name": "share_success客态",
+					"pathName": "pages/pay/share_success/share_success",
+					"query": "id=1&redPackId=1085"
 				}
 			]
 		}

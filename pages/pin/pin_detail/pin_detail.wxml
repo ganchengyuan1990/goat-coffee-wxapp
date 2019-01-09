@@ -1,4 +1,4 @@
-<view class="index-container">
+<scroll-view scroll-y scroll-with-animation class="index-container">
     <!-- <view class='img_wrapper'>
         <image src="{{lesson.img}}" class="image"/>
     </view> -->
@@ -8,7 +8,7 @@
         autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
         <block class='img_wrapper'>
             <swiper-item>
-                <image src="{{detailInfo.groupIcon}}" class="image" lazy-load='true'/>
+                <image src="{{detailInfo.groupIcon}}" class="image" lazy-load='true' mode="aspectFill"/>
             </swiper-item>
         </block>
     </swiper>
@@ -36,9 +36,9 @@
                 {{orderInfoArr.length}}人在拼团，可直接参与
             </view>
             <view class="pin_order" wx:for="{{orderInfoArr}}" wx:key="{{index}}">
-                <image class="avatar" src="{{item.userAvatar}}" lazy-load='true'/>
+                <image class="avatar" src="{{item.userAvatar}}" lazy-load='true' mode="aspectFill"/>
                 <view class='go_pin'>
-                    <text class="normal">{{item.userName}}</text>
+                    <text class="normal" style="max-width: 250rpx;">{{item.userName}}</text>
                 </view>
                 <view class='go_pin righter'>
                     <text class="normal left_time}}">还差一人</text>
@@ -50,7 +50,7 @@
 
         <view class='intro'>
             <view class="subtitle">商品详情：</view>
-            <view class='intro_detail' wx:for="{{detailInfo.imgs}}" wx:key="index"><image src="{{item}}"/></view>
+            <view class='intro_detail' wx:for="{{detailInfo.imgs}}" wx:key="index"><image src="{{item}}" mode="aspectFill"/></view>
             <!-- <view style="font-size: 28rpx; color: #a9a9a9;">{{detailInfo.groupBrief}}</view> -->
             <rich-text nodes="{{detailInfo.groupBrief}}"></rich-text>
         </view>
@@ -122,5 +122,5 @@
             </view>
         </view>
     </view>
-</view>
+</scroll-view>
 

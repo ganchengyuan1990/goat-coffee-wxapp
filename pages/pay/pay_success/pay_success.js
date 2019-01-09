@@ -34,6 +34,12 @@ Page({
         });
     },
 
+    goRedPack () {
+        wx.redirectTo({
+            url: '/pages/pay/share_success/share_success'
+        });
+    },
+
     goIndex () {
         wx.switchTab({
             url: '/pages/order/list/list'

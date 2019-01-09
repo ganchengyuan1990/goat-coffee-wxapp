@@ -77,5 +77,9 @@ Page({
         voucherItems: data.data
       })
     })
+  },
+
+  goStore () {
+    wx.switchTab({ url: '/pages/store/store' });
   }
 })

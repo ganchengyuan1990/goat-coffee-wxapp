@@ -195,3 +195,7 @@
 .line-through{
     text-decoration: line-through;
 }
+
+.small_line {
+    font-size: 28rpx;
+}
