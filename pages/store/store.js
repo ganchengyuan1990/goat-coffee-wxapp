@@ -693,7 +693,13 @@ Page({
 				obj[key] = item
 			}
 		})
-		let arr = Object.values(obj)
+		// let arr = Object.values(obj)
+		let arr = []
+		for(let i in obj) {
+			if (obj[i]) {
+				arr.push(obj[i])
+			}
+		}
 		this.setData({
 			cartList: arr
 		})
