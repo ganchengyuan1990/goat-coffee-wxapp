@@ -15,6 +15,10 @@ page{
     padding-top: 21px;
 }
 
+.no_use {
+    background: #eee !important;
+}
+
 .protocol {
     background: #fff;
     height: 80rpx;

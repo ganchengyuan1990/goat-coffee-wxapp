@@ -517,7 +517,11 @@ Page({
       this.setData({
         errorToast: true,
         toastInfo: e
-      })
+      });
+      wx.hideLoading({
+        title: 'Loading...', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+      });
       // wx.navigateTo({
       //   url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
       // });
@@ -542,7 +546,9 @@ Page({
         }
       });
     } else {
-      this.submit();
+      if (this.data.checkedExpress.id) {
+        this.submit();
+      }
     }
 }
 })

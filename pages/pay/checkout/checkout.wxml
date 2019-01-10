@@ -192,7 +192,7 @@
             <text>合计</text>
             <text class='price'>￥{{actualPrice}}</text>
         </view>
-        <view class="r" bindtap="submitOrder">去结算</view>
+        <view class="r {{chooseExpress && !checkedExpress.id ? 'no_use' : ''}}" bindtap="submitOrder">去结算</view>
     </view>
 
     <toast wx:if="{{errorToast}}" is-show="{{errorToast}}" title="{{toastInfo}}" disappear-sec="3"></toast>
