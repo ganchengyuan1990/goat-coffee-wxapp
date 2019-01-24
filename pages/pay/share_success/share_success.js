@@ -8,6 +8,7 @@ var app = getApp();
 
 Page({
     data: {
+        orderId: '',
         activityId: 1,
         errorToast: false,
         toastInfo: '',
@@ -35,7 +36,8 @@ Page({
             name: '12元红包，随机出没'
         },
         rRandredenvelopeactUser: {},
-        loading: true
+        loading: true,
+        bigSend: false
     },
 
     onShareAppMessage: function (res) {
@@ -43,7 +45,6 @@ Page({
             // 来自页面内转发按钮
             console.log(res.target)
         }
-        debugger
         return {
             title: `最高${parseInt(this.data.randRedEnvelopeActivity.name)}元红包随机出没，手快有，手慢无～`,
             path: `pages/pay/share_success/share_success?id=${this.data.activityId}&redPackId=${this.data.redPackId}`,
@@ -66,6 +67,7 @@ Page({
                 let param = {};
                 param.activityId = parseInt(options.id);
                 param.redPackId = parseInt(options.redPackId);
+                param.orderId = options.orderId;
                 this.setData(param);
             }
             this.setData({
@@ -84,6 +86,7 @@ Page({
                 // this.randRedEnvelopeDetail();
                 // this.attendRandRed();
             } else {
+                param.orderId = options.orderId;
                 this.setData(param);
                 // this.startRandRed();
             }
@@ -170,24 +173,33 @@ Page({
         console.log('startRandRed');
         
         model('home/rand-red-envelope/start', {
-            activityId: 1
+            activityId: 1,
+            orderId: this.data.orderId
         }, 'POST').then(res => {
             console.log(res);
             let result = res.data;
-            let rRandredenvelopeactUser = result.rRandredenvelopeactUser
+            let rRandredenvelopeactUser = result.rRandredenvelopeactUsers[0]
             if (rRandredenvelopeactUser.coupon) {
                 rRandredenvelopeactUser.coupon.voucher_cash = parseInt(rRandredenvelopeactUser.coupon.voucher_cash);
                 this.setData({
+                    bigSend: result.bigSend,
                     randRedEnvelopeActivity: rRandredenvelopeactUser.randredenvelopeActivity,
                     rRandredenvelopeactUsers: [rRandredenvelopeactUser],
                     redPackId: rRandredenvelopeactUser.id,
                     rRandredenvelopeactUser: rRandredenvelopeactUser,
                     loading: false
                 });
-                this.setData({
-                    errorToast: true,
-                    toastInfo: '成功获得优惠券！'
-                });
+                if (result.ifNew) {
+                    this.setData({
+                        errorToast: true,
+                        toastInfo: '成功获得优惠券！'
+                    });
+                } else {
+                    this.setData({
+                        errorToast: true,
+                        toastInfo: '您已领过此优惠券！'
+                    });
+                }
             }
             wx.hideLoading();
         }).catch(e => {

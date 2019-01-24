@@ -90,7 +90,7 @@
     </view>
     <view class="coupon-line"></view> -->
 
-    <view class="mention" wx:if="{{rRandredenvelopeactUsers.length < 7}}">
+    <view class="mention" wx:if="{{!bigSend}}">
       最佳手气尚未出现，稍候揭晓~
     </view>
 

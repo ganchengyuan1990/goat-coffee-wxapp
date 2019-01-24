@@ -505,6 +505,9 @@ Page({
           if (key === 'package') {
             params[key] = params[key].split('=')[1];
           }
+          if (key === 'order') {
+            params[key] = params[key].id;
+          }
           payParamStr += `${key}=${params[key]}&`;
         }
         payParamStr += `price=${this.data.actualPrice}`

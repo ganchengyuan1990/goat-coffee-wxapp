@@ -165,3 +165,21 @@ page {
     /* color: #999; */
     font-weight: bold;
 }
+
+.button {
+    height: 80rpx;
+    width: 300rpx;
+    margin: 0 auto;
+    line-height: 80rpx;
+    background: #fff;
+    font-weight: bold;
+    text-align: center;
+    font-size: 34rpx;
+    border-radius: 0;
+    border-radius: 10rpx;
+    position: absolute;
+    right: 30rpx;
+    bottom: 40rpx;
+    border-radius: 40rpx;
+    color: rgb(245, 65, 67);
+}

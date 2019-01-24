@@ -181,11 +181,16 @@ Page({
                 left: left,
                 time: '即将结束'
             }
+        } else {
+            return {
+                left: left,
+                time: '即将结束'
+            }
         }
-        return {
-            left: left,
-            time: `剩余${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`
-        };
+        // return {
+        //     left: left,
+        //     time: `剩余${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`
+        // };
     },
 
     onShare () {
@@ -221,10 +226,10 @@ Page({
             })
             return
         }
-        this.goAttendPinCallback();
+        this.goAttendPinCallback(e);
     },
 
-    goAttendPinCallback () {
+    goAttendPinCallback (e) {
         let voucherParamArr = [];
         this.data.group_voucher.forEach(item => {
             voucherParamArr.push({

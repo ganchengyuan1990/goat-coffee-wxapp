@@ -9,6 +9,10 @@
             <view class="desc">感谢您的光临</view>
             <view class="order_numer">NO.{{detail.varCode}}</view>
         </view>
+        <view style="position: relative;margin: 10rpx 30rpx;" bindtap="goRedPack">
+            <image src="../../../images/share/hongbao.png" style="width: 100%; height: 350rpx" />
+            <!-- <view class="button">点击抢大红包</view> -->
+        </view>
         <view class="panel order-box">
             <view class="border-line">
                 <view class="order-title border-line">

@@ -7,11 +7,13 @@ var app = getApp();
 
 Page({
     data: {
-        price: 0
+        price: 0,
+        orderId: ''
     },
     onLoad: function (options) {
         this.setData({
-            price: options.price
+            price: options.price,
+            orderId: options.orderId
         })
     },
     onReady: function () {
@@ -36,7 +38,7 @@ Page({
 
     goRedPack () {
         wx.redirectTo({
-            url: '/pages/pay/share_success/share_success'
+            url: `/pages/pay/share_success/share_success?orderId=${this.data.orderId}`
         });
     },
 

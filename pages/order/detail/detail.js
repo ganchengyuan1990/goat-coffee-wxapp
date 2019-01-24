@@ -77,5 +77,11 @@ Page({
       })
     }
 
+  },
+
+  goRedPack () {
+    wx.navigateTo({
+      url: `/pages/pay/share_success/share_success?orderId=${this.data.detail.id}`
+    });
   }
 })

@@ -16,11 +16,13 @@ Page({
         signType: '',
         timeStamp: '',
         price: '',
-        type: 'normal'
+        type: 'normal',
+        orderId: ''
     },
     onLoad: function (option) {
         let openid = wx.getStorageSync('openid');
         this.setData({
+            orderId: option.order,
             appId: option.appId,
             nonceStr: option.nonceStr,
             paySign: option.paySign,
@@ -52,7 +54,7 @@ Page({
                     });
                 } else {
                     wx.redirectTo({
-                        url: `/pages/pay/pay_success/pay_success?price=${self.data.price}`
+                        url: `/pages/pay/pay_success/pay_success?price=${self.data.price}&orderId=${self.data.orderId}`
                     });
                 }
             },
