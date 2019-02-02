@@ -2,10 +2,10 @@
   <view class="success-container">
     <view class="success-form">
       <view class="coupon-sn">
-        <image src="http://pjmdp6xaa.bkt.clouddn.com/upload/1/%E7%84%A6%E7%B3%96%E7%8E%9B%E5%90%89%E5%A4%9A.png" />
+        <image src="http://img.mofafang.cn/upload/1/%E7%84%A6%E7%B3%96%E7%8E%9B%E5%90%89%E5%A4%9A.png" />
       </view>
       <view class="coupon-sn">
-        <view class="title">您有{{list[0].number}}份咖啡券待领取</view>
+        <view class="title">您有{{couponNum}}份咖啡券待领取</view>
         <view class="text">咖啡兑换券直接存入账户，直接兑换指定咖啡</view>
         <view class='info'>
             <view class='text'>¥ 
@@ -76,5 +76,6 @@
       </button>
   </view>
 
+    <toast is-show="{{errorToast}}" title="{{toastInfo}}" disappear-sec="3"></toast>
 
 </view>

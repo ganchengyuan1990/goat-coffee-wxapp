@@ -19,16 +19,31 @@ Page({
     activityId: ''
   },
   onLoad: function (options) {
+    let attendPin = wx.getStorageSync('attend_pin');
+    if (attendPin) {
+      this.setData({
+        goodsTotalPrice: parseInt(attendPin.detailInfo.realAmount),
+        groupName: attendPin.detailInfo.groupName,
+        price: attendPin.detailInfo.realAmount,
+        originalPrice: attendPin.detailInfo.voucherAmount,
+        number: attendPin.detailInfo.maxPeople,
+        isOwner: attendPin.isOwner,
+        activityId: attendPin.orderInfo && attendPin.orderInfo.groupActivity.id
+      });
+    } else {
+      this.setData({
+        goodsTotalPrice: parseInt(options.price),
+        groupName: options.groupName,
+        price: options.price,
+        originalPrice: options.originalPrice,
+        number: options.number,
+        isOwner: options.isOwner,
+        activityId: options.activityId
+      })
+    }
+    wx.removeStorageSync('attend_pin');
 
-    this.setData({
-      goodsTotalPrice: parseInt(options.price),
-      groupName: options.groupName,
-      price: options.price,
-      originalPrice: options.originalPrice,
-      number: options.number,
-      isOwner: options.isOwner,
-      activityId: options.activityId
-    })
+    
 
     // 页面初始化 options为页面跳转所带来的参数
 
@@ -78,6 +93,8 @@ Page({
 
   getCheckoutInfo () {
     let pinOrderInfo = wx.getStorageSync('pinOrderInfo');
+    pinOrderInfo.paramStr = pinOrderInfo.paramStr.replace('*', wx.getStorageSync('token').user.id);
+    pinOrderInfo.paramStr = pinOrderInfo.paramStr.replace('!', wx.getStorageSync('openid'));
     this.setData({
       pinOrderInfo: pinOrderInfo
     })
@@ -148,7 +165,7 @@ Page({
         this.setData({
           errorToast: true,
           toastInfo: e
-        })
+        });
       });
     }
     

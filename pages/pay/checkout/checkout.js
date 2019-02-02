@@ -534,7 +534,7 @@ Page({
     if (this.data.chooseSelf) {
       wx.showModal({
         // title: '提示', //提示的标题,
-        content: `是否确认前往${this.data.checkedAddress.storeName}店自提？订单确认后将无法更改`, //提示的内容,
+        content: `是否确认前往${this.data.checkedAddress.storeName}自提？订单确认后将无法更改`, //提示的内容,
         showCancel: true, //是否显示取消按钮,
         cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
         cancelColor: '#000000', //取消按钮的文字颜色,

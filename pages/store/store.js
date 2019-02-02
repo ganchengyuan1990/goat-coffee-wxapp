@@ -197,7 +197,7 @@ Page({
 				})
 			}
 		}).catch(e => {
-			debugger
+			console.log(e);
 		});
 	},
 

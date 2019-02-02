@@ -227,7 +227,8 @@
     background: rgba(245, 245, 245, 0.5);
     /* height: 100rpx; */
     width: 100%;
-    
+    height: 112rpx;
+    z-index: 20000;
 }
 .bar_item {
     display: flex;
@@ -254,6 +255,7 @@
     font-size: 35rpx;
     text-align: center;
     color: #eee;
+    height: 100%;
 }
 
 .apply {

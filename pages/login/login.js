@@ -41,6 +41,10 @@ Page({
             this.setData({
                 canGetVerify: true
             })
+        } else {
+            this.setData({
+                canGetVerify: false
+            })
         }
     },
 
@@ -67,7 +71,8 @@ Page({
                     })
                 } else {
                     this.setData({
-                        showSeconds: false
+                        showSeconds: false,
+                        leftSeconds: 60
                     });
                     clearInterval(interval);
                 }
@@ -121,14 +126,17 @@ Page({
                     fromLogin: true,
                     pinType: this.data.pinType
                 });
+                // wx.navigateTo({
+                //   url: `/pages/pin/pin_detail/pin_detail?id=${this.data.pinId}&fromLogin=1&pinType=${this.data.pinType}` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                // });
                 wx.navigateTo({
-                  url: `/pages/pin/pin_detail/pin_detail?id=${this.data.pinId}&fromLogin=1&pinType=${this.data.pinType}` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    url: `/pages/pin/checkout/checkout` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                });
+            } else {
+                wx.switchTab({
+                    url: '/pages/store/store'
                 });
             }
-            wx.switchTab({
-                url: '/pages/store/store'
-            });
-            
         })
         
     },

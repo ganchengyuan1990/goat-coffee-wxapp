@@ -1,4 +1,4 @@
-<scroll-view scroll-y scroll-with-animation class="index-container">
+<view scroll-y scroll-with-animation class="index-container">
     <!-- <view class='img_wrapper'>
         <image src="{{lesson.img}}" class="image"/>
     </view> -->
@@ -41,7 +41,7 @@
                     <text class="normal" style="max-width: 250rpx;">{{item.userName}}</text>
                 </view>
                 <view class='go_pin righter'>
-                    <text class="normal left_time}}">还差一人</text>
+                    <text class="normal left_time}}">还差{{detailInfo.maxPeople - item.groupActivity.orderCount}}人</text>
                     <text class='left_time smaller' wx:if="{{item.leftTime}}">{{item.leftTime}}</text>
                 </view>
                 <view type="warn" data-index="{{index}}" class='goPay' catchtap="goAttendPin" >参加拼团</view>  
@@ -122,5 +122,8 @@
             </view>
         </view>
     </view>
-</scroll-view>
+    
+    <toast is-show="{{errorToast}}" title="{{toastInfo}}" disappear-sec="3"></toast>
+
+</view>
 

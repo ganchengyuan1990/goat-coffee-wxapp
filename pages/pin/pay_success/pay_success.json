@@ -1,4 +1,7 @@
 {
   "enablePullDownRefresh": false,
-  "navigationBarTitleText": "拼团支付成功"
+  "navigationBarTitleText": "拼团支付成功",
+  "usingComponents": {
+    "toast": "../../../components/toast/toast"
+  }
 }

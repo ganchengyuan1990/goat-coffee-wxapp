@@ -20,7 +20,8 @@ Page({
         errorToast: false,
         toastInfo: '',
         list: {},
-        end_at: {}
+        end_at: {},
+        couponNum: 0
     },
 
      onShareAppMessage: function (res) {
@@ -29,7 +30,7 @@ Page({
              console.log(res.target)
          }
         return {
-            title: `快来参加拼团啦！`,
+            title: `快来参加我的拼团啦！`,
             path: `pages/pin/pay_success/pay_success?type=3&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&activityId=${this.data.activityId}&list=${JSON.stringify(this.data.list)}`,
             success: function (res) {
                 // 转发成功
@@ -56,17 +57,27 @@ Page({
             type: parseInt(option.type),
             list: JSON.parse(option.list)
         });
+        let couponNum = 0;
+        let list = this.data.list;
+        if (list && list.length > 0) {
+            list.forEach(item => {
+                couponNum += item.number;
+            });
+        }
+        this.setData({
+            couponNum: couponNum
+        });
         model(`group/action/user-list`, {
                 activityId: this.data.activityId
             }, 'POST').then(data => {
                 let groupOrder = data.data.groupOrder;
                 let teamMembers = [];
                 let type = 1; //已支付
-                if (groupOrder.length >= this.data.number) {
-                    type = 2; //已成团
-                }
                 if (this.data.type === 3) {
                     type = 3; //分享，邀请好友下单
+                }
+                if (groupOrder.length >= this.data.number) {
+                    type = 2; //已成团
                 }
                 for (let i = 0; i < this.data.number; i++) {
                     if (groupOrder[i]) {
@@ -95,10 +106,10 @@ Page({
                 }, 1000);
         }).catch(e => {
             let result = data.data
-            // this.setData({
-            //     errorToast: true,
-            //     toastInfo: e
-            // })
+            this.setData({
+                errorToast: true,
+                toastInfo: e
+            })
         });
     },
 
@@ -110,9 +121,9 @@ Page({
         var seconds = parseInt((left - hours * 3600 - minutes * 60));
         return {
             timeObj: {
-                hours: hours ,
-                minutes: minutes,
-                seconds: seconds
+                hours: hours > 9 ? hours : '0' + hours,
+                minutes: minutes > 9 ? minutes : '0' + minutes,
+                seconds: seconds > 9 ? seconds : '0' + seconds
             },
             time: `${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`
         };

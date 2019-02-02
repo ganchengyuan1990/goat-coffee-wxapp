@@ -1,4 +1,7 @@
 {
     "navigationBarTitleText": "提交订单",
-    "enablePullDownRefresh": false
+    "enablePullDownRefresh": false,
+    "usingComponents": {
+        "toast": "../../../components/toast/toast"
+    }
 }

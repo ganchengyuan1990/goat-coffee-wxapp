@@ -6,7 +6,9 @@ import model from '../../../utils/model';
 Page({
     data: {
         pinList: [],
-        id: 0
+        id: 0,
+        errorToast: false,
+        toastInfo: '',
     },
 
     goPinDetail (e) {
@@ -50,8 +52,20 @@ Page({
                 this.setData({
                     pinList: data.data
                 });
+                wx.hideLoading();
             }
-        })
+        }).catch(e => {
+            wx.hideLoading();
+            this.setData({
+                errorToast: true,
+                toastInfo: e
+            });
+        });
+        wx.showLoading({
+          title: 'Loading...', //提示的内容,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {}
+        });
         // array.forEach(item => {
         //     item.discountMoney = Utils.setDataForm(parseFloat(item.discountMoney / 100), 1);
         //     if (item.checked === undefined) {

@@ -21,4 +21,6 @@
     </view>
   </view>
 
+    <toast is-show="{{errorToast}}" title="{{toastInfo}}" disappear-sec="3"></toast>
+
 </view>
