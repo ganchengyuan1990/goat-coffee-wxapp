@@ -609,6 +609,7 @@ Page({
 		let info = this.data
 		let cartList = e.detail.cart
 		let totalPrice = e.detail.totalPrice
+		let isNeedFee = e.detail.isNeedFee
 
 		// console.log(cartList, 'cartList')
 		if (cartList.length === 0) {
@@ -639,7 +640,7 @@ Page({
 				spec: item.spec
 			})
 		})
-		let fee = info.storeInfo.deliverFee
+		let fee = isNeedFee ? info.storeInfo.deliverFee : 0
 		let obj = {
 			storeId: info.storeInfo.id,
 			userAddressId: this.data.userAddressInfo.id || info.userAddressId,
@@ -648,6 +649,7 @@ Page({
 			orderType: info.isSelfTaking ? 2 : 1,
 			product: products
 		}
+		
 		const url = `/pages/pay/checkout/checkout?fromTransportIndex=${this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
 		this.setData({
 			isCartPanelShow: false
