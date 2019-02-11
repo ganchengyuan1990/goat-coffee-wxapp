@@ -56,6 +56,13 @@ Component({
         let obj = this.data.info.sku_list.find(item => {
           return item.isdefault === 1
         })
+        if (!obj) {
+          let key = `info.sku_list[0].isdefault`
+          this.setData({
+            [key]:1
+          })
+          obj = this.data.info.sku_list[0]
+        }
         let price = obj.sale_price || '暂无报价'
         this.setData({
           price: price,
@@ -76,6 +83,15 @@ Component({
     save() {
       let info = this.data.info
       let spec = this.data.customed
+      let skuList = info.sku_list
+      let hasDefault = skuList.some(item => item.isdefault === 1)
+      if (!hasDefault) {
+        wx.showToast({
+          title: '请选择规格',
+          icon: 'none'
+        })
+        return
+      }
       // console.log(spec, 'spec')
       this.triggerEvent('save', Object.assign({}, info, {
         count: this.data.count,

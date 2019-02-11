@@ -133,8 +133,18 @@ Page({
 			// 	this.checkAuth()
 			// }
 			let storeInfo = wx.getStorageSync('STORE_INFO')
-			if (!storeInfo) {
+			let isGeoAuth = app.globalData.isGeoAuth
+			// if (storeInfo) {
+			// 	this.setData({
+			// 		storeInfo: JSON.parse(storeInfo)
+			// 	})
+			// }
+			if (!isGeoAuth) {
 				this.fetchLoaction()
+			}
+
+			if (this.data.isLoadStorageCart) {
+				this.getStorageCart()
 			}
 			this.toggleTabBar(true);
 		}
@@ -190,7 +200,9 @@ Page({
 			uid: wx.getStorageSync('token').user.id,
 			list: this.data.products
 		}).then(data => {
-			let {resultPrice} = data.data;
+			let {
+				resultPrice
+			} = data.data;
 			if (data.data && data.data.discountPrice > 0) {
 				this.setData({
 					resultPrice: resultPrice
@@ -613,6 +625,10 @@ Page({
 
 		// console.log(cartList, 'cartList')
 		if (cartList.length === 0) {
+			wx.showToast({
+				icon: 'none',
+				title: '请选择商品'
+			})
 			return
 		}
 		let products = cartList.map(item => {
@@ -649,7 +665,7 @@ Page({
 			orderType: info.isSelfTaking ? 2 : 1,
 			product: products
 		}
-		
+
 		const url = `/pages/pay/checkout/checkout?fromTransportIndex=${this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
 		this.setData({
 			isCartPanelShow: false
@@ -668,7 +684,7 @@ Page({
 		})
 	},
 	selectAddress(e) {
-		let type = e.target.dataset.delivery
+		let type = e.currentTarget.dataset.delivery
 		wx.navigateTo({
 			url: `/pages/transport/transport?from=store&tab=${type}`
 		})
@@ -697,7 +713,7 @@ Page({
 		})
 		// let arr = Object.values(obj)
 		let arr = []
-		for(let i in obj) {
+		for (let i in obj) {
 			if (obj[i]) {
 				arr.push(obj[i])
 			}
@@ -714,7 +730,7 @@ Page({
 	/**
 	 * 实时获取最优下单方案
 	 */
-	getBestPaySolution () {
+	getBestPaySolution() {
 		let _cartList = Object.assign(this.data.cartList)
 		let products = _cartList.map(item => {
 			let skuList = item.sku_list
@@ -807,7 +823,7 @@ Page({
 			let userInfo = token.user
 			avatar = userInfo.avatar;
 			userName = userInfo.userName
-		} catch(e) {
+		} catch (e) {
 			console.log(e);
 		}
 		if (userName && avatar) {
