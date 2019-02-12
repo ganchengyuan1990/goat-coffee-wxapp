@@ -1,5 +1,6 @@
 // pages/order/detail.js
 import drawQrcode from '../../../utils/qrcode.js'
+import model from '../../../utils/model.js';
 
 Page({
 
@@ -78,7 +79,14 @@ Page({
     }
 
   },
-
+  fetchOrderDetail() {
+    model('/order/detail/detail', {
+      orderClassify:2,
+      id: 122
+    }).then(res => {
+      
+    })
+  },
   goRedPack () {
     wx.navigateTo({
       url: `/pages/pay/share_success/share_success?orderId=${this.data.detail.id}`
