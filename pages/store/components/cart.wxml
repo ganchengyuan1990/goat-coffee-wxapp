@@ -36,7 +36,7 @@
                   <scroll-view scroll-y="{{true}}" class="list-wrap">
                       <view class="list-item" wx:for="{{info}}" wx:key="{{index}}">
                             <view class="cnt">
-                                <view class="tt">{{item.productName}}￥{{item.totalPrice}}</view>
+                                <view class="tt">{{item.productName}}￥{{item.price}}</view>
                                 <view class="desc">{{item.spec}}</view>
                             </view>
                             <view class="counter">

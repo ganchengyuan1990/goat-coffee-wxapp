@@ -38,7 +38,7 @@
             <view class="pin_order" wx:for="{{orderInfoArr}}" wx:key="{{index}}">
                 <image class="avatar" src="{{item.userAvatar}}" lazy-load='true' mode="aspectFill"/>
                 <view class='go_pin'>
-                    <text class="normal" style="max-width: 250rpx;">{{item.userName}}</text>
+                    <text class="normal" style="max-width: 200rpx;">{{item.userName}}</text>
                 </view>
                 <view class='go_pin righter'>
                     <text class="normal left_time}}">还差{{detailInfo.maxPeople - item.groupActivity.orderCount}}人</text>
@@ -50,9 +50,11 @@
 
         <view class='intro'>
             <view class="subtitle">商品详情：</view>
-            <view class='intro_detail' wx:for="{{detailInfo.imgs}}" wx:key="index"><image src="{{item}}" mode="aspectFill"/></view>
+            <view class='intro_detail' wx:for="{{detailInfo.imgs}}" wx:key="index"><image src="{{item}}" mode="aspectFill" bindtap="previewImage"/></view>
             <!-- <view style="font-size: 28rpx; color: #a9a9a9;">{{detailInfo.groupBrief}}</view> -->
-            <rich-text nodes="{{detailInfo.groupBrief}}"></rich-text>
+            <!-- <rich-text nodes="{{detailInfo.groupBrief}}"></rich-text> -->
+            <htmltowxml text="{{detailInfo.groupBrief}}" type="html" highlightStyle="darcula" linenums="{{true}}" showLoading="{{true}}"></htmltowxml>
+
         </view>
 
     </view>
@@ -66,10 +68,15 @@
                 <text class='pin-title gray_text_normal'>￥{{detailInfo.voucherAmount}}</text>
                 <text class='sub-title gray_text_normal'>单独购买</text>
             </view>
-            <view class='item apply' bindtap="goPin" >
+            <view class='item apply' bindtap="goPin">
                 <text class='pin-title'>￥{{detailInfo.realAmount}}</text>
                 <text class='sub-title'>发起拼团</text>
             </view>
+            <!-- <view class='item apply' bindtap="checkOutPin" wx:if="{{hasOpend}}">
+                <text class='pin-title'>￥{{detailInfo.realAmount}}</text>
+                <text class='sub-title'>查看已发起的拼团</text>
+            </view> -->
+            
             <view class='item apply gray' wx:if="{{poiInfo.isGroup > 0 && poiInfo.amount < poiInfo.groupMember}}">
                 <text class='pin-title'>活动已结束</text>
                 <text class='sub-title'>客官，下回请早</text>

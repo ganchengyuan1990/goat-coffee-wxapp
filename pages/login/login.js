@@ -56,88 +56,159 @@ Page({
     },
 
     getMessage () {
-
-        
         if (!this.data.showSeconds && this.data.phoneNum && this.data.phoneNum.length === 11) {
-            this.setData({
-                showSeconds: true
-            });
-            let timeRemain = this.data.leftSeconds;
-            var interval = setInterval(() => {
-                if (timeRemain > 1) {
-                    timeRemain--;
-                    this.setData({
-                        leftSeconds: timeRemain
-                    })
-                } else {
-                    this.setData({
-                        showSeconds: false,
-                        leftSeconds: 60
-                    });
-                    clearInterval(interval);
-                }
-            }, 1000);
             model('my/sms/send-phone-code', {
                 phoneNum: this.data.phoneNum
             }, 'POST').then(data => {
+                this.setData({
+                    showSeconds: true
+                });
                 console.log(data.data.code);
                 this.setData({
                     phoneCode: data.data.code
                 });
+                let timeRemain = this.data.leftSeconds;
+                var interval = setInterval(() => {
+                    if (timeRemain > 1) {
+                        timeRemain--;
+                        this.setData({
+                            leftSeconds: timeRemain
+                        })
+                    } else {
+                        this.setData({
+                            showSeconds: false,
+                            leftSeconds: 60
+                        });
+                        clearInterval(interval);
+                    }
+                }, 1000);
             }).catch(e => {
-                wx.showModal({
-                  title: '提示', //提示的标题,
-                  content: e, //提示的内容,
-                  showCancel: false, //是否显示取消按钮,
-                  cancelColor: '#000000', //取消按钮的文字颜色,
-                  confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                  confirmColor: '#3CC51F', //确定按钮的文字颜色
-                });
+                if (typeof (e) === 'object') {
+                    wx.showModal({
+                        title: '提示', //提示的标题,
+                        content: '您的网络已断开，请重新连接网络', //提示的内容,
+                        showCancel: false, //是否显示取消按钮,
+                        cancelColor: '#000000', //取消按钮的文字颜色,
+                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                    });
+                }
+                if (e && e.indexOf('mobile number') >= 0) {
+                    wx.showModal({
+                        title: '提示', //提示的标题,
+                        content: '请输入正确手机号', //提示的内容,
+                        showCancel: false, //是否显示取消按钮,
+                        cancelColor: '#000000', //取消按钮的文字颜色,
+                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                    });
+                } else if (e && e.indexOf('触发天级流控') >= 0) {
+                    wx.showModal({
+                        title: '提示', //提示的标题,
+                        content: '正确提示验证码获取超过次数', //提示的内容,
+                        showCancel: false, //是否显示取消按钮,
+                        cancelColor: '#000000', //取消按钮的文字颜色,
+                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                    });
+                } else if (e && e.indexOf('触发小时级流控') >= 0) {
+                    wx.showModal({
+                        title: '提示', //提示的标题,
+                        content: '验证码获取超过次数，请过1小时再试', //提示的内容,
+                        showCancel: false, //是否显示取消按钮,
+                        cancelColor: '#000000', //取消按钮的文字颜色,
+                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                    });
+                } else if (e && e.indexOf('触发分钟时级流控') >= 0) {
+                    wx.showModal({
+                        title: '提示', //提示的标题,
+                        content: '操作太频繁，请过1分钟再试', //提示的内容,
+                        showCancel: false, //是否显示取消按钮,
+                        cancelColor: '#000000', //取消按钮的文字颜色,
+                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                    });
+                } else {
+                    wx.showModal({
+                        title: '提示', //提示的标题,
+                        content: e, //提示的内容,
+                        showCancel: false, //是否显示取消按钮,
+                        cancelColor: '#000000', //取消按钮的文字颜色,
+                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                    });
+                }
             });
         }
     },
 
     register () {
-        model(`my/user/login`, {
-            sysinfo: JSON.stringify(this.data.sysinfo),
-            phoneNum: this.data.phoneNum,
-            sms_code: this.data.phoneCode,
-            openId: wx.getStorageSync('openid'),
-            user_name: wx.getStorageSync('personal_info').nickName
-        }, 'POST').then(data => {
+        if (!this.data.phoneCode) {
             this.setData({
-                token: data.data
+                errorToastShown: true,
+                errorInfo: '请输入验证码'
             })
-            try {
-                let avatar = data.data.user.avatar
-                if (!avatar) {
-                    // let imgUrl = wx.getStorageSync('personal_info').avatarUrl
-                    let info = wx.getStorageSync('personal_info')
-                    this.saveUser(info)
+        } else {
+            model(`my/user/login`, {
+                sysinfo: JSON.stringify(this.data.sysinfo),
+                phoneNum: this.data.phoneNum,
+                sms_code: this.data.phoneCode,
+                openId: wx.getStorageSync('openid'),
+                user_name: wx.getStorageSync('personal_info').nickName
+            }, 'POST').then(data => {
+                this.setData({
+                    token: data.data
+                })
+                try {
+                    let avatar = data.data.user && data.data.user.avatar
+                    if (!avatar) {
+                        // let imgUrl = wx.getStorageSync('personal_info').avatarUrl
+                        let info = wx.getStorageSync('personal_info')
+                        this.saveUser(info)
+                    }
+                } catch (e) {
+                    console.log(e);
                 }
-            } catch(e) {
-                console.log(e);
-            }
-            wx.setStorageSync('token', data.data);
-            if (this.data.fromPin) {
-                let pages = getCurrentPages();
-                let prevPage = pages[pages.length - 2];
-                prevPage.setData({
-                    fromLogin: true,
-                    pinType: this.data.pinType
+                wx.setStorageSync('token', data.data);
+                if (this.data.fromPin) {
+                    let pages = getCurrentPages();
+                    let prevPage = pages[pages.length - 2];
+                    console.log(pages)
+                    if (prevPage) {
+                        prevPage.setData({
+                            fromLogin: true,
+                            pinType: this.data.pinType
+                        });
+                    }
+                    
+                    // wx.navigateTo({
+                    //   url: `/pages/pin/pin_detail/pin_detail?id=${this.data.pinId}&fromLogin=1&pinType=${this.data.pinType}` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    // });
+                    wx.navigateTo({
+                        url: `/pages/pin/checkout/checkout` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    });
+                } else if (this.data.fromTransport) {
+                    wx.navigateTo({
+                        url: `/pages/my/address/address?fromLogin=1` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    });
+                } else {
+                    wx.switchTab({
+                        url: '/pages/store/store'
+                    });
+                }
+            }).catch(e => {
+                wx.showModal({
+                    title: '提示', //提示的标题,
+                    content: e, //提示的内容,
+                    showCancel: false, //是否显示取消按钮,
+                    cancelColor: '#000000', //取消按钮的文字颜色,
+                    confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                    confirmColor: '#3CC51F', //确定按钮的文字颜色
                 });
-                // wx.navigateTo({
-                //   url: `/pages/pin/pin_detail/pin_detail?id=${this.data.pinId}&fromLogin=1&pinType=${this.data.pinType}` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-                // });
-                wx.navigateTo({
-                    url: `/pages/pin/checkout/checkout` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-                });
-            } else {
-                wx.switchTab({
-                    url: '/pages/store/store'
-                });
-            }
-        })
+            });
+        }
+        
         
     },
 
@@ -234,6 +305,7 @@ Page({
         errorInfo: 'sdsdsds',
         showButtonLineName: false,
         showButtonLinePhone: false,
+        fromTransport: false,
         phoneCode: '',
         token: '',
         sysinfo: {},
@@ -247,6 +319,11 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        if (options.fromTransport) {
+            this.setData({
+                fromTransport: true
+            })
+        }
         if (options.from === 'pin') {
             this.setData({
                 fromPin: true,

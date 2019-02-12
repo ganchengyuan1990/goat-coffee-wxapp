@@ -2,6 +2,7 @@
     "navigationBarTitleText": "拼团详情",
     "enablePullDownRefresh": false,
     "usingComponents": {
-        "toast": "../../../components/toast/toast"
+        "toast": "../../../components/toast/toast",
+        "htmltowxml": "plugin://htmltowxml/view"
     }
 }

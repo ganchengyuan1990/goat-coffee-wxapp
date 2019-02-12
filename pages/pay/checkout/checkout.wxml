@@ -144,10 +144,12 @@
                 <text class="name">备注特殊要求</text>
             </view>
             <view class="r">
-                <text>{{remark}}</text>
                 <image class="arrow" src="../../../images/arrow.png"/>
             </view>
         </view>
+
+        <view class='remark' wx-if="{{remark}}">{{remark}}</view>
+
         
 
         

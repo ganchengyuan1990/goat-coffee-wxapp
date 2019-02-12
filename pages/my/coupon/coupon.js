@@ -7,7 +7,8 @@ Page({
   data: {
     couponItems: [],
     voucherItems: [],
-    type: 1
+    type: 1,
+    loading: true
   },
 
   /**
@@ -45,6 +46,12 @@ Page({
     }).then(data => {
       let result = data.data;
       result.forEach(element => {
+        if (element.coupon.discount) {
+          element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
+        }
+        if (element.coupon.saveAmount) {
+          element.coupon.saveAmount = parseFloat(element.coupon.saveAmount).toFixed(1);
+        }
         // element.couponBref = '21123123123';
         if (element.coupon.availabileStartTime) {
           element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0]
@@ -54,7 +61,8 @@ Page({
         }
       });
       this.setData({
-        couponItems: data.data
+        couponItems: data.data,
+        loading: false
       })
     })
   },
@@ -65,6 +73,13 @@ Page({
     }).then(data => {
       let result = data.data;
       result.forEach(element => {
+        if (element.voucher.discount) {
+          element.voucher.discount = parseFloat(element.voucher.discount).toFixed(1);
+        }
+        if (element.voucher.saveAmount) {
+          element.voucher.saveAmount = parseFloat(element.voucher.saveAmount).toFixed(1);
+        }
+
         if (element.voucher.availabileStartTime) {
           element.voucher.availabileStartTime = element.voucher.availabileStartTime.split('.')[0];
         }
@@ -74,7 +89,8 @@ Page({
         element.counpon = element.voucher;
       });
       this.setData({
-        voucherItems: data.data
+        voucherItems: data.data,
+        loading: false
       })
     })
   },

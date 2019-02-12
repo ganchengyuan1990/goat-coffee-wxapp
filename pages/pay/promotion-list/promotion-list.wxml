@@ -31,7 +31,7 @@
               <view class="promotion-description {{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime || item.tCoreCoupon.couponBref ? '' : 'higher'}}">{{item.tCoreCoupon.couponName}}</view>
               <!-- <text class="promotion-description">{{item.tCoreCoupon.couponName}}</text> -->
               <text class="promotion-limit-tip">{{item.tCoreCoupon.couponBref}}</text>
-              <text class="promotion-limit-tip" wx:show="{{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime && item.tCoreCoupon.availabileEndTime}}">{{item.tCoreCoupon.availabileStartTime}} - {{item.tCoreCoupon.availabileEndTime}}</text>
+              <text class="promotion-limit-tip" wx:if="{{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime && item.tCoreCoupon.availabileEndTime}}">{{item.tCoreCoupon.availabileStartTime}} - {{item.tCoreCoupon.availabileEndTime}}</text>
             </view>
           </view>
 

@@ -56,13 +56,18 @@ Component({
     }, 
     salesTotalPrice: {
       type: Number,
-      value: -1
+      value: -1,
+      // observer(newVal, oldVal) {
+      //   if (newVal !== -1 && !this.data.hasSetTotalPrice) {
+      //     this.setTotalResult();
+      //   }
+      // }
     },
     isSelfTaking: {
       type: Boolean,
       observer(newVal, oldVal) {
         if (typeof newVal !== 'undefined') {
-          this.setTotalResult()
+          this.setTotalResult(!newVal)
         }
       }
     }
@@ -72,6 +77,7 @@ Component({
    * 组件的初始数据
    */
   data: {
+    hasSetTotalPrice: false,
     totalPrice: 0,
     cartTotalPrice: 0,
     count: 1,
@@ -82,6 +88,7 @@ Component({
   attached() {
 
   },
+
   /**
    * 组件的方法列表
    */
@@ -164,7 +171,7 @@ Component({
         moneyAmount
       } 
     },
-    setTotalResult() {
+    setTotalResult(changeType) {
       let val = this.data.info
       if (!val) {
         return
@@ -190,17 +197,26 @@ Component({
         })
         remain = BN(feeObj.moneyAmount).minus(totalPrice).valueOf()
       }
+      let salesTotalPrice = this.data.salesTotalPrice;
+      let hasSetTotalPrice = false;
       // remain = totalPrice > LIMIT_FEE ? 0 : BN(LIMIT_FEE).minus(totalPrice).valueOf()
       if (remain > 0 && totalPrice > 0 && !this.data.isSelfTaking) {
         cartTotalPrice = BN(totalPrice).plus(this.data.fee || 0).valueOf()
+        salesTotalPrice = BN(salesTotalPrice).plus(this.data.fee || 0).valueOf();
+        hasSetTotalPrice = true;
       } else {
         cartTotalPrice = totalPrice
       }
+      if (changeType) {
+        hasSetTotalPrice = false;
+      }
       this.setData({
+        salesTotalPrice: salesTotalPrice,
         count: count,
         totalPrice: totalPrice,
         cartTotalPrice: cartTotalPrice,
-        remain: remain
+        remain: remain,
+        hasSetTotalPrice: hasSetTotalPrice
       })
     },
     /*

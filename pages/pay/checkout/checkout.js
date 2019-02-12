@@ -120,9 +120,10 @@ Page({
     var timeStr = parseFloat(time);
     var left = parseInt((timeStr % 864e5) / 1000);
     var hours = parseInt(left / 3600);
+    var realHours = hours + 8;
     var minutes = parseInt((left - hours * 3600) / 60);
     var seconds = parseInt((left - hours * 3600 - minutes * 60));
-    return `${hours + 8 < 10 ? ('0' + hours + 8) : (hours + 8)}:${minutes < 10 ? ('0' + minutes) : minutes}`;
+    return `${realHours < 10 && realHours !== 8 ? ('0' + realHours) : (realHours)}:${minutes < 10 ? ('0' + minutes) : minutes}`;
   },
 
   getAddressList () {
@@ -185,10 +186,13 @@ Page({
       list: this.data.product
     }).then(data => {
       if (data.data) {
-        let result = parseFloat(data.data.discountPrice).toFixed(2);
+        // let result = parseFloat(data.data.discountPrice).toFixed(2);
+        let result = data.data.discountPrice;
         let _a = new BigNumber(this.data.payAmount);
         let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
-        let actualPrice = _a.plus(_b).minus(parseFloat(result));
+        let actualPrice = _a.plus(_b).minus(result);
+        // let actualPrice = _a.plus(_b).minus(parseFloat(result));
+
         let couponArr = data.data.solutionList;
         let couponUserRelation = ''
         
@@ -257,7 +261,7 @@ Page({
         // item.pid = item.productId;
         // item.skuid = item.skuId;
         item.num = item.number;
-        item.totalPrice = item.number * item.price;
+        item.totalPrice = parseFloat(parseFloat(item.number * parseFloat(item.price).toFixed(2)).toFixed(2));
         payAmount += item.totalPrice;
         // delete item.skuName;
         // delete item.totalPrice;
@@ -320,7 +324,7 @@ Page({
 
   goAddressList () {
     wx.navigateTo({
-      url: `/pages/transport/transport?type=${this.data.chooseSelf ? 1 : 2}`,
+      url: `/pages/transport/transport?type=${this.data.chooseSelf ? 1 : 2}&fromCheckout=1`,
     })
   },
 
@@ -411,8 +415,13 @@ Page({
       this.dealChildPageInfo() ;
     } else if (this.data.fromAddress) {
       this.getAddressList();
+      if (this.data.fromAddress) {
+        this.chooseExpress();
+      }
     } else if (this.data.goBackFromRemark) {
       this.getRemark();
+    } else {
+      this.getAddressList();
     }
 
   },
@@ -496,6 +505,7 @@ Page({
 
     // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
     model(`order/detail/submit`, param, 'POST').then(data => {
+      wx.hideLoading();
       if (data.code === 'suc') {
         wx.removeStorageSync('CART_LIST');
         wx.removeStorageSync('remark');

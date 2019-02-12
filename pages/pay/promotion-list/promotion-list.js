@@ -166,6 +166,12 @@ Page({
         if (this.data.type === 1) {
             let list = JSON.parse(option.list);
             list.forEach(item => {
+                if (item.tCoreCoupon.discount) {
+                    item.tCoreCoupon.discount = parseFloat(item.tCoreCoupon.discount).toFixed(1);
+                }
+                if (item.tCoreCoupon.saveAmount) {
+                    item.tCoreCoupon.saveAmount = parseFloat(item.tCoreCoupon.saveAmount).toFixed(1);
+                }
                 if (item.tCoreUserCoupon.id == option.chosenCoupon) {
                     item.checked = true;
                 } else {
@@ -192,6 +198,12 @@ Page({
         } else {
             let list = JSON.parse(option.list);
             list.forEach(item => {
+                if (item.tCoreUserVoucher.discount) {
+                    item.tCoreUserVoucher.discount = parseFloat(item.tCoreUserVoucher.discount).toFixed(1);
+                }
+                if (item.tCoreUserVoucher.saveAmount) {
+                    item.tCoreUserVoucher.saveAmount = parseFloat(item.tCoreUserVoucher.discount).toFixed(1);
+                }
                 if (item.tCoreUserVoucher.id == option.chosenVoucher) {
                     item.checked = true;
                 } else {

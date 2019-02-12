@@ -38,16 +38,17 @@
     top: 280rpx;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 100rpx;
     padding-bottom: 30rpx;
+    overflow: scroll;
 }
 
 .suggestList {
     background-color: #ffffff;
     /* margin-left: 32rpx; */
-    overflow: hidden;
-    box-sizing: border-box;
-    height: calc(100vh);
+    overflow: scroll;
+    /* box-sizing: border-box; */
+    /* height: calc(100vh); */
 }
 
 .added {

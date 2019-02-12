@@ -58,7 +58,11 @@ Page({
         fromLogin: false,
         pinType: 0,
         errorToast: false,
-        toastInfo: ''
+        toastInfo: '',
+        hasNoNetwork: false,
+        pinClicked: false,
+        hasOpend: false,
+        payParam: {}
     },
 
     onShareAppMessage: function (res) {
@@ -89,6 +93,14 @@ Page({
         //         this.goAttendPinCallback();
         //     }
         // }
+
+    },
+
+    checkOutPin () {
+        let self = this;
+        wx.navigateTo({
+            url: `/pages/pin/pay_success/pay_success?activityId=${self.data.payParam.activityId}&price=${self.data.detailInfo.realAmount}&originalPrice=${self.data.detailInfo.voucherAmount}&number=${self.data.number}&groupName=${self.data.detailInfo.groupName}&list=${self.data.list}`
+        });
     },
 
     goPin () {
@@ -105,7 +117,13 @@ Page({
             // })
             // return
         }
-        this.goPinCallback(token);
+        if (!this.data.pinClicked) {
+            this.setData({
+                pinClicked: true
+            });
+            this.goPinCallback(token);
+        }
+        
     },
 
     goPinCallback (hasToken) {
@@ -174,12 +192,19 @@ Page({
           success: res => {}
         });
         let self = this;
-
         this.setData({
             groupId: parseInt(option.id),
             fromLogin: option.fromLogin,
             pinType: option.pinType
-        })
+        });
+
+        wx.onNetworkStatusChange(res => {
+            if (!res.isConnected) {
+                self.setData({
+                    hasNoNetwork: true
+                });
+            }
+        });
         
         model('group/action/info', {
             groupId: parseInt(option.id),
@@ -188,17 +213,23 @@ Page({
             if (data.data) {
                 let endTime = data.data.group.endTime;
                 let orderInfoArr = data.data.group_order;
+                let token = wx.getStorageSync('token');
+                let hasOpend = false;
                 orderInfoArr.forEach(item => {
                     console.log(item.groupActivity.end_at.replace(/-/g, '/'));
                     item.leftTime = this.calcLeftTime(Date.parse(item.groupActivity.end_at.replace(/-/g, '/'))).time;
-                    item.userAvatar = item.userAvatar ? item.userAvatar : wx.getStorageSync('personal_info')  && wx.getStorageSync('personal_info').avatarUrl
+                    item.userAvatar = item.userAvatar;
+                    if (token && token.user && token.user.id === item.userId) {
+                        hasOpend = true;
+                    }
                 });
                 let detailInfo = data.data.group;
                 detailInfo.groupBrief = detailInfo.groupBrief.replace(/<img /g, "<img style='width: 100%' ");
                 this.setData({
                     detailInfo: data.data.group,
                     orderInfoArr: orderInfoArr.slice(-3),
-                    group_voucher: data.data.group_voucher
+                    group_voucher: data.data.group_voucher,
+                    hasOpend: hasOpend
                 })
                 setInterval(() => {
                     let orderInfoArr = Object.assign(this.data.orderInfoArr);
@@ -214,12 +245,36 @@ Page({
             wx.hideLoading();
         }).catch(e => {
             wx.hideLoading();
-            this.setData({
-                errorToast: true,
-                toastInfo: e
-            });
+            if (!this.data.hasNoNetwork) {
+                this.setData({
+                    errorToast: true,
+                    toastInfo: e
+                });
+            } else {
+                this.setData({
+                    errorToast: true,
+                    toastInfo: '您的网络好像不太给力，请稍后再试！'
+                });
+            }
+            setTimeout(() => {
+                this.setData({
+                    errorToast: false
+                });
+            }, 1500);
         });
         
+    },
+
+    goCreate () {
+        this.setData({
+            errorToast: true,
+            toastInfo: '暂时不支持单独购买，请使用拼团功能'
+        });
+        setTimeout(() => {
+            this.setData({
+                errorToast: false
+            });
+        }, 1500);
     },
 
     calcLeftTime(time) {
@@ -295,6 +350,14 @@ Page({
         this.goAttendPinCallback(e, token);
     },
 
+    previewImage: function (e) {
+        var current = e.target.dataset.src;
+        wx.previewImage({
+            current: current, // 当前显示图片的http链接
+            urls: this.data.detailInfo.imgs // 需要预览的图片http链接列表
+        })
+    },
+
     goAttendPinCallback (e, hasToken) {
         let voucherParamArr = [];
         this.data.group_voucher.forEach(item => {
@@ -323,6 +386,9 @@ Page({
             payAmount: this.data.detailInfo.realAmount,
             remark: ''
         };
+        this.setData({
+            payParam: param
+        });
 
         let paramStr = '';
 

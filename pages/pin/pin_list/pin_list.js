@@ -9,6 +9,7 @@ Page({
         id: 0,
         errorToast: false,
         toastInfo: '',
+        hasNoNetwork: false
     },
 
     goPinDetail (e) {
@@ -39,6 +40,14 @@ Page({
 
     onLoad: function (option) {
 
+        wx.getNetworkType(res => {
+            if (res.networkType == 'none') {
+                self.setData({
+                    hasNoNetwork: true
+                });
+            }
+        });
+
         model('group/action/list', {
             // openid: wx.getStorageSync('openid')
         }).then(data => {
@@ -56,10 +65,17 @@ Page({
             }
         }).catch(e => {
             wx.hideLoading();
-            this.setData({
-                errorToast: true,
-                toastInfo: e
-            });
+            if (typeof(e) !== 'object') {
+                this.setData({
+                    errorToast: true,
+                    toastInfo: e
+                });
+            } else {
+                this.setData({
+                    errorToast: true,
+                    toastInfo: '您的网络好像不太给力，请稍后再试！'
+                });
+            }
         });
         wx.showLoading({
           title: 'Loading...', //提示的内容,

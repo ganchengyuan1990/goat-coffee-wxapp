@@ -109,7 +109,12 @@ Page({
             this.setData({
                 errorToast: true,
                 toastInfo: e
-            })
+            });
+            setTimeout(() => {
+                this.setData({
+                    errorToast: false
+                });
+            }, 1500);
         });
     },
 
@@ -153,7 +158,13 @@ Page({
             this.setData({
                 errorToast: true,
                 toastInfo: e
-            })
+            });
+            setTimeout(() => {
+                this.setData({
+                    errorToast: false
+                });
+            }, 1500);
+            
         });
     },
 

@@ -298,3 +298,12 @@ page {
   font-size: 28rpx;
   border-radius:0;
 }
+
+.white {
+  background: #fff;
+  padding: 0;
+}
+
+button::after {
+  border: none
+}

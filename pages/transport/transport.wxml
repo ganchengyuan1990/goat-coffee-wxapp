@@ -42,7 +42,7 @@
         </view>
 
         <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{showExpress && searchSuggest && searchSuggest.length > 0}}"  data-id="{{item.id}}">
-            <scroll-view class="suggestList" scroll-y="true">
+            <view class="suggestList" scroll-y="true">
                 <view class='express_title'>
                     我的收货地址
                     <view class='right' bindtap="goAddressList">管理收货地址</view>
@@ -67,11 +67,11 @@
                                 </view>
                             </view>
 
-                            <view class='text added' wx:if="{{index === 0}}">默认</view>
+                            <view class='text added' wx:if="{{item.isdefault}}">默认</view>
                         </view>
                     </view>
                 </view>
-            </scroll-view>
+            </view>
         </view>
 
         <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{showExpress && searchSuggest && searchSuggest.length === 0}}"  data-id="{{item.id}}">

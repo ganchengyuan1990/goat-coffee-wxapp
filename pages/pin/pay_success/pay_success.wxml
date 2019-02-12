@@ -45,7 +45,10 @@
           </view>
           <image src="{{item.avatar}}" wx:if="{{!item.empty}}" lazy-load='true'/>
 
-          <image src='../../../images/pin_empty.png' wx:if="{{item.empty}}" />
+          
+          <button class='button white' open-type="share" wx:if="{{item.empty}}">
+                <image src='../../../images/pin_empty.png'  />
+          </button>
 
           <!-- <text class='text' wx:if="{{item.empty}}">?</text> -->
       </view>

@@ -205,7 +205,7 @@
     margin-right: 30rpx;
 }
 .smaller {
-    font-size: 22rpx !important;
+    font-size: 20rpx !important;
     color: #999 !important;
 }
 .go_pin {

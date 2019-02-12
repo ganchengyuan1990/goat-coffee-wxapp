@@ -42,8 +42,14 @@
     </view>
 
     <view class="protocol">
-        <image src="../../../images/checkbox.png" />
-        <text class="name">设为默认地址</text>
+        <!-- <image src="../../../images/checkbox.png" /> -->
+        <checkbox-group bindchange="checkboxChange">
+            <label class="checkbox" wx:for="{{items}}">
+                <checkbox color='#333' value="{{item.name}}" checked="{{item.checked}}" />
+                {{item.value}}
+            </label>
+        </checkbox-group>
+        <!-- <text class="name">设为默认地址</text> -->
     </view>
 
     <view class="button">

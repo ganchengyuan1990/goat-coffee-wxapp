@@ -16,7 +16,8 @@ Page({
     isOwner: -1,
     errorToast: false,
     toastInfo: '',
-    activityId: ''
+    activityId: '',
+    pinClicked: false
   },
   onLoad: function (options) {
     let attendPin = wx.getStorageSync('attend_pin');
@@ -137,37 +138,53 @@ Page({
     });
     let voucherParamArr = this.data.pinOrderInfo.voucherParamArr;
     param.list = JSON.stringify(voucherParamArr);
-    if (this.data.isOwner == 1) {
-      model(`group/action/start`, param, 'POST').then(data => {
-        console.log(data);
-        let order = data.data;
-        let _package = order.package;
-        let prepayId = _package.split('=')[1];
-        wx.navigateTo({
-          url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${order.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${param.list}`
-        })
-      }).catch(e => {
-        console.log(e);
-        this.setData({
-          errorToast: true,
-          toastInfo: e
-        })
+    if (!this.data.pinClicked) {
+      this.setData({
+        pinClicked: true
       });
-    } else {
-      model(`group/action/join`, param, 'POST').then(data => {
-        let order = data.data;
-        let _package = order.package;
-        let prepayId = _package.split('=')[1]
-        wx.navigateTo({
-          url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${this.data.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${param.list}`
-        })
-      }).catch(e => {
-        this.setData({
-          errorToast: true,
-          toastInfo: e
+      if (this.data.isOwner == 1) {
+        model(`group/action/start`, param, 'POST').then(data => {
+          console.log(data);
+          let order = data.data;
+          let _package = order.package;
+          let prepayId = _package.split('=')[1];
+          wx.navigateTo({
+            url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${order.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${param.list}`
+          })
+        }).catch(e => {
+          console.log(e);
+          this.setData({
+            errorToast: true,
+            toastInfo: e
+          })
+          setTimeout(() => {
+            this.setData({
+              errorToast: false,
+            });
+          }, 1500);
         });
-      });
+      } else {
+        model(`group/action/join`, param, 'POST').then(data => {
+          let order = data.data;
+          let _package = order.package;
+          let prepayId = _package.split('=')[1]
+          wx.navigateTo({
+            url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${this.data.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${param.list}`
+          })
+        }).catch(e => {
+          this.setData({
+            errorToast: true,
+            toastInfo: e
+          });
+          setTimeout(() => {
+            this.setData({
+              errorToast: false,
+            });
+          }, 1500);
+        });
+      }
     }
+    
     
 }
 })

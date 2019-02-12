@@ -16,9 +16,16 @@ Page({
     from: '',
     init: true,
     type: -1,
-    isGeoAuth: true
+    isGeoAuth: true,
+    fromCheckout: false
   },
   onLoad: function (options) {
+
+    if (options.fromCheckout) {
+      this.setData({
+        fromCheckout: true
+      });
+    }
 
     if (options.from === 'store') {
       this.setData({
@@ -109,9 +116,16 @@ Page({
   },
 
   goAddAddress () {
-    wx.navigateTo({
-      url: `/pages/my/address/address`
-    });
+    if (wx.getStorageSync('token')) {
+      wx.navigateTo({
+        url: `/pages/my/address/address`
+      });
+    } else {
+      wx.redirectTo({
+        url: `/pages/login/login?fromTransport=1`
+      });
+    }
+    
   },
 
   goStore (e) {
@@ -124,9 +138,25 @@ Page({
       },
       idx: parseInt(e.currentTarget.dataset.idx)
     }
-    wx.switchTab({
-      url: `/pages/store/store`
-    });
+    if (this.data.fromCheckout && this.data.showSelfGet === false) {
+      let pages = getCurrentPages();
+      let prevPage = pages[pages.length - 2];
+      console.log(pages)
+      if (prevPage) {
+        prevPage.setData({
+          fromAddress: true,
+          fromTransportIndex: parseInt(e.currentTarget.dataset.idx)
+        });
+      }
+      wx.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+      });
+    } else {
+      wx.switchTab({
+        url: `/pages/store/store`
+      });
+    }
+    
     
   },
 
@@ -136,6 +166,13 @@ Page({
     if (this.data.type === 1) {
       if (this.data.init) {
         this.getAllShopList();
+      } else {
+        let addressList = wx.getStorageSync('shopList');
+        if (addressList) {
+          this.setData({
+            searchSuggest: addressList
+          });
+        }
       }
     } else {
       model('my/address/list', {

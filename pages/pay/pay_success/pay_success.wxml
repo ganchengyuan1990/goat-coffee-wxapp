@@ -9,7 +9,7 @@
       <view class="coupon-sn">支付成功</view> 
       
       <view style="position: relative;" bindtap="goRedPack">
-          <image src="../../../images/share/hongbao.png" style="width: 100%; height: 420rpx" />
+          <image src="http://img.mofafang.cn/banner/6redbao.png" style="width: 100%; height: 420rpx" />
           <!-- <view class="button">点击抢大红包</view> -->
       </view>
 

@@ -3,7 +3,7 @@
     <view class="direct-content">
         <view class="direct-name">
             <view class="direct-name-container">
-                <text  class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.address}}</text>
+                <text  class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.area}}{{item.address}}</text>
                 <!-- <text wx:for="{{item.splitName}}" wx:for-item="name" wx:key="splitItem"
                     class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{name.text}}</text> -->
                 <view wx:if="{{item.hasdeals == 1}}" class="group-icon"></view>
