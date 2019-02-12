@@ -17,13 +17,13 @@
   <view class="hd-wrap J_hd_wrap">
     <view class="store-addr">
       <block wx:if="{{!isSelfTaking}}">
-        <view class="tt">
+        <view class="tt" bind:tap="selectAddress" data-delivery="delivery">
           <view class="addr">{{userAddressInfo.city}}{{userAddressInfo.area}}{{userAddressInfo.address}}</view>
         </view>
         <view class="distance">{{userAddressInfo.contact}} {{userAddressInfo.tel}}</view>
       </block>
       <block wx:else>
-        <view class="tt">
+        <view class="tt" bind:tap="selectAddress" data-delivery="selftaking">
           <view class="addr">{{storeInfo.storeName}}</view>
         </view>
         <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>

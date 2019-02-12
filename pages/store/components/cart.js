@@ -83,7 +83,8 @@ Component({
     count: 1,
     remain: 0,
     needDeliveryFee: true,
-    deliveryMoneyAmount: 36
+    deliveryMoneyAmount: 36,
+    isNeedFee: true
   },
   attached() {
 
@@ -216,7 +217,8 @@ Component({
         totalPrice: totalPrice,
         cartTotalPrice: cartTotalPrice,
         remain: remain,
-        hasSetTotalPrice: hasSetTotalPrice
+        hasSetTotalPrice: hasSetTotalPrice,
+        isNeedFee: feeObj.isNeedFee
       })
     },
     /*
@@ -225,7 +227,8 @@ Component({
     checkout() {
       this.triggerEvent('checkout', {
         totalPrice: this.data.totalPrice,
-        cart: this.data.info
+        cart: this.data.info,
+        isNeedFee: this.data.isNeedFee
       })
     }
   }
