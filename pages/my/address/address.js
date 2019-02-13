@@ -119,7 +119,7 @@ Page({
     } else if (!this.data.name.match(/^[\u4e00-\u9fa5_a-zA-Z0-9]+$/)) {
         result = false;
         errorInfo = '请输入有效的收货人姓名'
-    } else if (this.data.phone.length !== 11) {
+    } else if (!this.data.phone.match(/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/)) {
         result = false;
         errorInfo = '请输入有效手机号'
     }

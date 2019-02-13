@@ -44,3 +44,28 @@ text {
     font-size: 28rpx;
     margin: 30rpx;
 }
+
+.addNewAddress {
+    position: fixed;
+    bottom: 0;
+    height: 140rpx;
+    line-height: 140rpx;
+    text-align: center;
+    font-size: 32rpx;
+    width: 100%;
+    z-index: 10000;
+    border-top: 1rpx solid #ccc;
+    background: #fff;
+
+}
+
+.suggestListWrap {
+    position: absolute;
+    z-index: 5;
+    top: 0rpx;
+    left: 0;
+    right: 0;
+    bottom: 100rpx;
+    padding-bottom: 30rpx;
+    overflow: scroll;
+}

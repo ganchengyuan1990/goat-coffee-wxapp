@@ -278,7 +278,7 @@ Page({
         fromTransportIndex: parseInt(items.fromTransportIndex)
       });
       if (this.data.tab === 'delivery') {
-        this.chooseExpress();
+        this.chooseExpress(false);
       }
     }
     if (wx.getStorageSync('STORE_INFO')) {
@@ -297,23 +297,31 @@ Page({
     return Math.ceil(total);
   },
 
-  chooseSelf () {
+  chooseSelf (notFirstLoad) {
     this.setData({
       chooseSelf: true,
       chooseExpress: false,
       deliverFee: 0,
     })
-    this.getBestCouponByProduct();
+    if (!notFirstLoad) {
+      this.getBestCouponByProduct();
+    } else {
+      this.dealChildPageInfo();
+    }
     this.getWaitTime();
   },
 
-  chooseExpress () {
+  chooseExpress (notFirstLoad) {
     this.setData({
       chooseSelf: false,
       chooseExpress: true,
       deliverFee: this.data.options.deliverFee
     })
-    this.getBestCouponByProduct();
+    if (!notFirstLoad) {
+      this.getBestCouponByProduct();
+    } else {
+      this.dealChildPageInfo();
+    }
     this.getWaitTime();
   },
   // selectAddress() {

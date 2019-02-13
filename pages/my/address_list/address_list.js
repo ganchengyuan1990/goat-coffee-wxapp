@@ -35,6 +35,19 @@ Page({
         }
     },
 
+    goAddAddress() {
+        if (wx.getStorageSync('token')) {
+            wx.navigateTo({
+                url: `/pages/my/address/address`
+            });
+        } else {
+            wx.redirectTo({
+                url: `/pages/login/login?fromTransport=1`
+            });
+        }
+
+    },
+
     getAddressList () {
         model('my/address/list', {
             userId: wx.getStorageSync('token').user.id,
