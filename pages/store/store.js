@@ -424,7 +424,7 @@ Page({
 		let list = JSON.parse(data || '[]')
 		// let priceMap = this.data.priceMap
 		let priceMap = JSON.parse(priceMapString || '{}')
-		console.log(priceMap, 'priceMap');
+		// console.log(priceMap, 'priceMap');
 		
 		this.setData({
 			isLoadStorageCart: false
@@ -445,8 +445,8 @@ Page({
 				return item
 			}
 		})
-		console.log(remainList, 'remainList');
-		console.log(list, 'list');
+		// console.log(remainList, 'remainList');
+		// console.log(list, 'list');
 		
 		
 		// if (remainList.length !== list.length) {
