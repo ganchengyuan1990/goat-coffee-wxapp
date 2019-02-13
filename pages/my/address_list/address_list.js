@@ -35,11 +35,25 @@ Page({
         }
     },
 
+    goAddAddress() {
+        if (wx.getStorageSync('token')) {
+            wx.navigateTo({
+                url: `/pages/my/address/address`
+            });
+        } else {
+            wx.redirectTo({
+                url: `/pages/login/login?fromTransport=1`
+            });
+        }
+
+    },
+
     getAddressList () {
         model('my/address/list', {
             userId: wx.getStorageSync('token').user.id,
             // openid: wx.getStorageSync('token').user.id
         }).then(data => {
+            wx.setStorageSync('addressList', data.data);
             if (data.data) {
                 let list = data.data;
                 this.setData({

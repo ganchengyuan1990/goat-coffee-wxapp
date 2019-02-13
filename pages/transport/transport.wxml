@@ -4,12 +4,12 @@
         <view bindtap="goExpress" class="header-tab-item {{showExpress ? 'tab-item-active' : ''}}">外送</view>
     </view>
 
-    <view class="searchEntry" bindtap="onSearchShow" data-source="0" wx:if="{{!isGeoAuth}}">
+    <!-- <view class="searchEntry" bindtap="onSearchShow" data-source="0" wx:if="{{!isGeoAuth}}">
         <view class="searchIcon">定位失败</view>
         <view class="searchKeyword" wx:if="{{keyword}}">{{ keyword }}</view>
         <view class="searchText" >输入地址寻找附近门店</view>
         <view class="close-icon" catchtap="clearKeyWord" wx:if="{{keyword}}"><image mode="scaleToFill" src="https://www.jasongan.cn/uploads/close.png" /></view>
-    </view>
+    </view> -->
 
     <view class="search-find-container">
         <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{!showExpress && searchSuggest && searchSuggest.length}}">

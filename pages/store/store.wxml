@@ -17,10 +17,18 @@
   <view class="hd-wrap J_hd_wrap">
     <view class="store-addr">
       <block wx:if="{{!isSelfTaking}}">
-        <view class="tt" bind:tap="selectAddress" data-delivery="delivery">
-          <view class="addr">{{userAddressInfo.city}}{{userAddressInfo.area}}{{userAddressInfo.address}}</view>
+        <view wx:if="{{userAddressInfo}}">
+          <view class="tt" bind:tap="selectAddress" data-delivery="delivery">
+            <view class="addr">{{userAddressInfo.city}}{{userAddressInfo.area}}{{userAddressInfo.address}}</view>
+          </view>
+          <view class="distance">{{userAddressInfo.contact}} {{userAddressInfo.tel}}</view>
         </view>
-        <view class="distance">{{userAddressInfo.contact}} {{userAddressInfo.tel}}</view>
+        <view wx:else>
+          <view class="tt" bind:tap="selectAddress" data-delivery="delivery">
+            <view class="addr">暂未添加配送地址</view>
+          </view>
+          <view class="distance">请点击添加</view>
+        </view>
       </block>
       <block wx:else>
         <view class="tt" bind:tap="selectAddress" data-delivery="selftaking">

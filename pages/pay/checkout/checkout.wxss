@@ -118,6 +118,13 @@ checkbox {
   /* text-align: center; */
 }
 
+.address-box .l {
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display:inline-block;
+}
 
 
 .address-box .l .name{
@@ -153,6 +160,14 @@ checkbox {
     font-size: 24rpx;
 }
 
+/* .m .name {
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display:inline-block;
+} */
+
 .address-box .mobile{
     display: inline-block;
     height: 29rpx;
@@ -164,12 +179,12 @@ checkbox {
 }
 
 .address-box text.address{
-    display: block;
+    display: inline-block;
     height: 37.5rpx;
-    line-height: 37.5rpx;
+    line-height: 30.5rpx;
     font-size: 25rpx;
     color:#666;
-    margin-top: 18rpx;
+    /* margin-top: 18rpx; */
 }
 
 .no-border {

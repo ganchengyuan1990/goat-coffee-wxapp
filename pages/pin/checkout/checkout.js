@@ -153,10 +153,17 @@ Page({
           })
         }).catch(e => {
           console.log(e);
-          this.setData({
-            errorToast: true,
-            toastInfo: e
-          })
+          if (typeof (e) !== 'object') {
+            this.setData({
+              errorToast: true,
+              toastInfo: e
+            });
+          } else {
+            this.setData({
+              errorToast: true,
+              toastInfo: '您的网络好像不太给力，请稍后再试！'
+            });
+          }
           setTimeout(() => {
             this.setData({
               errorToast: false,
@@ -172,10 +179,17 @@ Page({
             url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${this.data.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${param.list}`
           })
         }).catch(e => {
-          this.setData({
-            errorToast: true,
-            toastInfo: e
-          });
+          if (typeof (e) !== 'object') {
+            this.setData({
+              errorToast: true,
+              toastInfo: e
+            });
+          } else {
+            this.setData({
+              errorToast: true,
+              toastInfo: '您的网络好像不太给力，请稍后再试！'
+            });
+          }
           setTimeout(() => {
             this.setData({
               errorToast: false,
