@@ -1,15 +1,14 @@
-
 import model from '../../../utils/model.js'
-  const OCLASSIFY = {
-    default: 1,
-    normal: 1,
-    group: 2
-  }
-  const OSTATUS = {
-    default: -1,
-    unfinish: 0,
-    finished: 1
-  }
+const OCLASSIFY = {
+  default: 1,
+  normal: 1,
+  group: 2
+}
+const OSTATUS = {
+  default: -1,
+  unfinish: 0,
+  finished: 1
+}
 Page({
 
   /**
@@ -35,33 +34,34 @@ Page({
     // 显示筛选面板 order/订单类型 state/订单状态
     currentPanel: 'order',
     filterList: [{
-      tab: 'order',
-      tt: '普通订单',
-      cls: 'category',
-      list: [{
+        tab: 'order',
         tt: '普通订单',
-        code: OCLASSIFY.normal,
-        active: true
-      }, {
-        tt: '团购订单',
-        code: OCLASSIFY.group,
-        active: false
-      }]
-    }, 
-    {
-      tab: 'state',
-      tt: '状态',
-      cls: 'type',
-      list: [{
-        tt: '已完成',
-        code: OSTATUS.finished,
-        active: false
-      }, {
-        tt: '未完成',
-        code: OSTATUS.unfinish,
-        active: false
-      }]
-    }],
+        cls: 'category',
+        list: [{
+          tt: '普通订单',
+          code: OCLASSIFY.normal,
+          active: true
+        }, {
+          tt: '团购订单',
+          code: OCLASSIFY.group,
+          active: false
+        }]
+      },
+      {
+        tab: 'state',
+        tt: '状态',
+        cls: 'type',
+        list: [{
+          tt: '已完成',
+          code: OSTATUS.finished,
+          active: false
+        }, {
+          tt: '未完成',
+          code: OSTATUS.unfinish,
+          active: false
+        }]
+      }
+    ],
     originalObj: {}
   },
 
@@ -94,7 +94,12 @@ Page({
    */
   onShow() {
     let userInfo = wx.getStorageSync('token')
-    if (!userInfo.token) {return}
+    if (!userInfo.token) {
+      wx.navigateTo({
+        url: '/pages/login/login'
+      })
+      return
+    }
     // this.fetchOrderList(1)
     this.refreshList()
   },
@@ -107,7 +112,9 @@ Page({
     this.setData({
       page: 1
     })
-    setTimeout(() => {this.refreshList()}, 1500)
+    setTimeout(() => {
+      this.refreshList()
+    }, 1500)
   },
   onReachBottom() {
     let isCompleted = this.data.isCompleted
@@ -127,7 +134,7 @@ Page({
     })
     this.fetchOrderList(1, true)
   },
-  fetchOrderList(page=1, isResetList=false) {
+  fetchOrderList(page = 1, isResetList = false) {
     if (this.data.isLoading) {
       return
     }
@@ -144,17 +151,19 @@ Page({
     }
     model('order/detail/list', obj).then(res => {
       // console.log('order res', res)
-      const {data} = res
+      const {
+        data
+      } = res
       if (data && Array.isArray(data)) {
         let uid = this.data.userInfo.user.id
-        
+
         let len = data.length
         let list = isResetList ? [] : this.data.orderList
         let arr = []
         // 因为没有判断数据总数量的字段
         // 所以为0的时候认定没有更多
         // 另一种情况，第一页的数据条数少的情况隐藏加载中的状态
-        if ( len < 5 && page === 1) {
+        if (len < 5 && page === 1) {
           this.setData({
             isCompleted: true
           })
@@ -217,7 +226,7 @@ Page({
       originalObj: originalObj
     })
   },
-  hideCategory(isRollBack=false) {
+  hideCategory(isRollBack = false) {
     if (isRollBack) {
       let obj = this.data.originalObj
       this.setData({
@@ -260,7 +269,7 @@ Page({
     })
     this.setFilterState()
   },
-  
+
   setFilterState() {
     let list = this.data.filterList
 
@@ -286,14 +295,14 @@ Page({
       filterList: list
     })
   },
-	goCheckout(e) {
-	  let token = wx.getStorageSync('token').token
-	  if (!token) {
-	    wx.navigateTo({
-	      url: '/pages/login/login'
-	    })
-	    return
-	  }
+  goCheckout(e) {
+    let token = wx.getStorageSync('token').token
+    if (!token) {
+      wx.navigateTo({
+        url: '/pages/login/login'
+      })
+      return
+    }
     let item = e.currentTarget.dataset.item
     let products = e.currentTarget.dataset.list
     if (!item || !products) {
@@ -321,11 +330,11 @@ Page({
     // item.product.forEach(i => {
     //   i.price = i.skuPrice
     // })
-	  // return
-	  const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
-	  wx.navigateTo({
-	    url: url
-	  })
+    // return
+    const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
+    wx.navigateTo({
+      url: url
+    })
   },
   goPageGroup() {
     if (this.data.currentPanelList === OCLASSIFY.group) {
@@ -341,7 +350,9 @@ Page({
       return
     }
     let userInfo = this.data.userInfo
-    let { wxOpenid } = userInfo.user
+    let {
+      wxOpenid
+    } = userInfo.user
     let target = type === 'group' ? 'pay/wx/wx-pre-pay-group' : 'pay/wx/wx-pre-pay'
     model(target, {
       openId: wxOpenid,
@@ -357,9 +368,9 @@ Page({
       obj.msg = 'suc'
       obj.package = prepayId
       obj.prepayId = prepayId
-      obj.price = order.payAmount      
+      obj.price = order.payAmount
       // let str = Object.entries(obj).map(i => `${i[0]&i[1]}`).join('&')
-      let str = Object.entries(obj).reduce((acc, arr) => acc +'&'+ arr.join('='), '')
+      let str = Object.entries(obj).reduce((acc, arr) => acc + '&' + arr.join('='), '')
       str = str.slice(1)
       // console.log(str);
       // return
@@ -389,7 +400,7 @@ Page({
     item.detailList = list
     let dtype = e.currentTarget.dataset.dtype
     // console.log(item, 'show detail item');
-    
+
     if (item) {
       item.dtype = dtype
       wx.navigateTo({
