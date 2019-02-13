@@ -185,6 +185,9 @@ Page({
                     confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
                     confirmColor: '#3CC51F', //确定按钮的文字颜色,
                     success: res => {
+                        this.setData({
+                            locked: false
+                        });
                         if (res.confirm) {
                             console.log('用户点击确定')
                         } else if (res.cancel) {
@@ -244,6 +247,9 @@ Page({
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
                         confirmColor: '#3CC51F', //确定按钮的文字颜色,
                         success: res => {
+                            this.setData({
+                                locked: false
+                            });
                             if (res.confirm) {
                                 console.log('用户点击确定')
                             } else if (res.cancel) {

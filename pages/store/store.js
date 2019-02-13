@@ -134,6 +134,12 @@ Page({
 			// }
 			let storeInfo = wx.getStorageSync('STORE_INFO')
 			let isGeoAuth = app.globalData.isGeoAuth
+			let addressList = wx.getStorageSync('addressList');
+			if (addressList && addressList.length === 0) {
+				this.setData({
+					userAddressInfo: null
+				});
+			}
 			// if (storeInfo) {
 			// 	this.setData({
 			// 		storeInfo: JSON.parse(storeInfo)

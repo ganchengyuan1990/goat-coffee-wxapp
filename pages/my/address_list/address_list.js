@@ -53,6 +53,7 @@ Page({
             userId: wx.getStorageSync('token').user.id,
             // openid: wx.getStorageSync('token').user.id
         }).then(data => {
+            wx.setStorageSync('addressList', data.data);
             if (data.data) {
                 let list = data.data;
                 this.setData({
