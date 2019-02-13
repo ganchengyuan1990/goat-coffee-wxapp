@@ -1,6 +1,8 @@
   <wxs module="filter">
     var getFeeCnt = function(remain, isSelfTaking, amount) {
-        if (remain === 0 || isSelfTaking) {
+        if (isSelfTaking) {
+            return '自提不需要配送费哦'
+        } else if (remain === 0) {
             return '恭喜您，此单已经不需要配送费啦'
         } else {
             return '满'+amount+'减运费，您只差' + remain + '元'
