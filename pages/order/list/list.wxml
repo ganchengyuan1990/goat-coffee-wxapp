@@ -89,10 +89,10 @@
                 </view>
                 <view class="panel-ft">
                     <view class="price">￥{{item.payAmount}}</view>
-                    <!-- <view class="btn-buy" wx:if="{{item.payState === '00'}}" data-item="{{item}}" data-type="group" catchtap="goPay">
+                    <view class="btn-buy" wx:if="{{item.payState === '00'}}" data-item="{{item}}" data-type="group" catchtap="goPay">
                         去支付
                     </view>
-                    <view class="btn-buy" wx:else data-item="{{item}}" catchtap="goPageGroup">
+                    <!-- <view class="btn-buy" wx:else data-item="{{item}}" catchtap="goPageGroup">
                         再来一单
                     </view> -->
                 </view>
