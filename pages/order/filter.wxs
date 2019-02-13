@@ -12,19 +12,17 @@
                 '40': '退款中',
                 '41': '退款完成'
             }
-            return map[code] ? map[code]: ''
+            return map[code] ? map[code] : ''
         },
-        getGroupState: function(code) {
-            switch(code) {
-                case 'p1':
-                    return '拼团中'
-                case 'p2':
-                    return '拼团完成'
-                case 'p3':
-                    return '拼团失败'
-                default:
-                    return ''
+        getGroupState: function (code) {
+            var map = {
+                '00': '待支付',
+                '01': '拼团开始',
+                '100': '拼团成功',
+                '40': '退款中',
+                '41': '退款完成'
             }
+            return map[code] ? map[code] : ''
         },
         getAddr: function (item) {
             var type = item.orderType
@@ -55,8 +53,8 @@
             switch (item.discountType) {
                 case 1:
                     return {
-                        discount: val,
-                        coupon: '未使用'
+                        discount: '未使用',
+                        coupon: val,
                     }
                 case 2:
                     return {

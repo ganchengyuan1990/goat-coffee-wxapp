@@ -75,7 +75,7 @@
     </block>
     <block wx:if="{{dtype === 'group'}}">
         <view class="hd-wrap">
-            <view class="tt">拼团成功</view>
+            <view class="tt">{{filter.getGroupState(detail.payState)}}</view>
             <view class="desc">感谢您的光临</view>
         </view>
         <view class="panel order-box">
