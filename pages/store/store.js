@@ -68,7 +68,7 @@ Page({
 		try {
 			configPic = info.config.newUserPic
 		} catch (e) {
-			console.log(e);
+			// console.log(e);
 		}
 		if (isNew && configPic) {
 			this.setData({
@@ -410,6 +410,7 @@ Page({
 		this.setData({
 			priceMap: obj
 		})
+		wx.setStorageSync('PRICE_MAP', JSON.stringify(obj))
 		if (this.data.isLoadStorageCart) {
 			this.getStorageCart()
 		}
@@ -419,8 +420,12 @@ Page({
 	 */
 	getStorageCart() {
 		let data = wx.getStorageSync('CART_LIST')
+		let priceMapString = wx.getStorageSync('PRICE_MAP')
 		let list = JSON.parse(data || '[]')
-		let priceMap = this.data.priceMap
+		// let priceMap = this.data.priceMap
+		let priceMap = JSON.parse(priceMapString || '{}')
+		console.log(priceMap, 'priceMap');
+		
 		this.setData({
 			isLoadStorageCart: false
 		})
@@ -440,14 +445,17 @@ Page({
 				return item
 			}
 		})
-
-		if (remainList.length !== list.length) {
-			wx.showModal({
-				title: '提示',
-				content: '购物车部分商品缺货',
-				confirmText: '我知道了'
-			})
-		}
+		console.log(remainList, 'remainList');
+		console.log(list, 'list');
+		
+		
+		// if (remainList.length !== list.length) {
+		// 	wx.showModal({
+		// 		title: '提示',
+		// 		content: '购物车部分商品缺货',
+		// 		confirmText: '我知道了'
+		// 	})
+		// }
 		let arr = this.data.cartList
 		arr = arr.concat(remainList)
 		this.mergeCart(arr)
