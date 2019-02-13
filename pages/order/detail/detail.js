@@ -79,14 +79,14 @@ Page({
     }
 
   },
-  fetchOrderDetail() {
-    model('/order/detail/detail', {
-      orderClassify:2,
-      id: 122
-    }).then(res => {
+  // fetchOrderDetail() {
+  //   model('/order/detail/detail', {
+  //     orderClassify:2,
+  //     id: 122
+  //   }).then(res => {
       
-    })
-  },
+  //   })
+  // },
   goRedPack () {
     wx.navigateTo({
       url: `/pages/pay/share_success/share_success?orderId=${this.data.detail.id}`
