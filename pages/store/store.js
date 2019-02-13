@@ -665,7 +665,7 @@ Page({
 		let fee = isNeedFee ? info.storeInfo.deliverFee : 0
 		let obj = {
 			storeId: info.storeInfo.id,
-			userAddressId: this.data.userAddressInfo.id || info.userAddressId,
+			userAddressId: this.data.userAddressInfo && this.data.userAddressInfo.id || info.userAddressId,
 			deliverFee: fee,
 			payAmount: totalPrice,
 			orderType: info.isSelfTaking ? 2 : 1,

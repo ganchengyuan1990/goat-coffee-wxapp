@@ -305,9 +305,8 @@ Page({
     })
     if (!notFirstLoad) {
       this.getBestCouponByProduct();
-    } else {
-      this.dealChildPageInfo();
     }
+    this.dealChildPageInfo();
     this.getWaitTime();
   },
 
@@ -319,9 +318,8 @@ Page({
     })
     if (!notFirstLoad) {
       this.getBestCouponByProduct();
-    } else {
-      this.dealChildPageInfo();
     }
+    this.dealChildPageInfo();
     this.getWaitTime();
   },
   // selectAddress() {
@@ -424,7 +422,7 @@ Page({
     } else if (this.data.fromAddress) {
       this.getAddressList();
       if (this.data.fromAddress) {
-        this.chooseExpress();
+        this.chooseExpress(false);
       }
     } else if (this.data.goBackFromRemark) {
       this.getRemark();
