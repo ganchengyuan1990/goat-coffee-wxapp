@@ -201,11 +201,21 @@ Page({
         });
         if (data.data.type === 1) {
           this.setData({
-            chosenCoupon: couponArr[0].id
+            chosenCoupon: couponArr[0].id,
+            chosenInfo: {
+              id: couponArr[0].classId,
+              relationId: couponArr[0].id,
+              type: 1
+            }
           })
         } else if (data.data.type === 2) {
           this.setData({
-            chosenVoucher: couponArr[0].id
+            chosenVoucher: couponArr[0].id,
+            chosenInfo: {
+              id: couponArr[0].classId,
+              relationId: couponArr[0].id,
+              type: 2
+            }
           })
         }
         this.setData({
@@ -307,7 +317,7 @@ Page({
       this.getBestCouponByProduct();
     }
     this.dealChildPageInfo();
-    this.getWaitTime();
+    // this.getWaitTime();
   },
 
   chooseExpress (notFirstLoad) {
