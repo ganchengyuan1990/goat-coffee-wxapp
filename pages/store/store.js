@@ -12,8 +12,7 @@ function BN(...args) {
 let touchTimer = null
 let touchObj = {}
 let touchDy = 0
-
-
+let isOpening = false
 Page({
 	/**
 	 * 页面的初始数据
@@ -512,12 +511,18 @@ Page({
 		this.toggleSpecific();
 	},
 	toggleSpecific() {
+		if (isOpening) {
+			return
+		}
+		isOpening = true
 		let isShow = this.data.isCatePanelShow
 		// this.setData({
 		// 	isCatePanelShow: !isShow
 		// })
 		if (isShow) {
-			this.toggleTabBar(true)
+			this.toggleTabBar(true, () => {
+				isOpening = false
+			})
 			this.setData({
 				isCatePanelShow: !isShow
 			})
@@ -527,6 +532,10 @@ Page({
 					isCatePanelShow: !isShow
 				})
 			})
+			// for temp 
+			setTimeout(() => {
+				isOpening = false
+			}, 500);
 		}
 	},
 	/**
@@ -552,6 +561,10 @@ Page({
 		this.getBestPaySolution();
 	},
 	toggleCart() {
+		if (isOpening) {
+			return
+		}
+		isOpening = true
 		let isShow = this.data.isCartPanelShow
 		let self = this
 
@@ -567,6 +580,10 @@ Page({
 				isCartPanelShow: !isShow
 			})
 		}
+		// for temp 
+		setTimeout(() => {
+			isOpening = false
+		}, 500);
 	},
 	toggleTabBar(isShow, callback) {
 		if (!isShow) {

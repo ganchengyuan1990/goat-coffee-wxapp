@@ -26,10 +26,18 @@ Page({
   },
 
   saveName() {
+    let iptVal = this.data.inputValue.trim()
+    if (!iptVal.trim()) {
+      wx.showToast({
+        title: '姓名不能为空',
+        icon: 'none'
+      })
+      return
+    }
     let pages = getCurrentPages()
     let prevPage = pages[pages.length - 2]
     prevPage.setData({ //直接给上一个页面赋值
-      name: this.data.inputValue
+      name: iptVal
     })
     wx.navigateBack({
       delta: 1
