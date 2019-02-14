@@ -59,9 +59,9 @@
                       <view class="desc">{{customed}}</view>
                   </view>
                   <view class="counter">
-                      <view class="ico ico-minus {{count === 1 ? 'disable': ''}}" bind:tap="decrease">-</view>
+                      <view class="ico ico-minus {{count === 1 ? 'disable': ''}}" bind:tap="decrease"><view class="ico-txt">-</view></view>
                       <view class="num">{{count < 10 ? '0'+count:count}}</view>
-                      <view class="ico ico-plus" bind:tap="increase">+</view>
+                      <view class="ico ico-plus" bind:tap="increase"><view class="ico-txt">+</view></view>
                   </view>
               </view>
               <view class="btn-confirm" bind:tap="save">确定</view>

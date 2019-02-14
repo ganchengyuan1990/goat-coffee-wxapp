@@ -99,7 +99,7 @@
                   
                   <!-- <view class="count"> -->
                     <view class="add btn" data-item="{{item}}">
-                      +
+                      <view class="plus">+</view>
                     </view>
                   <!-- </view> -->
                 </view>

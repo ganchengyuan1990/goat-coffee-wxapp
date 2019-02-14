@@ -151,14 +151,18 @@
 }
 
 .counter-wrap .counter .ico {
+  position: relative;
   flex: none;
   width: 46rpx;
   height: 46rpx;
   border: 1rpx solid #000;
   border-radius: 50%;
-  line-height: 40rpx;
+  /* line-height: 40rpx; */
   text-align: center;
-  font-size: 44rpx;
+  /* font-size: 44rpx; */
+}
+.ico-txt {
+  transform: scale(1.6);
 }
 .counter-wrap .counter .ico.disable {
   color: #999;
