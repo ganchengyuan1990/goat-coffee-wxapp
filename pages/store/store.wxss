@@ -166,7 +166,7 @@ page {
 } */
 
 .list-cnt .title-group:last-child {
-  margin-bottom: 640rpx;
+  margin-bottom: 480rpx;
 }
 
 .list-cover {
@@ -266,6 +266,7 @@ page {
   transform: translateY(-50%);
 }
 .btn {
+  position: relative;
   width: 36rpx;
   height: 36rpx;
   border-radius: 50%;

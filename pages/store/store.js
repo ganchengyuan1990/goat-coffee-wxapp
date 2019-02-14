@@ -144,6 +144,8 @@ Page({
 			// 		storeInfo: JSON.parse(storeInfo)
 			// 	})
 			// }
+			console.log(isGeoAuth, 'isGeoAuth');
+			
 			if (!isGeoAuth) {
 				this.fetchLoaction()
 			}
