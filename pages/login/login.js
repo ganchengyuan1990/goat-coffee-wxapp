@@ -64,9 +64,9 @@ Page({
                     showSeconds: true
                 });
                 console.log(data.data.code);
-                this.setData({
-                    phoneCode: data.data.code
-                });
+                // this.setData({
+                //     phoneCode: data.data.code
+                // });
                 let timeRemain = this.data.leftSeconds;
                 var interval = setInterval(() => {
                     if (timeRemain > 1) {
@@ -105,7 +105,7 @@ Page({
                 } else if (e && e.indexOf('触发天级流控') >= 0) {
                     wx.showModal({
                         title: '提示', //提示的标题,
-                        content: '正确提示验证码获取超过次数', //提示的内容,
+                        content: '当2日验证码获取超过次数，请24小时以后再试', //提示的内容,
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
@@ -120,7 +120,7 @@ Page({
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
                         confirmColor: '#3CC51F', //确定按钮的文字颜色
                     });
-                } else if (e && e.indexOf('触发分钟时级流控') >= 0) {
+                } else if (e && e.indexOf('触发分钟级流控') >= 0) {
                     wx.showModal({
                         title: '提示', //提示的标题,
                         content: '操作太频繁，请过1分钟再试', //提示的内容,

@@ -234,6 +234,18 @@ Page({
          });
       }
     }).catch(e => {
+      if (e.errMsg && e.errMsg.indexOf('fail') > 0) {
+        this.setData({
+          errorToast: true,
+          toastInfo: '暂无网络，请稍后重试'
+        });
+        setTimeout(() => {
+          this.setData({
+            errorToast: false
+          });
+        }, 1500);
+        wx.hideLoading();
+      }
       let _a = new BigNumber(this.data.payAmount);
       let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
       let actualPrice = _a.plus(_b);
@@ -543,10 +555,27 @@ Page({
         });
       }
     }).catch(e => {
-      this.setData({
-        errorToast: true,
-        toastInfo: e
-      });
+      if (e.errMsg && e.errMsg.indexOf('fail') > 0) {
+        this.setData({
+          errorToast: true,
+          toastInfo: '暂无网络，请稍后重试'
+        });
+        setTimeout(() => {
+          this.setData({
+            errorToast: false
+          });
+        }, 1500);
+      } else {
+        this.setData({
+          errorToast: true,
+          toastInfo: e
+        });
+        setTimeout(() => {
+          this.setData({
+            errorToast: false
+          });
+        }, 1500);
+      }
       wx.hideLoading({
         title: 'Loading...', //提示的内容,
         mask: true, //显示透明蒙层，防止触摸穿透,

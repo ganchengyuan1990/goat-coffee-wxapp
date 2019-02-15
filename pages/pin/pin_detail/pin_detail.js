@@ -245,7 +245,7 @@ Page({
             wx.hideLoading();
         }).catch(e => {
             wx.hideLoading();
-            if (!this.data.hasNoNetwork) {
+            if (typeof (e) !== 'object') {
                 this.setData({
                     errorToast: true,
                     toastInfo: e
