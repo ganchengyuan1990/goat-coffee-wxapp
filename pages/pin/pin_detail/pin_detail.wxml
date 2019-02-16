@@ -64,10 +64,10 @@
             分享
         </button> -->
         <view class="bar_item">
-            <view class='item apply alone' bindtap="goCreate">
+            <!-- <view class='item apply alone' bindtap="goCreate">
                 <text class='pin-title gray_text_normal'>￥{{detailInfo.voucherAmount}}</text>
                 <text class='sub-title gray_text_normal'>单独购买</text>
-            </view>
+            </view> -->
             <view class='item apply' bindtap="goPin">
                 <text class='pin-title'>￥{{detailInfo.realAmount}}</text>
                 <text class='sub-title'>发起拼团</text>
