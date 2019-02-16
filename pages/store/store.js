@@ -271,9 +271,9 @@ Page({
 				app.globalData.isGeoAuth = false
 				wx.hideLoading()
 				wx.showToast({
-					title: '加载失败',
+					title: '加载失败,请检查是否打开微信及小程序定位权限',
 					icon: 'none',
-					duration: 2000
+					duration: 3500
 				})
 			}
 		})
