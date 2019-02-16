@@ -167,6 +167,7 @@ Page({
           setTimeout(() => {
             this.setData({
               errorToast: false,
+              pinClicked: false
             });
           }, 1500);
         });
@@ -193,6 +194,7 @@ Page({
           setTimeout(() => {
             this.setData({
               errorToast: false,
+              pinClicked: false
             });
           }, 1500);
         });

@@ -94,11 +94,11 @@ Page({
                     teamMembers: teamMembers,
                     type: type,
                     end_time: data.data.groupActivity.end_at,
-                    end_at: this.calcLeftTime(new Date(data.data.groupActivity.end_at).getTime()).timeObj
+                    end_at: this.calcLeftTime(new Date(data.data.groupActivity.end_at.replace(/-/g, '/')).getTime()).timeObj
                 });
                 setInterval(() => {
                     let end_at = Object.assign(this.data.end_at);
-                    end_at = this.calcLeftTime(new Date(data.data.groupActivity.end_at).getTime()).timeObj;
+                    end_at = this.calcLeftTime(new Date(data.data.groupActivity.end_at.replace(/-/g, '/')).getTime()).timeObj;
                     // let calcLeftTime = this.calcLeftTime(new Date(endTime).getTime());
                     this.setData({
                         end_at: end_at
