@@ -83,7 +83,7 @@
 }
 
 .higher {
-    margin-bottom: 25rpx;
+    margin-bottom: 0rpx;
 }
 .left-part {
     flex: none;
@@ -120,7 +120,7 @@
 }
 
 .coupon-right {
-    width: 160rpx;
+    width: 140rpx;
 }
 
 .coupon-right image {

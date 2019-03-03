@@ -164,7 +164,8 @@ Page({
             type: parseInt(option.type),
         })
         if (this.data.type === 1) {
-            let list = JSON.parse(option.list);
+            // let list = JSON.parse(option.list);
+            let list = wx.getStorageSync('couponList');
             list.forEach(item => {
                 if (item.tCoreCoupon.discount) {
                     item.tCoreCoupon.discount = parseFloat(item.tCoreCoupon.discount).toFixed(1);
@@ -196,7 +197,8 @@ Page({
             //     })
             // })
         } else {
-            let list = JSON.parse(option.list);
+            // let list = JSON.parse(option.list);
+            let list = wx.getStorageSync('voucherList');
             list.forEach(item => {
                 if (item.tCoreUserVoucher.discount) {
                     item.tCoreUserVoucher.discount = parseFloat(item.tCoreUserVoucher.discount).toFixed(1);

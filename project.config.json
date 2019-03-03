@@ -13,7 +13,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.4.0",
-	"appid": "wx95a4dca674b223e1",
+	"appid": "wx5bb95a5028390738",
 	"projectname": "%E5%B1%B1%E7%BE%8A%E5%92%96%E5%95%A1%E7%BA%BF%E4%B8%8A",
 	"isGameTourist": false,
 	"condition": {
@@ -34,7 +34,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 12,
+			"current": 22,
 			"list": [
 				{
 					"id": -1,
@@ -169,6 +169,13 @@
 					"name": "share_success客态",
 					"pathName": "pages/pay/share_success/share_success",
 					"query": "id=1&redPackId=1085"
+				},
+				{
+					"id": -1,
+					"name": "coupon",
+					"pathName": "pages/pay/share_coupon/share_coupon",
+					"query": "",
+					"scene": null
 				}
 			]
 		}
