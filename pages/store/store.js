@@ -46,7 +46,8 @@ Page({
 		isActWrapShow: false,
 		fromTransport: '',
 		products: [],
-		resultPrice: -1
+		resultPrice: -1,
+		gettingLocation: false
 	},
 
 	/**
@@ -83,7 +84,8 @@ Page({
 				console.log(e);
 			}
 		}
-		this.fetchLoaction()
+		// 感觉跟onShow里的fetchLoaction重合了
+		this.fetchLoaction()  
 		this.checkSaveUser()
 	},
 	/**
@@ -145,8 +147,7 @@ Page({
 			// 	})
 			// }
 			console.log(isGeoAuth, 'isGeoAuth');
-			
-			if (!isGeoAuth) {
+			if (!isGeoAuth && !this.data.gettingLocation) {
 				this.fetchLoaction()
 			}
 
@@ -249,6 +250,9 @@ Page({
 	 */
 	fetchLoaction() {
 		let self = this
+		this.setData({
+			gettingLocation: true
+		})
 		wx.showLoading({
 			title: '加载中',
 		})
@@ -263,10 +267,16 @@ Page({
 					lng: longitude,
 					lat: latitude
 				}
-				self.fetchStore(geo)
+				self.setData({
+					gettingLocation: false
+				})
 				app.globalData.isGeoAuth = true
+				self.fetchStore(geo)
 			},
 			fail() {
+				self.setData({
+					gettingLocation: false
+				})
 				self.checkAuth()
 				app.globalData.isGeoAuth = false
 				wx.hideLoading()

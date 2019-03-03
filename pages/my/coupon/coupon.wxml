@@ -25,7 +25,7 @@
                         <view class="list-item-name">
                             <view class="promotion-description {{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime || item.couponBref ? '' : 'higher'}}">{{item.coupon.couponName}}</view>
                             <text class="promotion-limit-tip">{{item.couponBref}}</text>
-                            <text class="promotion-limit-tip" wx:if="{{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime && item.tCoreCoupon.availabileEndTime}}">
+                            <text class="promotion-limit-tip" wx:if="{{item.coupon && item.coupon.availabileStartTime && item.coupon.availabileEndTime}}">
                                 {{item.coupon.availabileStartTime}} - {{item.coupon.availabileEndTime}}
                             </text>
                         </view>

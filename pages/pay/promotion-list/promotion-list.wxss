@@ -93,7 +93,7 @@ page {
 }
 
 .higher {
-  margin-bottom: 25rpx;
+  margin-bottom: 0rpx;
 }
 .left-part {
   padding: 66rpx 15rpx 66rpx 30rpx;

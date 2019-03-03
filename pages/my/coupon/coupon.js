@@ -47,6 +47,7 @@ Page({
       let result = data.data;
       result.forEach(element => {
         if (element.coupon.discount) {
+          
           element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
         }
         if (element.coupon.saveAmount) {
