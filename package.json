@@ -6,10 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ganchengyuan1990/goat-coffee-wxapp.git"
-  },
   "author": "",
   "license": "ISC",
   "bugs": {
