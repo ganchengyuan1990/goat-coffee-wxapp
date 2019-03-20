@@ -10,10 +10,12 @@
         </view>
 
         <view class="float_right" wx:if="{{chooseSelf}}">
-            约{{getTime}}可取
+            <view>{{timeWords}}</view>
+            <view>约<text class='time'>{{getTime}}</text>可取</view>
         </view>
         <view class="float_right" wx:if="{{chooseExpress}}">
-            约{{getTime}}送达
+            <view>{{timeWords}}</view>
+            <view>约<text class='time'>{{getTime}}</text>送达</view>
         </view>
     </view>
     <view class="address-box" bindtap="goAddressList">
@@ -94,48 +96,67 @@
                     <text class="txt">X {{item.number}}</text>
                 </view>
                 <view class="r">
-                    <text class="txt">￥{{item.totalPrice}}</text>
+                    <text class="txt lefter">￥{{item.totalPrice}}</text>
                 </view>
             </view>
+            <view class="transport-item black" wx:if="{{deliverFee > 0}}">
+                <view class="l">
+                    <text class="name">配送费</text>
+                </view>
+                <view class="r">
+                    <text class="txt lefter">￥{{deliverFee}}</text>
+                </view>
+            </view>
+            <view style='height: 1rpx; background: #e5e5e5; width: 90%;margin-left: 5%;'>
+            </view>
 
+            <view class='heji'>
+                合计 <text style="font-size: 36rpx; font-weight: 500;">￥{{payAmount}}</text>
+            </view>
         </view>
 
 
+        <view style="height: 8rpx; background: #F5F5F5; width: 100%;">
+        </view>
 
         <view class="transport-item">
             <view class="l">
-                <text class="name">配送费</text>
+                <text class="name">使用优惠</text>
             </view>
             <view class="r">
-                <text class="txt">￥{{deliverFee}}</text>
-            </view>
-        </view>
-
-        <view class="transport-item" bindtap="goVoucher">
-            <view class="l">
-                <text class="name">兑换券</text>
-            </view>
-            <view class="r">
-                <text class="txt" wx:if="{{voucherList.length === 0}}">无可用</text>
-                <text class="txt" wx:if="{{voucherList.length !== 0 && chooseNoVoucher}}">有{{voucherList.length}}张可用</text>
-                <text class="txt" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher}}"> - ￥{{couponMoney}}</text>
-                <!-- <view class="arrow"></view> -->
-                <image class="arrow" src="../../../images/arrow.png"/>
+                <switch checked color="#F50000" bindchange="switchChange" />
                 <!-- <image class="txt" src="../../../images/arrow.png"/> -->
             </view>
         </view>
+        
+        <view wx:if="{{usePromotion}}">
+            <view class="transport-item" bindtap="goVoucher">
+                <view class="l">
+                    <text class="name">使用咖啡钱包</text>
+                </view>
+                <view class="r">
+                    <text class="txt" wx:if="{{voucherList.length === 0}}">无可用</text>
+                    <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && chooseNoVoucher}}">有{{voucherList.length}}张可用</text>
+                    <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher && chosenInfo.type == 2}}"> - ￥{{couponMoney}}</text>
+                    <!-- <view class="arrow"></view> -->
+                    <image class="arrow" src="../../../images/arrow.png"/>
+                    <!-- <image class="txt" src="../../../images/arrow.png"/> -->
+                </view>
+            </view>
 
-        <view class="transport-item" bindtap="goCoupon">
-            <view class="l">
-                <text class="name">优惠券</text>
+            <view class="transport-item" bindtap="goCoupon">
+                <view class="l">
+                    <text class="name">使用优惠券</text>
+                </view>
+                <view class="r">
+                    <text class="txt hasGood" wx:if="{{couponList.length > 0 && !chooseNoCoupon && chosenInfo.type == 1}}"> - ￥{{couponMoney}}</text>
+                    <text class="txt hasGood" wx:if="{{couponList.length > 0 && chooseNoCoupon}}">有{{couponList.length}}张可用</text>
+                    <text class="txt" wx:if="{{couponList.length === 0}}">无可用</text>
+                    <image class="arrow" src="../../../images/arrow.png"/>
+                    <!-- <image class="txt" src="../../../images/arrow.png"/> -->
+                </view>
             </view>
-            <view class="r">
-                <text class="txt" wx:if="{{couponList.length > 0 && !chooseNoCoupon}}"> - ￥{{couponMoney}}</text>
-                <text class="txt" wx:if="{{couponList.length > 0 && chooseNoCoupon}}">有{{couponList.length}}张可用</text>
-                <text class="txt" wx:if="{{couponList.length === 0}}">无可用</text>
-                <image class="arrow" src="../../../images/arrow.png"/>
-                <!-- <image class="txt" src="../../../images/arrow.png"/> -->
-            </view>
+
         </view>
 
 
@@ -166,7 +187,8 @@
     <view class="protocol">
         <!-- <view class="checkbox {{item.checked ? 'checked' : ''}}" bindtap="checkedItem" data-item-index="{{index}}"></view> -->
         <image src="../../../images/checkbox.png" />
-        <text class="name">我已同意《咖啡支付协议》</text>
+        <text class="name" style="color: #999;">我已同意<text style="color: #F50000;">《咖啡支付协议》</text></text>
+        <view style="color: #999999;line-height: 36rpx;padding-bottom: 30rpx">温馨提示：仅支持开具电子发票，订单完成后可前往发票管理中心开具</view>
         <!-- <checkbox-group bindchange="checkboxChange">
             <label class="checkbox">
                 <checkbox value="protocol" checked="protocalChecked" color="#fff" />我已同意《咖啡支付协议》
@@ -191,8 +213,8 @@
 
     <view class="order-total">
         <view class="l">
-            <text>合计</text>
-            <text class='price'>￥{{actualPrice}}</text>
+            <text style="position: relative; top: -1rpx;">还需支付</text>
+            <text class='price'><text class='mark'>￥</text>{{actualPrice}}</text>
         </view>
         <view class="r {{chooseExpress && !checkedExpress.id ? 'no_use' : ''}}" bindtap="submitOrder">去支付</view>
     </view>

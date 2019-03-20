@@ -1,0 +1,448 @@
+page {
+  background: #fff;
+  min-height: 100%;
+}
+
+.mark_pic image {
+  width: 100%;
+}
+
+.container {
+  background: #fff;
+  min-height: 100%;
+  padding-top: 30rpx;
+  
+}
+.success-container {
+  position: relative;
+  top: -75rpx;
+  z-index: 1000;
+  background:rgba(255, 255, 255, 1);
+  box-shadow:0px 0px 5px 0px rgba(181, 181, 181, 0.5);
+  border-radius:2px;
+  margin: 0 30rpx;
+}
+
+.success-form {
+  /* width: 100%; */
+  background: #fff;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  padding-top: 20rpx;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  margin-bottom: 40rpx;
+}
+
+.input-box {
+  flex: 1;
+  height: 70rpx;
+  color: #333;
+  font-size: 24rpx;
+  background: #fff;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4rpx;
+  margin-right: 30rpx;
+}
+
+
+.go-button {
+  background: #333;
+  text-align: center;
+  color: #fff;
+  margin: 0 190rpx 20rpx 190rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+}
+.coupon-sn {
+  /* height: 50rpx; */
+  margin: 50rpx;
+  margin-bottom: 10rpx;
+  color: #202020;
+  line-height: 50rpx;
+  font-size: 42rpx;
+  text-align: center;
+}
+
+.button {
+  margin-top: 60rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  font-size: 28rpx;
+  border-radius: 0;
+  border: 0;
+}
+
+.button image {
+  width: 88rpx;
+  height: 88rpx
+}
+
+button::after {
+  border: none;
+}
+
+.white {
+  background: #fff;
+  padding: 0;
+}
+.closer {
+  margin-top: 10rpx !important;
+  padding-bottom: 50rpx;
+  font-size: 24rpx;
+  color: #222;
+}
+.coupon-text {
+  margin-top: 40rpx;
+  font-size: 32rpx;
+  color: #222;
+}
+.coupon-sn image {
+  width: 137px;
+  height: 93px;
+}
+
+.clear-icon {
+  position: absolute;
+  top: 21rpx;
+  right: 30rpx;
+  width: 28rpx;
+  height: 28rpx;
+}
+
+.add-btn {
+  height: 70rpx;
+  border: none;
+  width: 168rpx;
+  background: #b4282d;
+  border-radius: 0;
+  line-height: 70rpx;
+  color: #fff;
+  font-size: 28rpx;
+}
+
+.add-btn.disabled {
+  background: #ccc;
+}
+
+.help {
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: right;
+  padding-right: 30rpx;
+  background: url(https://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/couponHelp-4768607555.png) 590rpx center no-repeat;
+  background-size: 28rpx;
+  color: #999;
+  font-size: 24rpx;
+}
+
+.coupon-list {
+  /* width: 100%; */
+  height: auto;
+  overflow: hidden;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+}
+
+.item {
+  position: relative;
+  height: 290rpx;
+  width: 100%;
+  background: linear-gradient(to right, #cfa568, #e3bf79);
+  margin-bottom: 30rpx;
+  padding-top: 52rpx;
+}
+
+.tag {
+  height: 32rpx;
+  background: #A48143;
+  padding-left: 16rpx;
+  padding-right: 16rpx;
+  position: absolute;
+  left: 20rpx;
+  color: #fff;
+  top: 20rpx;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 32rpx;
+}
+
+
+.content {
+  /* margin-left: 40rpx; */
+  display: flex;
+  /* margin-right: 40rpx; */
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+  justify-content: center;
+  color: #666666;
+  font-size: 28rpx;
+  margin: 30rpx;
+  margin-top: 24rpx;
+}
+
+.content .left {
+  flex: 1;
+}
+
+.name {
+  font-size: 44rpx;
+  color: #fff;
+  margin-bottom: 14rpx;
+}
+
+.time {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 30rpx;
+}
+
+.content .right {
+  width: 162rpx;
+}
+
+.go {
+  height: 48rpx;
+  border: none;
+  width: 162rpx;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4rpx;
+  line-height: 48rpx;
+  color: #b69150;
+  font-size: 24rpx;
+}
+
+.condition {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  height: 78rpx;
+  background: rgba(0, 0, 0, .08);
+  padding: 24rpx 40rpx;
+  display: flex;
+  flex-direction: row;
+}
+
+.condition .txt {
+  display: block;
+  height: 30rpx;
+  flex: 1;
+  overflow: hidden;
+  font-size: 24rpx;
+  line-height: 30rpx;
+  color: #fff;
+}
+
+
+.condition .icon {
+  margin-left: 30rpx;
+  width: 24rpx;
+  height: 24rpx;
+}
+
+
+.flex {
+  align-items: center;
+  display: flex;
+  
+}
+.flex image {
+  width: 200rpx;
+  height: 200rpx;
+  margin:0 auto;
+}
+
+.imageWrapper {
+  margin: 50rpx;
+  flex: 1;
+  display: flex;
+  text-align: center;
+}
+
+.content-cover {
+  display: flex;
+  flex-direction: column;
+}
+
+.cover {
+  width: 100%;
+  height: 100rpx;
+  margin-top: -100rpx;
+  background: -webkit-linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1));
+  /* Safari 5.1 - 6.0 */
+  background: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1));
+  /* 标准的语法 */
+}
+
+.extend {
+  padding: 40rpx 30rpx 40rpx 0rpx;
+  align-self: center;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #de9703;
+  position: relative;
+  padding-right: 20rpx;
+}
+
+/* .extend::after {
+  content: " ";
+  width: 12rpx;
+  height: 12rpx;
+  position: absolute;
+  top: 50%;
+  margin-top: -8rpx;
+  right: -2rpx;
+  transform: matrix(0.71, 0.71, 0.71, -0.71, 0, 0);
+  border-width: 1px 1px 0px 0px;
+  border-color: #de9703;
+  border-style: solid;
+}
+
+.extendeded::after {
+  border-width: 0px 0px 1px 1px;
+} */
+
+
+.content-title  {
+  text-align: center;
+  font-size: 34rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+
+.toppper {
+  margin: 0rpx 10rpx;
+  font-size: 34rpx;
+}
+
+
+.section {
+  height: 60rpx;
+  line-height: 60rpx;
+  border-bottom: 1rpx solid #eee;
+  width: 570rpx;
+  position: relative;
+  color: #999;
+  margin-bottom: 50rpx;
+}
+
+
+.section input {
+  display: inline-block;
+  height: 60rpx;
+  font-size: 28rpx;
+  margin-left: 20rpx;
+  color: #333;
+}
+
+
+.getVerify {
+  position: absolute;
+  right: 0rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  bottom: 20rpx;
+  font-size: 26rpx;
+  border-left: 1rpx solid #eee;
+  /* padding: 10rpx; */
+  width: 188rpx;
+  text-align: center;
+  z-index: 10000;
+}
+
+.actived {
+  background: #333 !important;
+  color: #fff !important;
+}
+
+.btn-area {
+  margin-top: 50rpx;
+  height: 100rpx;
+  margin-bottom: 30rpx;
+}
+
+.login {
+  width: 80%;
+  margin-left: 10%;
+  padding: 50rpx 0;
+}
+
+.btn-area .button {
+  /* border-radius: 50rpx !important; */
+  border: 0 !important;
+  margin: 0 auto;
+  width: 100%;
+  background: #d8d8d8;
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 28rpx;
+}
+
+.goApp {
+  text-align: center;
+  font-size: 28rpx;
+  text-decoration: underline;
+  color: #DF0202;
+  margin-top: 25rpx;
+}
+
+.content-auto {
+  height: 550rpx;
+}
+
+.content-min {
+  width: 100%;
+  height: 100rpx;
+  opacity: 0.3;
+  position: relative;
+  /* top: 200rpx; */
+}
+
+.content-cover {
+  display: flex;
+  flex-direction: column;
+}
+
+.bigger {
+  font-size: 28rpx;
+}
+
+
+.user-info {
+  /* display: inline-block; */
+  height: 100rpx;
+  line-height: 100rpx;
+  padding: 25rpx 0;
+  margin: 0 100rpx;
+  border-bottom: 1rpx solid #e6e6e6;
+}
+
+.avatar {
+  margin-left: 35rpx;
+  width: 75rpx;
+  height: 75rpx;
+  display: inline-block;
+  border-radius: 50%;
+  margin-right: 10rpx;
+}
+
+.nickname {
+  display: flex;
+  flex-direction: column;
+  margin-left: 40rpx;
+}
+
+.share-list {
+  display: flex;
+  align-items: center;
+}

@@ -90,7 +90,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 }
                 if (e && e.indexOf('mobile number') >= 0) {
@@ -100,7 +100,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 } else if (e && e.indexOf('触发天级流控') >= 0) {
                     wx.showModal({
@@ -109,7 +109,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 } else if (e && e.indexOf('触发小时级流控') >= 0) {
                     wx.showModal({
@@ -118,7 +118,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 } else if (e && e.indexOf('触发分钟级流控') >= 0) {
                     wx.showModal({
@@ -127,7 +127,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 } else {
                     wx.showModal({
@@ -136,7 +136,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 }
             });
@@ -192,9 +192,13 @@ Page({
                     wx.navigateTo({
                         url: `/pages/my/address/address?fromLogin=1` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
                     });
+                } else if (this.data.fromInvite) {
+                    wx.navigateTo({
+                        url: `/package/invite/pages/inviteOthers/invite` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    });
                 } else {
                     wx.switchTab({
-                        url: '/pages/store/store'
+                        url: '/pages/index/index'
                     });
                 }
             }).catch(e => {
@@ -312,7 +316,8 @@ Page({
         auth: false,
         showSeconds: false,
         actived: false,
-        fromPin: false
+        fromPin: false,
+        fromInvite: false
     },
 
     /**
@@ -331,9 +336,16 @@ Page({
                 pinId: options.pinType
             })
         }
+        if (options.from === 'invite') {
+            this.setData({
+                fromInvite: true
+            })
+        }
         let self = this;
         if (wx.getStorageSync('token')) {
-            wx.switchTab({ url: '/pages/store/store' });
+            wx.switchTab({
+                url: '/pages/index/index'
+            });
         } else {
             wx.getSystemInfo({
                 success(res) {

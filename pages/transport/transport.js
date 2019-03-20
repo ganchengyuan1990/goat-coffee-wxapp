@@ -138,6 +138,7 @@ Page({
       },
       idx: parseInt(e.currentTarget.dataset.idx)
     }
+    wx.setStorageSync('fromTransport', this.data.showSelfGet ? 'selftaking' : 'deliver');
     if (this.data.fromCheckout && this.data.showSelfGet === false) {
       let pages = getCurrentPages();
       let prevPage = pages[pages.length - 2];

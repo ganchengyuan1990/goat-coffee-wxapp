@@ -1,5 +1,5 @@
 .item {
-    height: 150rpx;
+    height: 130rpx;
     /* line-height: 70rpx; */
     margin: 0rpx 20rpx;
     border-bottom: 1px solid #eee;

@@ -109,10 +109,11 @@ Component({
       count++
       info[idx].count = count
       info[idx].totalPrice = BN(price).multipliedBy(count).valueOf()
+      
       // this.setData({
       //   info: info
       // })
-      this.saveCart(info)
+      
     },
     decrease(e) {
       let idx = e.currentTarget.dataset.idx

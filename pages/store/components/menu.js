@@ -2,6 +2,9 @@ import {
   BigNumber
 } from '../../../utils/bignumber.min';
 
+import model from '../../../utils/model.js'
+
+
 function BN(...args) {
   return new BigNumber(...args)
 }
@@ -10,11 +13,19 @@ Component({
    * 组件的属性列表
    */
   properties: {
+    isSelfTaking: {
+      type: Boolean,
+      value: false
+    },
     info: {
       type: Object,
       value: {}
     },
     salesTotalPrice: {
+      type: Number,
+      value: -1
+    },
+    basePrice: {
       type: Number,
       value: -1
     },
@@ -36,15 +47,21 @@ Component({
     // 展示规格
     customed: '',
     customedKey: '',
+    customedVal: '',
     // 展示价格
     price: 0,
     totalPrice: 0,
     count: 1,
     currentSku: {},
-    currentProp: []
+    currentProp: [],
+    priceTags: [],
+    activityName: ''
   },
-  attached() {
-
+  ready() {
+    let configData = wx.getStorageSync('configData');
+    this.setData({
+      activityName: configData['voucher-text']
+    })
   },
   /**
    * 组件的方法列表
@@ -78,13 +95,63 @@ Component({
       this.getCustomed()
     },
     toggleMenu() {
+      this.setData({
+        priceTags: []
+      });
+      if (this.data.info.default_sku && this.data.info.default_sku.sale_price) {
+        this.setData({
+          totalPrice: this.data.info.default_sku.sale_price
+        });
+      }
       this.triggerEvent('togglemenu', 'abc')
     },
+
+    /*
+     * 合并相同品类
+     */
+    mergeCart(list) {
+      if (!Array.isArray(list)) {
+        return
+      }
+      // 验证skuid， propids, productId一致性
+      // count total price
+
+      let cartList = list
+      let obj = {}
+      cartList.forEach(item => {
+        let key = item.customedKey
+        let val = obj[key]
+        if (val) {
+          val.count = BN(val.count).plus(item.count).valueOf()
+          val.totalPrice = BN(val.count).multipliedBy(val.price).valueOf()
+        } else {
+          obj[key] = item
+        }
+      })
+      // let arr = Object.values(obj)
+      let arr = []
+      for (let i in obj) {
+        if (obj[i]) {
+          arr.push(obj[i])
+        }
+      }
+      // this.setData({
+      //   cartList: arr
+      // })
+      wx.setStorage({
+        key: 'CART_LIST',
+        data: JSON.stringify(arr)
+      })
+    },
     save() {
+      if (!wx.getStorageSync('token')) {
+        wx.navigateTo({ url: '/pages/login/login' });
+        return ;
+      }
       let info = this.data.info
       let spec = this.data.customed
       let skuList = info.sku_list
-      let hasDefault = skuList.some(item => item.isdefault === 1)
+      let hasDefault = skuList.filter(item => item.isdefault === 1)
       if (!hasDefault) {
         wx.showToast({
           title: '请选择规格',
@@ -92,7 +159,7 @@ Component({
         })
         return
       }
-      // console.log(spec, 'spec')
+      console.log(spec, 'spec')
       this.triggerEvent('save', Object.assign({}, info, {
         count: this.data.count,
         totalPrice: this.data.totalPrice,
@@ -100,31 +167,94 @@ Component({
         spec: spec,
         customedKey: this.data.customedKey
       }))
-      this.toggleMenu()
+      // let cart = [];
+      // if (info) {
+      //   cart.push(info)
+      // }
+      // this.mergeCart(cart)
+      // this.toggleMenu();
+      // wx.navigateTo({
+      //   url: `/pages/newCart/cart?isNeedFee=${this.data.isSelfTaking ? 0: 1}`
+      // });
+      let propList = info.key_list
+      let propIds = []
+      propList.forEach(i => {
+        let idObj = i.val_list.find(j => {
+          return parseInt(j.id) === parseInt(i.default_val_id)
+        })
+
+        if (idObj) {
+          propIds.push(idObj.prop_id)
+        }
+      })
+      model(`home/cart/change-number`, {
+        skuId: hasDefault[0].id,
+        rPropGoodsIds: propIds.join(','),
+        delta: this.data.count
+      }, 'POST').then(data => {
+        debugger
+        console.log('请求成功');
+        console.log(data.data);
+        let {
+          resultPrice
+        } = data.data;
+        if (data.data && data.data.discountPrice > 0) {
+          this.setData({
+            resultPrice: resultPrice
+          })
+        }
+        wx.navigateTo({
+          url: `/pages/newCart/cart?isNeedFee=${this.data.isSelfTaking ? 0: 1}`
+        });
+      }).catch(e => {
+        console.log('请求失败');
+      });
     },
     /**
      * 选择规格
      */
     select(e) {
+      // wx.showLoading({
+      //   title: 'Loading...', //提示的内容,
+      //   mask: true, //显示透明蒙层，防止触摸穿透,
+      //   success: res => {}
+      // });
+      // this.getCustomed();
       let group = e.target.dataset.group
       let idx = e.target.dataset.tagidx
       // 规格
       if (group === 'sku') {
+      // if (false) {
         let skuKey = `info.sku_list`
         let skuList = this.data.info.sku_list
         let currentSku = skuList[idx]
         skuList.forEach(item => {
           item.isdefault = item.id === currentSku.id ? 1 : 0
         })
+
+        let finalPrice = currentSku.sale_price;
+        // let finalPrice = this.data.price;
+        let customedKey = this.data.customedKey.split('-');
+
+        this.data.info.key_list.forEach(item => {
+          item.val_list.forEach(ele => {
+            if (ele.price) {
+              if (customedKey.indexOf(ele.prop_id.toString()) > -1) {
+                finalPrice = parseFloat(ele.price) + parseFloat(finalPrice);
+              }
+            }
+          });
+        });
         this.setData({
           [skuKey]: skuList,
-          price: currentSku.sale_price,
+          price: finalPrice,
           currentSku: currentSku
         })
         this.setPrice()
       }
       // 其他属性
       if (group === 'opt') {
+      // if (true) {
         let groupIdx = e.target.dataset.groupidx
         let optKey = `info.key_list[${groupIdx}]`
         try {
@@ -134,16 +264,92 @@ Component({
           let optList = propList[groupIdx]
           // 属性id
           let selectedIdx = optList.val_list[idx].id
-          optList.default_val_id = selectedIdx
+          optList.default_val_id = selectedIdx;
+
+          let skuList = this.data.info.sku_list
+          let currentSku = skuList.filter(item => {
+            return item.isdefault === 1;
+          })
+          
+          // let finalPrice = currentSku[0].sale_price;
+          // let customedKey = this.data.customedKey.split('-');
+
+          let customVal = this.data.customVal.split('-');
+
+          let finalPrice = this.data.price;
+
+          let priceTags = this.data.priceTags;
+
+          if (customVal.indexOf(e.target.dataset.code.toString()) < 0) {
+          // if (true) {
+            let targetIndex = -1;
+            let deltaPrice = 0;
+
+            this.data.info.key_list.forEach((item, index) => {
+              item.val_list.forEach(ele => {
+                if (e.target.dataset.code == ele.prop_id) {
+                  targetIndex = index;
+                  if (ele.price) {
+                    let flag = true;
+                    priceTags.forEach(lll => {
+                      if (lll.prop_id === ele.prop_id) {
+                        flag = false
+                      }
+                    })
+                    flag && priceTags.push(ele);
+                    flag && (deltaPrice += parseFloat(ele.price));
+                  }
+                }
+                // if (ele.price) {
+                //   if (e.target.dataset.code == ele.prop_id) {
+                //     targetItem = ele;
+                //     hasFlag = true;
+                //     deltaPrice += parseFloat(ele.price);
+                //   } else {
+                //     deltaPrice -= parseFloat(ele.price);
+                //   }
+                // }
+              });
+            });
+            if (deltaPrice !== 0) {
+              finalPrice = parseFloat(deltaPrice) + parseFloat(finalPrice);
+            } else {
+              if (targetIndex >= 0) {
+                this.data.info.key_list[targetIndex].val_list.forEach((item) => {
+                  priceTags.forEach((ele, index) => {
+                    if (item.prop_id === ele.prop_id) {
+                      priceTags.splice(index, 1);
+                    }
+                  })
+                });
+              }
+              finalPrice = parseFloat(currentSku[0].sale_price);
+              priceTags.forEach(item => {
+                finalPrice += parseFloat(item.price);
+              });
+            }
+          }
+
+          
+          // let _target = optList.val_list.filter(item => item.prop_id == e.target.dataset.code);
+          // if (_target) {
+          //   finalPrice = _target[0].price ? (parseFloat(_target[0].price) + parseFloat(finalPrice)) : parseFloat(finalPrice);
+          // }
+
+          
           this.setData({
+            priceTags: priceTags,
+            price: finalPrice,
             [optKey]: optList,
             currentProp: propList
           })
+          this.setPrice()
         } catch(e) {
           console.log(e)
         }
       }
       this.getCustomed()
+      wx.hideLoading();
     },
     /**
      * 增加数量
@@ -181,6 +387,10 @@ Component({
         })
       }
     },
+
+    closeMenu () {
+      this.toggleMenu();
+    },
     /**
      * 获取默认规格
     */
@@ -195,10 +405,20 @@ Component({
         list.forEach(item => {
           tags.push(item.dataset.val)
           keys.push(item.dataset.code)
-        })
+        });
+        let customed = '';
+        if (this.data.currentSku.sale_price || this.data.info.default_sku) {
+          customed = `￥${parseFloat(this.data.currentSku.sale_price ? this.data.currentSku.sale_price : this.data.info.default_sku.sale_price).toFixed(1)}`;
+
+          this.data.priceTags.forEach(item => {
+            customed += ` + ${item.val}${item.price}元`
+          });
+        }
+        
         this.setData({
-          customed: tags.join('/'),
-          customedKey: this.data.info.id + '-' + keys.join('-')
+          customed: customed,
+          customedKey: this.data.info.id + '-' + keys.join('-'),
+          customVal: keys.slice(1).join('-'),
         })
       }).exec();
     }

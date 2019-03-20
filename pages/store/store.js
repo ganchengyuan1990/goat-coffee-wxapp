@@ -87,6 +87,22 @@ Page({
 		// 感觉跟onShow里的fetchLoaction重合了
 		this.fetchLoaction()  
 		this.checkSaveUser()
+
+		if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
+			let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
+			model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
+				let sum = 0;
+				res.data.carts && res.data.carts.forEach(item => {
+					sum += item.num;
+				})
+				wx.setTabBarBadge({
+					index: 3,
+					text: sum.toString()
+				});
+			}).catch(e => {
+				
+			});
+		}
 	},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -103,6 +119,7 @@ Page({
 			query1.select(".J_img_wrap").boundingClientRect();
 			query1.exec(res => {
 				height2 = res[0].height;
+				console.log(height2);
 				this.setData({
 					listHeight: winHeight - height1 - height2
 				});
@@ -154,7 +171,7 @@ Page({
 			if (this.data.isLoadStorageCart) {
 				this.getStorageCart()
 			}
-			this.toggleTabBar(true);
+			// this.toggleTabBar(true);
 		}
 	},
 
@@ -191,6 +208,7 @@ Page({
 						title: '提示',
 						content: '需要您的授权才能推荐附近的店铺信息',
 						showCancel: false,
+						confirmColor: '#f50000', //确定按钮的文字颜色,
 						success(res) {
 							if (res.confirm) {
 								wx.openSetting()
@@ -253,9 +271,9 @@ Page({
 		this.setData({
 			gettingLocation: true
 		})
-		wx.showLoading({
-			title: '加载中',
-		})
+		// wx.showLoading({
+		// 	title: '加载中',
+		// })
 		wx.getLocation({
 			type: 'wgs84',
 			success(res) {
@@ -356,6 +374,7 @@ Page({
 		if (parseFloat(storeInfo.distance) > 3000) {
 			wx.showModal({
 				title: '提示',
+				confirmColor: '#f50000', //确定按钮的文字颜色,
 				showCancel: false,
 				content: `您与店铺的距离超过3公里，请确认店铺是${storeInfo.storeName}`,
 				confirmText: '我知道了'
@@ -373,6 +392,9 @@ Page({
 	 * 获取商品信息
 	 */
 	fetchProduct(storeId) {
+		wx.showLoading({
+			title: '加载中',
+		})
 		model('home/product/all', {
 			storeId: storeId
 		}).then(res => {
@@ -381,7 +403,13 @@ Page({
 				data
 			} = res
 
-			const list = data.classify_list
+			const list = data.classify_list;
+			// 计算单品价格
+			list.forEach(item => {
+				item.product_list.forEach(ele => {
+					ele.price = ele.sku_list[0].price;
+				})
+			});
 			this.setData({
 				scrollTop: 0,
 				menuList: list
@@ -514,7 +542,7 @@ Page({
 					});
 					if (i < 3) {
 						this.setData({
-							viewToNav: 'nav1'
+							viewToNav: 'nav16'
 						})
 					} else {
 						this.setData({
@@ -546,17 +574,21 @@ Page({
 		// 	isCatePanelShow: !isShow
 		// })
 		if (isShow) {
-			this.toggleTabBar(true, () => {
-				isOpening = false
-			})
+			// this.toggleTabBar(true, () => {
+			// 	isOpening = false
+			// })
+			isOpening = false;
 			this.setData({
 				isCatePanelShow: !isShow
 			})
 		} else {
-			this.toggleTabBar(false, () => {
-				this.setData({
-					isCatePanelShow: !isShow
-				})
+			// this.toggleTabBar(false, () => {
+			// 	this.setData({
+			// 		isCatePanelShow: !isShow
+			// 	})
+			// })
+			this.setData({
+				isCatePanelShow: !isShow
 			})
 			// for temp 
 			setTimeout(() => {
@@ -573,12 +605,19 @@ Page({
 			this.mergeCart(cart)
 			this.getBestPaySolution();
 		}
+		
 	},
 	addCart(e) {
-		let isOpen = this.checkStoreState()
-		if (!isOpen) {
-			return
-		}
+		// let isOpen = this.checkStoreState()
+		// if (!isOpen) {
+		// 	return
+		// }
+		wx.showToast({
+			title: '已加入购物车',
+			icon: 'none',
+			duration: 1500
+		})
+		this.toggleSpecific()
 		let cart = this.data.cartList
 		if (e.detail) {
 			cart.push(e.detail)
@@ -595,13 +634,16 @@ Page({
 		let self = this
 
 		if (!isShow) {
-			this.toggleTabBar(false, () => {
-				self.setData({
-					isCartPanelShow: !isShow
-				})
+			self.setData({
+				isCartPanelShow: !isShow
 			})
+			// this.toggleTabBar(false, () => {
+			// 	self.setData({
+			// 		isCartPanelShow: !isShow
+			// 	})
+			// })
 		} else {
-			this.toggleTabBar(true)
+			// this.toggleTabBar(true)
 			self.setData({
 				isCartPanelShow: !isShow
 			})
@@ -642,7 +684,8 @@ Page({
 			wx.showModal({
 				title: '提示',
 				content: '我们已经打烊了呦，请明天再来呦。',
-				showCancel: false
+				showCancel: false,
+				confirmColor: '#f50000', //确定按钮的文字颜色,
 			})
 			return false
 		}
@@ -710,16 +753,16 @@ Page({
 		}
 
 		const url = `/pages/pay/checkout/checkout?fromTransportIndex=${this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
-		this.setData({
-			isCartPanelShow: false
-		})
-		wx.showTabBar()
+		// this.setData({
+		// 	isCartPanelShow: false
+		// })
+		// wx.showTabBar()
 		// this.toggleCart()
 		wx.navigateTo({
 			url: url,
 			success() {
 				self.setData({
-					cartList: [],
+					cartGoods: [],
 					resultPrice: -1,
 					isLoadStorageCart: true
 				})
@@ -806,7 +849,7 @@ Page({
 			products: products
 		});
 		if (wx.getStorageSync('token') && wx.getStorageSync('token').user) {
-			this.getBestCouponByProduct();
+			// this.getBestCouponByProduct();
 		}
 	},
 

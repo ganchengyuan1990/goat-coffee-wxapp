@@ -1,0 +1,27 @@
+<view class="container">
+
+  <view class="title">
+        <image style='width: 137px; height: 93px; position: relative; top: 8rpx; margin-top: 120rpx;' src='../img/chenggong.png'/>
+    </view>
+
+    <view class="cart-view">
+        <view style="color: #000; font-size: 48rpx; font-weight: 500; text-align: center; margin-top: 60rpx;">
+            购买成功
+        </view>
+
+        <view style="color: #000; font-size: 28rpx; font-weight: 200; text-align: center; margin-top: 40rpx;">
+            {{cupNumber}}杯已放入您的咖啡钱包
+        </view>
+
+
+         <view class="button_line">
+            <view style="font-size: 32rpx; color: #F50000; margin: 30rpx; margin-right: 18rpx; border-radius: 8rpx;height: 80rpx; line-height: 80rpx; display: inline-block; width: 316rpx; text-align: center; border: 1rpx solid #F50000; align-items: center; justify-content:center;" bindtap="goPocket">
+                <text class='sub-title'>查看我的咖啡钱包</text>
+            </view>
+
+            <view style="font-size: 32rpx; color: #fff; margin: 30rpx; margin-left: 18rpx;border-radius: 8rpx;height: 80rpx; line-height: 80rpx; display: inline-block; width: 316rpx; text-align: center; background: #F50000; align-items: center; justify-content:center;" bindtap="goStore">
+                <text class='sub-title'> 去喝一杯</text>
+            </view>
+        </view>
+    </view>
+</view>

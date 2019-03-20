@@ -15,10 +15,10 @@
 }
 .btn-wrap .btn-save {
     width: 100%;
-    padding: 34rpx 0;
-    border-radius: 10rpx;
+    padding: 28rpx 0;
+    border-radius: 5rpx;
     color: #fff;
-    background: #000;
+    background: #F50000;
     font-size: 36rpx;
     text-align: center;
     line-height: 1;

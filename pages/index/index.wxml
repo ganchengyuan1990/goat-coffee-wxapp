@@ -1,0 +1,48 @@
+<view class="container">
+  <view class="img-wrapper">
+    <image mode="widthFix" src="{{banner}}" />
+  </view>
+  <!-- <view class="line">
+  </view> -->
+  <view class="success-container">
+    <view class="block" bindtap='goStore'>
+      <view class="left">
+        <view class='title'>现在下单</view>
+        <view class='mark'>ORDER NOW</view>
+      </view>
+      <view class="right">
+        <image src="../../images/cup_red.png" />
+      </view>
+    </view>
+    <view class="block" bindtap='goPocket'>
+      <view class="left">
+        <view class='title'>咖啡钱包</view>
+        <view class='mark'>COFFEE WALLET</view>
+      </view>
+      <view class='tags'>
+        {{tags}}
+      </view>
+      <view class="right">
+        <image src="../../images/pocket.png" />
+      </view>
+    </view>
+    <view class="block" bindtap='goPin'>
+      <view class="left">
+        <view class='title'>邀请得杯</view>
+        <view class='mark'>INVITE FRIENDS</view>
+      </view>
+      <view class="right">
+        <image src="../../images/quan.png" />
+      </view>
+    </view>
+  </view>
+
+
+  <view class="act-wrap" wx:if="{{isActWrapShow}}">
+    <view class="mask {{isActWrapShow ? 'active':''}}"></view>
+    <view class="cnt">
+      <view class="btn-close" bind:tap="hideActWrap"></view>
+      <image src="{{actImage}}" mode="widthFix" bind:tap="goPageCoupon"></image>
+    </view>
+  </view>
+</view>

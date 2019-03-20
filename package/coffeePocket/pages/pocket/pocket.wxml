@@ -1,0 +1,46 @@
+<!--jigsaw.wxml-->
+<view class="container">
+
+    <view class="title" bindtap="showToast">
+        <image style='width: 36rpx; height: 36rpx; position: relative; top: 8rpx; margin-right: 8rpx;' src='../img/flag.png'/>咖啡钱包说明
+    </view>
+
+    <view wx:if="{{couponLists.length > 0}}">
+        <view wx:if="{{!showLoading}}">
+            <view class="loadmore" wx:if="{{showLoading}}">
+                <view class="list-view-loading-icon"></view>
+                加载更多<text class="loading-dot">.</text><text class="loading-dot">.</text><text class="loading-dot">.</text>
+            </view>
+            <view style="display: flex; flex-direction: row; flex-wrap: wrap;">
+                <view bindtap="goDetail" wx:for="{{couponLists}}" wx:for-item="item" class="double_item" wx:key="index" data-index="{{index}}" bind:lazyload="findLazyLoadComponents">
+
+                    <view class='info-wrapper'>
+                        <view class='line bigger'>
+                            <text style="font-size: 40rpx; margin-right: 5rpx;"></text>
+                            <text>{{item.voucher.voucherName}}</text>
+                        </view>
+                        <view class='line slash'>
+                            ￥<text style="font-size: 45rpx;">{{item.voucher.voucherPrice}}</text>
+                        </view>
+                        <view class='line orange'>
+                            尚余{{item.userVouchers.length}}杯
+                        </view>
+                    </view>
+                    <view class='img-wrapper'>
+                        <image src="../img/quan_cup.png" lazy-load='true' />
+                    </view>
+
+                </view>
+            </view>
+        </view>
+    </view>
+    <view wx:if="{{couponLists.length == 0}}" style="height: 100vh;display: flex; justify-content: center; align-items: center;">
+        <view style="position: relative; top: -100rpx; color: #999; font-size: 26rpx;">您的咖啡钱包有点寂寞</view>
+    </view>
+    <view class="bar_item" bindtap="goCart">
+        <view style="display: flex; width: 200rpx; flex-direction: column; align-items: center; justify-content:center;">
+            <image style="width: 56rpx; height: 56rpx;" src="../img/buy_quan.png"/>
+            <text class='sub-title' style="height: 24rpx; line-height: 24rpx; margin-top: 10rpx;">购买券</text>
+        </view>
+    </view>
+</view>

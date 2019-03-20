@@ -25,6 +25,8 @@ Page({
     } else {
       this.fetchVoucherList()
     }
+
+    
   },
 
   /**
@@ -55,14 +57,14 @@ Page({
         }
         // element.couponBref = '21123123123';
         if (element.coupon.availabileStartTime) {
-          element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0]
+          element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0]
         }
         if (element.coupon.availabileEndTime) {
-          element.coupon.availabileEndTime = element.coupon.availabileEndTime.split('.')[0]
+          element.coupon.availabileEndTime = element.coupon.availabileEndTime.split(' ')[0]
         }
       });
       this.setData({
-        couponItems: data.data,
+        couponItems: result,
         loading: false
       })
     })
@@ -82,15 +84,15 @@ Page({
         }
 
         if (element.voucher.availabileStartTime) {
-          element.voucher.availabileStartTime = element.voucher.availabileStartTime.split('.')[0];
+          element.voucher.availabileStartTime = element.voucher.availabileStartTime.split(' ')[0];
         }
         if (element.voucher.availabileEndTime) {
-          element.voucher.availabileEndTime = element.voucher.availabileEndTime.split('.')[0];
+          element.voucher.availabileEndTime = element.voucher.availabileEndTime.split(' ')[0];
         }
         element.counpon = element.voucher;
       });
       this.setData({
-        voucherItems: data.data,
+        voucherItems: result,
         loading: false
       })
     })

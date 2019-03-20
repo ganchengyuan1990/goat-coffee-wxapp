@@ -1,0 +1,65 @@
+<view class="container">
+    <!-- <view class="service-policy">
+    <view class="item">30天无忧退货</view>
+    <view class="item">48小时快速退款</view>
+    <view class="item">满88元免邮费</view>
+  </view> -->
+    <view class='img_wrapper' wx:if="{{showImg}}" bindtap="goInvite">
+        <image mode="widthFix" src="{{cartImage}}" />
+    </view>
+    <view class="no-cart" wx:if="{{cartGoods.length <= 0 && !loading}}">
+        <view class="c">
+            <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
+            <text>您的购物车空空如也</text>
+            <view style="display: flex; align-items: center; justify-content: center; margin-top: 50rpx;">
+              <view class="add_button" bindtap="goStore">去喝一杯</view>
+            </view>
+        </view>
+    </view>
+    
+    <view class="cart-view">
+        <view class="list">
+            <view class="group-item">
+                <view class="goods">
+                    <view class="item {{item.ifAvailable ? '' : 'not_online'}}" wx:for="{{cartGoods}}" wx:key="{{item.id}}">
+                        <view class="checkbox {{item.ifAvailable ? 'checked' : ''}}" bindtap="checkedItem" data-item-index="{{index}}"></view>
+                        <view class="cart-goods">
+                            <view class="info">
+                                <view class="t">
+                                    <text class="name">{{item.goods.name}}</text>
+                                    <!-- <text class="guige" wx:if="{{item.choosenSkuItem}}">规格： {{item.choosenSkuItem.name}}</text> -->
+                                </view>
+                                <view class="attr">
+                                    <!-- <text>{{ isEditCart ? '已选择:' : ''}}</text> -->
+                                    <text class="guige" wx:if="{{item.propsStr}}">规格： {{item.propsStr}}</text>
+                                </view>
+                                
+                            </view>
+                            <view wx:if="{{!item.ifAvailable}}" style="position: absolute; top: 15rpx; right: 40rpx; font-size: 26rpx; color: #999;">
+                                暂时不可下单
+                            </view>
+                            <view class="order-create-form-item">
+                                <view class="content">
+                                    <view class="b">
+                                        <text class="price">￥{{item.unitPrice}}</text>
+                                    </view>
+                                    <image src="../../images/minus.png" class="btn btn-minus {{(item.count <= 0)? 'btn-disable' : ' '}}" data-index="{{index}}" data-available="{{item.ifAvailable}}" bindtap="decreaseRoomCount"></image>
+                                    <text class="room-count" type="text">{{item.num}}</text>
+                                    <image src="../../images/add.png" class="btn btn-plus" data-index="{{index}}" data-available="{{item.ifAvailable}}" bindtap="increaseRoomCount"></image>
+                                </view>
+                              </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+
+        </view>
+        <view class="cart-bottom">
+            <!-- <view class="checkbox {{checkedAllStatus ? 'checked' : ''}}" bindtap="checkedAll">全选({{cartTotal.checkedGoodsCount}})</view> -->
+            <view class="total">应付金额 <text class='signal'>￥</text><text class='money'>{{cartTotal.checkedGoodsAmount}}</text></view>
+            <!-- <view class="delete" bindtap="editCart">{{!isEditCart ? '编辑' : '完成'}}</view> -->
+            <!-- <view class="checkout" bindtap="deleteCart" wx:if="{{isEditCart}}">删除所选</view> -->
+            <view class="checkout {{cartGoods.length == 0  ? 'gray' : ''}}" bindtap="checkoutOrder">去结算</view>
+        </view>
+    </view>
+</view>

@@ -13,6 +13,7 @@
         </view>
 
         <view class="direct-bottom">
+            <view class='text added' wx:if="{{item.isdefault}}">默认</view>
             <view class="direct-category">{{item.contact}}</view>
             <view class="split-line" wx:if="{{item.categoryname}}">|</view>
             <view class="direct-address">

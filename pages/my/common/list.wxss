@@ -43,5 +43,5 @@
     transform: translateX(-6rpx) rotate(45deg);
 }
 .dark {
-    color: #333!important;
+    color: #222!important;
 }

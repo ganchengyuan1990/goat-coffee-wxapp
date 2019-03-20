@@ -120,3 +120,18 @@
     width: 30rpx;
     height: 30rpx;
 }
+
+.added {
+    top: 25rpx;
+    right: 30rpx;
+    width: 72rpx;
+    height: 44rpx;
+    line-height: 44rpx;
+    border-radius: 22rpx;
+    background: #FFDBDB;
+    text-align: center;
+    font-size: 24rpx;
+    color: #F50000;
+    border: 1rpx solid #FFDBDB;
+    margin-right: 18rpx;
+}

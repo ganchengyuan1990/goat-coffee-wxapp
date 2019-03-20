@@ -35,6 +35,7 @@
           <view class="addr">{{storeInfo.storeName}}</view>
         </view>
         <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
+        <view class="distance" ><text style="color: #f50000">面价满￥65免配送费 </text> <text style="color: #999">| 慢必赔</text>        <image style='width: 24rpx; height: 24rpx; position: relative; top: 7rpx; margin-left: 5rpx;' src='../../images/flag.png'/></view>
       </block>
 
     </view>
@@ -53,7 +54,7 @@
         </swiper-item>
       </block>
     </swiper>
-    <view class="info-wrap">公告：全场任意饮品购买2杯或消费金额满36元免配送费</view>
+    <!-- <view class="info-wrap">公告：全场任意饮品购买2杯或消费金额满36元免配送费</view> -->
   </view>
   <view class="list-wrap" style="height:{{listHeight}}px">
     <view class="list-nav">
@@ -61,7 +62,8 @@
         <view class="list-nav-item {{activeIndex==index?'active':''}}" wx:for="{{menuList}}" wx:key="item.id" bindtap="selectNav" data-index="{{index}}" data-navid="{{'list'+item.id}}" id="{{'nav'+item.id}}">
           <view class="tt">
             <!-- <view class="icon-crown"></view> -->
-            {{item.name}}
+            <image src="../../images/top.png" style="width: 26rpx;height: 26rpx;margin-right: 5rpx; position: relative; top: 2rpx;" wx:if="{{item.name === '人气TOP'}}"/>{{item.name}}
+            <text class='discount' wx:if="{{item.tips}}"><text style="font-size: 18rpx;">{{item.tips}}</text></text>
           </view>
         </view>
       </scroll-view>
@@ -87,19 +89,24 @@
               data-productidx="{{index}}">
               <view class="img">
                 <image src="{{product.icon}}"></image>
+                <image class="tag tag_pic" wx:if="{{product.tips}}" src="../../images/tag.png"><view class="pic_word">{{product.tips}}</view></image>
               </view>
               <view class="info">
                 <view>
                   <view class="name">{{product.productName}}</view>
-                  <view class="note" wx:if="{{product.brief}}">{{product.brief}}</view>
+                  <view class="note" wx:if="{{product.brief}}">{{product.productEnName}}</view>
                   <view class="note">默认：{{filter.getSpecific(product)}}</view>
                 </view>
                 <view class="price-count">
-                  <view class="price">{{product.default_sku.sale_price > 0 ? '￥'+product.default_sku.sale_price:'暂无价格'}}<text class="price-del" wx:if="{{product.default_sku.price}}">￥{{product.default_sku.price}}</text></view>
+                  <view class="price">{{product.default_sku.sale_price > 0 ? '￥'+product.default_sku.sale_price:'暂无价格'}}
+                  <!-- <text class="price-del" wx:if="{{product.default_sku.price}}">￥{{product.default_sku.price}}</text> -->
+                  </view>
                   
                   <!-- <view class="count"> -->
                     <view class="add btn" data-item="{{item}}">
-                      <view class="plus">+</view>
+                      <view class="">
+                        <image style="height: 37rpx; width: 37rpx; position: relative; top: 1rpx;" src="../../images/add.png"/>
+                      </view>
                     </view>
                   <!-- </view> -->
                 </view>
@@ -122,8 +129,10 @@
       bind:togglecart="toggleCart"
       bind:save="saveCart"></cart>
     <menu-wrap 
+      isSelfTaking="{{isSelfTaking}}"
       salesTotalPrice="{{resultPrice}}"
       info="{{currentSpecific}}" 
+      basePrice="{{currentSpecific.price}}" 
       isShow="{{isCatePanelShow}}" 
       bind:togglemenu="toggleSpecific" 
       bind:save="addCart"></menu-wrap>
@@ -135,4 +144,8 @@
       <image src="{{actImage}}" mode="widthFix" bind:tap="goPageCoupon"></image>
     </view>
   </view>
+
+  <!-- <view class="cartNumber">
+    <text>1</text>
+  </view> -->
 </view>

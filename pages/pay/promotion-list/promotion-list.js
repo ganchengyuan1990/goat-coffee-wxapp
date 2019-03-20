@@ -11,75 +11,7 @@ Page({
         //     discountMoney: 50
         // }],
         couponItems: [],
-        voucherItems: [{
-            "tCoreCoupon": {
-                "id": 48,
-                "couponName": "八折",
-                "couponType": 2,
-                "couponIcon": "http://bds-kafei.oss-cn-shanghai.aliyuncs.com/d29bbeaf6c774ce19ef13fc7db57a728.jpg",
-                "couponBref": "描述",
-                "discount": 8.00,
-                "discountType": 0,
-                "classifyId": "8",
-                "ableSavePrice": "",
-                "saveAmount": "",
-                "couponTimeType": 2,
-                "availabileStartTime": "2018-01-09T07:01:22.000+0000",
-                "availabileEndTime": "",
-                "duration": 13,
-                "status": 1,
-                "createTime": "2018-11-12 15:03:55",
-                "updateTime": "2018-11-13 11:36:58"
-            },
-            "tCoreUserCoupon": {
-                "id": 25,
-                "userId": 1,
-                "couponId": 48,
-                "coupon": "",
-                "state": 1,
-                "createTime": "2018-11-12 15:04:22",
-                "updateTime": "",
-                "startTime": "",
-                "endTime": ""
-            },
-            "tCoreVoucher": "",
-            "tCoreUserVoucher": "",
-            "type": 1
-        }, {
-            "tCoreCoupon": {
-                "id": 48,
-                "couponName": "八折",
-                "couponType": 2,
-                "couponIcon": "http://bds-kafei.oss-cn-shanghai.aliyuncs.com/d29bbeaf6c774ce19ef13fc7db57a728.jpg",
-                "couponBref": "描述",
-                "discount": 8.00,
-                "discountType": 0,
-                "classifyId": "8",
-                "ableSavePrice": "",
-                "saveAmount": "",
-                "couponTimeType": 2,
-                "availabileStartTime": "2018-01-09T07:01:22.000+0000",
-                "availabileEndTime": "",
-                "duration": 13,
-                "status": 1,
-                "createTime": "2018-11-12 15:03:55",
-                "updateTime": "2018-11-13 11:36:58"
-            },
-            "tCoreUserCoupon": {
-                "id": 30,
-                "userId": 1,
-                "couponId": 48,
-                "coupon": "",
-                "state": 1,
-                "createTime": "2018-11-14 18:31:05",
-                "updateTime": "",
-                "startTime": "",
-                "endTime": ""
-            },
-            "tCoreVoucher": "",
-            "tCoreUserVoucher": "",
-            "type": 1
-        }],
+        voucherItems: [],
         unActivedItems: [],
         chosenInfo: {},
         canUseRedPacketMeanwhile: false,
@@ -91,7 +23,12 @@ Page({
     onMyEvent: function (e) {
         // 选择一项就返回，并用setData把选中的那项以外的其他项checked设为空
         let idArray = e.detail.value;
-        let newValue = idArray.splice(idArray.length - 1, 1);
+        let newValue;
+        if (this.data.type === 1) {
+            newValue = idArray.splice(idArray.length - 1, 1);
+        } else {
+            newValue = idArray;
+        }
         let chosenInfo = {};
         console.log(e.target.dataset.id);
         let target = '';
@@ -101,25 +38,38 @@ Page({
             target = 'voucherItems'
         }
         this.data[target].forEach((element, index) => {
-            if (index === parseInt(newValue[0])) {
-                if (!element.checked) {
-                    let checkBool = target + '[' + index + '].checked';
-                    if (this.data.type === 2) {
-                        chosenInfo = {
-                            type: this.data.type,
-                            id: element.tCoreUserVoucher.voucherId,
-                            relationId: element.tCoreUserVoucher.id
-                        };
+            if(this.data.type === 1) {
+                if (index === parseInt(newValue[0])) {
+                    if (!element.checked) {
+                        let checkBool = target + '[' + index + '].checked';
+                        if (this.data.type === 2) {
+                            chosenInfo = {
+                                type: this.data.type,
+                                content: [{
+                                    type: this.data.type,
+                                    id: element.tCoreUserVoucher.voucherId,
+                                    relationId: element.tCoreUserVoucher.id
+                                }]
+                            };
+                        } else {
+                            chosenInfo = {
+                                type: this.data.type,
+                                content: [{
+                                    type: this.data.type,
+                                    id: element.tCoreUserCoupon.couponId,
+                                    relationId: element.tCoreUserCoupon.id
+                                }]
+                            };
+                        }
+                        this.setData({
+                            [checkBool]: true
+                        });
                     } else {
-                        chosenInfo = {
-                            type: this.data.type,
-                            id: element.tCoreUserCoupon.couponId,
-                            relationId: element.tCoreUserCoupon.id
-                        };
+                        let checkBool = target + '[' + index + '].checked';
+                        this.setData({
+                            [checkBool]: false
+                        });
                     }
-                    this.setData({
-                        [checkBool]: true
-                    });
                 } else {
                     let checkBool = target + '[' + index + '].checked';
                     this.setData({
@@ -127,15 +77,53 @@ Page({
                     });
                 }
             } else {
+                // 咖啡钱包逻辑不通
                 let checkBool = target + '[' + index + '].checked';
-                this.setData({
-                    [checkBool]: false
-                });
+                let targetArr = []
+                newValue.forEach((itm) => {
+                    targetArr.push(parseInt(itm));
+                })
+                if (targetArr.indexOf(index) > -1) {
+                    this.setData({
+                        [checkBool]: true
+                    });
+                } else {
+                    this.setData({
+                        [checkBool]: false
+                    });
+                }
             }
+            
         });
-        this.setData({
-            chosenInfo: chosenInfo
-        });
+
+
+        if (this.data.type === 1) {
+            this.setData({
+                chosenInfo: chosenInfo
+            });
+        }
+        
+    },
+
+    commitCoupon () {
+        if (this.data.type === 2) {
+            let chosenInfoArr = [];
+            this.data.voucherItems.forEach(element => {
+                if (element.checked) {
+                    chosenInfoArr.push({
+                        type: this.data.type,
+                        id: element.tCoreUserVoucher.voucherId,
+                        relationId: element.tCoreUserVoucher.id
+                    })
+                }
+            });
+            this.setData({
+                chosenInfo: {
+                    type: this.data.type,
+                    content: chosenInfoArr
+                }
+            });
+        }
         this.backToOrderCreate();
     },
 
@@ -178,6 +166,12 @@ Page({
                 } else {
                     item.checked = false;
                 }
+                if (item.tCoreUserCoupon.startTime) {
+                    item.tCoreUserCoupon.startTime = item.tCoreUserCoupon.startTime.split(' ')[0]
+                }
+                if (item.tCoreUserCoupon.endTime) {
+                    item.tCoreUserCoupon.endTime = item.tCoreUserCoupon.endTime.split(' ')[0]
+                }
             })
             this.setData({
                 couponItems: list,
@@ -199,6 +193,7 @@ Page({
         } else {
             // let list = JSON.parse(option.list);
             let list = wx.getStorageSync('voucherList');
+            let chosenVoucherArr = option.chosenVoucher.split(',');
             list.forEach(item => {
                 if (item.tCoreUserVoucher.discount) {
                     item.tCoreUserVoucher.discount = parseFloat(item.tCoreUserVoucher.discount).toFixed(1);
@@ -206,15 +201,24 @@ Page({
                 if (item.tCoreUserVoucher.saveAmount) {
                     item.tCoreUserVoucher.saveAmount = parseFloat(item.tCoreUserVoucher.discount).toFixed(1);
                 }
-                if (item.tCoreUserVoucher.id == option.chosenVoucher) {
-                    item.checked = true;
-                } else {
-                    item.checked = false;
+                if (item.tCoreUserVoucher.startTime) {
+                    item.tCoreUserVoucher.startTime = item.tCoreUserVoucher.startTime.split(' ')[0]
                 }
+                if (item.tCoreUserVoucher.endTime) {
+                    item.tCoreUserVoucher.endTime = item.tCoreUserVoucher.endTime.split(' ')[0]
+                }
+                let checked = false;
+                chosenVoucherArr.forEach(ele => {
+                    if (item.tCoreUserVoucher.id == ele) {
+                        checked = true;
+                    }
+                });
+                item.checked = checked;
+                item.tCoreVoucher.voucherPrice = parseInt(item.tCoreVoucher.voucherPrice);
             })
             this.setData({
                 voucherItems: list,
-                chosenVoucher: parseInt(option.chosenVoucher)
+                chosenVoucher: chosenVoucherArr
             })
             // 兑换券
             // model('my/voucher/list', {

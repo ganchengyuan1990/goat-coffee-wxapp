@@ -1,7 +1,8 @@
 <view class="wrapper">
-  <view class="promotion-tip">
-    <!-- <view class='radio' color="#ccc"></view>
-    <text>不使用优惠券</text> -->
+  <view class="promotion-tip" wx:if="{{couponItems.length > 0}}">
+    <!-- <view class='radio' color="#ccc"></view> -->
+    <text>可用优惠<text style="color: #DF0202;">({{couponItems.length}}张)</text> </text> 
+
   </view>
   <view class="group-wrapper">
     <view class="group">
@@ -17,7 +18,6 @@
           <view class='cover-bottom'></view>
 
           <view class='left-part'>
-            <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
 
             <view class="list-item-deal {{item.coupon.couponType === 2 ? 'no_margin_left' : ''}}">
               <label class="deal-icon"></label>
@@ -28,16 +28,19 @@
 
           <view class='right-part'>
             <view class="list-item-name">
-              <view class="promotion-description {{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime || item.tCoreCoupon.couponBref ? '' : 'higher'}}">{{item.tCoreCoupon.couponName}}</view>
+              <view class="promotion-description {{item.tCoreCoupon && item.tCoreCoupon.startTime || item.tCoreCoupon.couponBref ? '' : 'higher'}}">{{item.tCoreCoupon.couponName}}</view>
               <!-- <text class="promotion-description">{{item.tCoreCoupon.couponName}}</text> -->
-              <text class="promotion-limit-tip">{{item.tCoreCoupon.couponBref}}</text>
-              <text class="promotion-limit-tip" wx:if="{{item.tCoreCoupon && item.tCoreCoupon.availabileStartTime && item.tCoreCoupon.availabileEndTime}}">{{item.tCoreCoupon.availabileStartTime}} - {{item.tCoreCoupon.availabileEndTime}}</text>
+              <!-- <text class="promotion-limit-tip">{{item.tCoreCoupon.couponBref}}</text> -->
+              <text class="promotion-limit-tip" wx:if="{{item.tCoreUserCoupon && item.tCoreUserCoupon.startTime && item.tCoreUserCoupon.endTime}}">{{item.tCoreUserCoupon.startTime}} - {{item.tCoreUserCoupon.endTime}}</text>
             </view>
           </view>
 
-          <view class="coupon-right">
-            <image src="../../../images/coffee_cup_2@2x.png" />
+          <view class="coupon-right lefter">
+            <image src="../../../images/cup.png" />
+            <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
           </view>
+          
+
           
         </label>
 
@@ -48,7 +51,6 @@
           <view class='cover-bottom'></view>
 
           <view class='left-part'>
-            <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
 
             <view class="list-item-deal no_margin_left">
               <label class="deal-icon"></label>
@@ -58,14 +60,15 @@
 
           <view class='right-part'>
             <view class="list-item-name">
-              <view class="promotion-description {{item.tCoreVoucher && item.tCoreVoucher.availabileStartTime ? '' : 'higher'}}">{{item.tCoreVoucher.voucherName}}</view>
+              <view class="promotion-description {{item.tCoreVoucher && item.tCoreVoucher.startTime ? '' : 'higher'}}">{{item.tCoreVoucher.voucherName}}</view>
               <text class="promotion-limit-tip"></text>
-              <text class="promotion-limit-tip" wx:if="{{item.tCoreVoucher && item.tCoreVoucher.availabileStartTime && item.tCoreVoucher.availabileEndTime}}">{{item.tCoreVoucher.availabileStartTime}} - {{item.tCoreVoucher.availabileEndTime}}</text>
+              <text class="promotion-limit-tip" wx:if="{{item.tCoreUserVoucher && item.tCoreUserVoucher.startTime && item.tCoreUserVoucher.endTime}}">{{item.tCoreUserVoucher.startTime}} - {{item.tCoreUserVoucher.endTime}}</text>
             </view>
+
           </view>
 
           <view class="coupon-right">
-            <image src="../../../images/coffee_cup_2@2x.png" />
+              <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
           </view>
           
         </label>
@@ -98,4 +101,8 @@
       </view>
     </view> -->
   </view>
+
+  <view class="button">
+        <button bindtap="commitCoupon">确定</button>
+    </view>
 </view>

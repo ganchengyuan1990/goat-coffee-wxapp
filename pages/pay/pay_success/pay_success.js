@@ -44,10 +44,10 @@ Page({
 
     goIndex () {
         wx.switchTab({
-            url: '/pages/order/list/list'
+            url: '/pages/store/store'
         });
-        wx.showTabBar({
-            animation: true
-        })
+        // wx.showTabBar({
+        //     animation: true
+        // })
     }
 })

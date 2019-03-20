@@ -60,7 +60,38 @@ Page({
     userAddressId: 0,
     getTime: '',
     waitProcessTime: '',
-    fromTransportIndex: -1
+    fromTransportIndex: -1,
+    timeWords: '',
+    type: 0,
+    usePromotion: true,
+    hasGetBestSolution: false
+  },
+
+  switchChange (e) {
+    this.setData({
+      usePromotion: e.detail.value
+    });
+    if (!this.data.usePromotion) {
+      model(`home/coupon/calculate-price-with-coupon`, {
+        couponList: [],
+        productList: this.data.product,
+        storeId: this.data.options.storeId,
+        uid: wx.getStorageSync('token').user.id
+      }).then(data => {
+        let result = parseFloat(data.data.discountPrice).toFixed(2);
+        this.setData({
+          actualPrice: parseFloat(data.data.resultPrice + parseFloat(this.data.deliverFee)).toFixed(2),
+          couponMoney: result,
+          couponUserRelation: '',
+          discountType: data.data.type,
+          chosenInfo: {},
+          chooseNoCoupon: false,
+          chooseNoVoucher: false,
+        })
+      });
+    }  else {
+      this.getBestCouponByProduct();
+    }
   },
   onLoad: function (options) {
 
@@ -73,7 +104,9 @@ Page({
 
     this.dealOptions(options);
 
-    this.getBestCouponByProduct();
+    if (!this.data.hasGetBestSolution) {
+      this.getBestCouponByProduct();
+    }
 
     this.getAddressList();
 
@@ -144,7 +177,7 @@ Page({
   getAvailableCoupon () {
     model(`home/coupon/get-available-coupon`, {
       uid: wx.getStorageSync('token').user.id,
-      list: this.data.product
+      storeId: this.data.options.storeId
       // list: [{
       //   "productId": 28,
       //   "skuId": 121,
@@ -183,7 +216,7 @@ Page({
     model(`home/coupon/get-best-coupon-by-product`, {
       uid: wx.getStorageSync('token').user.id,
       // uid: 1,
-      list: this.data.product
+      storeId: this.data.options.storeId
     }).then(data => {
       if (data.data) {
         // let result = parseFloat(data.data.discountPrice).toFixed(2);
@@ -194,33 +227,45 @@ Page({
         // let actualPrice = _a.plus(_b).minus(parseFloat(result));
 
         let couponArr = data.data.solutionList;
-        let couponUserRelation = ''
+        let couponUserRelation = []
         
         couponArr.forEach(item => {
-          couponUserRelation += item.userRelation + ','
+          couponUserRelation.push(item.userRelation);
         });
+        couponUserRelation = couponUserRelation.join(',');
         if (data.data.type === 1) {
           this.setData({
+            chooseNoVoucher: true,
             chosenCoupon: couponArr[0].id,
             chosenInfo: {
-              id: couponArr[0].classId,
-              relationId: couponArr[0].id,
+              content: [{
+                id: couponArr[0].classId,
+                relationId: couponArr[0].id,
+                type: 1
+              }],
               type: 1
             }
           })
         } else if (data.data.type === 2) {
           this.setData({
-            chosenVoucher: couponArr[0].id,
+            chooseNoCoupon: true,
+            // chosenVoucher: couponArr[0].id,
+            chosenVoucher: couponUserRelation,
             chosenInfo: {
-              id: couponArr[0].classId,
-              relationId: couponArr[0].id,
+              content: [{
+                id: couponArr[0].classId,
+                relationId: couponArr[0].id,
+                type: 2
+              }], 
               type: 2
             }
           })
         }
         this.setData({
           couponMoney: result,
-          actualPrice: parseFloat(actualPrice).toFixed(2),
+          hasGetBestSolution: true,
+          // actualPrice: parseFloat(actualPrice).toFixed(2),
+          actualPrice: data.data.resultPrice.toFixed(2),
           discountType: data.data.type,
           couponUserRelation: couponUserRelation
         });
@@ -229,10 +274,12 @@ Page({
         let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
         let actualPrice = _a.plus(_b);
          this.setData({
-           actualPrice: parseFloat(actualPrice),
+           // actualPrice: parseFloat(actualPrice),
+          actualPrice: data.data.resultPrice.toFixed(2),
            discountType: 0
          });
       }
+      this.dealChildPageInfo();
     }).catch(e => {
       if (e.errMsg && e.errMsg.indexOf('fail') > 0) {
         this.setData({
@@ -269,6 +316,7 @@ Page({
   },
 
   dealOptions (items) {
+    // debugger
     if (items.data) {
       
       let options = JSON.parse(decodeURIComponent(items.data));
@@ -301,6 +349,10 @@ Page({
       });
       if (this.data.tab === 'delivery') {
         this.chooseExpress(false);
+      } else {
+        this.setData({
+          timeWords: '立即取餐'
+        });
       }
     }
     if (wx.getStorageSync('STORE_INFO')) {
@@ -320,28 +372,37 @@ Page({
   },
 
   chooseSelf (notFirstLoad) {
+    let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'))
     this.setData({
       chooseSelf: true,
       chooseExpress: false,
       deliverFee: 0,
+      timeWords: '立即取餐',
+      payAmount: !notFirstLoad ? this.data.payAmount : this.data.payAmount - parseInt(this.data.options.deliverFee || STORE_INFO.deliverFee || 6)
     })
-    if (!notFirstLoad) {
-      this.getBestCouponByProduct();
-    }
-    this.dealChildPageInfo();
+    // if (!notFirstLoad) {
+    //   this.getBestCouponByProduct();
+    // }
+    this.getBestCouponByProduct();
+    // this.dealChildPageInfo();
     // this.getWaitTime();
   },
 
   chooseExpress (notFirstLoad) {
+    let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'))
     this.setData({
       chooseSelf: false,
       chooseExpress: true,
-      deliverFee: this.data.options.deliverFee
+      deliverFee: this.data.options.deliverFee || STORE_INFO.deliverFee || 6,
+      timeWords: '立即配送',
+      payAmount: !notFirstLoad ? this.data.payAmount : this.data.payAmount + parseInt(this.data.options.deliverFee || STORE_INFO.deliverFee || 6)
     })
-    if (!notFirstLoad) {
-      this.getBestCouponByProduct();
-    }
-    this.dealChildPageInfo();
+    // if (!notFirstLoad) {
+    //   this.getBestCouponByProduct();
+    // }
+    this.getBestCouponByProduct();
+
+    // this.dealChildPageInfo();
     this.getWaitTime();
   },
   // selectAddress() {
@@ -366,7 +427,8 @@ Page({
     wx.setStorageSync('voucherList', this.data.voucherList)
     if (this.data.chosenInfo.type == 2) {
       wx.navigateTo({
-        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.voucherList.length >=10 ? this.data.voucherList.slice(0,10) : this.data.voucherList)}`,
+        // url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.voucherList.length >=10 ? this.data.voucherList.slice(0,10) : this.data.voucherList)}`,
+        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.couponUserRelation}&list=${JSON.stringify(this.data.voucherList.length >=10 ? this.data.voucherList.slice(0,10) : this.data.voucherList)}`,
       })
     } else {
       wx.navigateTo({
@@ -378,16 +440,20 @@ Page({
 
   goCoupon () {
     wx.setStorageSync('couponList', this.data.couponList)
-    if (this.data.chosenInfo.type == 2) {
-      wx.navigateTo({
-        url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
-      })
-    } else {
-      wx.navigateTo({
-        // url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
-        url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.relationId : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
-      })
-    }
+    wx.navigateTo({
+      // url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
+      url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.relationId : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
+    })
+    // if (this.data.chosenInfo.type == 2) {
+    //   wx.navigateTo({
+    //     url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
+    //   })
+    // } else {
+    //   wx.navigateTo({
+    //     // url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
+    //     url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.relationId : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
+    //   })
+    // }
   },
   addAddress() {
     wx.navigateTo({
@@ -405,7 +471,7 @@ Page({
       delete item.number;
       // delete item.productPropIds;
     });
-    if (!this.data.chosenInfo.id) {
+    if (!this.data.chosenInfo.type) {
       this.setData({
         chooseNoCoupon: true,
         chooseNoVoucher: true,
@@ -413,20 +479,26 @@ Page({
       })
     } else {
       this.setData({
-        chooseNoCoupon: false,
-        chooseNoVoucher: false
+        chooseNoCoupon: this.data.chosenInfo.type === 2,
+        chooseNoVoucher: this.data.chosenInfo.type === 1
       })
     }
     model(`home/coupon/calculate-price-with-coupon`, {
-      couponList: this.data.chosenInfo.id ? [this.data.chosenInfo] : [],
+      couponList: this.data.chosenInfo.type ? this.data.chosenInfo.content : [],
       productList: this.data.product,
+      storeId: this.data.options.storeId,
       uid: wx.getStorageSync('token').user.id
     }).then(data => {
       let result = parseFloat(data.data.discountPrice).toFixed(2);
+      let couponUserRelation = [];
+      this.data.chosenInfo.content && this.data.chosenInfo.content.length > 0 && this.data.chosenInfo.content.forEach(item => {
+        couponUserRelation.push(item.relationId);
+      });
+      couponUserRelation = couponUserRelation.join(',')
       this.setData({
         actualPrice: parseFloat(data.data.resultPrice + parseFloat(this.data.deliverFee)).toFixed(2),
         couponMoney: result,
-        couponUserRelation: this.data.chosenInfo.relationId + ',',
+        couponUserRelation: couponUserRelation,
         discountType: data.data.type,
       })
     });
@@ -448,10 +520,12 @@ Page({
       if (this.data.fromAddress) {
         this.chooseExpress(false);
       }
-    } else if (this.data.goBackFromRemark) {
-      this.getRemark();
     } else {
       this.getAddressList();
+    }
+
+    if (this.data.goBackFromRemark) {
+      this.getRemark();
     }
 
   },
@@ -495,7 +569,7 @@ Page({
       orderType: this.data.chooseSelf ? 3 : 1,
       payType: 1,
       remark: this.data.remark,
-      discountIds: this.data.couponUserRelation.substr(0, this.data.couponUserRelation.length - 1)
+      discountIds: this.data.couponUserRelation
       // discountIds: '1,2,3'
     }
     // if (!this.data.options.userAddressId) {
@@ -529,9 +603,9 @@ Page({
       delete item.price;
     })
 
-    param.list = JSON.stringify(products);
+    // param.list = JSON.stringify(products);
 
-    
+    param.storeId = this.data.options.storeId
 
     // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
     model(`order/detail/submit`, param, 'POST').then(data => {
@@ -596,7 +670,7 @@ Page({
         cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
         cancelColor: '#000000', //取消按钮的文字颜色,
         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-        confirmColor: '#3CC51F', //确定按钮的文字颜色,
+        confirmColor: '#f50000', //确定按钮的文字颜色,
         success: res => {
           if (res.confirm) {
             this.submit();

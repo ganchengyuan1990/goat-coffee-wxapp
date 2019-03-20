@@ -3,6 +3,9 @@
 
 var app = getApp();
 
+import model from '../../utils/model.js'
+
+
 Page({
   data: {
     cartGoods: [],
@@ -12,18 +15,31 @@ Page({
       "checkedGoodsCount": 0,
       "checkedGoodsAmount": 0.00
     },
-    isEditCart: false,
+    couponLists: [],
     checkedAllStatus: true,
-    editCartList: []
+    isNeedFee: false,
+    countGift: 0,
+    addtionalLists: []
   },
   onLoad: function (options) {
-    // 页面初始化 options为页面跳转所带来的参数
-    let cartInfo = wx.getStorageSync('cartInfo');
-    this.setData({
-      cartGoods: cartInfo,
-      cartTotal: this.calcCartTotal(cartInfo || [])
+    wx.showLoading({
+      title: 'Loading...', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
     });
-
+    model('activity/voucher/info').then(data => {
+      let vouchers = data.data.vouchers;
+      vouchers.forEach(item => {
+        item.num = 0;
+        item.additional = false;
+        item.voucher_price = parseFloat(item.voucher_price).toFixed(1);
+      })
+      this.setData({
+        couponLists: vouchers,
+        voucherActivitys: data.data.voucherActivitys,
+      });
+      wx.hideLoading();
+    })
   },
   onReady: function () {
     // 页面渲染完成
@@ -41,6 +57,7 @@ Page({
     // 页面关闭
 
   },
+
   getCartList: function () {
     let that = this;
     util.request(api.CartList).then(function (res) {
@@ -72,15 +89,94 @@ Page({
     let totalAmount = 0;
     let totalCount = 0;
     cartGoods.forEach(item => {
-      if (item.checked) {
-        totalAmount += item.price * item.number;
-        totalCount += item.number;
-      }
+      totalAmount += parseFloat(item.voucher_price) * item.num;
+      totalCount += item.num;
     });
+    console.log(totalAmount);
     return {
       checkedGoodsCount: totalCount,
-      checkedGoodsAmount: totalAmount
+      checkedGoodsAmount: parseFloat(totalAmount).toFixed(1)
     };
+  },
+
+  increaseRoomCount (e) {
+    let index = parseInt(e.currentTarget.dataset.index);
+    let cartGoods = Object.assign(this.data.couponLists);
+    cartGoods[index].num = cartGoods[index].num + 1;
+    let list = [];
+    cartGoods.forEach(item => {
+      list.push({
+        voucherId: item.id,
+        number: item.num
+      });
+    })
+    model('activity/voucher/cal-gift', {list: list}).then(data => {
+      if (data.data.voucher) {
+        data.data.voucher.additional = true;
+        data.data.voucher.num = data.data.countGift;
+        
+        this.setData({
+          countGift: data.data.countGift,
+          addtionalLists: [data.data.voucher]
+        });
+      }
+      if (data.data.voucherActivity) {
+        wx.setStorageSync('voucherActivityId', data.data.voucherActivity.id);
+      } else {
+        this.setData({
+          addtionalLists: []
+        });
+      }
+    }).catch(e => {
+
+    });
+    this.setData({
+      couponLists: cartGoods,
+      cartTotal: this.calcCartTotal(cartGoods)
+    });
+  },
+
+  decreaseRoomCount (e) {
+    let index = parseInt(e.currentTarget.dataset.index);
+    let cartGoods = Object.assign(this.data.couponLists);
+    
+
+    
+    if (cartGoods[index].num == 0) {
+    } else {
+      cartGoods[index].num = cartGoods[index].num - 1;
+      let list = [];
+      cartGoods.forEach(item => {
+        list.push({
+          voucherId: item.id,
+          number: item.num
+        });
+      })
+
+      model('activity/voucher/cal-gift', {
+        list: list
+      }).then(data => {
+        if (data.data.voucher) {
+          data.data.voucher.additional = true;
+          data.data.voucher.num = data.data.countGift;
+
+          this.setData({
+            countGift: data.data.countGift,
+            addtionalLists: [data.data.voucher]
+          });
+        } else {
+          this.setData({
+            addtionalLists: []
+          });
+        }
+      }).catch(e => {
+
+      });
+      this.setData({
+        couponLists: cartGoods,
+        cartTotal: this.calcCartTotal(cartGoods)
+      });
+    }
   },
 
 
@@ -168,42 +264,7 @@ Page({
     }
 
   },
-  editCart: function () {
 
-    // wx.setStorageSync('cartInfo', this.data.cartGoods);
-
-    var that = this;
-    if (this.data.isEditCart) {
-      // this.getCartList();
-      
-      let cartGoods = this.data.cartGoods
-      cartGoods.forEach(item => {
-        item.checked = true;
-      })
-      this.setData({
-        isEditCart: !this.data.isEditCart,
-        cartGoods: cartGoods,
-        cartTotal: this.calcCartTotal(cartGoods),
-        checkedAllStatus: that.isCheckedAll()
-      });
-      wx.setStorageSync('cartInfo', cartGoods);
-    } else {
-      //编辑状态
-      let tmpCartList = this.data.cartGoods.map(function (v) {
-        v.checked = false;
-        return v;
-      });
-      this.setData({
-        editCartList: this.data.cartGoods,
-        cartGoods: tmpCartList,
-        isEditCart: !this.data.isEditCart,
-        checkedAllStatus: that.isCheckedAll(),
-        'cartTotal.checkedGoodsCount': that.getCheckedGoodsCount()
-      });
-
-    }
-
-  },
   updateCart: function (productId, goodsId, number, id) {
     let that = this;
 
@@ -231,52 +292,65 @@ Page({
     // });
 
   },
-  cutNumber: function (event) {
-
-    let itemIndex = event.target.dataset.itemIndex;
-    let cartItem = this.data.cartGoods[itemIndex];
-    let number = (cartItem.number - 1 > 1) ? cartItem.number - 1 : 1;
-    cartItem.number = number;
-    this.setData({
-      cartGoods: this.data.cartGoods
-    });
-    this.updateCart(cartItem.product_id, cartItem.goods_id, number, cartItem.id);
-  },
-  addNumber: function (event) {
-    let itemIndex = event.target.dataset.itemIndex;
-    let cartItem = this.data.cartGoods[itemIndex];
-    let number = cartItem.number + 1;
-    cartItem.number = number;
-    this.setData({
-      cartGoods: this.data.cartGoods
-    });
-    this.updateCart(cartItem.product_id, cartItem.goods_id, number, cartItem.id);
-
-  },
-  checkoutOrder: function () {
-    //获取已选择的商品
-    let that = this;
-
-    var checkedGoods = this.data.cartGoods.filter(function (element, index, array) {
-      if (element.checked == true) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-
-    if (checkedGoods.length <= 0) {
-      return false;
+  
+  checkoutOrder(e) {
+    let self = this
+    let token = wx.getStorageSync('token').token
+    if (!token) {
+      wx.navigateTo({
+        url: '/pages/login/login'
+      })
+      return
     }
-    let chosenInfo = this.data.cartGoods.filter(item => {
-      return item.checked;
+
+    if (this.data.cartTotal.checkedGoodsAmount == 0) {
+      wx.showToast({
+        icon: 'none',
+        title: '请选择商品',
+        duration: 1500
+      })
+      return ;
+    }
+
+    // if (this.data.)
+    // let isOpen = this.checkStoreState()
+    // if (!isOpen) {
+    //   return
+    // }
+    let info = this.data
+    let couponLists = info.couponLists
+    let AddCouponLists = info.addtionalLists
+    let totalPrice = info.cartTotal.checkedGoodsAmount;
+
+    couponLists = couponLists.filter(item => {
+      return item.num > 0;
     })
 
+    AddCouponLists = AddCouponLists.filter(item => {
+      return item.num > 0;
+    })
 
-    wx.setStorageSync('chooseCartInfo', chosenInfo);
+    couponLists = couponLists.concat(AddCouponLists);
+    
+    const url = `/package/coffeePocket/pages/checkout/checkout`
 
+    wx.setStorageSync('BuyCouponLists', couponLists);
+
+    // const url = `/packages/coffeePocket/pages/checkout/checkout?fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${isNeedFee?'delivery':'selftaking'}`
+    // this.setData({
+    //   isCartPanelShow: false
+    // })
+    // wx.showTabBar()
+    // this.toggleCart()
     wx.navigateTo({
-      url: `/pages/checkout/checkout?price=${this.data.cartTotal.checkedGoodsAmount}`
+      url: url,
+      success() {
+        self.setData({
+          // cartGoods: [],
+          // resultPrice: -1,
+          isLoadStorageCart: true
+        })
+      }
     })
   },
   deleteCart: function () {
@@ -298,7 +372,7 @@ Page({
       if (element.checked == true) {
         chosenProductIds.push(index);
         cartTotal.checkedGoodsCount -= element.number;
-        cartTotal.checkedGoodsAmount -= element.price * parseInt(element.number);
+        cartTotal.checkedGoodsAmount -= parseFloat(element.price * parseInt(element.number)).toFixed(2);
       } else {
         cartList.push(element);
       }
@@ -329,5 +403,25 @@ Page({
 
         
     // });
+  },
+
+  toast (e) {
+    let index = e.currentTarget.dataset.index;
+    let type = e.currentTarget.dataset.type;
+    wx.showModal({
+      title: '说明', //提示的标题,
+      content: type == 1 ? this.data.couponLists[index].voucher_bref : this.data.addtionalLists[index].voucher_bref, //提示的内容,
+      showCancel: false, //是否显示取消按钮,
+      cancelColor: '#000000', //取消按钮的文字颜色,
+      confirmText: '我知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
+      confirmColor: '#f50000', //确定按钮的文字颜色,
+      success: res => {
+        if (res.confirm) {
+          console.log('用户点击确定')
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    });
   }
 })

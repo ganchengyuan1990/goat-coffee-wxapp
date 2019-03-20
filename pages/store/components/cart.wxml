@@ -12,13 +12,13 @@
   </wxs>
   <view class="mask {{isCartPanelShow ? 'active' : ''}}"></view>
   <view class="cart-wrap">
-      <view class="cart-entry" bindtap="toggleCart" >
+      <!-- <view class="cart-entry" bindtap="toggleCart" >
           <view class="tt">去结算</view>
           <view class="price">
                 <text style="font-size: 36rpx;margin-right: 3rpx;margin-left: -4rpx;" wx:if="{{salesTotalPrice > -1}}">￥{{salesTotalPrice}}</text>
                 <text class="{{salesTotalPrice > -1 ? 'small_line line-through' : ''}}">￥{{cartTotalPrice}}</text>
           </view>
-      </view>
+      </view> -->
       <!-- <view class="panel cart-panel" wx:if="{{isCartPanelShow}}"> -->
       <view class="panel cart-panel {{isCartPanelShow ? 'active' : ''}}">
           <view class="top" bindtap="toggleCart"></view>
@@ -42,7 +42,9 @@
                                 <view class="desc">{{item.spec}}</view>
                             </view>
                             <view class="counter">
-                                <view class="ico ico-minus" bind:tap="decrease" data-idx="{{index}}">-</view>
+                                <view class="ico ico-minus" bind:tap="decrease" data-idx="{{index}}">
+                                    <image src="../../../images/minus.png" />
+                                </view>
                                 <view class="num">{{item.count}}</view>
                                 <view class="ico ico-plus" bind:tap="increase" data-idx="{{index}}">+</view>
                             </view>

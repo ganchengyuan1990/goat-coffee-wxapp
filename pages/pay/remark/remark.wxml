@@ -1,13 +1,57 @@
 <view class='input-line'>
-    <view class="section">
-        <view class="remark">
-            <textarea model="content" value="{{content}}" bindinput="dealName" placeholder='输入备注内容（口味备注不在此留言）' placeholder-style="font-size: 27rpx;position: relative; top: 5rpx;"></textarea>
+
+    <view class="line">
+        <view class="line_title">
+            纸巾
+        </view>
+        <view class="button_line">
+            <view class='little_button {{zhi ? "" : "chosen"}}' bindtap="notChooseZhi">
+                不需要
+            </view>
+            <view class='little_button {{zhi ? "chosen" : ""}}' bindtap="chooseZhi">
+                需要
+            </view>
+        </view>
+    </view>
+
+    <view class="line">
+        <view class="line_title">
+            奶包
+        </view>
+        <view class="button_line">
+            <view class='little_button {{nai ? "" : "chosen"}}' bindtap="notChooseNai">
+                不需要
+            </view>
+            <view class='little_button {{nai ? "chosen" : ""}}' bindtap="chooseNai">
+                需要
+            </view>
+        </view>
+    </view>
+
+    <view class="line">
+        <view class="line_title">
+            糖包
+        </view>
+        <view class="button_line">
+            <view class='little_button {{tang ? "" : "chosen"}}' bindtap="notChooseTang">
+                不需要
+            </view>
+            <view class='little_button {{tang ? "chosen" : ""}}' bindtap="chooseTang">
+                需要
+            </view>
         </view>
     </view>
 
 
+    <view class="section">
+        <view class="remark">
+            <textarea model="content" value="{{content}}" bindinput="dealName" placeholder='输入其他备注特殊要求（可不填）' placeholder-style="font-size: 27rpx;position: relative; top: 5rpx;"></textarea>
+        </view>
+    </view>
+
+    
     <view class="button">
-        <button bindtap="commitRemark">确定</button>
+        <button bindtap="commitRemark">保存</button>
     </view>
 
     <toast wx:if="{{toastShown}}" is-show="{{toastShown}}" title="{{toastInfo}}" disappear-sec="3"></toast>

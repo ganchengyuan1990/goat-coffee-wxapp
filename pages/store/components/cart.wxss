@@ -198,6 +198,11 @@
     /* transform: scale(1.6); */
 }
 
+.ico image {
+    width: 36rpx;
+    height: 36rpx;
+}
+
 .line-through{
     text-decoration: line-through;
 }

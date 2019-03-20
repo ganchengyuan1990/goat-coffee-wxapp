@@ -1,70 +1,88 @@
   <view class="mask {{isShow ? 'active' : ''}}"></view>
   <view class="panel cate-panel {{isShow ? 'active' : ''}}">
       <view class="top" bind:tap="toggleMenu"></view>
+      
       <view class="bottom">
           <view class="hd">
+            <image src="{{info.banner}}" mode="aspectFill" class="img-caption"></image>
+            <image style="position: absolute; right: 20rpx;top: 30rpx;width: 50rpx;height: 50rpx;" src="../../../images/close.png"  catchtap="closeMenu"/>
               <view class="tt">
+                <view class='flex-item'>
                   <view class="cn">{{info.productName}}</view>
-                  <view class="en" wx:if="{{info.brief}}">{{info.brief}}</view>
-              </view>
-              <view class="fig">
-                <image src="{{info.icon}}" mode="aspectFill" class="img-caption"></image>
+                  <view class="en" wx:if="{{info.brief}}">{{info.productEnName}}</view>
+                </view>
               </view>
           </view>
-          <scroll-view scroll-y="{{true}}" class="bd">
-              <view class="opt-group">
-                  <view class="opt-tt">规格</view>
-                  <view class="opt-bd">
-                      <view 
-                        class="J_opt_item item {{item.isdefault === 1 ? 'active':''}}" 
-                        wx:for="{{info.sku_list}}" 
-                        wx:key="{{index}}" 
-                        data-group="sku" 
-                        data-tagidx="{{index}}" 
-                        data-val="{{item.propSkuName}}"
-                        data-code="{{item.propSkuId}}"
-                        bind:tap="select">
-                          {{item.propSkuName}}
-                      </view>
-                  </view>
-              </view>              
-              <view class="opt-group" wx:for="{{info.key_list}}" wx:key="{{index}}" wx:for-index="idx">
-                  <view class="opt-tt">{{item.name}}</view>
-                  <view class="opt-bd">
-                      <view 
-                        class="J_opt_item item {{item.default_val_id == tag.id ? 'active':''}}" 
-                        wx:for="{{item.val_list}}" 
-                        wx:for-item="tag"
-                        wx:key="{{tag.id}}"
-                        bind:tap="select"
-                        data-group="opt"
-                        data-groupidx="{{idx}}"
-                        data-tagidx="{{index}}"
-                        data-val="{{tag.val}}"
-                        data-code="{{tag.prop_id}}">{{tag.val}}</view>
-                  </view>
-              </view>
-          </scroll-view>
-          <view class="ft">
-              <view class="counter-wrap">
-                  <view class="price-wrap">
-                      <view class="price" wx:if="{{salesTotalPrice < 0}}">
-                        ￥{{totalPrice}}
-                        <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
-                      </view>
-                      <view class="price" wx:if="{{salesTotalPrice > -1}}">
-                        ￥{{totalPrice}}
-                        <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
-                      </view>
-                      <view class="desc">{{customed}}</view>
-                  </view>
-                  <view class="counter">
-                      <view class="ico ico-minus {{count === 1 ? 'disable': ''}}" bind:tap="decrease"><view class="ico-txt">-</view></view>
-                      <view class="num">{{count < 10 ? '0'+count:count}}</view>
-                      <view class="ico ico-plus" bind:tap="increase"><view class="ico-txt">+</view></view>
-                  </view>
-              </view>
-              <view class="btn-confirm" bind:tap="save">确定</view>
+          <view style="padding: 0 40rpx;">
+            <view style="height: 2rpx; background: #c6c6c6"></view>
+            <scroll-view scroll-y="{{true}}" class="bd">
+                <view class="opt-group">
+                    <view class="opt-tt">规格</view>
+                    <view class="opt-bd">
+                        <view 
+                          class="J_opt_item item {{item.isdefault === 1 ? 'active':''}}" 
+                          wx:for="{{info.sku_list}}" 
+                          wx:key="{{index}}" 
+                          data-group="sku" 
+                          data-tagidx="{{index}}" 
+                          data-val="{{item.propSkuName}}"
+                          data-code="{{item.propSkuId}}"
+                          bind:tap="select">
+                            {{item.propSkuName}}
+                        </view>
+                    </view>
+                </view>              
+                <view class="opt-group" wx:for="{{info.key_list}}" wx:key="{{index}}" wx:for-index="idx">
+                    <view class="opt-tt">{{item.name}}</view>
+                    <view class="opt-bd">
+                        <view 
+                          class="J_opt_item item {{item.default_val_id == tag.id ? 'active':''}}" 
+                          wx:for="{{item.val_list}}" 
+                          wx:for-item="tag"
+                          wx:key="{{tag.id}}"
+                          bind:tap="select"
+                          data-group="opt"
+                          data-groupidx="{{idx}}"
+                          data-tagidx="{{index}}"
+                          data-val="{{tag.val}}"
+                          data-code="{{tag.prop_id}}">{{tag.val}}<text wx:if="{{tag.price}}">{{tag.price}}元</text></view>
+                    </view>
+                </view>
+                <view style='height: 1rpx; background: #f5f5f5;'></view>
+                <view class="mess">
+                  <view>商品描述：</view>
+                  <view style="color: #999; font-size: 24rpx;">{{info.brief}}</view>
+                </view>
+            </scroll-view>
+            <view style="position: relative; height: 2rpx; background: #e6e6e6; margin-left: -40rpx; margin-right: -40rpx;"></view>
+            <view class="ft">
+                <view class="counter-wrap">
+                    <view class="price-wrap">
+                        <view class="price" wx:if="{{salesTotalPrice < 0}}">
+                          ￥{{totalPrice}}
+                          <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
+                        </view>
+                        <view class="price" wx:if="{{salesTotalPrice > -1}}">
+                          ￥{{totalPrice}}
+                          <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
+                        </view>
+                        <view class="desc">{{customed}}</view>
+                    </view>
+                    <view class="counter">
+                        <view class="ico ico-minus {{count === 1 ? 'disable': ''}}" bind:tap="decrease">                                    
+                          <image src="../../../images/minus.png" mode="widthFix"/>
+                        </view>
+                        <view class="num">{{count < 10 ? '0'+count:count}}</view>
+                        <view class="ico ico-plus" bind:tap="increase">
+                          <image src="../../../images/add.png" mode="widthFix"/>
+                        </view>
+                    </view>
+                </view>
+                <view class='button_wrapper'>
+                  <view class="btn-confirm" bind:tap="save">{{activityName}}</view>
+                  <view class="btn-confirm cart" bind:tap="save">加入购物车</view>
+                </view>
+            </view>
           </view>
       </view>
   </view>

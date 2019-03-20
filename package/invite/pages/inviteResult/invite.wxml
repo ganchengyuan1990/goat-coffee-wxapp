@@ -1,0 +1,43 @@
+<view class="container">
+  <view class="mark_pic">
+    <image style="width: 186rpx; height: 194rpx;" src='../../images/congra.png' />
+  </view>
+  <view class="success-container">
+    <view class="success-form">
+      <view class="coupon-sn">恭喜您</view>
+      <view class="coupon-text">获得新人大劵包</view>
+
+      <view class="coupon-text" style="color: #666666; font-size: 24rpx;">已放入您{{phone}}账户</view>
+    </view>
+
+    <view class="success-form" bindtap="goStore">
+      <view style="font-size: 32rpx; color: #fff; margin: 0rpx auto; border-radius: 3rpx;height: 80rpx; line-height: 80rpx; display: inline-block; width: 318rpx; text-align: center; background: #F50000; align-items: center; justify-content:center;" bindtap="goStore">
+          <text class='sub-title'>现在去享用</text>
+      </view>
+    </view>
+    
+  </view>
+
+
+  <view class="coupon-sn toppper" style="margin-top: 60rpx;">
+    <view style="height: 1rpx; width: 70rpx; display: inline-block; background: #e6e6e6; position: relative; top: -10rpx; margin-right: 15rpx;"></view> 
+    新人大礼包规则 
+    <view style="height: 1rpx; width: 70rpx; display: inline-block; background: #e6e6e6; position: relative; top: -10rpx; margin-left: 15rpx;"></view> 
+  </view>
+
+  <rich-text class="content {{extended ? 'content-auto' : 'content-min'}}" nodes="{{contents}}"></rich-text>
+
+  <view class="content-cover" bindtap="bindExtend" wx:if="{{!extended}}">
+    <view class="cover"></view>
+    <!-- <view class="extend">
+      <image src="../../images/downdown.png" style="width: 26rpx;height: 26rpx;margin-left: 5rpx;" />
+    </view> -->
+  </view>
+
+  <view class="content-cover" bindtap="bindExtend" wx:if="{{extended}}">
+    <!-- <view class="extend extendeded">
+          <image src="../../images/toptop.png" style="width: 26rpx;height: 26rpx;margin-left: 5rpx;" />
+    </view> -->
+  </view>
+  
+</view>

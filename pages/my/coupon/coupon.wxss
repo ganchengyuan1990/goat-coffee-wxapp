@@ -70,7 +70,8 @@
 .promotion-description {
     height: 60rpx;
     line-height: 30rpx;
-    width: 256rpx;
+    width: 100%;
+    text-align: center;
     font-size: 30rpx;
     font-weight: normol;
     color: #333333;
@@ -87,7 +88,7 @@
 }
 .left-part {
     flex: none;
-    padding: 66rpx 15rpx 66rpx 30rpx;
+    padding: 33rpx 15rpx 33rpx 30rpx;
     display: flex;
 }
 
@@ -95,6 +96,8 @@
     width: 170rpx;
     border-top-right-radius: 0.5rem;
     border-right: 2rpx dashed #999;
+    display: flex;
+    flex-direction: column;
 }
 
 .right-part {
@@ -135,6 +138,7 @@
 .promotion-limit-tip {
     font-size: 22rpx;
     color: #999999;
+    text-align: center;
 }
 
 checkbox {

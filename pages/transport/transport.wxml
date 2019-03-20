@@ -1,7 +1,10 @@
 <view class="container">
+    <view class='chosenCity'>  
+        所选城市：<text style='color: #333; margin-right: 10rpx;'>上海</text><image style="width: 18rpx; height: 10rpx;" src="../../images/arrow_down.png" />
+    </view>
     <view class="header-tabs-container">
-        <view bindtap="goSelfGet" class="header-tab-item {{showSelfGet ? 'tab-item-active' : ''}}">自取</view>
-        <view bindtap="goExpress" class="header-tab-item {{showExpress ? 'tab-item-active' : ''}}">外送</view>
+        <view bindtap="goSelfGet" class="header-tab-item {{showSelfGet ? 'tab-item-active' : ''}}">门店自取</view>
+        <view bindtap="goExpress" class="header-tab-item {{showExpress ? 'tab-item-active' : ''}}">外卖到家</view>
     </view>
 
     <!-- <view class="searchEntry" bindtap="onSearchShow" data-source="0" wx:if="{{!isGeoAuth}}">
@@ -28,9 +31,10 @@
                             </view>
          
                             <view class="direct-bottom">
-                                <view class="direct-category">{{item.categoryname}}</view>
+                                <view class="direct-category"><image style='width: 20rpx; height: 20rpx; margin-right: 12rpx;' src="../../images/clock.png" />9:00 - 21:00</view>
                                 <view class="split-line" wx:if="{{item.categoryname}}">|</view>
                                 <view class="direct-address">
+                                    <image style='position: relative; top: 8rpx; width: 20rpx; height: 20rpx; margin-right: 9rpx;' src="../../images/location.png" />
                                     <text wx:if="{{item.regionname}}" class="direct-address-region">{{item.regionname}}</text>
                                     <text wx:if="{{item.address}}" class="direct-address-text {{item.regionname ? 'before-content' : ''}}">{{item.address}}</text>
                                 </view>

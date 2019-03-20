@@ -27,7 +27,7 @@
 
             
         </form>
-         <view class='mention' wx:if="{{auth}}">点击确认即表示同意《山羊咖啡店会员服务条款》</view>
+         <view class='mention' wx:if="{{auth}}">点击确认即表示同意《加油咖啡会员服务条款》</view>
     </view>
 
     <button style="width:80%; margin-left: 10%;margin-top: 40rpx" class='button blue' open-type="getUserInfo"

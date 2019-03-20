@@ -7,12 +7,50 @@ var app = getApp();
 
 Page({
   data: {
-    content: ''
+    content: '',
+    nai: false,
+    zhi: false,
+    tang: false
   },
   onLoad: function (options) {
     this.dealOptions(options);
   },
 
+  chooseZhi () {
+    this.setData({
+      zhi: true
+    });
+  },
+
+  notChooseZhi() {
+    this.setData({
+      zhi: false
+    });
+  },
+
+  chooseNai () {
+    this.setData({
+      nai: true
+    });
+  },
+
+  notChooseNai() {
+    this.setData({
+      nai: false
+    });
+  },
+
+  chooseTang() {
+    this.setData({
+      tang: true
+    });
+  },
+
+  notChooseTang() {
+    this.setData({
+      tang: false
+    });
+  },
 
   dealName(e) {
     this.setData({
@@ -27,7 +65,12 @@ Page({
   },
 
   commitRemark() {
-    wx.setStorageSync('remark', this.data.content);
+    let content = '';
+    content += `${this.data.zhi ? '' : '不'}需要纸巾；`;
+    content += `${this.data.nai ? '' : '不'}需要奶包；`;
+    content += `${this.data.tang ? '' : '不'}需要奶包；`;
+    content += `另外：${this.data.content}`;
+    wx.setStorageSync('remark', content);
     let pages = getCurrentPages();
     let currPage = pages[pages.length - 1]; //当前页面
     let prevPage = pages[pages.length - 2]; //上一个页面

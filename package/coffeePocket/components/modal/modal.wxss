@@ -1,0 +1,97 @@
+.dp-dialog-backdrop {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: table;
+  transition: opacity .3s ease;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog {
+  margin: 0 auto;
+  width: 460rpx;
+  padding: 50rpx 0rpx 0rpx 0rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  z-index: 100;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-header {
+  padding: 0 40rpx;
+  /*padding: 0.15rem 0.1rem 0.15rem;*/
+  text-align: center;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-header .dp-dialog-header-content {
+  font-size: 30rpx;
+  margin: 0;
+  color: #999;
+  text-align: center;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-content {
+  padding: 20rpx 0 26.7rpx 0;
+  font-size: 30rpx;
+  line-height: 44rpx;
+  color: #888888;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-footer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  border-collapse: collapse;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-footer .dp-dialog-footer-btn {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  text-align: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-size: 32rpx;
+  color: #333;
+  flex: 1;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-footer .dp-dialog-footer-btn:nth-child(2) {
+  border-left: 2rpx solid #eee;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-footer .dp-dialog-footer-btn.left {
+  color: #666666;
+}
+
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-footer .dp-dialog-footer-btn.highlight {
+  color: #333333;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-footer .dp-dialog-footer-btn.double {
+  font-size: 28rpx;
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-footer .dp-dialog-footer-btn:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+.dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-footer:before {
+  content: '';
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2rpx;
+  border-top: 2rpx solid #c9c3b7;
+  transform: scaleY(0.5);
+  transform-origin: 0 0;
+  z-index: 1001;
+}
+.expand-transition {
+  transition: all 0.3s ease;
+}
+.expand-enter,
+.expand-leave {
+  opacity: 0;
+  transform: scale(1.1);
+}

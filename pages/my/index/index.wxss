@@ -1,6 +1,7 @@
 @import '../common/list.wxss';
 .user-container .head-wrap {
     height: 450rpx;
+    position:relative;
 }
 
 .head-wrap {
@@ -43,4 +44,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.sticky-right {
+    position: absolute;
+    right: 30rpx;
+    top: 50%;
 }

@@ -183,7 +183,7 @@ Page({
                     content: e, //提示的内容,
                     cancelColor: '#000000', //取消按钮的文字颜色,
                     confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                    confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                    confirmColor: '#f50000', //确定按钮的文字颜色,
                     success: res => {
                         this.setData({
                             locked: false
@@ -245,7 +245,7 @@ Page({
                         content: e, //提示的内容,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                        confirmColor: '#f50000', //确定按钮的文字颜色,
                         success: res => {
                             this.setData({
                                 locked: false

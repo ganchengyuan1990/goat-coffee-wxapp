@@ -7,6 +7,7 @@
             <view class="nick">{{name}}</view>
             <!-- <view class="name">用户姓名</view> -->
         </view>
+        <view class="icon-arrow sticky-right"></view>
     </view>
     <view class="list-wrap">
         <view class="item" bindtap="goAddress">
