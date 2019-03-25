@@ -4,9 +4,9 @@
     <view class="item">48小时快速退款</view>
     <view class="item">满88元免邮费</view>
   </view> -->
-    <view class='img_wrapper' wx:if="{{showImg}}" bindtap="goInvite">
+    <!-- <view class='img_wrapper' wx:if="{{showImg}}" bindtap="goInvite">
         <image mode="widthFix" src="{{cartImage}}" />
-    </view>
+    </view> -->
     <view class="no-cart" wx:if="{{cartGoods.length <= 0 && !loading}}">
         <view class="c">
             <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
@@ -21,8 +21,8 @@
         <view class="list">
             <view class="group-item">
                 <view class="goods">
-                    <view class="item {{item.ifAvailable ? '' : 'not_online'}}" wx:for="{{cartGoods}}" wx:key="{{item.id}}">
-                        <view class="checkbox {{item.ifAvailable ? 'checked' : ''}}" bindtap="checkedItem" data-item-index="{{index}}"></view>
+                    <view class="item {{!item.ifAvailable ? 'not_online' : ''}} {{item.ifAvailable && !item.sku.can_distribution && isNeedFee ? 'not_delever' : ''}}" wx:for="{{cartGoods}}" wx:key="{{item.id}}">
+                        <view class="checkbox {{!item.ifAvailable || (item.ifAvailable && !item.sku.can_distribution && isNeedFee) ? '' : 'checked'}}" bindtap="checkedItem" data-item-index="{{index}}"></view>
                         <view class="cart-goods">
                             <view class="info">
                                 <view class="t">
@@ -37,6 +37,9 @@
                             </view>
                             <view wx:if="{{!item.ifAvailable}}" style="position: absolute; top: 15rpx; right: 40rpx; font-size: 26rpx; color: #999;">
                                 暂时不可下单
+                            </view>
+                            <view wx:if="{{item.ifAvailable && !item.sku.can_distribution && isNeedFee}}" style="position: absolute; top: 15rpx; right: 40rpx; font-size: 26rpx; color: #999;">
+                                暂时不支持外送
                             </view>
                             <view class="order-create-form-item">
                                 <view class="content">

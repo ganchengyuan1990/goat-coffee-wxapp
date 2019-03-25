@@ -106,6 +106,7 @@ Page({
     },
 
     commitCoupon () {
+        debugger
         if (this.data.type === 2) {
             let chosenInfoArr = [];
             this.data.voucherItems.forEach(element => {
@@ -154,6 +155,10 @@ Page({
         if (this.data.type === 1) {
             // let list = JSON.parse(option.list);
             let list = wx.getStorageSync('couponList');
+            let chosenInfo = {
+                type: 1,
+                contents: []
+            };
             list.forEach(item => {
                 if (item.tCoreCoupon.discount) {
                     item.tCoreCoupon.discount = parseFloat(item.tCoreCoupon.discount).toFixed(1);
@@ -163,6 +168,11 @@ Page({
                 }
                 if (item.tCoreUserCoupon.id == option.chosenCoupon) {
                     item.checked = true;
+                    chosenInfo.contents.push({
+                        type: 1,
+                        id: item.tCoreUserCoupon.couponId,
+                        relationId: item.tCoreUserCoupon.id
+                    });
                 } else {
                     item.checked = false;
                 }
@@ -174,6 +184,7 @@ Page({
                 }
             })
             this.setData({
+                chosenInfo: chosenInfo,
                 couponItems: list,
                 chosenCoupon: parseInt(option.chosenCoupon)
             })
@@ -250,5 +261,14 @@ Page({
             // })
         }
         
+    },
+
+    showRule(e) {
+        let index = e.currentTarget.dataset.index;
+        let couponItems = this.data.couponItems;
+        couponItems[index].showRule = !couponItems[index].showRule;
+        this.setData({
+            couponItems: couponItems
+        })
     }
 });

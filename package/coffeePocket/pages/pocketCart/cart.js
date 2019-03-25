@@ -92,7 +92,7 @@ Page({
       totalAmount += parseFloat(item.voucher_price) * item.num;
       totalCount += item.num;
     });
-    console.log(totalAmount);
+    // console.log(totalAmount);
     return {
       checkedGoodsCount: totalCount,
       checkedGoodsAmount: parseFloat(totalAmount).toFixed(1)
@@ -298,7 +298,7 @@ Page({
     let token = wx.getStorageSync('token').token
     if (!token) {
       wx.navigateTo({
-        url: '/pages/login/login'
+        url: '/pages/login/login?from=pocket'
       })
       return
     }

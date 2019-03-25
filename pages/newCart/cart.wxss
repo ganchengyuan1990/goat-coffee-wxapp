@@ -156,6 +156,11 @@ page{
     float: right;
 }
 
+.not_deliver {
+    background: rgba(245, 0, 0, 0.3);
+    opacity: 0.4;
+}
+
 .not_online {
     background: #eee;
     opacity: 0.4;
@@ -380,6 +385,8 @@ page{
     font-size: 29rpx;
     background: #F50000;
     color: #fff;
+    position: relative;
+    z-index: 1000;
 }
 
 .gray {
@@ -408,7 +415,7 @@ page{
   display: inline-block;
   padding: 0 20rpx;
   margin-top: 3.2rpx;
-
+  font-size: 24rpx;
 }
 
 .order-create-form-item .content.room {
@@ -464,7 +471,6 @@ page{
     border-radius: 50%;
     /* border: 3.3rpx solid #f63; */
     margin-top: 6.2rpx;
-    z-index: 1000;
 }
 
 .btn:before {
@@ -474,7 +480,7 @@ page{
     top: 50%;
     width: 20rpx;
     height: 3.3rpx;
-    background-color: #f63;
+    background-color: rgb(253,133,133);
     border-radius: 1.7rpx;
     transform: translate(-50%, -50%);
 }
@@ -486,7 +492,7 @@ page{
     top: 50%;
     width: 3.3rpx;
     height: 22rpx;
-    background-color: #f63;
+    background-color: rgb(253,133,133);
     border-radius: 1.7rpx;
     transform: translate(-50%, -50%);
 }
@@ -501,8 +507,8 @@ page{
 }
 
 .add_button {
-    color: #F50000;
-    border: 1rpx solid #F50000;
+    color: rgb(253,133,133);
+    border: 1rpx solid rgb(253,133,133);
     border-radius: 8rpx;
     text-align: center;
     width: 200rpx;

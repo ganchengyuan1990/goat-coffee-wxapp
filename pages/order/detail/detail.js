@@ -2,6 +2,10 @@
 import drawQrcode from '../../../utils/qrcode.js'
 import model from '../../../utils/model.js';
 
+import {
+  formatTime
+} from '../../../utils/util';
+
 Page({
 
   /**
@@ -9,16 +13,43 @@ Page({
    */
   data: {
     detail: {},
-    dtype: ''
+    dtype: '',
+    waitTime: '',
+    id: '',
+    orderClassify: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let data = decodeURIComponent(options.data)
-    if (data) {
-      this.formatData(data)
+    // let data = decodeURIComponent(options.data)
+    let id = options.id
+    let orderClassify = options.orderClassify
+    if (id && orderClassify) {
+      // this.formatData(data)
+      this.setData({
+        id: id,
+        orderClassify: orderClassify
+      });
+      model(`order/detail/detail?orderClassify=${this.data.orderClassify}&id=${this.data.id}`).then(res => {
+        let result = res.data.order;
+        result.detailList = res.data.order_detail;
+        result.dtype = 'order'
+        this.formatData(result)
+        model(`home/lbs/get-wait-time?storeId=${this.data.detail.storeId}`).then(res => {
+          let waitProcessTime = res.data.waitTime;
+          let targetTime = formatTime(new Date(new Date().getTime() + waitProcessTime * 60 * 1000))
+          console.log(targetTime);
+          this.setData({
+            waitTime: targetTime
+          });
+        }).catch(e => {
+          console.log(e)
+        })
+      }).catch(e => {
+        console.log(e)
+      })
     } else {
       // wx.showModal({
       //   title: '提示',
@@ -39,25 +70,9 @@ Page({
    */
   onShow: function () {
     console.log(this.data.detail.orderNo);
-    drawQrcode({
-      width: 200,
-      height: 200,
-      canvasId: 'myQrcode',
-      // ctx: wx.createCanvasContext('myQrcode'),
-      text: this.data.detail.orderNo,
-      // text: 'https://www.jasongan.cn/index.html',
-      // v1.0.0+版本支持在二维码上绘制图片
-      image: {
-        imageResource: '../../images/icon.png',
-        dx: 70,
-        dy: 70,
-        dWidth: 60,
-        dHeight: 60
-      }
-    })
   },
   formatData(data) {
-    let detail = JSON.parse(data || '{}')
+    let detail = data;
     // console.log(detail, 'data');
     let dtype = detail.dtype
     if (dtype === 'order') {
@@ -90,6 +105,16 @@ Page({
   goRedPack () {
     wx.navigateTo({
       url: `/pages/pay/share_success/share_success?orderId=${this.data.detail.id}`
+    });
+  },
+
+  goStore () {
+    wx.switchTab({ url: '/pages/store/store' });
+  },
+
+  goVarcode () {
+    wx.navigateTo({
+      url: `/pages/order/varcode/detail?detail=${JSON.stringify(this.data.detail)}`
     });
   }
 })

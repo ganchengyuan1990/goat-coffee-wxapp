@@ -184,7 +184,7 @@
         </view> -->
     </view>
 
-    <view class="protocol">
+    <view class="protocol" catchtap="showXieyi">
         <!-- <view class="checkbox {{item.checked ? 'checked' : ''}}" bindtap="checkedItem" data-item-index="{{index}}"></view> -->
         <image src="../../../images/checkbox.png" />
         <text class="name" style="color: #999;">我已同意<text style="color: #F50000;">《咖啡支付协议》</text></text>

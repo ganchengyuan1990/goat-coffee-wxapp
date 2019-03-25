@@ -8,10 +8,10 @@ var app = getApp();
 
 Page({
     data: {
-        banner: 'http://img.goatup.net/img/banner/%E9%A6%96%E9%A1%B5banner.png',
+        banner: 'http://img.goatup.net/img/banner/0322-xianging-yaoqingdebei.jpg',
         extended: true,
         userId: '',
-        contents: '<p>1.被推荐的新用户输入手机号，即可获赠一张新人免费券（全场通用）+ 3张全场五折券，可用于消费饮品系列和轻食系列中的商品（仅限一件商品，不含配送费），新人免费券有效期1年。（同一手机号，同一手机仅可领取一次）</p><p>2. 您推荐新用户只要产生消费（ 含消费新人免费券）， 您即获得一杯28元体验券， 可用于购买经典咖啡， 经典拿铁系列饮品， 体验券有效期1年</p><p>3. 您推荐的新用户同一手机设备， 同一手机号码仅可领取一次。</p><p>4. 您邀请好友所赠的体验券仅限本人使用， 用于商业牟利将有封号风险。</p> ',
+        contents: '<p>范围：全国门店通用。</p><p>规则：新用户首次登陆加油咖啡，可免费获赠新人大礼包，其中包含1张新人免费券+3张五折券，可用于消费饮品系列的产品（仅限1件商品，不找零，不含配送费）。同一手机号，同一手机可领一次。</p><p>期限：新人免费券自领取日起，有效期1年，3张5折券自领取之日起，有效期30天。</p> ',
         people: '',
         rUserInvites: [],
         phone: ''
@@ -61,7 +61,7 @@ Page({
         return {
             title: '请你喝一杯加油咖啡',
             path: `/package/invite/pages/invite/invite?userid=${userid}`,
-            imageUrl: 'http://img.goatup.net/img/banner/%E9%A6%96%E9%A1%B5banner.png',
+            imageUrl: 'http://img.goatup.net/img/banner/0322-index-pinpai.jpg',
             success: function (res) {
                 
             },

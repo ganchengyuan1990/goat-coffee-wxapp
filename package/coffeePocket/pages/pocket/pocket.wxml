@@ -34,13 +34,14 @@
             </view>
         </view>
     </view>
-    <view wx:if="{{couponLists.length == 0}}" style="height: 100vh;display: flex; justify-content: center; align-items: center;">
+    <view class='no_cart' wx:if="{{couponLists.length == 0}}" style="height: 100vh;display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
         <view style="position: relative; top: -100rpx; color: #999; font-size: 26rpx;">您的咖啡钱包有点寂寞</view>
     </view>
     <view class="bar_item" bindtap="goCart">
         <view style="display: flex; width: 200rpx; flex-direction: column; align-items: center; justify-content:center;">
             <image style="width: 56rpx; height: 56rpx;" src="../img/buy_quan.png"/>
-            <text class='sub-title' style="height: 24rpx; line-height: 24rpx; margin-top: 10rpx;">购买券</text>
+            <text class='sub-title' style="height: 24rpx; line-height: 24rpx; margin-top: 10rpx;">买赠优惠</text>
         </view>
     </view>
 </view>

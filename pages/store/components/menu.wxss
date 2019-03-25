@@ -48,7 +48,7 @@
   /* padding: 40rpx; */
   border-radius: 10rpx;
   font-size: 28rpx;
-  height: 90%;
+  /* height: 90%; */
   /* width: 80%; */
   left: 5%;
   right: 5%;
@@ -83,6 +83,7 @@
 .cate-panel .ft {
   flex: none;
   padding-bottom: 30rpx;
+  height: 16vh;
 }
 
 .tt {
@@ -90,6 +91,7 @@
   position: absolute;
   bottom: 30rpx;
   left: 30rpx;
+  /* background: rgba(0,0,0,0.1) */
 }
 
 .flex-item {
@@ -98,6 +100,7 @@
   justify-content: center;
   /* align-items: center; */
   margin-left: 20rpx;
+  margin-right: 20rpx;
   color: #fff;
 }
 
@@ -206,7 +209,7 @@
   line-height: 72rpx;
   margin-top: 60rpx;
   border-radius: 5rpx;
-  background: #FF6614;
+  background: #ff8483;
   color: #fff;
   text-align: center;
   font-size: 32rpx;

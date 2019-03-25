@@ -1,6 +1,13 @@
 <view class="container">
   <view class="img-wrapper">
-    <image mode="widthFix" src="{{banner}}" />
+    <!-- <image src="{{banner}}" /> -->
+    <swiper style="min-height: 608rpx" indicator-active-color="#fff" mode="widthFix" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{5000}}" duration="{{1000}}">
+      <block wx:for="{{banner}}" wx:key="{{index}}" class="img-caption">
+        <swiper-item style="min-height: 608rpx">
+          <image mode="widthFix" src="{{item.pic}}"/>
+        </swiper-item>
+      </block>
+    </swiper>
   </view>
   <!-- <view class="line">
   </view> -->

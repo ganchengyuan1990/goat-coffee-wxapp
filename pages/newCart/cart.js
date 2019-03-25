@@ -42,15 +42,14 @@ Page({
      cartInfo = JSON.parse(wx.getStorageSync('CART_LIST'));
     }
     let fromTransport = wx.getStorageSync('fromTransport');
-    debugger
     this.setData({
-      isNeedFee: fromTransport == 'deliver',
+      // isNeedFee: fromTransport == 'deliver',
       cartImage: configData['cart-image']
       // cartGoods: cartInfo,
       // cartTotal: this.calcCartTotal(cartInfo || [])
     });
 
-    wx.removeStorageSync('fromTransport');
+    
   },
   onReady: function () {
     // 页面渲染完成
@@ -58,6 +57,15 @@ Page({
   },
   onShow: function () {
     this.getCartInfo();
+     let fromTransport = wx.getStorageSync('fromTransport');
+     this.setData({
+       isNeedFee: fromTransport == 'deliver'
+       // cartGoods: cartInfo,
+       // cartTotal: this.calcCartTotal(cartInfo || [])
+     });
+
+     let shopClosed = wx.getStorageSync('key');
+    //  wx.removeStorageSync('fromTransport');
     // 页面显示
     // this.getCartList();
   },
@@ -128,7 +136,7 @@ Page({
         totalCount += item.num;
       }
     });
-    console.log(totalAmount);
+    // console.log(totalAmount);
     return {
       checkedGoodsCount: totalCount,
       checkedGoodsAmount: parseFloat(totalAmount).toFixed(2)
@@ -151,7 +159,9 @@ Page({
       rPropGoodsIds: cartGoods[index].rPropGoodsIds.join(','),
       num: cartGoods[index].num
     }, 'POST').then(data => {
-      debugger
+      let sum = wx.getStorageSync('cartSum');
+      sum += 1;
+      wx.setStorageSync('cartSum', sum);
       wx.setTabBarBadge({
         index: 3,
         text: sum.toString()
@@ -187,7 +197,24 @@ Page({
               skuId: cartGoods[index].sku.id,
               rPropGoodsIds: cartGoods[index].rPropGoodsIds.join(','),
               num: cartGoods[index].num - 1
-            }, 'POST').then(data => {}).catch(e => {
+            }, 'POST').then(data => {
+              let sum = wx.getStorageSync('cartSum');
+              if (cartGoods && cartGoods[index]) {
+                sum -= 1;
+              } else {
+                sum = 0;
+              }
+              if (sum) {
+                wx.setTabBarBadge({
+                  index: 3,
+                  text: sum.toString()
+                });
+              } else {
+                wx.removeTabBarBadge({
+                  index: 3,
+                });
+              }
+            }).catch(e => {
               console.log(e);
             });
             cartGoods[index].num = cartGoods[index].num - 1;
@@ -213,6 +240,13 @@ Page({
         rPropGoodsIds: cartGoods[index].rPropGoodsIds.join(','),
         num: cartGoods[index].num
       }, 'POST').then(data => {
+        let sum = wx.getStorageSync('cartSum');
+        sum -= 1;
+        wx.setStorageSync('cartSum', sum);
+        wx.setTabBarBadge({
+          index: 3,
+          text: sum.toString()
+        });
       }).catch(e => {
         console.log(e);
       });
@@ -347,7 +381,33 @@ Page({
     //   return
     // }
     let info = this.data
-    let cartList = info.cartGoods.filter(item => item.ifAvailable);
+    let gogogo = true;
+    let cartList = info.cartGoods.filter(item => {
+        // if (this.data.isNeedFee) {
+        //   return item.ifAvailable && item.sku.can_distribution;
+        // } else {
+        //   return item.ifAvailable;
+        // }
+        if (!item.sku.can_distribution && this.data.isNeedFee) {
+          gogogo = false;
+        }
+        return item.ifAvailable;
+    });
+    if (!gogogo) {
+      wx.showModal({
+        title: '提醒', //提示的标题,
+        content: '某些商品不支持外送哦，麻烦您手动删除标红的商品哦', //提示的内容,
+        showCancel: true, //是否显示取消按钮,
+        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+        cancelColor: '#000000', //取消按钮的文字颜色,
+        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+        confirmColor: '#f50000', //确定按钮的文字颜色,
+        success: res => {
+          
+        }
+      });
+      return ;
+    }
     let totalPrice = info.cartTotal.checkedGoodsAmount;
     let isNeedFee = info.isNeedFee
 

@@ -22,6 +22,7 @@
             <view class="addr">{{userAddressInfo.city}}{{userAddressInfo.area}}{{userAddressInfo.address}}</view>
           </view>
           <view class="distance">{{userAddressInfo.contact}} {{userAddressInfo.tel}}</view>
+          <view class="distance" bindtap="showManbipei"><text style="color: #f50000">面价满￥65免配送费 </text> <text style="color: #999">| 慢必赔</text>        <image style='width: 24rpx; height: 24rpx; position: relative; top: 7rpx; margin-left: 5rpx;' src='../../images/flag.png'/></view>
         </view>
         <view wx:else>
           <view class="tt" bind:tap="selectAddress" data-delivery="delivery">
@@ -31,11 +32,10 @@
         </view>
       </block>
       <block wx:else>
-        <view class="tt" bind:tap="selectAddress" data-delivery="selftaking">
+        <view class="tt tt_high" bind:tap="selectAddress" data-delivery="selftaking">
           <view class="addr">{{storeInfo.storeName}}</view>
         </view>
         <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
-        <view class="distance" ><text style="color: #f50000">面价满￥65免配送费 </text> <text style="color: #999">| 慢必赔</text>        <image style='width: 24rpx; height: 24rpx; position: relative; top: 7rpx; margin-left: 5rpx;' src='../../images/flag.png'/></view>
       </block>
 
     </view>
@@ -50,7 +50,7 @@
     <swiper indicator-dots="{{false}}" autoplay="{{true}}" interval="{{5000}}" duration="{{1000}}">
       <block wx:for="{{storeInfo.banners}}" wx:key="{{index}}">
         <swiper-item>
-          <image src="{{item.pic}}" class="img-caption" />
+          <image src="{{item.pic}}" class="img-caption" catchtap="goPocket"/>
         </swiper-item>
       </block>
     </swiper>
@@ -86,10 +86,15 @@
               class="list-detail" 
               wx:for-index="index"
               data-groupidx="{{idx}}" 
+              data-skulist="{{product.sku_list}}"
               data-productidx="{{index}}">
               <view class="img">
                 <image src="{{product.icon}}"></image>
                 <image class="tag tag_pic" wx:if="{{product.tips}}" src="../../images/tag.png"><view class="pic_word">{{product.tips}}</view></image>
+                <image class="tag tag_pic lefter_top" wx:if="{{product.sku_list && !product.sku_list[0].can_distribution}}" src="../../images/tag.png"><view class="pic_word">仅自取</view></image>
+                <view class='sold_up' wx:if="{{!product.sku_list || product.sku_list.length == 0}}">
+                  售罄
+                </view>
               </view>
               <view class="info">
                 <view>
@@ -99,7 +104,7 @@
                 </view>
                 <view class="price-count">
                   <view class="price">{{product.default_sku.sale_price > 0 ? '￥'+product.default_sku.sale_price:'暂无价格'}}
-                  <!-- <text class="price-del" wx:if="{{product.default_sku.price}}">￥{{product.default_sku.price}}</text> -->
+                  <text class="price-del" wx:if="{{product.default_sku.price}}">￥{{product.default_sku.price}}</text>
                   </view>
                   
                   <!-- <view class="count"> -->

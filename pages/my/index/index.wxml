@@ -1,6 +1,6 @@
 <view class="user-container">
-    <view class="head-wrap">
-        <view class="center" bind:tap="goProfile">
+    <view class="head-wrap" bind:tap="goProfile">
+        <view class="center">
             <view class="avatar">
                 <image src="{{img}}"></image>
             </view>
@@ -24,12 +24,16 @@
             </view>
             <view class="icon-arrow"></view>
         </view>
-        <view class="item" bindtap="goCoupon" data-type="1">
+        <view class="item" bindtap="goPocket" data-type="1">
             <view class="tt">
                 <image mode="widthFix" class="prefix-icon" src="../../../icons/user-discount.png"></image>
-                <text>兑换券</text>
+                <text>咖啡钱包</text>
             </view>
             <view class="icon-arrow"></view>
         </view>
+    </view>
+
+    <view style="height: 100px; position: fixed; bottom: 100rpx; left: 45rpx; width: 88%;">
+        <image mode="widthFix" style="width: 100%; height: 100%;" src="{{banner}}"  catchtap="goInvite"/>
     </view>
 </view>

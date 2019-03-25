@@ -82,6 +82,31 @@ Page({
     })
   },
 
+  setTabStatus() {
+    if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
+      let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
+      model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
+        let sum = 0;
+        res.data.carts && res.data.carts.forEach(item => {
+          sum += item.num;
+        })
+        wx.setStorageSync('cartSum', sum);
+        if (sum) {
+          wx.setTabBarBadge({
+            index: 3,
+            text: sum.toString()
+          });
+        } else {
+          wx.removeTabBarBadge({
+            index: 3,
+          });
+        }
+      }).catch(e => {
+
+      });
+    }
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -102,6 +127,7 @@ Page({
     }
     // this.fetchOrderList(1)
     this.refreshList()
+    this.setTabStatus();
   },
 
   /**
@@ -203,8 +229,9 @@ Page({
       wx.stopPullDownRefresh()
     }).catch(e => {
       this.setData({
-        isLoading: false
-      })
+        isLoading: false,
+        isCompleted: true
+      });
       wx.stopPullDownRefresh()
     })
   },
@@ -404,7 +431,7 @@ Page({
     if (item) {
       item.dtype = dtype
       wx.navigateTo({
-        url: `/pages/order/detail/detail?data=${encodeURIComponent(JSON.stringify(item))}`
+        url: `/pages/order/detail/detail?id=${item.id}&orderClassify=${this.data.orderClassify}`
       })
     }
   }

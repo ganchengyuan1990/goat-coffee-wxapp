@@ -59,9 +59,18 @@ Component({
   },
   ready() {
     let configData = wx.getStorageSync('configData');
-    this.setData({
-      activityName: configData['voucher-text']
-    })
+    if (!configData) {
+      model('base/site/config-list').then(res => {
+        wx.setStorageSync('configData', res.data);
+        this.setData({
+          activityName: configData['voucher-text']
+        })
+      });
+    } else {
+      this.setData({
+        activityName: configData['voucher-text']
+      })
+    }
   },
   /**
    * 组件的方法列表
@@ -80,9 +89,22 @@ Component({
           })
           obj = this.data.info.sku_list[0]
         }
-        let price = obj.sale_price || '暂无报价'
+        let price = parseFloat(obj.sale_price);
+        let priceTags = [];
+
+        if (obj.sale_price && this.data.info.key_list && this.data.info.key_list.length > 0) {
+          this.data.info.key_list.forEach(item => {
+            item.val_list && item.val_list.forEach(ele => {
+              if (ele.isdefault && ele.price) {
+                price += ele.price;
+                priceTags.push(ele);
+              }
+            });
+          });
+        }
         this.setData({
-          price: price,
+          price: price || '暂无报价',
+          priceTags: priceTags,
           count: 1
         })
         this.setPrice()
@@ -192,7 +214,13 @@ Component({
         rPropGoodsIds: propIds.join(','),
         delta: this.data.count
       }, 'POST').then(data => {
-        debugger
+        let sum = wx.getStorageSync('cartSum');
+        sum += this.data.count;
+        wx.setStorageSync('cartSum', sum)
+        wx.setTabBarBadge({
+          index: 3,
+          text: sum.toString()
+        });
         console.log('请求成功');
         console.log(data.data);
         let {
@@ -208,6 +236,14 @@ Component({
         });
       }).catch(e => {
         console.log('请求失败');
+        console.log(JSON.stringify(e));
+        wx.showToast({
+          title: '加入购物车失败', //提示的内容,
+          icon: 'none', //图标,
+          duration: 1500, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {}
+        });
       });
     },
     /**
@@ -220,8 +256,8 @@ Component({
       //   success: res => {}
       // });
       // this.getCustomed();
-      let group = e.target.dataset.group
-      let idx = e.target.dataset.tagidx
+      let group = e.currentTarget.dataset.group
+      let idx = e.currentTarget.dataset.tagidx
       // 规格
       if (group === 'sku') {
       // if (false) {
@@ -255,7 +291,7 @@ Component({
       // 其他属性
       if (group === 'opt') {
       // if (true) {
-        let groupIdx = e.target.dataset.groupidx
+        let groupIdx = e.currentTarget.dataset.groupidx
         let optKey = `info.key_list[${groupIdx}]`
         try {
           // 全部属性
@@ -280,14 +316,14 @@ Component({
 
           let priceTags = this.data.priceTags;
 
-          if (customVal.indexOf(e.target.dataset.code.toString()) < 0) {
+          if (customVal.indexOf(e.currentTarget.dataset.code.toString()) < 0) {
           // if (true) {
             let targetIndex = -1;
             let deltaPrice = 0;
 
             this.data.info.key_list.forEach((item, index) => {
               item.val_list.forEach(ele => {
-                if (e.target.dataset.code == ele.prop_id) {
+                if (e.currentTarget.dataset.code == ele.prop_id) {
                   targetIndex = index;
                   if (ele.price) {
                     let flag = true;
@@ -311,23 +347,54 @@ Component({
                 // }
               });
             });
-            if (deltaPrice !== 0) {
-              finalPrice = parseFloat(deltaPrice) + parseFloat(finalPrice);
-            } else {
-              if (targetIndex >= 0) {
-                this.data.info.key_list[targetIndex].val_list.forEach((item) => {
-                  priceTags.forEach((ele, index) => {
-                    if (item.prop_id === ele.prop_id) {
-                      priceTags.splice(index, 1);
-                    }
-                  })
-                });
-              }
-              finalPrice = parseFloat(currentSku[0].sale_price);
-              priceTags.forEach(item => {
-                finalPrice += parseFloat(item.price);
-              });
+
+            // if (deltaPrice !== 0) {
+            //   finalPrice = parseFloat(deltaPrice) + parseFloat(finalPrice);
+            // } else {
+            //   if (targetIndex >= 0) {
+            //     this.data.info.key_list[targetIndex].val_list.forEach((item) => {
+            //       priceTags.forEach((ele, index) => {
+            //         if (item.prop_id === ele.prop_id) {
+            //           priceTags.splice(index, 1);
+            //         }
+            //       })
+            //     });
+            //   }
+            //   finalPrice = parseFloat(currentSku[0].sale_price);
+            //   priceTags.forEach(item => {
+            //     finalPrice += parseFloat(item.price);
+            //   });
+            // }
+            
+            if (targetIndex >= 0 && priceTags.length > 0) {
+              let flag = false;
+              let targetKid_id = priceTags[priceTags.length - 1].kid;
+              priceTags.some((ele, index) => {
+                if (ele.kid === targetKid_id) {
+                  priceTags.splice(index, 1);
+                  flag = true;
+                }
+                if (flag) {
+                  return true;
+                }
+              })
+              // debugger
+              // this.data.info.key_list[targetIndex].val_list.some((item) => {
+              //   priceTags.some((ele, index) => {
+              //     if (item.prop_id === ele.prop_id) {
+              //       priceTags.splice(index, 1);
+              //       flag = true;
+              //     }
+              //   })
+              //   if (flag) {
+              //     return true;
+              //   }
+              // });
             }
+            finalPrice = parseFloat(currentSku[0].sale_price);
+            priceTags.forEach(item => {
+              finalPrice += parseFloat(item.price);
+            });
           }
 
           
@@ -422,5 +489,11 @@ Component({
         })
       }).exec();
     }
+  },
+
+  goPocket () {
+    wx.navigateTo({
+      url: '/package/coffeePocket/pages/pocketCart/cart'
+    });
   }
 })

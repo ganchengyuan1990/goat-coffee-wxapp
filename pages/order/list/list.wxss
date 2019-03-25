@@ -129,7 +129,7 @@ page {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20rpx 0 30rpx;
+    padding: 20rpx 0 50rpx;
 }
 .panel .panel-ft .price {
     color: #000;
@@ -171,8 +171,13 @@ page {
 
 .order_numer {
     position: absolute;
-    top: 90rpx;
+    top: 95rpx;
     right: 30rpx;
-    font-size: 32rpx;
+    font-size: 24rpx;
     color: #999;
+}
+
+.to-pay {
+    border: 1rpx solid #FFDBDB;
+    color: #DF0202;
 }

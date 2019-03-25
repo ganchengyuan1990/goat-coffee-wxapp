@@ -71,19 +71,19 @@ Page({
 		} catch (e) {
 			// console.log(e);
 		}
-		if (isNew && configPic) {
-			this.setData({
-				actImage: configPic,
-				isActWrapShow: true
-			})
-			try {
-				let token = wx.getStorageSync('token')
-				token.ifNew = false
-				wx.setStorageSync('token', token)
-			} catch (e) {
-				console.log(e);
-			}
-		}
+		// if (isNew && configPic) {
+		// 	this.setData({
+		// 		actImage: configPic,
+		// 		isActWrapShow: true
+		// 	})
+		// 	try {
+		// 		let token = wx.getStorageSync('token')
+		// 		token.ifNew = false
+		// 		wx.setStorageSync('token', token)
+		// 	} catch (e) {
+		// 		console.log(e);
+		// 	}
+		// }
 		// 感觉跟onShow里的fetchLoaction重合了
 		this.fetchLoaction()  
 		this.checkSaveUser()
@@ -95,12 +95,39 @@ Page({
 				res.data.carts && res.data.carts.forEach(item => {
 					sum += item.num;
 				})
+				wx.setStorageSync('cartSum', sum);
 				wx.setTabBarBadge({
 					index: 3,
 					text: sum.toString()
 				});
 			}).catch(e => {
 				
+			});
+		}
+	},
+
+
+	setTabStatus() {
+		if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
+			let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
+			model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
+				let sum = 0;
+				res.data.carts && res.data.carts.forEach(item => {
+					sum += item.num;
+				})
+				wx.setStorageSync('cartSum', sum);
+				if (sum) {
+					wx.setTabBarBadge({
+						index: 3,
+						text: sum.toString()
+					});
+				} else {
+					wx.removeTabBarBadge({
+						index: 3,
+					});
+				}
+			}).catch(e => {
+
 			});
 		}
 	},
@@ -173,6 +200,7 @@ Page({
 			}
 			// this.toggleTabBar(true);
 		}
+		this.setTabStatus();
 	},
 
 	/**
@@ -407,7 +435,9 @@ Page({
 			// 计算单品价格
 			list.forEach(item => {
 				item.product_list.forEach(ele => {
-					ele.price = ele.sku_list[0].price;
+					if (ele.sku_list && ele.sku_list[0]) {
+						ele.price = ele.sku_list[0].price;
+					}
 				})
 			});
 			this.setData({
@@ -555,8 +585,20 @@ Page({
 		}, 100))()
 	},
 	orderProduct(e) {
+
 		let groupIdx = e.currentTarget.dataset.groupidx
 		let productIdx = e.currentTarget.dataset.productidx
+		let skulist = e.currentTarget.dataset.skulist;
+		if (!skulist || skulist.length == 0) {
+			wx.showModal({
+				title: '提示', //提示的标题,
+				content: '此商品已售罄', //提示的内容,
+				showCancel: false,
+				confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+				confirmColor: '#f50000'
+			});
+			return;
+		}
 		// let detail = `menuList[${groupIdx}].product_list[${productIdx}]`
 		let detail = this.data.menuList[groupIdx].product_list[productIdx]
 		this.setData({
@@ -608,10 +650,11 @@ Page({
 		
 	},
 	addCart(e) {
-		// let isOpen = this.checkStoreState()
-		// if (!isOpen) {
-		// 	return
-		// }
+		let isOpen = this.checkStoreState()
+		if (!isOpen) {
+			wx.setStorageSync('shopClosed', 1);
+			return
+		}
 		wx.showToast({
 			title: '已加入购物车',
 			icon: 'none',
@@ -982,5 +1025,20 @@ Page({
 		} catch (e) {
 			console.log(e);
 		}
+	},
+
+	showManbipei () {
+		wx.showModal({
+		  title: '慢必赔', //提示的标题,
+		  content: '加油咖啡向您承诺，制作完成后30分钟内，外送必达。如超时送达，您可申请索赔本单经典意式咖啡、茶饮品、酷爽加加冰、健康饮品消费。', //提示的内容,
+		  showCancel: false,
+		   confirmColor: '#f50000',
+		});
+	},
+
+	goPocket () {
+		wx.navigateTo({
+			url: '/package/coffeePocket/pages/pocketCart/cart'
+		});
 	}
 });

@@ -38,7 +38,7 @@
                     </view>
                 </view>
                 <view class="list-item-name " style="color: #999999; font-size: 22rpx; margin-top: 10rpx;">
-                    期限：{{item.startTime}}-{{item.endTime}}
+                    期限：{{item.startTime}} 至 {{item.endTime}}
                 </view>
 
             </view>
@@ -49,11 +49,13 @@
         </checkbox-group>
 
 
-         <view class="bar_item"  bindtap="goCart">
-            <view style="display: flex; width: 200rpx; flex-direction: column; align-items: center; justify-content:center;">
-                <image style="width: 56rpx; height: 56rpx;" src="../img/buy_quan.png"/>
-                <text class='sub-title' style="height: 24rpx; line-height: 24rpx; margin-top: 10rpx;">购买券</text>
-            </view>
-        </view>
+         
+    </view>
+</view>
+
+<view class="bar_item"  bindtap="goCart">
+    <view style="display: flex; width: 200rpx; flex-direction: column; align-items: center; justify-content:center;">
+        <image style="width: 56rpx; height: 56rpx;" src="../img/buy_quan.png"/>
+        <text class='sub-title' style="height: 24rpx; line-height: 24rpx; margin-top: 10rpx;">买赠优惠</text>
     </view>
 </view>

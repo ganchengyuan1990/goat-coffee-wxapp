@@ -8,7 +8,7 @@ var app = getApp();
 
 Page({
     data: {
-        banner: 'http://img.goatup.net/img/banner/%E9%A6%96%E9%A1%B5banner.png',
+        banner: 'http://img.goatup.net/img/banner/0322-xianging-yaoqingdebei.jpg',
         errorToastShown: false,
         phoneNum: '',
         phoneCode: '',
@@ -156,7 +156,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 }
                 if (e && e.indexOf('mobile number') >= 0) {
@@ -166,7 +166,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 } else if (e && e.indexOf('触发天级流控') >= 0) {
                     wx.showModal({
@@ -175,7 +175,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 } else if (e && e.indexOf('触发小时级流控') >= 0) {
                     wx.showModal({
@@ -184,7 +184,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 } else if (e && e.indexOf('触发分钟级流控') >= 0) {
                     wx.showModal({
@@ -193,7 +193,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 } else {
                     wx.showModal({
@@ -202,9 +202,27 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                     });
                 }
+            });
+        } else if (!this.data.phoneNum) {
+            wx.showModal({
+                title: '提示', //提示的标题,
+                content: '请输入手机号', //提示的内容,
+                showCancel: false, //是否显示取消按钮,
+                cancelColor: '#000000', //取消按钮的文字颜色,
+                confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                confirmColor: '#f50000', //确定按钮的文字颜色
+            });
+        } else if (this.data.phoneNum && this.data.phoneNum.length !== 11) {
+            wx.showModal({
+                title: '提示', //提示的标题,
+                content: '请输入有效的手机号', //提示的内容,
+                showCancel: false, //是否显示取消按钮,
+                cancelColor: '#000000', //取消按钮的文字颜色,
+                confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                confirmColor: '#f50000', //确定按钮的文字颜色
             });
         }
     },
@@ -245,7 +263,7 @@ Page({
                       showCancel: false, //是否显示取消按钮,
                       cancelColor: '#000000', //取消按钮的文字颜色,
                       confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                      confirmColor: '#3CC51F', //确定按钮的文字颜色
+                      confirmColor: '#f50000', //确定按钮的文字颜色
                       success: res => {
                         wx.switchTab({
                             url: '/pages/store/store'
@@ -264,7 +282,7 @@ Page({
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                        confirmColor: '#3CC51F', //确定按钮的文字颜色
+                        confirmColor: '#f50000', //确定按钮的文字颜色
                         success: res => {
                             wx.switchTab({
                                 url: '/pages/store/store'
@@ -294,7 +312,7 @@ Page({
                     showCancel: false, //是否显示取消按钮,
                     cancelColor: '#000000', //取消按钮的文字颜色,
                     confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                    confirmColor: '#3CC51F', //确定按钮的文字颜色
+                    confirmColor: '#f50000', //确定按钮的文字颜色
                 });
             });
         }

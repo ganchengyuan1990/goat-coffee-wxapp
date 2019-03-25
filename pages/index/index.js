@@ -14,6 +14,38 @@ Page({
         banner: 'http://img.goatup.net/img/banner/%E9%A6%96%E9%A1%B5banner.png'
     },
     onLoad: function (options) {
+        
+        
+    },
+    onReady: function () {
+
+    },
+
+    setTabStatus () {
+        if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
+            let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
+            model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
+                let sum = 0;
+                res.data.carts && res.data.carts.forEach(item => {
+                    sum += item.num;
+                })
+                wx.setStorageSync('cartSum', sum);
+                if (sum) {
+                    wx.setTabBarBadge({
+                        index: 3,
+                        text: sum.toString()
+                    });
+                } else {
+                    wx.removeTabBarBadge({
+                        index: 3,
+                    });
+                }
+            }).catch(e => {
+
+            });
+        }
+    },
+    onShow: function () {
         let info = wx.getStorageSync('token') || {}
         let isNew = info.ifNew;
         let configPic = '';
@@ -36,13 +68,22 @@ Page({
             }
         }
         wx.showLoading({
-          title: 'Loading...', //提示的内容,
-          mask: true, //显示透明蒙层，防止触摸穿透,
-          success: res => {}
+            title: 'Loading...', //提示的内容,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
         });
 
         model('base/site/config-list').then(res => {
             wx.setStorageSync('configData', res.data);
+            if (res.data.homeBanners && res.data.homeBanners[0] && res.data.homeBanners[0].pic) {
+                let banners = [];
+                // res.data.homeBanners.forEach(item => {
+                //     banners.push(item.pic);
+                // })
+                this.setData({
+                    banner: res.data.homeBanners
+                })
+            }
             this.setData({
                 tags: res.data['voucher-text']
             })
@@ -50,27 +91,7 @@ Page({
         }).catch(e => {
             wx.hideLoading();
         });
-        if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
-            let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
-            model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
-                let sum = 0;
-                res.data.carts && res.data.carts.forEach(item => {
-                    sum += item.num;
-                })
-                wx.setTabBarBadge({
-                    index: 3,
-                    text: sum.toString()
-                });
-            }).catch(e => {
-
-            });
-        }
-    },
-    onReady: function () {
-
-    },
-    onShow: function () {
-
+        this.setTabStatus();
     },
     onHide: function () {
         // 页面隐藏

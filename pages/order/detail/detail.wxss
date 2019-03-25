@@ -2,6 +2,10 @@ page {
     height: 100%;
     background: #fff;
 }
+
+.container {
+    margin: 30rpx auto;
+}
 .panel {
     padding: 0 30rpx;
     border-top: 10rpx solid #f5f5f5;
@@ -17,14 +21,17 @@ page {
     background: #fff;
 }
 .hd-wrap .tt {
-    color: #333;
+    color: #000;
     font-size: 36rpx;
+    font-weight: 600;
     line-height: 50rpx;
+    text-align: center;
 }
 .hd-wrap .desc {
     margin-top: 8rpx;
-    color: #999;
-    font-size: 28rpx;
+    color: #000;
+    font-size: 24rpx;
+    text-align: center;
     line-height: 40rpx;
 }
 
@@ -182,4 +189,31 @@ page {
     bottom: 40rpx;
     border-radius: 40rpx;
     color: rgb(245, 65, 67);
+}
+
+.btn-buy {
+    padding: 16rpx 32rpx;
+    border: 2rpx solid #999;
+    color: #333;
+    font-size: 24rpx;
+    line-height: 1;
+    display: inline-block;
+    /* margin: 0 auto; */
+    width: 100rpx;
+    text-align: center;
+    margin-right: 20rpx;
+    /* padding: 0 15rpx; */
+}
+
+.to-pay {
+    border: 1rpx solid #FFDBDB;
+    color: #DF0202;
+}
+
+.red {
+    color: #f50000;
+}
+
+.addr-box .r {
+    margin: 40rpx 20rpx;
 }

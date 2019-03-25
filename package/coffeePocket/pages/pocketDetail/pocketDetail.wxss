@@ -7,9 +7,8 @@ page {
 .container {
   background: #f6f6f6;
   width: 100%;
-  height: auto;
-  min-height: 100%;
-  overflow: hidden;
+  height: calc(100vh - 112rpx);
+  overflow: scroll;
 }
 
 .service-policy {
@@ -643,7 +642,7 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
 }
 
 .bar_item {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   height: 112rpx;

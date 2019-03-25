@@ -184,3 +184,13 @@
   margin-top: 10rpx;
   font-size: 30rpx;
 }
+
+.no_cart image {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  width: 258rpx;
+  height: 258rpx;
+  position: relative;
+  top: -100rpx;
+}

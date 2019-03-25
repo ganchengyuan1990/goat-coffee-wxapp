@@ -48,15 +48,18 @@ Page({
             'signType': this.data.signType,
             'paySign': this.data.paySign,
             'success': function (res) {
-                if (self.data.type === 'pin') {
-                    wx.redirectTo({
-                        url: `/pages/pin/pay_success/pay_success?price=${self.data.price}`
-                    });
-                } else {
-                    wx.redirectTo({
-                        url: `/pages/pay/pay_success/pay_success?price=${self.data.price}&orderId=${self.data.orderId}`
-                    });
-                }
+                wx.redirectTo({
+                    url: `/pages/order/detail/detail?id=${self.data.orderId}`
+                });
+                // if (self.data.type === 'pin') {
+                //     wx.redirectTo({
+                //         url: `/pages/pin/pay_success/pay_success?price=${self.data.price}`
+                //     });
+                // } else {
+                //     wx.redirectTo({
+                //         url: `/pages/pay/pay_success/pay_success?price=${self.data.price}&orderId=${self.data.orderId}`
+                //     });
+                // }
             },
             'fail': function (res) {
                 if (res.errMsg.indexOf('cancel') > 0) {

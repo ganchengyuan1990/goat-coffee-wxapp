@@ -69,6 +69,12 @@ page {
   transform: translate(-100%, -50%);
 }
 
+.tt_high:before {
+  top: 30%;
+  margin-top: -10rpx;
+}
+
+
 .store-addr .distance {
   color: #999;
   font-size: 20rpx;
@@ -82,9 +88,9 @@ page {
   align-items: center;
   box-sizing: border-box;
   padding: 4rpx;
-  border: 2rpx solid #DF0202;
+  border: 2rpx solid #ff8483;
   border-radius: 68rpx;
-  color: #DF0202;
+  color: #ff8483;
   font-size: 28rpx;
 }
 
@@ -96,7 +102,7 @@ page {
 
 .btn-delivery .item.active {
   color: #fff;
-  background: #F50000;
+  background: #ff8483;
 }
 
 .list-wrap {
@@ -187,6 +193,7 @@ page {
 .list-detail {
   margin-bottom: 48rpx;
   display: flex;
+  /* opacity: 0.8; */
 }
 
 .list-detail:last-child {
@@ -281,7 +288,7 @@ page {
   color: #fff;
   text-align: center;
   line-height: 30rpx;
-  background-color: #E50113;
+  background-color: rgb(253,133,133);
 }
 .btn .plus {
   transform: scale(1.6);
@@ -396,7 +403,7 @@ page {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background: #EB460A;
+  background: #f50000;
   padding: 1rpx 10rpx;
   text-align: center; 
   color: #fff;
@@ -441,7 +448,7 @@ page {
   font-size: 18rpx;
   position: absolute;
   right: -12rpx;
-  top: 25rpx;
+  bottom: 3rpx;
   height: 25rpx;
   line-height: 25rpx;
   text-overflow: ellipsis;
@@ -459,8 +466,8 @@ page {
 
 .pic_word {
   display: inline-block;
-  padding: 1rpx 6rpx;
-  width: 56rpx !important;
+  padding: 1rpx 4rpx;
+  width: 60rpx !important;
   position: absolute;
   top: 0;
   left: 0;
@@ -472,4 +479,27 @@ page {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  z-index: 10000;
+}
+
+
+.sold_up {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: rgba(102,102,102,0.5);
+  color: #fff;
+  font-size: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000；
+}
+
+.lefter_top {
+  top: 0;
+  left: 0;
 }

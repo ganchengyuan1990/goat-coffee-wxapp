@@ -116,7 +116,7 @@ page {
 }
 
 .act-wrap .mask.active {
-  opacity: 0.5;
+  opacity: 0.9;
 }
 
 .act-wrap .cnt {

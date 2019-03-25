@@ -48,8 +48,7 @@ Page({
     }).then(data => {
       let result = data.data;
       result.forEach(element => {
-        if (element.coupon.discount) {
-          
+        if (element.coupon.discount || element.coupon.discount == 0) {
           element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
         }
         if (element.coupon.saveAmount) {
@@ -100,5 +99,14 @@ Page({
 
   goStore () {
     wx.switchTab({ url: '/pages/store/store' });
+  },
+
+  showRule(e) {
+    let index = e.currentTarget.dataset.index;
+    let couponItems = this.data.couponItems;
+    couponItems[index].showRule = !couponItems[index].showRule;
+    this.setData({
+      couponItems: couponItems
+    })
   }
 })

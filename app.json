@@ -26,6 +26,7 @@
     "pages/my/profile/edit",
     "pages/order/list/list",
     "pages/order/detail/detail",
+    "pages/order/varcode/detail",
     "pages/my/coupon/coupon"
   ],
   "subpackages": [{
@@ -91,5 +92,6 @@
         "selectedIconPath": "./icons/user-select.png"
       }
     ]
-  }
+  },
+  "usingComponents": {}
 }

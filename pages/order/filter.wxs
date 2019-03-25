@@ -36,6 +36,15 @@
                     return item.storeName
             }
         },
+        getBriefGoods: function (items) {
+            var num = 0;
+            items.forEach(function(item) {
+                num += item.number;
+            })
+            if (items.length > 0) {
+                return items[0].productName + '等 共' + num + '件商品';
+            }
+        },
         getOrderBrief: function (item) {
             var orders = item.order_detail
             if (!orders) {

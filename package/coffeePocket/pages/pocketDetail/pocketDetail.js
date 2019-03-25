@@ -18,9 +18,15 @@ Page({
     let couponDetail = wx.getStorageSync('couponDetail');
 
     couponDetail.userVouchers.forEach(item => {
-      item.starTime = item.startTime && item.startTime.split(' ')[0];
+      item.startTime = item.startTime && item.startTime.split(' ')[0];
       item.endTime = item.endTime && item.endTime.split(' ')[0]
     });
+
+    // couponDetail.userVouchers = couponDetail.userVouchers.concat(couponDetail.userVouchers);
+    // couponDetail.userVouchers = couponDetail.userVouchers.concat(couponDetail.userVouchers);
+    // couponDetail.userVouchers = couponDetail.userVouchers.concat(couponDetail.userVouchers);
+
+    // debugger
 
     this.setData({
       couponDetail: couponDetail

@@ -12,40 +12,51 @@
       </view> -->
       <checkbox-group class="radio-group" bindchange="onMyEvent">
         <!-- <label wx:for="{{couponItems}}" wx:key="{{idx}}" wx:for-item="item" class="list-item" wx:if="{{type === 1}}"> -->
-        <label wx:for="{{couponItems}}" wx:for-index="idx" wx:key="{{idx}}" wx:for-item="item" class="list-item" wx:if="{{type === 1}}">
+        <label wx:for="{{couponItems}}" wx:for-index="idx" wx:key="{{idx}}" wx:for-item="item" class="list-item coupon_border" wx:if="{{type === 1}}">
+          <view class="inner_border"> 
 
-          <view class='cover-top'></view>
-          <view class='cover-bottom'></view>
+            <!-- <view class='cover-top'></view>
+            <view class='cover-bottom'></view> -->
 
-          <view class='left-part'>
+            <view class='left-part'>
 
-            <view class="list-item-deal {{item.coupon.couponType === 2 ? 'no_margin_left' : ''}}">
-              <label class="deal-icon"></label>
-              <label class="deal-num" wx:if="{{item.tCoreCoupon.couponType === 1}}">{{item.tCoreCoupon.discount}}<text style="font-size:28rpx;">折</text></label>
-              <label class="deal-num" wx:if="{{item.tCoreCoupon.couponType === 2}}"><text class='money'>￥</text>{{item.tCoreCoupon.saveAmount}}</label>
+              <view class="list-item-deal {{item.coupon.couponType === 2 ? 'no_margin_left' : ''}}">
+                <label class="deal-icon"></label>
+                <label class="deal-num" wx:if="{{item.tCoreCoupon.couponType === 1}}">{{item.tCoreCoupon.discount}}<text style="font-size:28rpx;">折</text></label>
+                <label class="deal-num" wx:if="{{item.tCoreCoupon.couponType === 2}}"><text class='money'>￥</text>{{item.tCoreCoupon.saveAmount}}</label>
+              </view>
             </view>
-          </view>
 
-          <view class='right-part'>
-            <view class="list-item-name">
-              <view class="promotion-description {{item.tCoreCoupon && item.tCoreCoupon.startTime || item.tCoreCoupon.couponBref ? '' : 'higher'}}">{{item.tCoreCoupon.couponName}}</view>
-              <!-- <text class="promotion-description">{{item.tCoreCoupon.couponName}}</text> -->
-              <!-- <text class="promotion-limit-tip">{{item.tCoreCoupon.couponBref}}</text> -->
-              <text class="promotion-limit-tip" wx:if="{{item.tCoreUserCoupon && item.tCoreUserCoupon.startTime && item.tCoreUserCoupon.endTime}}">{{item.tCoreUserCoupon.startTime}} - {{item.tCoreUserCoupon.endTime}}</text>
+            <view class='right-part padding_top'>
+              <view class="list-item-name">
+                <view class="promotion-description {{item.tCoreCoupon && item.tCoreCoupon.startTime || item.tCoreCoupon.couponBref ? '' : 'higher'}}">{{item.tCoreCoupon.couponName}}</view>
+                <!-- <text class="promotion-description">{{item.tCoreCoupon.couponName}}</text> -->
+                <!-- <text class="promotion-limit-tip">{{item.tCoreCoupon.couponBref}}</text> -->
+                <text class="promotion-limit-tip" wx:if="{{item.tCoreUserCoupon && item.tCoreUserCoupon.endTime}}">有效期至{{item.tCoreUserCoupon.endTime}}</text>
+              </view>
             </view>
+
+            <view class="coupon-right lefter">
+              <image src="../../../images/cup.png" />
+              <text class="use_int" data-index="{{idx}}" catchtap="showRule">使用规则 <text class="fast_icon"></text></text>
+              <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
+            </view>
+          
+          
           </view>
 
-          <view class="coupon-right lefter">
-            <image src="../../../images/cup.png" />
-            <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}"/>
+
+          <view wx:if="{{item.showRule}}" class="inner_border" style=" border-top: 3rpx solid #fff; position: relative; top: -1rpx; "> 
+            <view style="padding: 20rpx;color: #999; font-size: 24rpx; width: 96%; word-wrap : break-word ; padding-top: 0;">{{item.tCoreCoupon.couponBref}}</view>
           </view>
+          
           
 
           
         </label>
 
         <!-- <label wx:for="{{voucherItems}}" wx:key="idx" wx:for-item="item" class="list-item" wx:if="{{type === 2}}"> -->
-        <label wx:for="{{voucherItems}}" wx:for-index="idx" wx:for-item="item" class="list-item" wx:if="{{type === 2}}">
+        <label wx:for="{{voucherItems}}" wx:for-index="idx" wx:for-item="item" class="list-item row" wx:if="{{type === 2}}">
 
           <view class='cover-top'></view>
           <view class='cover-bottom'></view>

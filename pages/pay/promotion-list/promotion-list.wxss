@@ -62,7 +62,8 @@ page {
 }
 .list-item {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  padding: 10rpx;
   justify-content: space-between;
   border-radius: 8rpx;
   background: #fff;
@@ -70,6 +71,10 @@ page {
   position: relative;
   /* padding: 36rpx 15rpx 36rpx 30rpx; */
   align-items: center;
+}
+
+.row {
+  flex-direction: row;
 }
 .list-item-name {
   display: flex;
@@ -107,6 +112,10 @@ page {
 
 .right-part {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .cover-top,
@@ -177,6 +186,7 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
 
 .list-item-deal .deal-num {
   font-size: 48rpx;
+  color: #DF0202;
 }
 
 .no_coupon_wrapper {
@@ -235,8 +245,51 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
 }
 
 .lefter {
+  position: relative;
   width: 200rpx;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.coupon_border {
+  border: 1rpx solid #E6E6E6;
+}
+
+.inner_border {
+  border: 1rpx solid #FFABAB;
+  display: flex;
+  flex-direction: row;
+  padding: 10rpx;
+  justify-content: space-between;
+  flex: 1;
+  /* margin-right: 50rpx; */
+  width: 96%;
+}
+
+.padding_top {
+  margin-top: 50rpx;
+}
+
+.use_int {
+  color: #999999;
+  font-size: 20rpx;
+  position: absolute;
+  bottom: 40rpx;
+  right: 30px;
+  display: inline-block;
+  width: 88rpx;
+}
+
+.fast_icon {
+  box-sizing: border-box;
+  right: -10rpx;
+  position: absolute;
+  height: 10rpx;
+  top: 12rpx;
+  width: 10rpx;
+  border: none;
+  border-top: 10rpx solid #999;
+  border-left: 10rpx solid transparent;
+  border-right: 10rpx solid transparent;
 }

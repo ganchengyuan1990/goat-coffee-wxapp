@@ -1,11 +1,15 @@
 const app = getApp();
+
+import model from '../../../utils/model'
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    token: {}
+    token: {},
+    banner: 'http://img.goatup.net/img/banner/0322-wode-yaoqingdebei.jpg'
   },
 
   /**
@@ -16,6 +20,27 @@ Page({
     this.setData({
       token: token
     })
+  },
+
+  setTabStatus() {
+    if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
+      let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
+      model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
+        let sum = 0;
+        res.data.carts && res.data.carts.forEach(item => {
+          sum += item.num;
+        })
+        wx.setStorageSync('cartSum', sum);
+        if (sum) {
+          wx.setTabBarBadge({
+            index: 3,
+            text: sum.toString()
+          });
+        }
+      }).catch(e => {
+
+      });
+    }
   },
 
   /**
@@ -32,6 +57,7 @@ Page({
     console.log('onshow');
     
     this.getProfile()
+    this.setTabStatus();
   },
   onPullDownRefresh() {
     wx.stopPullDownRefresh()
@@ -70,9 +96,21 @@ Page({
       url: `/pages/my/coupon/coupon?type=${type}`
     })
   },
+
+  goPocket () {
+    wx.navigateTo({
+      url: '/package/coffeePocket/pages/pocket/pocket'
+    });
+  },
   goAddress() {
     wx.navigateTo({
       url: '/pages/my/address_list/address_list'
+    })
+  },
+
+  goInvite () {
+    wx.navigateTo({
+      url: "/package/invite/pages/inviteOthers/invite"
     })
   }
 })

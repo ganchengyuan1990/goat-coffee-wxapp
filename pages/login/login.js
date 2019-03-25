@@ -185,16 +185,20 @@ Page({
                     // wx.navigateTo({
                     //   url: `/pages/pin/pin_detail/pin_detail?id=${this.data.pinId}&fromLogin=1&pinType=${this.data.pinType}` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
                     // });
-                    wx.navigateTo({
+                    wx.redirectTo({
                         url: `/pages/pin/checkout/checkout` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
                     });
                 } else if (this.data.fromTransport) {
-                    wx.navigateTo({
+                    wx.redirectTo({
                         url: `/pages/my/address/address?fromLogin=1` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
                     });
                 } else if (this.data.fromInvite) {
-                    wx.navigateTo({
+                    wx.redirectTo({
                         url: `/package/invite/pages/inviteOthers/invite` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    });
+                } else if (this.data.fromPocket) {
+                    wx.redirectTo({
+                        url: '/package/coffeePocket/pages/pocketCart/cart'
                     });
                 } else {
                     wx.switchTab({
@@ -317,7 +321,8 @@ Page({
         showSeconds: false,
         actived: false,
         fromPin: false,
-        fromInvite: false
+        fromInvite: false,
+        fromPocket: false
     },
 
     /**
@@ -339,6 +344,11 @@ Page({
         if (options.from === 'invite') {
             this.setData({
                 fromInvite: true
+            })
+        }
+        if (options.from === 'pocket') {
+            this.setData({
+                fromPocket: true
             })
         }
         let self = this;

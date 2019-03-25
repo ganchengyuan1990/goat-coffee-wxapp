@@ -27,7 +27,7 @@
                           data-tagidx="{{index}}" 
                           data-val="{{item.propSkuName}}"
                           data-code="{{item.propSkuId}}"
-                          bind:tap="select">
+                          catchtap="select">
                             {{item.propSkuName}}
                         </view>
                     </view>
@@ -40,7 +40,7 @@
                           wx:for="{{item.val_list}}" 
                           wx:for-item="tag"
                           wx:key="{{tag.id}}"
-                          bind:tap="select"
+                          catchtap="select"
                           data-group="opt"
                           data-groupidx="{{idx}}"
                           data-tagidx="{{index}}"
@@ -79,7 +79,7 @@
                     </view>
                 </view>
                 <view class='button_wrapper'>
-                  <view class="btn-confirm" bind:tap="save">{{activityName}}</view>
+                  <view class="btn-confirm" bind:tap="goPocket">{{activityName}}</view>
                   <view class="btn-confirm cart" bind:tap="save">加入购物车</view>
                 </view>
             </view>

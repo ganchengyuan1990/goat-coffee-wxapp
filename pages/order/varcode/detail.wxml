@@ -1,0 +1,5 @@
+
+<view class="font bigger" wx:if="{{varCode}}">取餐码：{{varCode}}</view>
+<view class="font">您好，请扫码</view>
+<canvas style="margin:20rpx auto; width: 200px; height: 200px; margin-top: 100rpx;" canvas-id="myQrcode"></canvas>
+
