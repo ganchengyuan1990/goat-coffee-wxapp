@@ -106,7 +106,6 @@ Page({
     },
 
     commitCoupon () {
-        debugger
         if (this.data.type === 2) {
             let chosenInfoArr = [];
             this.data.voucherItems.forEach(element => {

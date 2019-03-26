@@ -13,7 +13,8 @@ Page({
         userId: '',
         contents: '<p>1. 被推荐的新用户输入手机号，即可获赠一张新人免费券（全场通用）+ 3张全场五折券，可用于消费饮品系列（仅限一件商品，不含配送费），新人免费券有效期1年。（同一手机号，同一手机仅可领取一次）</p><p>2. 您推荐新用户只要产生消费（含消费新人免费券），您即获得一杯25元体验券，可用于购买经典意大式咖啡、营养代餐系列饮品，体验券有效期1年</p><p>3. 您推荐的新用户同一手机设备，同一手机号码仅可领取一次。</p><p>4. 您邀请好友所赠的体验券仅限本人使用，用于商业牟利将有封号风险。</p> ',
         people: '',
-        rUserInvites: []
+        rUserInvites: [],
+        goBuyMemberNum: 0
     },
     onLoad: function (options) {
         let token = wx.getStorageSync('token');
@@ -21,8 +22,15 @@ Page({
             wx.redirectTo({ url: '/pages/login/login?from=invite' });
         }
         model('activity/invite/my-invitees').then(res => {
+            let num = 0;
+            res.data.rUserInvites.forEach(element => {
+                if (element.first_pay_time) {
+                    num += 1;
+                }
+            });
             this.setData({
-                rUserInvites: res.data.rUserInvites
+                rUserInvites: res.data.rUserInvites,
+                goBuyMemberNum: num
             });
         }).catch(e => {
 

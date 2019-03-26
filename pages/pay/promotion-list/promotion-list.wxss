@@ -6,6 +6,7 @@ page {
   background: #f6f6f6;
   padding-bottom: 30rpx;
   height:calc(100vh - 126rpx);
+  overflow: scroll;
 }
 .promotion-tip {
   width: 100%;

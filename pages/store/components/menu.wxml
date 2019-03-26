@@ -79,7 +79,7 @@
                     </view>
                 </view>
                 <view class='button_wrapper'>
-                  <view class="btn-confirm" bind:tap="goPocket">{{activityName}}</view>
+                  <view class="btn-confirm" bindtap="goPocket">{{activityName || '买五送七'}}</view>
                   <view class="btn-confirm cart" bind:tap="save">加入购物车</view>
                 </view>
             </view>

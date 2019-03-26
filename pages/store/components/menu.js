@@ -62,6 +62,7 @@ Component({
     if (!configData) {
       model('base/site/config-list').then(res => {
         wx.setStorageSync('configData', res.data);
+        let configData = res.data;
         this.setData({
           activityName: configData['voucher-text']
         })
@@ -488,12 +489,12 @@ Component({
           customVal: keys.slice(1).join('-'),
         })
       }).exec();
-    }
-  },
+    },
 
-  goPocket () {
-    wx.navigateTo({
-      url: '/package/coffeePocket/pages/pocketCart/cart'
-    });
+    goPocket() {
+      wx.navigateTo({
+        url: '/package/coffeePocket/pages/pocketCart/cart'
+      });
+    }
   }
 })

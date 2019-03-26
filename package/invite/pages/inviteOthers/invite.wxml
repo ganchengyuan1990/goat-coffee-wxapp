@@ -26,7 +26,7 @@
           还没有获得奖励，快送好友喝免费大师咖啡
         </view>
 
-        <view wx:if="{{rUserInvites.length !== 0}}" style="color: #999; font-size: 28rpx; text-align: center; height: 40rpx;line-height: 40rpx;">已成功邀请<text style="color: #f50000;">{{rUserInvites.length}}</text>名小伙伴，再接再厉哦！</view>
+        <view wx:if="{{rUserInvites.length !== 0}}" style="color: #999; font-size: 28rpx; text-align: center; height: 40rpx;line-height: 40rpx;">已成功邀请<text style="color: #f50000;">{{goBuyMemberNum}}</text>名小伙伴，再接再厉哦！</view>
         <view class="user-info" wx:if="{{rUserInvites.length > 0}}">
           <view class="share-list" wx:for="{{rUserInvites}}" wx:key="index">
             <view class="nickname">
@@ -36,7 +36,7 @@
               <view class='user_name'>{{item.inviteeUser.name}}</view>
             </view>
             <view class="nickname" style='position: absolute; right: 30rpx; text-align: right; margin-right: 0;'>
-              <view class='user_name' style='color: #999; text-align: right; margin-right: 0;'>{{item.}}</view>
+              <view class='user_name' style='color: #999; text-align: right; margin-right: 0;'>{{item.first_pay_time || '待下单'}}</view>
             </view>
             <!-- <view class="coupon-sn coupon-sn-money">{{item.coupon.voucher_cash}}元</view> -->
           </view>

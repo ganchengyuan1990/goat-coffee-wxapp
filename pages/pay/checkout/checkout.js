@@ -64,7 +64,8 @@ Page({
     timeWords: '',
     type: 0,
     usePromotion: true,
-    hasGetBestSolution: false
+    hasGetBestSolution: false,
+    quanqianMoney: 0
   },
 
   switchChange (e) {
@@ -247,16 +248,20 @@ Page({
             }
           })
         } else if (data.data.type === 2) {
+          let contents = [];
+          couponArr.forEach(item => {
+            contents.push({
+              id: item.classId,
+              relationId: item.id,
+              type: 2
+            })
+          });
           this.setData({
             chooseNoCoupon: true,
             // chosenVoucher: couponArr[0].id,
             chosenVoucher: couponUserRelation,
             chosenInfo: {
-              content: [{
-                id: couponArr[0].classId,
-                relationId: couponArr[0].id,
-                type: 2
-              }], 
+              content: contents,
               type: 2
             }
           })
@@ -267,8 +272,14 @@ Page({
           // actualPrice: parseFloat(actualPrice).toFixed(2),
           actualPrice: data.data.resultPrice.toFixed(2),
           discountType: data.data.type,
-          couponUserRelation: couponUserRelation
+          couponUserRelation: couponUserRelation,
+          quanqianMoney: data.data.resultPrice + data.data.discountPrice
         });
+        if (this.data.quanqianMoney > 65) {
+          this.setData({
+            deliverFee: 0
+          });
+        }
       } else {
         let _a = new BigNumber(this.data.payAmount);
         let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
@@ -378,7 +389,8 @@ Page({
       chooseExpress: false,
       deliverFee: 0,
       timeWords: '立即取餐',
-      payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.options.deliverFee || STORE_INFO.deliverFee || 6)).toFixed(1)
+      // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
+      payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0)).toFixed(1)
     })
     // if (!notFirstLoad) {
     //   this.getBestCouponByProduct();
@@ -390,13 +402,22 @@ Page({
 
   chooseExpress (notFirstLoad) {
     let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'))
+    if (this.data.payAmount > 65) {
+      this.setData({
+        deliverFee: 0
+      })
+    } else {
+      this.setData({
+        deliverFee: this.data.options.deliverFee || STORE_INFO.deliverFee || 0
+      })
+    }
     this.setData({
       chooseSelf: false,
       chooseExpress: true,
-      deliverFee: this.data.options.deliverFee || STORE_INFO.deliverFee || 6,
       timeWords: '立即配送',
-      payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.options.deliverFee || STORE_INFO.deliverFee || 6)).toFixed(1)
-    })
+      payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.deliverFee || 0)).toFixed(1)
+      // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
+    });
     // if (!notFirstLoad) {
     //   this.getBestCouponByProduct();
     // }
@@ -606,6 +627,7 @@ Page({
     // param.list = JSON.stringify(products);
 
     param.storeId = this.data.options.storeId
+    debugger
 
     // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
     model(`order/detail/submit`, param, 'POST').then(data => {
@@ -613,22 +635,30 @@ Page({
       if (data.code === 'suc') {
         wx.removeStorageSync('CART_LIST');
         wx.removeStorageSync('remark');
-        let payParamStr = '';
-        let params = data.data;
-        for (let key of Object.keys(params)) {
-          if (key === 'package') {
-            params[key] = params[key].split('=')[1];
+
+        if (data.data.ifComplete) {
+          wx.navigateTo({
+            // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
+            url: `/pages/order/detail/detail?id=${data.data.order.id}&orderClassify=1`
+          });
+        } else {
+          let payParamStr = '';
+          let params = data.data;
+          for (let key of Object.keys(params)) {
+            if (key === 'package') {
+              params[key] = params[key].split('=')[1];
+            }
+            if (key === 'order') {
+              params[key] = params[key].id;
+            }
+            payParamStr += `${key}=${params[key]}&`;
           }
-          if (key === 'order') {
-            params[key] = params[key].id;
-          }
-          payParamStr += `${key}=${params[key]}&`;
+          payParamStr += `price=${this.data.actualPrice}`
+          wx.navigateTo({
+            // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
+            url: `/pages/pay/normalPay/normalPay?${payParamStr}`
+          });
         }
-        payParamStr += `price=${this.data.actualPrice}`
-        wx.navigateTo({
-          // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
-          url: `/pages/pay/normalPay/normalPay?${payParamStr}`
-        });
       }
     }).catch(e => {
       if (e.errMsg && e.errMsg.indexOf('fail') > 0) {
