@@ -1,0 +1,223 @@
+.picker {
+    display: inline-block;
+}
+
+.flex {
+    display: flex;
+}
+
+.title {
+    margin-right: 30rpx;
+    display: inline-block;
+    min-width: 150rpx;
+    text-align: right;
+    font-size: 14px;
+}
+
+.section {
+    margin: 30rpx;
+    margin-bottom: 1.8rem;
+    font-size: 14px;
+    /* height: 1.8rem; */
+    line-height: 1.8rem;
+    margin-left: 0rpx;
+    /* margin-bottom: 0.9rem; */
+    /* border-bottom: 1rpx solid #eee; */
+}
+
+.remark {
+    border: 1rpx solid #eee;
+    border-radius: 5px;
+    margin-left: 5%;
+    width: 93%;
+    background:rgba(245, 245, 245, 1);
+    color: #999999;
+    height: 308rpx;
+}
+
+.section input {
+    width: 70%;
+}
+
+.picker {
+    position: relative;
+    top: -2.34rpx;
+}
+
+.changeGender {
+    position: relative;
+    top: -3rpx;
+    display: inline-block;
+    width: 50%;
+}
+
+.selected {
+    /* border-bottom: 1rpx solid #f63; */
+}
+
+.button_commit {
+    position: fixed;
+    bottom: 0rpx;
+    /* width: 100%; */
+    left: 0rpx;
+    right: 0rpx;
+    color: #fff;
+    display: flex;
+    box-shadow:0px 0px 5px 0px rgba(181, 181, 181, 0.5);
+
+}
+
+.button_commit button {
+    border-radius: 0rpx;
+    background: #F50000;
+    margin: 20rpx 30rpx;
+    flex: 1;
+    color: #fff;
+    margin-right: 15rpx;
+    margin-left: 15rpx;
+}
+
+.protocol {
+    background: #fff;
+    height: 80rpx;
+    line-height: 80rpx;
+    padding: 30rpx;
+    font-size: 12px;
+    margin-left: 110rpx;
+}
+
+.protocol image {
+    width: 25rpx;
+    height: 25rpx;
+    position: relative;
+    top: 3rpx;
+    left: 5rpx;
+}
+
+.protocol .name {
+    margin-left: 10rpx;
+}
+
+page {
+    font-size: 14px;
+}
+
+textarea {
+    padding: 20rpx;
+    font-size: 27rpx;
+    line-height: 27rpx;
+    width: 95%;
+    /* background:rgba(245, 245, 245, 1); */
+}
+
+
+.line {
+    margin: 34rpx;
+    padding-bottom: 34rpx;
+    border-bottom: 2rpx solid #F5F5F5;
+}
+.line_title {
+    font-size: 28rpx;
+    color: #222;
+}
+
+.button_line {
+    padding-top: 38rpx;
+    display: flex;
+}
+
+.little_button {
+    width: 152rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    border-radius: 30rpx;
+    text-align: center;
+    color: #999999;
+    background: #FAFAFA;
+    border: 1rpx solid #FAFAFA;
+    margin-right: 24rpx;
+}
+
+.chosen {
+    color: #DF0202;
+    background: #fff;
+    border: 1rpx solid #FFDBDB;
+}
+
+.team {
+    display: flex;
+    margin: 30rpx;
+    text-align: center;
+}
+
+.member {
+    display: inline-block;
+    height: 150rpx;
+    line-height: 150rpx;
+    width: 150rpx;
+    /* border-radius: 150rpx; */
+    text-align: center;
+    vertical-align: center;
+    padding: 3rpx;
+    font-size: 34rpx;
+    color: #999;
+    /* background: #eee; */
+    margin-right: 30rpx;
+    /* border: 1px dashed #ddd; */
+    position: relative;
+}
+
+.member .text {
+    display: inline-block;
+    height: 150rpx;
+    line-height: 150rpx;
+    width: 150rpx;
+    /* border-radius: 150rpx; */
+    background: #eee;
+}
+
+.member image {
+    /* border-radius: 50%; */
+    height: 150rpx;
+    line-height: 150rpx;
+    width: 150rpx;
+    /* border: 1px dashed #ddd; */
+}
+
+.mention {
+    margin: 30rpx;
+    font-size: 22rpx;
+    color: #999999;
+}
+
+.owner {
+    position: absolute;
+    bottom: -10rpx;
+    left: 15rpx;
+    width: 66rpx;
+    height: 30rpx;
+    line-height: 80rpx;
+    background: #333;
+    font-size: 20rpx;
+    color: #fff;
+    text-align: center;
+    border-radius: 30rpx;
+}
+
+
+.button {
+    width: 150rpx;
+    height: 150rpx;
+    line-height: 150rpx;
+    /* background: #333; */
+    color: #fff;
+    text-align: center;
+    font-size: 28rpx;
+    border-radius: 0;
+    display: inline-block;
+}
+
+.button image {
+    width: 150rpx;
+    height: 150rpx;
+}

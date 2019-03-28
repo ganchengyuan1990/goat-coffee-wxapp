@@ -37,6 +37,10 @@
     "root": "package/invite",
     "name": "invite",
     "pages": ["pages/invite/invite", "pages/inviteOthers/invite", "pages/inviteResult/invite"]
+  }, {
+    "root": "package/orderComment",
+    "name": "orderComment",
+    "pages": ["pages/comment/remark", "pages/remark/remark"]
   }],
   "permission": {
     "scope.userLocation": {

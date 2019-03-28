@@ -14,11 +14,69 @@ Page({
         banner: 'http://img.goatup.net/img/banner/%E9%A6%96%E9%A1%B5banner.png'
     },
     onLoad: function (options) {
-        
+        this.setUnionId();
         
     },
     onReady: function () {
 
+    },
+
+    setUnionId () {
+        let self = this;
+        console.log('start');
+        console.log(wx.getStorageSync('unionId'));
+        console.log(wx.getStorageSync('openid'));
+        // wx.removeStorageSync('unionId');
+        // wx.removeStorageSync('openid');
+        let openid = wx.getStorageSync('openid')
+        if (!wx.getStorageSync('unionId') || !wx.getStorageSync('openid') || typeof(openid) !== 'string') {
+            wx.login({
+                success: function (res) {
+                    if (res.code) {
+                        model('my/user/get-open-id2', {
+                            code: res.code
+                        }).then(res => {
+                            wx.setStorageSync('openid', res.data.openid);
+                            let session_key = res.data.session_key;
+                            if (res.data.unionid) {
+                                wx.setStorageSync('unionId', res.data.unionid);
+                            }
+                            if (session_key) {
+                                wx.setStorageSync('session_key', session_key);
+                            }
+                            console.log(session_key);
+                            wx.getUserInfo({
+                                withCredentials: true,
+                                success: function (res) {
+                                    var userInfo = res.userInfo
+                                    let iv = res.iv;
+                                    let encryptedData = res.encryptedData;
+                                    console.log(session_key);
+                                    console.log(iv);
+                                    console.log(encryptedData);
+                                    console.log(123);
+                                    model('my/user/update-user-by-wechat', {
+                                        encryptedData: encryptedData,
+                                        iv: iv,
+                                        sessionKey: session_key
+                                    }, 'POST').then(res => {
+                                        console.log(res.data.result);
+                                        if (res.code === 'suc') {
+                                            wx.setStorageSync('unionId', res.data.result.unionId);
+                                        }
+                                    }).catch(e => {
+                                        console.log(e)
+                                    })
+                                    
+                                }
+                            })
+                        })
+                    } else {
+                        console.log('登录失败！' + res.errMsg)
+                    }
+                }
+            });
+        }
     },
 
     setTabStatus () {
@@ -156,4 +214,12 @@ Page({
             url: `/pages/my/coupon/coupon?type=2`
         })
     },
+
+    bindGetUserInfo() {
+        this.setUnionId();
+    },
+
+    // bindGetUserInfo(e) {
+    //     console.log(e.detail.userInfo)
+    // }
 })

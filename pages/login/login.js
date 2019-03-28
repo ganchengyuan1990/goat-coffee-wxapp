@@ -151,6 +151,8 @@ Page({
             })
         } else {
             model(`my/user/login`, {
+                unionId: wx.getStorageSync('unionid'),
+                sessionKey: wx.getStorageSync('session_key'),
                 sysinfo: JSON.stringify(this.data.sysinfo),
                 phoneNum: this.data.phoneNum,
                 sms_code: this.data.phoneCode,
@@ -160,6 +162,10 @@ Page({
                 this.setData({
                     token: data.data
                 })
+
+                if (data.data && data.data.user && data.data.user.wxUnionid) {
+                    wx.setStorageSync('unionId', data.data.user.wxUnionid);
+                }
                 try {
                     let avatar = data.data.user && data.data.user.avatar
                     if (!avatar) {
@@ -225,13 +231,40 @@ Page({
         wx.login({
             success: function (res) {
                 if (res.code) {
-                    model('my/user/get-open-id', {
+                    model('my/user/get-open-id2', {
                         code: res.code
                     }).then(res => {
-                        wx.setStorageSync('openid', res.data);
+                        // wx.setStorageSync('openid', res.data);
+                        wx.setStorageSync('openid', res.data.openid);
+                        let session_key = res.data.session_key;
+                        if (res.data.unionid) {
+                            wx.setStorageSync('unionId', res.data.unionid);
+                        }
+                        if (session_key) {
+                            wx.setStorageSync('session_key', session_key);
+                        }
                         wx.getUserInfo({
+                            withCredentials: true,
                             success: function (res) {
                                 var userInfo = res.userInfo
+                                let iv = res.iv;
+                                let encryptedData = res.encryptedData;
+                                console.log(session_key);
+                                console.log(iv);
+                                console.log(encryptedData);
+                                if (!wx.getStorageSync('unionId')) {
+                                    model('my/user/update-user-by-wechat', {
+                                        encryptedData: encryptedData,
+                                        iv: iv,
+                                        sessionKey: session_key
+                                    }, 'POST').then(res => {
+                                        if (res.code === 'suc') {
+                                            wx.setStorageSync('unionId', res.data.result.unionId);
+                                        }
+                                    }).catch(e => {
+                                        console.log(e)
+                                    })
+                                }
                                 wx.setStorageSync('personal_info', {
                                     nickName: userInfo.nickName,
                                     avatarUrl: userInfo.avatarUrl,

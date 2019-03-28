@@ -44,6 +44,8 @@
     </view>
   </view>
 
+  <!-- <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button> -->
+
 
   <view class="act-wrap" wx:if="{{isActWrapShow}}">
     <view class="mask {{isActWrapShow ? 'active':''}}"></view>

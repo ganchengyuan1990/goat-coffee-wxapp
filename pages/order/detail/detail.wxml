@@ -11,6 +11,7 @@
             <view style="display: flex; justify-content: center; margin-top: 30rpx;">
                 <view class="btn-buy to-pay" catchtap="goStore" wx:if="{{detail.orderState == '02'}}">再来一单</view>
                 <view class="btn-buy to-pay" catchtap="goVarcode">取餐码</view>
+                <view class="btn-buy to-pay" catchtap="goComment" wx:if="{{detail.orderState == '100'}}">订单评价</view>
             </view>
         </view>
         <!-- <view style="position: relative;margin: 10rpx 30rpx;" bindtap="goRedPack">

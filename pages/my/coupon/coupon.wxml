@@ -30,7 +30,7 @@
                                 <view class="promotion-description">{{item.coupon.couponName}}</view>
                                 <!-- <text class="promotion-limit-tip">{{item.couponBref}}</text> -->
                                 <view class="promotion-limit-tip" wx:if="{{item.endTime}}">
-                                    有效期至{{item.tCoreUserCoupon.endTime}}
+                                    有效期至{{item.endTime}}
                                 </view>
                             </view>
                         </view>

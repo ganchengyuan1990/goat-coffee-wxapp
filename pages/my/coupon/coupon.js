@@ -61,6 +61,9 @@ Page({
         if (element.coupon.availabileEndTime) {
           element.coupon.availabileEndTime = element.coupon.availabileEndTime.split(' ')[0]
         }
+        // if (element.endTime) {
+        //   element.endTime = element.endTime.split(' ')[0]
+        // }
       });
       this.setData({
         couponItems: result,

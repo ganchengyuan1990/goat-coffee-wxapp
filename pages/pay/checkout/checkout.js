@@ -627,7 +627,6 @@ Page({
     // param.list = JSON.stringify(products);
 
     param.storeId = this.data.options.storeId
-    debugger
 
     // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
     model(`order/detail/submit`, param, 'POST').then(data => {
@@ -716,7 +715,7 @@ Page({
     if (this.data.chooseSelf) {
       wx.showModal({
         // title: '提示', //提示的标题,
-        content: `是否确认前往${this.data.checkedAddress.storeName}自提？订单确认后将无法更改`, //提示的内容,
+        content: `是否确认前往【${this.data.checkedAddress.storeName}】自提？订单确认后将无法更改`, //提示的内容,
         showCancel: true, //是否显示取消按钮,
         cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
         cancelColor: '#000000', //取消按钮的文字颜色,
@@ -732,7 +731,28 @@ Page({
       });
     } else {
       if (this.data.checkedExpress.id) {
-        this.submit();
+        if (parseFloat(this.data.actualPrice) > 0) {
+          this.submit();
+        } else {
+          console.log(8888);
+          wx.showModal({
+            // title: '提示', //提示的标题,
+            content: `请确认支付订单，订单确认后将无法修改。`, //提示的内容,
+            showCancel: true, //是否显示取消按钮,
+            cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+            cancelColor: '#000000', //取消按钮的文字颜色,
+            confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+            confirmColor: '#f50000', //确定按钮的文字颜色,
+            success: res => {
+              if (res.confirm) {
+                this.submit();
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          });
+        }
+        
       }
     }
 }

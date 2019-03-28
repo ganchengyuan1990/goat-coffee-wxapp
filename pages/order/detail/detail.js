@@ -116,5 +116,11 @@ Page({
     wx.navigateTo({
       url: `/pages/order/varcode/detail?detail=${JSON.stringify(this.data.detail)}`
     });
+  },
+
+  goComment () {
+    wx.navigateTo({
+      url: `/package/orderComment/pages/comment/remark?orderId=${this.data.detail.id}`
+    });
   }
 })

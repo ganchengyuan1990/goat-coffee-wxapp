@@ -9,13 +9,16 @@
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
-		"autoAudits": false
+		"autoAudits": false,
+		"checkInvalidKey": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.5.0",
-	"appid": "wx5bb95a5028390738",
+	"appid": "wx95a4dca674b223e1",
 	"projectname": "加油咖啡",
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -34,7 +37,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 18,
+			"current": 33,
 			"list": [
 				{
 					"id": -1,
@@ -239,6 +242,20 @@
 					"name": "inviteResult",
 					"pathName": "package/invite/pages/inviteResult/invite",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": 32,
+					"name": "orderRemark",
+					"pathName": "package/orderComment/pages/remark/remark",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 33,
+					"name": "comment",
+					"pathName": "package/orderComment/pages/comment/remark",
+					"query": "orderId=468",
 					"scene": null
 				}
 			]

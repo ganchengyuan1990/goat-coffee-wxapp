@@ -277,13 +277,23 @@ Page({
         wx.login({
             success: function (res) {
                 if (res.code) {
-                    model('my/user/get-open-id', {
+                    model('my/user/get-open-id2', {
                         code: res.code
                     }).then(res => {
-                        wx.setStorageSync('openid', res.data);
+                        // wx.setStorageSync('openid', res.data);
+                        wx.setStorageSync('openid', res.data.openid);
+                        if (res.data.unionid) {
+                            wx.setStorageSync('unionId', res.data.unionid);
+                        }
                         wx.getUserInfo({
+                            withCredentials: true,
                             success: function (res) {
                                 var userInfo = res.userInfo
+                                let iv = res.iv;
+                                let encryptedData = res.encryptedData;
+                                console.log(session_key);
+                                console.log(iv);
+                                console.log(encryptedData);
                                 wx.setStorageSync('personal_info', {
                                     nickName: userInfo.nickName,
                                     avatarUrl: userInfo.avatarUrl,
@@ -343,6 +353,8 @@ Page({
 
     register() {
         model(`my/user/login`, {
+            unionId: wx.getStorageSync('unionid'),
+            sessionKey: wx.getStorageSync('session_key'),
             sysinfo: JSON.stringify(this.data.sysinfo),
             phoneNum: this.data.phoneNum,
             sms_code: this.data.phoneCode,
