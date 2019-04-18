@@ -29,7 +29,8 @@ Page({
         // wx.removeStorageSync('unionId');
         // wx.removeStorageSync('openid');
         let openid = wx.getStorageSync('openid')
-        if (!wx.getStorageSync('unionId') || !wx.getStorageSync('openid') || typeof(openid) !== 'string') {
+        let token = wx.getStorageSync('token');
+        if (token && (!wx.getStorageSync('unionid') || !wx.getStorageSync('unionId') || !wx.getStorageSync('openid') || typeof (openid) !== 'string')) {
             wx.login({
                 success: function (res) {
                     if (res.code) {
@@ -40,6 +41,7 @@ Page({
                             let session_key = res.data.session_key;
                             if (res.data.unionid) {
                                 wx.setStorageSync('unionId', res.data.unionid);
+                                wx.setStorageSync('unionid', res.data.unionid);
                             }
                             if (session_key) {
                                 wx.setStorageSync('session_key', session_key);
@@ -63,6 +65,7 @@ Page({
                                         console.log(res.data.result);
                                         if (res.code === 'suc') {
                                             wx.setStorageSync('unionId', res.data.result.unionId);
+                                            wx.setStorageSync('unionid', res.data.result.unionId);
                                         }
                                     }).catch(e => {
                                         console.log(e)

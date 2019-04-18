@@ -18,7 +18,7 @@ Page({
     let detail = JSON.parse(options.detail);
     this.setData({
       orderNo: detail.orderNo,
-      varCode: detail.orderState === '100' ? '100' : detail.varCode
+      varCode: detail.varCode
     })
     
   },

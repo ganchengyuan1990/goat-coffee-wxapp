@@ -503,3 +503,11 @@ page {
   top: 0;
   left: 0;
 }
+
+.mentionText {
+  display: inline-block;
+  font-size: 20rpx;
+  color: #f50000;
+  text-align: center;
+  margin-top: 10rpx;
+}

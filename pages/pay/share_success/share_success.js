@@ -284,6 +284,7 @@ Page({
                         wx.setStorageSync('openid', res.data.openid);
                         if (res.data.unionid) {
                             wx.setStorageSync('unionId', res.data.unionid);
+                            wx.setStorageSync('unionid', res.data.unionid);
                         }
                         wx.getUserInfo({
                             withCredentials: true,
@@ -353,7 +354,7 @@ Page({
 
     register() {
         model(`my/user/login`, {
-            unionId: wx.getStorageSync('unionid'),
+            unionId: wx.getStorageSync('unionId'),
             sessionKey: wx.getStorageSync('session_key'),
             sysinfo: JSON.stringify(this.data.sysinfo),
             phoneNum: this.data.phoneNum,

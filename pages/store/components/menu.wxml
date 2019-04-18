@@ -4,7 +4,7 @@
       
       <view class="bottom">
           <view class="hd">
-            <image src="{{info.banner}}" mode="aspectFill" class="img-caption"></image>
+            <image src="{{info.banner}}" mode="aspectFill" class="img-caption" data-src="{{info.banner}}" bindtap="previewImage"></image>
             <image style="position: absolute; right: 20rpx;top: 30rpx;width: 50rpx;height: 50rpx;" src="../../../images/close.png"  catchtap="closeMenu"/>
               <view class="tt">
                 <view class='flex-item'>

@@ -100,6 +100,7 @@ Page({
                             let session_key = res.data.session_key;
                             if (res.data.unionid) {
                                 wx.setStorageSync('unionId', res.data.unionid);
+                                wx.setStorageSync('unionid', res.data.unionid);
                             }
                             if (session_key) {
                                 wx.setStorageSync('session_key', session_key);
@@ -113,19 +114,6 @@ Page({
                                     console.log(session_key);
                                     console.log(iv);
                                     console.log(encryptedData);
-                                    if (!wx.getStorageSync('unionId')) {
-                                        model('my/user/update-user-by-wechat', {
-                                            encryptedData: encryptedData,
-                                            iv: iv,
-                                            sessionKey: session_key
-                                        }, 'POST').then(res => {
-                                            if (res.code === 'suc') {
-                                                wx.setStorageSync('unionId', res.data.result.unionId);
-                                            }
-                                        }).catch(e => {
-                                            console.log(e)
-                                        })
-                                    }
                                     wx.setStorageSync('personal_info', {
                                         nickName: userInfo.nickName,
                                         avatarUrl: userInfo.avatarUrl,
@@ -262,7 +250,7 @@ Page({
             })
         } else {
             model(`my/user/login`, {
-                unionId: wx.getStorageSync('unionid'),
+                unionId: wx.getStorageSync('unionId'),
                 sessionKey: wx.getStorageSync('session_key'),
                 sysinfo: JSON.stringify(this.data.sysinfo),
                 phoneNum: this.data.phoneNum,

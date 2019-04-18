@@ -31,7 +31,7 @@
                             </view>
          
                             <view class="direct-bottom">
-                                <view class="direct-category"><image style='width: 20rpx; height: 20rpx; margin-right: 12rpx;' src="../../images/clock.png" />9:00 - 21:00</view>
+                                <view class="direct-category"><image style='width: 20rpx; height: 20rpx; margin-right: 12rpx;' src="../../images/clock.png" />{{item.startTime}}-{{item.endTime}}</view>
                                 <view class="split-line" wx:if="{{item.categoryname}}">|</view>
                                 <view class="direct-address">
                                     <image style='position: relative; top: 8rpx; width: 20rpx; height: 20rpx; margin-right: 9rpx;' src="../../images/location.png" />

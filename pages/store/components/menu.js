@@ -495,6 +495,14 @@ Component({
       wx.navigateTo({
         url: '/package/coffeePocket/pages/pocketCart/cart'
       });
-    }
+    },
+
+    previewImage: function (e) {
+      var current = e.target.dataset.src;
+      wx.previewImage({
+        current: current,
+        urls: [current]
+      })
+    },
   }
 })

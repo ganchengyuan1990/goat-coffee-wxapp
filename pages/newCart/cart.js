@@ -27,7 +27,7 @@ Page({
     let token = wx.getStorageSync('token');
     if (!token) {
       wx.hideLoading();
-      wx.redirectTo({
+      wx.navigateTo({
         url: '/pages/login/login'
       });
     }
@@ -57,12 +57,12 @@ Page({
   },
   onShow: function () {
     let token = wx.getStorageSync('token');
-    if (!token) {
-      wx.hideLoading();
-      wx.redirectTo({
-        url: '/pages/login/login'
-      });
-    }
+    // if (!token) {
+    //   wx.hideLoading();
+    //   wx.redirectTo({
+    //     url: '/pages/login/login'
+    //   });
+    // }
     this.getCartInfo();
      let fromTransport = wx.getStorageSync('fromTransport');
      this.setData({

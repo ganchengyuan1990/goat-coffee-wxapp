@@ -571,7 +571,7 @@ Page({
       mask: true, //显示透明蒙层，防止触摸穿透,
       success: res => {}
     });
-    let userAddressId = this.data.options.userAddressId || this.data.fromTransportIndex;
+    let userAddressId = this.data.options.userAddressId || this.data.checkedExpress.id;
     if (!userAddressId && this.data.chooseExpress) {
       if (wx.getStorageSync('addressList') && wx.getStorageSync('addressList')[0]  && wx.getStorageSync('addressList')[0].id) {
         userAddressId = wx.getStorageSync('addressList')[0].id

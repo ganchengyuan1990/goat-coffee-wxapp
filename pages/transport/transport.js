@@ -121,7 +121,7 @@ Page({
         url: `/pages/my/address/address`
       });
     } else {
-      wx.redirectTo({
+      wx.navigateTo({
         url: `/pages/login/login?fromTransport=1`
       });
     }

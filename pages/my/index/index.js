@@ -20,6 +20,7 @@ Page({
     this.setData({
       token: token
     })
+    this.getProfile()
   },
 
   setTabStatus() {
@@ -56,7 +57,7 @@ Page({
   onShow: function () {
     console.log('onshow');
     
-    this.getProfile()
+    
     this.setTabStatus();
   },
   onPullDownRefresh() {
@@ -75,7 +76,7 @@ Page({
         userInfoWechat: userInfoWechat
       })
     } else {
-      wx.redirectTo({
+      wx.navigateTo({
         url: '/pages/login/login'
       })
       return

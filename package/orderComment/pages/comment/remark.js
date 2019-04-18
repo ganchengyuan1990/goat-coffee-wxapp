@@ -83,11 +83,17 @@ Page({
       }, 'POST').then(res => {
       if (res.code === 'suc') {
         wx.showToast({
-          title: '感谢您的反馈，我们会努力提升服务质量', //提示的内容,
+          title: '提交成功！', //提示的内容,
           icon: 'none', //图标,
           duration: 2000, //延迟时间,
           mask: true, //显示透明蒙层，防止触摸穿透,
-          success: res => {}
+          success: res => {
+            setTimeout(() => {
+              wx.navigateBack({
+                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+              });
+            }, 1500);
+          }
         });
       }
     }).catch(e => {
