@@ -448,8 +448,14 @@ Page({
       orderType: info.isNeedFee ? 2 : 1,
       product: products
     }
+    if (isNeedFee) {
+      let chosenAddress = wx.getStorageSync('chosenAddress');
+      this.setData({
+        fromTransport: chosenAddress
+      })
+    }
 
-    const url = `/pages/pay/checkout/checkout?fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${isNeedFee?'delivery':'selftaking'}`
+    const url = `/pages/pay/checkout/checkout?fromTransportId=${this.data.fromTransport && this.data.fromTransport.id}&fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${isNeedFee?'delivery':'selftaking'}`
     // this.setData({
     //   isCartPanelShow: false
     // })

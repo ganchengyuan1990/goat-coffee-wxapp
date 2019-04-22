@@ -61,6 +61,7 @@ Page({
     getTime: '',
     waitProcessTime: '',
     fromTransportIndex: -1,
+    fromTransportId: -1,
     timeWords: '',
     type: 0,
     usePromotion: true,
@@ -168,8 +169,20 @@ Page({
       if (data.data) {
         let list = data.data;
         wx.setStorageSync('addressList', list);
+        let checkedExpress = list[this.data.fromTransportIndex || 0]
+        if (this.data.fromTransportId > 0) {
+          let chosenAddressItem = list.filter(item => {
+            return item.id === this.data.fromTransportId;
+          });
+          if (chosenAddressItem && chosenAddressItem[0]) {
+            checkedExpress = chosenAddressItem[0];
+          }
+        }
+        if (this.data.fromAddress) {
+          checkedExpress = list[this.data.fromTransportIndex || 0]
+        }
         this.setData({
-          checkedExpress: list[this.data.fromTransportIndex || 0] || {}
+          checkedExpress: checkedExpress || {}
         });
       }
     })
@@ -356,7 +369,8 @@ Page({
         product: product,
         payAmount: payAmount.toFixed(1),
         tab: items.tab,
-        fromTransportIndex: parseInt(items.fromTransportIndex)
+        fromTransportIndex: parseInt(items.fromTransportIndex),
+        fromTransportId: parseInt(items.fromTransportId)
       });
       if (this.data.tab === 'delivery') {
         this.chooseExpress(false);
@@ -572,6 +586,9 @@ Page({
       success: res => {}
     });
     let userAddressId = this.data.options.userAddressId || this.data.checkedExpress.id;
+    if (this.data.chooseSelf) {
+      userAddressId = null;
+    }
     if (!userAddressId && this.data.chooseExpress) {
       if (wx.getStorageSync('addressList') && wx.getStorageSync('addressList')[0]  && wx.getStorageSync('addressList')[0].id) {
         userAddressId = wx.getStorageSync('addressList')[0].id
