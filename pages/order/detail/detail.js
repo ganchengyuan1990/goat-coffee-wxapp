@@ -16,7 +16,9 @@ Page({
     dtype: '',
     waitTime: '',
     id: '',
-    orderClassify: ''
+    orderClassify: '',
+    showDialog: false,
+    actImage: 'http://img.goatup.net/img/banner/0415-index-gzh2.png'
   },
 
   /**
@@ -30,7 +32,8 @@ Page({
       // this.formatData(data)
       this.setData({
         id: id,
-        orderClassify: orderClassify
+        orderClassify: orderClassify,
+        // showDialog: Boolean(options.showDialog)
       });
       model(`order/detail/detail?orderClassify=${this.data.orderClassify}&id=${this.data.id}`).then(res => {
         let result = res.data.order;
@@ -122,5 +125,19 @@ Page({
     wx.navigateTo({
       url: `/package/orderComment/pages/comment/remark?orderId=${this.data.detail.id}`
     });
+  },
+
+  previewImage: function (e) {
+    var current = e.target.dataset.src;
+    wx.previewImage({
+      current: current,
+      urls: [current]
+    })
+  },
+
+  hideActWrap () {
+    this.setData({
+      showDialog: false
+    })
   }
 })

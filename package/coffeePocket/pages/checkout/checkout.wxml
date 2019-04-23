@@ -44,7 +44,7 @@
         <!-- <view class="checkbox {{item.checked ? 'checked' : ''}}" bindtap="checkedItem" data-item-index="{{index}}"></view> -->
         <image src="../img/checkbox.png" />
         <text class="name" style="color: #999;">我已同意<text style="color: #F50000;" bindtap="showXieyi">《咖啡支付协议》</text></text>
-        <view style="color: #999999;line-height: 36rpx;padding-bottom: 30rpx">温馨提示：仅支持开具电子发票，订单完成后可前往发票管理中心开具</view>
+        <view style="color: #999999;line-height: 36rpx;padding-bottom: 30rpx">温馨提示：仅支持开具电子发票，请联系客服人员或门店电话开具</view>
         <!-- <checkbox-group bindchange="checkboxChange">
             <label class="checkbox">
                 <checkbox value="protocol" checked="protocalChecked" color="#fff" />我已同意《咖啡支付协议》

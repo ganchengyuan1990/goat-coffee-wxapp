@@ -119,9 +119,6 @@ Page({
     } else if (!this.data.name.match(/^[\u4e00-\u9fa5_a-zA-Z0-9]+$/)) {
         result = false;
         errorInfo = '请输入有效的收货人姓名'
-    } else if (!this.data.phone.match(/^1[345789]\d{9}$/)) {
-        result = false;
-        errorInfo = '请输入有效手机号'
     }
     return {
         result: result,

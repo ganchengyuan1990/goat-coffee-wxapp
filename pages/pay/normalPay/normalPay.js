@@ -49,7 +49,7 @@ Page({
             'paySign': this.data.paySign,
             'success': function (res) {
                 wx.redirectTo({
-                    url: `/pages/order/detail/detail?id=${self.data.orderId}&orderClassify=1`
+                    url: `/pages/order/detail/detail?id=${self.data.orderId}&orderClassify=1&showDialog=1`
                 });
                 // if (self.data.type === 'pin') {
                 //     wx.redirectTo({

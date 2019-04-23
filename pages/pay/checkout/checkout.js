@@ -649,6 +649,7 @@ Page({
     model(`order/detail/submit`, param, 'POST').then(data => {
       wx.hideLoading();
       if (data.code === 'suc') {
+        wx.removeStorageSync('remark');
         wx.removeStorageSync('CART_LIST');
         wx.removeStorageSync('remark');
 

@@ -11,7 +11,19 @@
     }
     return arr.join('/')
   }
-  module.exports.getSpecific = getSpecific
+  var judgeSoldout = function(sku_list) {
+    var soldout = true
+    sku_list.forEach(function(item) {
+      if (item.state === 1) {
+        soldout = false
+      }
+    })
+    return soldout
+  }
+  module.exports = {
+    getSpecific: getSpecific,
+    judgeSoldout: judgeSoldout
+  }
 </wxs>
 <view class="store-container">
   <view class="hd-wrap J_hd_wrap">
@@ -64,6 +76,7 @@
             <!-- <view class="icon-crown"></view> -->
             <image src="../../images/top.png" style="width: 26rpx;height: 26rpx;margin-right: 5rpx; position: relative; top: 2rpx;" wx:if="{{item.name === '人气TOP'}}"/>{{item.name}}
             <text class='discount' wx:if="{{item.tips}}"><text style="font-size: 18rpx;">{{item.tips}}</text></text>
+            <!-- <text class='mentionText' wx:if="{{item.name === '新人专享'}}">AM8-11,PM3-5</text> -->
           </view>
         </view>
       </scroll-view>
@@ -92,7 +105,7 @@
                 <image src="{{product.icon}}"></image>
                 <image class="tag tag_pic" wx:if="{{product.tips}}" src="../../images/tag.png"><view class="pic_word">{{product.tips}}</view></image>
                 <image class="tag tag_pic lefter_top" wx:if="{{product.sku_list && product.sku_list[0] && !product.sku_list[0].can_distribution}}" src="../../images/tag.png"><view class="pic_word">仅自取</view></image>
-                <view class='sold_up' wx:if="{{!product.sku_list || product.sku_list.length == 0}}">
+                <view class='sold_up' wx:if="{{filter.judgeSoldout(product.sku_list)}}">
                   售罄
                 </view>
               </view>
@@ -103,7 +116,8 @@
                   <view class="note">默认：{{filter.getSpecific(product)}}</view>
                 </view>
                 <view class="price-count">
-                  <view class="price">{{product.default_sku.sale_price > 0 ? '￥'+product.default_sku.sale_price:'暂无价格'}}
+                  <!-- <view class="price">{{product.default_sku.sale_price > 0 ? '￥'+product.default_sku.sale_price:'暂无价格'}} -->
+                  <view class="price">{{product.default_sku.orinalPrice > 0 ? '￥'+product.default_sku.orinalPrice:'暂无价格'}}
                   <text class="price-del" wx:if="{{product.default_sku.price}}">￥{{product.default_sku.price}}</text>
                   </view>
                   

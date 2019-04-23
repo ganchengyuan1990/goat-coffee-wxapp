@@ -438,7 +438,25 @@ Page({
 					if (ele.sku_list && ele.sku_list[0]) {
 						ele.price = ele.sku_list[0].price;
 					}
+					if (ele.default_sku) {
+						ele.default_sku.orinalPrice = parseFloat(parseFloat(ele.default_sku.sale_price) + parseFloat(ele.default_prop.price)).toFixed(2);
+					}
 				})
+				if (item.name === '能量包套餐组合') {
+					item.product_list.forEach(ele => {
+						if (ele.sku_list && ele.sku_list[0]) {
+							ele.default_sku.orinalPrice = parseFloat(ele.default_sku.sale_price).toFixed(2);
+							var key_list = ele.key_list;
+							key_list.forEach(e => {
+								e.val_list.forEach(a => {
+									if (a.isdefault === 1) {
+										ele.default_sku.orinalPrice = parseFloat(parseFloat(ele.default_sku.orinalPrice) + a.price).toFixed(2);
+									}
+								})
+							})
+						}
+					})
+				}
 			});
 			this.setData({
 				scrollTop: 0,
@@ -589,7 +607,13 @@ Page({
 		let groupIdx = e.currentTarget.dataset.groupidx
 		let productIdx = e.currentTarget.dataset.productidx
 		let skulist = e.currentTarget.dataset.skulist;
-		if (!skulist || skulist.length == 0) {
+		var soldout = true
+		skulist.forEach(function (item) {
+			if (item.state === 1) {
+				soldout = false
+			}
+		})
+		if (soldout) {
 			wx.showModal({
 				title: '提示', //提示的标题,
 				content: '此商品已售罄', //提示的内容,
