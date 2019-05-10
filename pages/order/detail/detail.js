@@ -18,7 +18,7 @@ Page({
     id: '',
     orderClassify: '',
     showDialog: false,
-    actImage: 'http://img.goatup.net/img/banner/0415-index-gzh2.png'
+    actImage: 'http://img.goatup.net/image/gzh/gzhtanchuang.png'
   },
 
   /**
@@ -33,7 +33,7 @@ Page({
       this.setData({
         id: id,
         orderClassify: orderClassify,
-        // showDialog: Boolean(options.showDialog)
+        showDialog: Boolean(options.showDialog)
       });
       model(`order/detail/detail?orderClassify=${this.data.orderClassify}&id=${this.data.id}`).then(res => {
         let result = res.data.order;

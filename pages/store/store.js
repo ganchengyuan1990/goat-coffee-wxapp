@@ -399,12 +399,12 @@ Page({
 		} catch (e) {
 			console.log(e);
 		}
-		if (parseFloat(storeInfo.distance) > 3000) {
+		if (parseFloat(storeInfo.distance) > 10000) {
 			wx.showModal({
 				title: '提示',
 				confirmColor: '#f50000', //确定按钮的文字颜色,
 				showCancel: false,
-				content: `您与店铺的距离超过3公里，请确认店铺是${storeInfo.storeName}`,
+				content: `您与店铺的距离超过10公里，请确认店铺是${storeInfo.storeName}`,
 				confirmText: '我知道了'
 			})
 		}

@@ -477,7 +477,7 @@ Page({
     wx.setStorageSync('couponList', this.data.couponList)
     wx.navigateTo({
       // url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
-      url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.content && this.data.chosenInfo.content[0].relationId : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
+      url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.content && this.data.chosenInfo.content[0] && this.data.chosenInfo.content[0].relationId : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
     })
     // if (this.data.chosenInfo.type == 2) {
     //   wx.navigateTo({
