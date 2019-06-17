@@ -102,7 +102,7 @@ Page({
           });
         }
       }).catch(e => {
-
+    
       });
     }
   },
@@ -169,7 +169,7 @@ Page({
     })
     let obj = {
       page: page,
-      userId: this.data.userInfo.user.id,
+      userId: this.data.userInfo && this.data.userInfo.user.id,
       orderClassify: this.data.orderClassify || OCLASSIFY.normal
     }
     if (this.data.orderState > -1) {
@@ -181,11 +181,13 @@ Page({
         data
       } = res
       if (data && Array.isArray(data)) {
-        let uid = this.data.userInfo.user.id
+        let uid = this.data.userInfo && this.data.userInfo.user.id
 
         let len = data.length
         let list = isResetList ? [] : this.data.orderList
         let arr = []
+
+        console.log(len);
         // 因为没有判断数据总数量的字段
         // 所以为0的时候认定没有更多
         // 另一种情况，第一页的数据条数少的情况隐藏加载中的状态

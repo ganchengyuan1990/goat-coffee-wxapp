@@ -6,7 +6,7 @@
   </view> -->
   <view class="title">
         <image style='width: 36rpx; height: 36rpx; position: relative; top: 8rpx; margin-right: 8rpx;' src='../img/flag.png'/>
-        <text>饮品券买二赠一/买三赠三/买五赠七，可组合购买</text>
+        <text>饮品券买二赠一/买三赠二/买五赠五，可组合购买</text>
     </view>
 
     <view class="no-cart" wx:if="{{couponLists.length <= 0}}">

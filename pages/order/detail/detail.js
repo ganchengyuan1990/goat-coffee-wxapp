@@ -1,5 +1,4 @@
 // pages/order/detail.js
-import drawQrcode from '../../../utils/qrcode.js'
 import model from '../../../utils/model.js';
 
 import {
@@ -117,7 +116,7 @@ Page({
 
   goVarcode () {
     wx.navigateTo({
-      url: `/pages/order/varcode/detail?detail=${JSON.stringify(this.data.detail)}`
+      url: `/pages/order/varcode/detail?orderNo=${this.data.detail.orderNo}&varCode=${this.data.detail.varCode}`
     });
   },
 

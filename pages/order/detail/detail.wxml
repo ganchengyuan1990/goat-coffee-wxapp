@@ -15,7 +15,7 @@
             </view>
         </view>
         <!-- <view style="position: relative;margin: 10rpx 30rpx;" bindtap="goRedPack">
-            <image src="http://img.mofafang.cn/banner/6redbao.png" style="width: 100%; height: 350rpx" />
+            <image src="http://img.goatup.net/banner/6redbao.png" style="width: 100%; height: 350rpx" />
         </view> -->
         <view class="panel order-box">
             <view class="border-line">

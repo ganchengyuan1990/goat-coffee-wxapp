@@ -8,7 +8,7 @@ const CONFIG = {
 }
 export const BASE_URL = (() => {
     let url = {
-        prod: 'https://mofafang.cn/api/v1/server/',
+        prod: 'https://goatup.net/api/v1/server/',
         test: '',
         dev: `https://heibanbao.wang/api/v1/server/`
     }

@@ -232,6 +232,7 @@ Page({
         let self = this;
         wx.login({
             success: function (res) {
+                console.log(res);
                 if (res.code) {
                     model('my/user/get-open-id2', {
                         code: res.code
