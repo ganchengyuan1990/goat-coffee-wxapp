@@ -17,7 +17,8 @@ Page({
     id: '',
     orderClassify: '',
     showDialog: false,
-    actImage: 'http://img.goatup.net/image/gzh/gzhtanchuang.png'
+    actImage: 'http://img.goatup.net/image/gzh/gzhtanchuang.png',
+    enableOrderActivity: false
   },
 
   /**
@@ -32,7 +33,18 @@ Page({
       this.setData({
         id: id,
         orderClassify: orderClassify,
-        showDialog: Boolean(options.showDialog)
+      });
+      model('base/site/user-config-list').then(res => {
+        this.setData({
+          enableOrderActivity: res.data['enable-order-activity']
+        });
+        const configData = wx.getStorageSync('configData');
+        if (this.data.enableOrderActivity) {
+          this.setData({
+            actImage: configData['order-activity'].pic,
+            showDialog: Boolean(options.showDialog)
+          });
+        }
       });
       model(`order/detail/detail?orderClassify=${this.data.orderClassify}&id=${this.data.id}`).then(res => {
         let result = res.data.order;
@@ -128,10 +140,13 @@ Page({
 
   previewImage: function (e) {
     var current = e.target.dataset.src;
-    wx.previewImage({
-      current: current,
-      urls: [current]
-    })
+    // wx.previewImage({
+    //   current: current,
+    //   urls: [current]
+    // })
+     wx.navigateTo({
+       url: `/pages/my/coupon/coupon?type=2`
+     })
   },
 
   hideActWrap () {

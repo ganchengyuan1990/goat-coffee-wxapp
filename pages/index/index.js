@@ -11,7 +11,8 @@ Page({
         tags: '',
         actImage: '',
         isActWrapShow: false,
-        banner: 'http://img.goatup.net/img/banner/%E9%A6%96%E9%A1%B5banner.png'
+        banner: 'http://img.goatup.net/img/banner/%E9%A6%96%E9%A1%B5banner.png',
+        enableWeeklyActivity: false
     },
     onLoad: function (options) {
         this.setUnionId();
@@ -106,7 +107,9 @@ Page({
             });
         }
     },
-    onShow: function () {
+
+    judgeNewUser () {
+        let result = false;
         let info = wx.getStorageSync('token') || {}
         let isNew = info.ifNew;
         let configPic = '';
@@ -120,6 +123,7 @@ Page({
                 actImage: configPic,
                 isActWrapShow: true
             });
+            result = true;
             try {
                 let token = wx.getStorageSync('token')
                 token.ifNew = false
@@ -128,32 +132,122 @@ Page({
                 console.log(e);
             }
         }
+        return result;
+    },
+
+    onShow: function () {
+        // let info = wx.getStorageSync('token') || {}
+        // let isNew = info.ifNew;
+        // let configPic = '';
+        // try {
+        //     configPic = info.config.newUserPic
+        // } catch (e) {
+        //     // console.log(e);
+        // }
+        // if (isNew && configPic) {
+        //     this.setData({
+        //         actImage: configPic,
+        //         isActWrapShow: true
+        //     });
+        //     try {
+        //         let token = wx.getStorageSync('token')
+        //         token.ifNew = false
+        //         wx.setStorageSync('token', token)
+        //     } catch (e) {
+        //         console.log(e);
+        //     }
+        // }
         wx.showLoading({
             title: 'Loading...', //提示的内容,
             mask: true, //显示透明蒙层，防止触摸穿透,
             success: res => {}
         });
 
-        model('base/site/config-list').then(res => {
-            wx.setStorageSync('configData', res.data);
-            if (res.data.homeBanners && res.data.homeBanners[0] && res.data.homeBanners[0].pic) {
-                let banners = [];
-                // res.data.homeBanners.forEach(item => {
-                //     banners.push(item.pic);
-                // })
+        if (wx.getStorageSync('token')) {
+            Promise.all([model('base/site/config-list'), model('base/site/user-config-list')]).then((resArr) => {
+                const res = resArr[0];
+                const userRes = resArr[1];
+                wx.setStorageSync('configData', res.data);
+                if (res.data.homeBanners && res.data.homeBanners[0] && res.data.homeBanners[0].pic) {
+                    let banners = [];
+                    // res.data.homeBanners.forEach(item => {
+                    //     banners.push(item.pic);
+                    // })
+                    this.setData({
+                        banner: res.data.homeBanners
+                    })
+                }
                 this.setData({
-                    banner: res.data.homeBanners
+                    tags: res.data['voucher-text']
                 })
-            }
-            this.setData({
-                tags: res.data['voucher-text']
-            })
-            wx.hideLoading();
-        }).catch(e => {
-            wx.hideLoading();
-        });
+                this.setData({
+                    enableWeeklyActivity: userRes.data["enable-weekly-activity"]
+                });
+                if (this.judgeNewUser()) {
+
+                } else if (this.data.enableWeeklyActivity) {
+                    model('activity/coupon-activity/weekly-send', {}, 'POST').then(res => {
+                        //
+                    }).catch(e => {
+                        console.log(e);
+                    });
+                    this.setData({
+                        actImage: res.data['weekly-activity'] && res.data['weekly-activity'].pic,
+                        isActWrapShow: true
+                    });
+                }
+                wx.hideLoading();
+            }).catch(e => {
+                wx.hideLoading();
+            });
+        } else {
+            model('base/site/config-list').then(res => {
+                wx.setStorageSync('configData', res.data);
+                if (res.data.homeBanners && res.data.homeBanners[0] && res.data.homeBanners[0].pic) {
+                    let banners = [];
+                    // res.data.homeBanners.forEach(item => {
+                    //     banners.push(item.pic);
+                    // })
+                    this.setData({
+                        banner: res.data.homeBanners
+                    })
+                }
+                this.setData({
+                    tags: res.data['voucher-text']
+                })
+                wx.hideLoading();
+                this.judgeNewUser();
+            }).catch(e => {
+                wx.hideLoading();
+            });
+        }
+        
+
+        // model('base/site/config-list').then(res => {
+        //     wx.setStorageSync('configData', res.data);
+        //     if (res.data.homeBanners && res.data.homeBanners[0] && res.data.homeBanners[0].pic) {
+        //         let banners = [];
+        //         // res.data.homeBanners.forEach(item => {
+        //         //     banners.push(item.pic);
+        //         // })
+        //         this.setData({
+        //             banner: res.data.homeBanners
+        //         })
+        //     }
+        //     this.setData({
+        //         tags: res.data['voucher-text']
+        //     })
+        //     wx.hideLoading();
+        // }).catch(e => {
+        //     wx.hideLoading();
+        // });
+
+        // 判断用户是否已参加过周活动
+        // this.getUserConfigList();
+    
         this.setTabStatus();
     },
+
     onHide: function () {
         // 页面隐藏
 
@@ -212,10 +306,17 @@ Page({
     goPageCoupon() {
         this.setData({
             isActWrapShow: false
-        })
-        wx.navigateTo({
-            url: `/pages/my/coupon/coupon?type=2`
-        })
+        });
+        wx.switchTab({
+            url: `/pages/store/store`
+        });
+        // model('activity/coupon-activity/weekly-send', {}, 'POST').then(res => {
+        //     wx.switchTab({
+        //         url: `/pages/store/store`
+        //     });
+        // }).catch(e => {
+        //     console.log(e);
+        // });
     },
 
     bindGetUserInfo() {
