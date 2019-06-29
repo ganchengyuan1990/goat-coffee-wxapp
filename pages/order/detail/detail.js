@@ -39,11 +39,13 @@ Page({
           enableOrderActivity: res.data['enable-order-activity']
         });
         const configData = wx.getStorageSync('configData');
-        if (this.data.enableOrderActivity) {
+        const enableOrderActivity = wx.getStorageSync('enable-order-activity');
+        if (enableOrderActivity) {
           this.setData({
             actImage: configData['order-activity'].pic,
             showDialog: Boolean(options.showDialog)
           });
+          wx.removeStorageSync('enable-order-activity');
         }
       });
       model(`order/detail/detail?orderClassify=${this.data.orderClassify}&id=${this.data.id}`).then(res => {

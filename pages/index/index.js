@@ -183,6 +183,9 @@ Page({
                 this.setData({
                     enableWeeklyActivity: userRes.data["enable-weekly-activity"]
                 });
+                if (userRes.data["enable-order-activity"]) {
+                    wx.setStorageSync('enable-order-activity', true);
+                }
                 if (this.judgeNewUser()) {
 
                 } else if (this.data.enableWeeklyActivity) {
