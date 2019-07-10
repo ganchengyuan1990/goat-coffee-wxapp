@@ -1,0 +1,299 @@
+{
+	"description": "项目配置文件",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.5.0",
+	"appid": "wx5bb95a5028390738",
+	"projectname": "加油咖啡",
+	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 38,
+			"list": [
+				{
+					"id": -1,
+					"name": "login",
+					"pathName": "pages/login/login",
+					"query": ""
+				},
+				{
+					"id": 1,
+					"name": "checkout",
+					"pathName": "pages/pay/checkout/checkout",
+					"query": "data=%7B%22storeId%22%3A37%2C%22userAddressId%22%3A%22%22%2C%22deliverFee%22%3A23%2C%22payAmount%22%3A4%2C%22orderType%22%3A2%2C%22product%22%3A%5B%7B%22productName%22%3A%22%E5%92%96%E5%95%A124%22%2C%22productId%22%3A10%2C%22skuId%22%3A5%2C%22skuName%22%3A%22%E4%B8%AD%E6%9D%AF%22%2C%22number%22%3A1%2C%22price%22%3A4%7D%5D%7D"
+				},
+				{
+					"id": 2,
+					"name": "配送方式",
+					"pathName": "pages/transport/transport",
+					"query": "from=store",
+					"scene": null
+				},
+				{
+					"id": 3,
+					"name": "promotion-list",
+					"pathName": "pages/pay/promotion-list/promotion-list",
+					"query": "array=[]"
+				},
+				{
+					"id": -1,
+					"name": "coupon",
+					"pathName": "pages/coupon/coupon",
+					"query": ""
+				},
+				{
+					"id": 5,
+					"name": "pay_success",
+					"pathName": "pages/pay/pay_success/pay_success",
+					"query": "price=0"
+				},
+				{
+					"id": -1,
+					"name": "share_success",
+					"pathName": "pages/pay/share_success/share_success",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "store",
+					"pathName": "pages/store/store",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "address_list",
+					"pathName": "pages/my/address_list/address_list",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "share_coupon",
+					"pathName": "pages/pay/share_coupon/share_coupon",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "address",
+					"pathName": "pages/my/address/address",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "拼图checkout",
+					"pathName": "pages/pin/checkout/checkout",
+					"query": ""
+				},
+				{
+					"id": 12,
+					"name": "拼图pay_success",
+					"pathName": "pages/pin/pay_success/pay_success",
+					"query": "type=3&price=40.00&originalPrice=54.00&number=2&groupName=拼团活动&activityId=323&list={}",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pin_order_list",
+					"pathName": "pages/pin/pin_list/pin_list",
+					"query": ""
+				},
+				{
+					"id": 14,
+					"name": "pin_detail",
+					"pathName": "pages/pin/pin_detail/pin_detail",
+					"query": "id=1"
+				},
+				{
+					"id": 15,
+					"name": "user",
+					"pathName": "pages/order/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "backup",
+					"pathName": "pages/pay/backup/backup",
+					"query": "data=%7B%22storeId%22%3A37%2C%22userAddressId%22%3A%22%22%2C%22deliverFee%22%3A23%2C%22payAmount%22%3A4%2C%22orderType%22%3A2%2C%22product%22%3A%5B%7B%22productName%22%3A%22%E5%92%96%E5%95%A124%22%2C%22productId%22%3A10%2C%22skuId%22%3A5%2C%22skuName%22%3A%22%E4%B8%AD%E6%9D%AF%22%2C%22number%22%3A1%2C%22price%22%3A4%7D%5D%7D"
+				},
+				{
+					"id": 17,
+					"name": "order",
+					"pathName": "pages/order/list/list",
+					"query": ""
+				},
+				{
+					"id": 18,
+					"name": "order detail",
+					"pathName": "pages/order/detail/detail",
+					"query": "id=7041&orderClassify=1&showDialog=1",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "remark",
+					"pathName": "pages/pay/remark/remark",
+					"query": "data=%7B%22storeId%22%3A37%2C%22userAddressId%22%3A%22%22%2C%22deliverFee%22%3A23%2C%22payAmount%22%3A4%2C%22orderType%22%3A2%2C%22product%22%3A%5B%7B%22productName%22%3A%22%E5%92%96%E5%95%A124%22%2C%22productId%22%3A10%2C%22skuId%22%3A5%2C%22skuName%22%3A%22%E4%B8%AD%E6%9D%AF%22%2C%22number%22%3A1%2C%22price%22%3A4%7D%5D%7D"
+				},
+				{
+					"id": -1,
+					"name": "index",
+					"pathName": "pages/index/index",
+					"query": "price=0"
+				},
+				{
+					"id": 21,
+					"name": "share_success客态",
+					"pathName": "pages/pay/share_success/share_success",
+					"query": "id=1&redPackId=1085"
+				},
+				{
+					"id": -1,
+					"name": "coupon",
+					"pathName": "pages/pay/share_coupon/share_coupon",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "newCart",
+					"pathName": "pages/newCart/cart",
+					"query": "from=store",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pocket",
+					"pathName": "package/coffeePocket/pages/pocket/pocket",
+					"query": "from=store",
+					"scene": null
+				},
+				{
+					"id": 25,
+					"name": "myCoupon",
+					"pathName": "pages/my/coupon/coupon",
+					"query": "type=2",
+					"scene": null
+				},
+				{
+					"id": 26,
+					"name": "invite",
+					"pathName": "package/invite/pages/invite/invite",
+					"query": "userid=84",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pocketCarr",
+					"pathName": "package/coffeePocket/pages/pocketCart/cart",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "inviteOthers",
+					"pathName": "package/invite/pages/inviteOthers/invite",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "paySuccess",
+					"pathName": "package/coffeePocket/pages/paySuccess/paySuccess",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "个人中心",
+					"pathName": "pages/my/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "inviteResult",
+					"pathName": "package/invite/pages/inviteResult/invite",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 32,
+					"name": "orderRemark",
+					"pathName": "package/orderComment/pages/remark/remark",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 33,
+					"name": "comment",
+					"pathName": "package/orderComment/pages/comment/remark",
+					"query": "orderId=468",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "幸运送",
+					"pathName": "package/sendOthers/pages/list/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "选择幸运语",
+					"pathName": "package/sendOthers/pages/chooseWords/chooseWords",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 36,
+					"name": "选择coupon",
+					"pathName": "package/sendOthers/pages/chooseCoupon/chooseCoupon",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "赠送成功",
+					"pathName": "package/sendOthers/pages/success/success",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "赠送records",
+					"pathName": "package/sendOthers/pages/records/records",
+					"query": "",
+					"scene": null
+				}
+			]
+		}
+	}
+}

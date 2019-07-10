@@ -1,0 +1,41 @@
+<view class='input-line'>
+
+
+    <view class="icons">
+        <view class='button_line'>
+            <image src="https://www.coffeebeats.cn/uploads/TB25LophItnpuFjSZFvXXbcTpXa_!!77696187.jpg" bindtap="chooseSatisfy"></image>
+        </view>
+    </view>
+
+
+    <view class="success-container">
+        <view class="success-form">
+            <view class="coupon-sn">{{friendName}} 送你一张</view>
+            <view class="coupon-text">"Happy Friend"</view>
+
+
+            
+        </view>
+        
+    </view>
+
+     <view style="position: fixed; bottom: 30rpx; text-align: center; width: 100%; z-index: 100;">
+        <view class="coupon-text" style="color: #666666; font-size: 24rpx;">拆开并存入{{phone}}账户</view>
+        <view class="success-form" bindtap="goStore">
+            <view style="font-size: 32rpx; color: #fff; margin: 0rpx auto; border-radius: 3rpx;height: 80rpx; line-height: 80rpx; display: inline-block; width: 318rpx; text-align: center; background: #F50000; align-items: center; justify-content:center;" bindtap="goStore">
+                <text class='sub-title'>点击领取</text>
+            </view>
+        </view>
+    </view>
+
+    <view class='cover-image'>
+        <image class="image1" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2867463532,3752055941&fm=27&gp=0.jpg"/>
+        <image class="image2" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2867463532,3752055941&fm=27&gp=0.jpg"/>
+    </view>
+
+
+
+
+    <!-- <toast wx:if="{{toastShown}}" is-show="{{toastShown}}" title="{{toastInfo}}" disappear-sec="3"></toast> -->
+
+  </view>
