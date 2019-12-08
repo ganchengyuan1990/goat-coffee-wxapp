@@ -33,6 +33,7 @@ Page({
     orderState: OSTATUS.default,
     // 显示筛选面板 order/订单类型 state/订单状态
     currentPanel: 'order',
+    hasLogin: true,
     filterList: [{
         tab: 'order',
         tt: '普通订单',
@@ -72,13 +73,21 @@ Page({
     let userInfo = wx.getStorageSync('token')
     // console.log(userInfo);
     if (!userInfo.token) {
-      wx.navigateTo({
-        url: '/pages/login/login'
+      // wx.navigateTo({
+      //   url: '/pages/login/login'
+      // })
+      this.setData({
+        hasLogin: false
       })
-      return
     }
     this.setData({
       userInfo: userInfo
+    })
+  },
+
+  onClickAvatar () {
+    wx.navigateTo({
+      url: '/pages/login/login'
     })
   },
 

@@ -211,7 +211,7 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
 }
 
 .no_margin_left {
-    margin-left: 30rpx !important;
+    margin-left: 10rpx !important;
 }
 
 .money {

@@ -40,15 +40,12 @@ Page({
                  value: '其他问题'
              },
          ],
+        index: -1
     },
     onLoad: function (options) {
-        let token = wx.getStorageSync('token');
-        if (token) {
-            let phone = `${token.user.tel.substr(0,3)}******`
-            this.setData({
-                phone: phone
-            })
-        }
+        this.setData({
+            index: options.index
+        })
 
     },
     onReady: function () {
@@ -94,5 +91,21 @@ Page({
                 // 转发失败
             }
         }
+    },
+
+    radioChange ({
+        detail: {
+            value
+        }
+    }) {
+        this.setData({
+            word: value
+        })
+    },
+
+    commitRemark () {
+        wx.navigateTo({
+            url: `/package/sendOthers/pages/chooseCoupon/chooseCoupon?word=${encodeURIComponent(this.data.word)}&cardIndex=${this.data.index}`
+        });
     }
 })

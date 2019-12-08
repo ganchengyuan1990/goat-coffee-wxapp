@@ -103,3 +103,11 @@
         <view class="loading">{{isCompleted?'没有更多了':'加载中...'}}</view>
     </view>
 </view>
+
+<view class="search-empty" hidden="{{!hasLogin}}">
+    <view class="search-empty-icon ui-error ui-error-order-no-login" />
+    您还没有登录，请登录后查看订单
+    <view class="btn-login flex-center" bindtap="onClickAvatar">
+        登录
+    </view>
+</view>

@@ -39,7 +39,7 @@
         </view>
 
         <view wx:for="{{martsList}}" wx:for-item="item" class="double_item" bindtap="goMartsDetail" wx:key="index"
-            data-index="{{index}}" bind:lazyload="findLazyLoadComponents">
+            data-index="{{index}}">
             <view class='img-wrapper'>
                 <image src="{{item.img}}" lazy-load='true' />
             </view>

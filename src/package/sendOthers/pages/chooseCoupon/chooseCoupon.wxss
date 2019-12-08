@@ -355,7 +355,7 @@ page{
     margin-left: 5%;
     margin-top: 10rpx;
     text-align: center;
-    line-height: 124rpx;
+    line-height: 104rpx;
     font-size: 29rpx;
     background: #F50000;
     color: #fff;

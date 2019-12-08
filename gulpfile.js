@@ -11,9 +11,9 @@ var minifyCss = require('gulp-minify-css');
 
 const srcPath = './src/**';
 const distPath = './dist/';
-const wxmlFiles = [`${srcPath}/**/**.{wxml,wxs}`, `!${srcPath}/_template/*.wxml`];
+const wxmlFiles = [`${srcPath}/**.{wxml,wxs}`, `!${srcPath}/_template/*.wxml`];
 const lessFiles = [
-  `${srcPath}/**/**.wxss`
+  `${srcPath}/**.wxss`
 ];
 const jsonFiles = [`${srcPath}/*.json`, `!${srcPath}/_template/*.json`];
 const jsFiles = [`${srcPath}/*.js`, `!${srcPath}/_template/*.js`, `!${srcPath}/env/*.js`];
@@ -45,7 +45,10 @@ const js = () => {
       mangle: false,
       ie8: true, //压缩后的代码支持ie8
       ecma: 8, //支持的javascript的最高版本(兼容es5,6,7,8)
-      compress: {} //压缩的级别
+      compress: {
+        drop_debugger: false
+      }, //压缩的级别
+      // debug: true
     }))
     // .pipe(eslint())
     // .pipe(eslint.format())
@@ -82,7 +85,7 @@ const wxss = () => {
     .src(lessFiles)
     // .pipe(minifyCss())
     // .pipe(less())
-    // .pipe(rename({ extname: '.wxss' }))
+    .pipe(rename({ extname: '.wxss' }))
     .pipe(gulp.dest(distPath));
 };
 gulp.task(wxss);
@@ -99,7 +102,7 @@ gulp.task(img);
 /* watch */
 gulp.task('watch', () => {
   let watchLessFiles = [...lessFiles];
-  watchLessFiles.pop();
+  // watchLessFiles.pop();
   gulp.watch(watchLessFiles, wxss);
   gulp.watch(jsFiles, js);
   gulp.watch(imgFiles, img);

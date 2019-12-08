@@ -52,7 +52,8 @@ Page({
           element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
         }
         if (element.coupon.saveAmount) {
-          element.coupon.saveAmount = parseFloat(element.coupon.ableSavePrice - element.coupon.saveAmount).toFixed(1);
+          element.coupon.saveAmount = parseFloat(element.coupon.saveAmount).toFixed(1);
+          // element.coupon.saveAmount = parseFloat(element.coupon.ableSavePrice - element.coupon.saveAmount).toFixed(1);
         }
         // element.couponBref = '21123123123';
         if (element.coupon.availabileStartTime) {

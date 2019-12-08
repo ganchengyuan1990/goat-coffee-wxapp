@@ -472,4 +472,16 @@ Page({
             extended: !this.data.extended
         });
     },
+
+    goMartsDetail({
+        currentTarget: {
+            dataset: {
+                index
+            }
+        }
+    }) {
+        wx.navigateTo({
+            url: `/package/sendOthers/pages/chooseWords/chooseWords?index=${index}`
+        });
+    }
 })

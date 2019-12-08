@@ -19,7 +19,9 @@ Page({
     checkedAllStatus: true,
     isNeedFee: false,
     countGift: 0,
-    addtionalLists: []
+    addtionalLists: [],
+    word: '',
+    cardIndex: -1
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -27,6 +29,10 @@ Page({
       mask: true, //显示透明蒙层，防止触摸穿透,
       success: res => {}
     });
+    this.setData({
+      word: decodeURIComponent(options.word),
+      cardIndex: options.cardIndex
+    })
     model('activity/voucher/info').then(data => {
       let vouchers = data.data.vouchers;
       vouchers.forEach(item => {
@@ -303,38 +309,17 @@ Page({
       return
     }
 
-    if (this.data.cartTotal.checkedGoodsAmount == 0) {
-      wx.showToast({
-        icon: 'none',
-        title: '请选择商品',
-        duration: 1500
-      })
-      return ;
-    }
-
-    // if (this.data.)
-    // let isOpen = this.checkStoreState()
-    // if (!isOpen) {
-    //   return
+    // if (this.data.cartTotal.checkedGoodsAmount == 0) {
+    //   wx.showToast({
+    //     icon: 'none',
+    //     title: '请选择商品',
+    //     duration: 1500
+    //   })
+    //   return ;
     // }
-    let info = this.data
-    let couponLists = info.couponLists
-    let AddCouponLists = info.addtionalLists
-    let totalPrice = info.cartTotal.checkedGoodsAmount;
 
-    couponLists = couponLists.filter(item => {
-      return item.num > 0;
-    })
-
-    AddCouponLists = AddCouponLists.filter(item => {
-      return item.num > 0;
-    })
-
-    couponLists = couponLists.concat(AddCouponLists);
     
-    const url = `/package/coffeePocket/pages/checkout/checkout`
-
-    wx.setStorageSync('BuyCouponLists', couponLists);
+    const url = `/package/sendOthers/pages/success/success`
 
     // const url = `/packages/coffeePocket/pages/checkout/checkout?fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${isNeedFee?'delivery':'selftaking'}`
     // this.setData({
