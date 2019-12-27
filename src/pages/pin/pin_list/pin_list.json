@@ -1,7 +1,0 @@
-{
-    "navigationBarTitleText": "拼团列表",
-    "enablePullDownRefresh": false,
-    "usingComponents": {
-        "toast": "../../../components/toast/toast"
-    }
-}

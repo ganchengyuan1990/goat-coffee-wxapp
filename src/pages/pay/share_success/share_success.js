@@ -58,7 +58,7 @@ Page({
     },
     onLoad: function (options) {
         wx.showLoading({
-          title: 'Loading...', //提示的内容,
+          title: '加载中', //提示的内容,
           mask: true, //显示透明蒙层，防止触摸穿透,
         });
         // if (!wx.getStorageSync('token')) {
@@ -277,7 +277,7 @@ Page({
         wx.login({
             success: function (res) {
                 if (res.code) {
-                    model('my/user/get-open-id2', {
+                    model('my/user/get-open-id', {
                         code: res.code
                     }).then(res => {
                         // wx.setStorageSync('openid', res.data);

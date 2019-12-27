@@ -46,25 +46,37 @@ Page({
     model('my/coupon/list', {
       userId: wx.getStorageSync('token').user.id
     }).then(data => {
-      let result = data.data;
-      result.forEach(element => {
+      let result = data.data.userCoupons;
+      result.map(element => {
         if (element.coupon.discount || element.coupon.discount == 0) {
           element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
         }
-        if (element.coupon.saveAmount) {
-          element.coupon.saveAmount = parseFloat(element.coupon.saveAmount).toFixed(1);
-          // element.coupon.saveAmount = parseFloat(element.coupon.ableSavePrice - element.coupon.saveAmount).toFixed(1);
+        if (element.coupon.manjian_cash) {
+          element.coupon.manjian_cash = this.getVeryMoney(element.coupon.manjian_cash)
+        }
+        if (element.coupon.zhigou_cash) {
+          element.coupon.zhigou_cash = this.getVeryMoney(element.coupon.zhigou_cash)
+        }
+
+        if (element.coupon.manjian_price_available) {
+          element.coupon.manjian_price_available = this.getVeryMoney(element.coupon.manjian_price_available)
         }
         // element.couponBref = '21123123123';
         if (element.coupon.availabileStartTime) {
           element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0]
         }
-        if (element.coupon.availabileEndTime) {
-          element.coupon.availabileEndTime = element.coupon.availabileEndTime.split(' ')[0]
+        if (element.end_time) {
+          element.end_time = element.end_time.split(' ')[0]
         }
-        // if (element.endTime) {
-        //   element.endTime = element.endTime.split(' ')[0]
-        // }
+
+        if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
+          element.xianzhi = element.coupon.classifyNames[0]
+        }
+
+        if (element.coupon.goodsNames && element.coupon.goodsNames.length > 0) {
+          element.xianzhi = element.coupon.goodsNames[0]
+        }
+        return element;
       });
       this.setData({
         couponItems: result,

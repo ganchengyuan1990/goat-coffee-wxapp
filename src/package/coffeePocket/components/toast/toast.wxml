@@ -1,7 +1,0 @@
-<view class="hfe-vue-dialog-backdrop" wx:if="{{isShow}}" bindtouchstart="closeToast" data-eventid="{{'0'}}" data-comkey="{{$k}}">
-    <view class="_div hfe-vue-dialog-toast-wrapper">
-        <view class="_div hfe-vue-dialog-toast-content-backdrop">
-        <label wx:if="{{title}}" class="_span wc">{{title}}</label>
-        </view>
-    </view>
-</view>

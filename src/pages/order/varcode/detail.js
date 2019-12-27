@@ -24,7 +24,7 @@ Page({
     var imgData = QR.drawImg(this.data.orderNo, {
       typeNumber: 4,
       errorCorrectLevel: 'M',
-      size: 200
+      size: 500
     })
     console.log(imgData);
     this.setData({

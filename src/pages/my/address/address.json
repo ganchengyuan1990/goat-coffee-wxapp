@@ -1,7 +1,0 @@
-{
-    "navigationBarTitleText": "添加/修改地址",
-    "usingComponents": {
-        "modal": "../../../components/modal/modal",
-        "toast": "../../../components/toast/toast"
-    }
-}

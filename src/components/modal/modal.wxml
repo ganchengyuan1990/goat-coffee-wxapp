@@ -1,5 +1,5 @@
-<view class="dp-dialog-backdrop" wx:if="{{shown}}" transition="expand">
-    <view class="dp-dialog-content-wrapper">
+<view class="dp-dialog-backdrop" wx:if="{{shown}}" transition="expand" catchtap="close">
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 1 || !type}}">
         <view class="dp-dialog-dialog" wx:if="{{shown}}">
             <view class="dp-dialog-header" wx:if="{{title}}">
                 <p class="dp-dialog-header-content">{{title}}</p>
@@ -10,6 +10,135 @@
                 <view class="dp-dialog-footer-btn left {{otherFunctionType ? 'double' : 'single'}} {{okText === '去登录' ? 'highlight' : ''}}" bindtap="leftButtonFunction" wx:if="{{okText}}">{{okText}}</view>
                 <view class="dp-dialog-footer-btn" bindtap="close" wx:else>知道了</view>
                 <view wx:if="{{otherFunctionType}}" class="dp-dialog-footer-btn double" bindtap="otherFunction" >{{otherText}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 2}}">
+        <view class="dp-dialog-dialog" wx:if="{{shown}}">
+            <view class="dp-dialog-header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="dp-dialog-content">
+            </view>
+            <view class="dp-dialog-footer">
+                <view class="dp-dialog-footer-btn left {{otherFunctionType ? 'double' : 'single'}} {{okText === '去登录' ? 'highlight' : ''}}" bindtap="leftButtonFunction" wx:if="{{okText}}">{{okText}}</view>
+                <view class="dp-dialog-footer-btn" bindtap="close" wx:else>知道了</view>
+                <view wx:if="{{otherFunctionType}}" class="dp-dialog-footer-btn double" bindtap="otherFunction" >{{otherText}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 3}}">
+        <view class="dialog4" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="content">
+                {{content}}
+            </view>
+            <view class="button">
+                <view class="jinmai-btn" bindtap="goJinmai">赠送金麦</view>
+            </view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 4}}">
+        <view class="dialog4" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="content">
+                {{content}}
+            </view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 5}}">
+        <view class="dialog4 dialog5" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="content_middle">
+                <image src="../../images/jqqd.png" />
+            </view>
+        </view>
+    </view>
+    <view class="act-wrap" wx:if="{{type == 6}}">
+        <view class="mask {{isActWrapShow ? 'active':''}}"></view>
+        <view class="cnt">
+            <image src="{{actImage}}" mode="widthFix" ></image>
+            <view class="btn-close" bind:tap="hideActWrap"></view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 7}}">
+       <view class="dialog4 dialog8" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content store-title">{{title}}</p>
+            </view>
+            <view class="content store-content" data-item="{{item}}" wx:if="{{contentArr.length > 0}}" wx:for="{{contentArr}}" wx:for-item="item" wx:key="index" bindtap="goStore">
+                <view class="store-item">
+                    <image class='store-pic' src="{{item.storePic}}" />
+                    <view class="store-name"> {{item.storeName}} </view>
+                    <view class="store-distance"> 距您{{item.distance}}米 </view>
+                </view>
+            </view>
+            <view class="button">
+                <view class="store-button" bindtap="goTransport">更多门店 ></view>
+            </view>
+        </view>
+    </view>
+
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 8}}">
+        <view class="dialog4 dialog8" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <image class="header_img" src="{{title}}" mode="widthFix" ></image>
+            </view>
+            <view class="content_8">
+                {{content}}
+            </view>
+            <view class="button">
+                <view class="jinmai-btn" bindtap="goRecharge">一键升级</view>
+            </view>
+            <view class="button">
+                <view class="sss" bindtap="goBuy">再来一杯</view>
+            </view>
+        </view>
+    </view>
+
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 9}}">
+        <view class="dialog4 dialog8 dialog9" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <image class="header_img" src="{{title}}" mode="widthFix" ></image>
+            </view>
+        </view>
+    </view>
+
+    <view class="dp-dialog-content-wrapper wrapper2 {{shown ? 'airdrop-animate-show' : 'airdrop-animate-hide'}}" wx:if="{{type == 10}}">
+        <!-- <view class="dialog4 dialog10 dp-dialog-dialog" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <rich-text class="dp-dialog-header-content" nodes="{{title}}"></rich-text>
+            </view>
+            <view class="dp-dialog-footer">
+                <view class="dp-dialog-footer-btn double" bindtap="close" >取消</view>
+                <view class="dp-dialog-footer-btn double" bindtap="goRecharge" >更多积分</view>
+            </view>
+        </view> -->
+        <image class="back_image_10" src="https://img.goatup.cn/img/config/modal_back.png" />
+        <view class='dp-inner-wrapper'>
+            <view class="dialog10 dp-dialog-dialog" wx:if="{{shown}}">
+                <view class="dialog10_content">
+                    <view class="cloud_wrapper">
+                        <view class="cloud_txt">恭喜获得奖励</view>
+                    </view>
+                    <view class="header" wx:if="{{title}}">
+                        <rich-text class="dp-dialog-header-content" nodes="{{title}}"></rich-text>
+                    </view>
+                    <view class="dp-dialog-content-image" wx:if="{{actImage}}">
+                        <image class='content-image' src="{{actImage}}" />
+                    </view>
+                    <view class="dp-dialog-footer">
+                        
+                        <view class="dp-dialog-footer-btn double" bindtap="close" >取消</view>
+                        <view class="dp-dialog-footer-btn double black_item" bindtap="goBuy" >立即使用</view>
+                    </view>
+                </view>
             </view>
         </view>
     </view>

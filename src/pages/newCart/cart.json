@@ -1,4 +1,9 @@
 {
     "navigationBarTitleText": "购物车",
-    "usingComponents": {}
+    "usingComponents": {
+        "guess-you-like": "../../components/guess-you-like/index",
+        "toast": "../../components/toast/toast",
+        "ml-navigator": "../../components/ml-navigator/index"
+
+    }
 }

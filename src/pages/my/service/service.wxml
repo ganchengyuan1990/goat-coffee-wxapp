@@ -1,0 +1,24 @@
+
+<view class="service-wrap">
+    <view class="image_wrap">
+        <image src="../../../images/phone.png" />
+    </view>
+    <view class="service_title">
+        客服电话
+    </view>
+    <view class="service_phone">
+        {{phoneCall}}
+    </view>
+    <view class='service_button' bindtap="mobilePhone">
+        点击拨打
+    </view>
+
+    <view class="lianxi">
+        联系我们：baolu.cao@addoilcoffee.com
+    </view>
+</view>
+
+
+    
+
+<toast wx:if="{{errorToastShown}}" is-show="{{errorToastShown}}" title="{{errorInfo}}" disappear-sec="3"></toast>

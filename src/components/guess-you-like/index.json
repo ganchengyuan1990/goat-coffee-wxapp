@@ -1,0 +1,6 @@
+{
+    "component": true,
+    "usingComponents": {
+        "menu-wrap": "../../pages/store/components/menu"
+    }
+}

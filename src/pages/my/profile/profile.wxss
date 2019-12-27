@@ -15,11 +15,15 @@
 }
 .btn-wrap .btn-save {
     width: 100%;
-    padding: 28rpx 0;
-    border-radius: 5rpx;
-    color: #fff;
-    background: #F50000;
+    padding: 22rpx 0;
+    border-radius: 10rpx;
+    color: #D32D25;
+    background: #231815;
     font-size: 36rpx;
     text-align: center;
     line-height: 1;
+}
+
+.tt {
+  color: #676767;
 }

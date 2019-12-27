@@ -9,6 +9,32 @@ const formatTime = date => {
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
+const simpleFormatTime = date => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  const second = date.getSeconds()
+
+  return [hour, minute].map(formatNumber).join(':')
+}
+
+const calcMonday = () => {
+  var nowTemp = new Date(); //当前时间
+  var oneDayLong = 24 * 60 * 60 * 1000; //一天的毫秒数
+  var c_time = nowTemp.getTime(); //当前时间的毫秒时间
+  var c_day = nowTemp.getDay() || 7; //当前时间的星期几
+  var m_time = c_time - (c_day - 1) * oneDayLong; //当前周一的毫秒时间
+  var monday = new Date(m_time); //设置周一时间对象
+  var m_year = monday.getFullYear();
+  var m_month = monday.getMonth() + 1;
+  var m_date = monday.getDate();
+  monday = new Date(`${m_year}-${m_month}-${m_date}`);
+  var result = c_time - monday.getTime();
+  return result <= 7 * 24 * 60 * 60 * 1000;
+}
+
 const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : '0' + n
@@ -66,6 +92,7 @@ function throttle(fn = () => {}, delay = 0) {
 }
 module.exports = {
   formatTime: formatTime,
+  simpleFormatTime: simpleFormatTime,
   wx2promise: wx2promise,
   calcLeftTime: calcLeftTime,
   throttle: throttle

@@ -1,16 +1,18 @@
     var filters = {
         getOrderState: function (code) {
             var map = {
-                '00': '待支付',
+                '00': '待付款',
                 '01': '待接单',
                 '02': '制作中',
-                '03': '待配送',
+                '03': '制作完成',
                 '04': '配送中',
-                '100': '已完成',
+                '100': '待评论',
+                '101': '已完成',
                 '30': '慢必赔',
-                '31': '取消订单',
+                '31': '已取消',
                 '40': '退款中',
-                '41': '退款完成'
+                '41': '退款成功',
+                '42': '退款失败'
             }
             return map[code] ? map[code] : ''
         },
@@ -23,6 +25,18 @@
                 '41': '退款完成'
             }
             return map[code] ? map[code] : ''
+        },
+        getOrderTypeState: function (orderType) {
+            switch (orderType) {
+                case 1:
+                    return '外卖'
+                case 2:
+                    return '堂食'
+                case 3:
+                    return '自取'
+                default:
+                    return '外带'
+            }
         },
         getAddr: function (item) {
             var type = item.orderType
@@ -79,6 +93,12 @@
         },
         getSum: function (list) {
             return list ? list.length : 0
+        },
+        getProductBref: function  (products) {
+            return {
+                name: products[0].productName,
+                num: products.length
+            }
         }
     }
     module.exports = filters

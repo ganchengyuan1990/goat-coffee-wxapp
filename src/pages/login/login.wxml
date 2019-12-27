@@ -1,39 +1,77 @@
 <view class="container">
     <!-- <text>LeanCloud Login Page</text> -->
-    <view class="form_head" >
-        <view class="head">
+
+
+    <view class="head">
             <view>
             <view class="weui-media-box weui-media-box_appmsg">
                 <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-                <image class="weui-media-box__thumb head_img" src="http://img.goatup.net/img/logo/logoonline.png" />
+                <image class="weui-media-box__thumb head_img" src="../../images/logo.png" />
                 </view>
             </view>
             </view>
         </view>
-        <form wx:if="{{auth}}">
+    <view class="form_head" wx:if="{{choosePhone}}">
+        
+        <form>
             <view class="section {{showButtonLineName ? 'tapped' : ''}}">
                 <!-- <view >用户名</view> -->
-                <input name="username" type='number' placeholder="请输入手机号码" auto-focus bindinput="dealPhone" bindtap="dealTapPhone"/>
+                <text class='district'>+86 </text>
+                <input name="username" cursor-spacing="15" value="{{phoneNum}}" type='number' placeholder="请输入手机号" auto-focus bindinput="dealPhone"/>
             </view>
             <view class="section {{showButtonLinePhone ? 'tapped' : ''}}">
                 <!-- <view >密码</view> -->
-                <input type='number' name="password" placeholder="请输入验证码"  bindinput="dealVerify" bindtap="dealTapVerify"/>
-                <view class="getVerify {{canGetVerify ? 'black' : ''}}" catchtap='getMessage' wx:if="{{!showSeconds}}">获取验证码</view>
+                <input type='number' cursor-spacing="15" name="password" placeholder="请输入验证码"  bindinput="dealVerify"/>
+                <view class="getVerify {{canGetVerify ? 'black' : ''}}" catchtap='getMessage' wx:if="{{!showSeconds}}">发送验证码</view>
                 <view class='getVerify' wx:if="{{showSeconds}}">{{leftSeconds}}秒</view> 
             </view>
             <view class="btn-area">
-                <view class="button {{actived ? 'actived' : ''}}" bindtap='register'>登录</view>
+                <view class="button {{actived ? 'actived' : ''}}" bindtap='register'>确定</view>
             </view>
 
             
         </form>
-         <view class='mention' wx:if="{{auth}}">点击确认即表示同意《加油咖啡会员服务条款》</view>
+         <view class='mention'>点击确定，即表示已阅读并同意<text style="color: #D32D25;" bindtap="goState">《注册会员服务条款》</text></view>
     </view>
 
-    <button style="width:80%; margin-left: 10%;margin-top: 40rpx" class='button blue' open-type="getUserInfo"
-        bindgetuserinfo="getUserInfo" wx:if="{{!auth}}">
+    <view wx:if="{{auth}}">
+        <view class="form-container">
+            <button class="wx-login" bindtap="getLoginCode" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">微信一键登录</button> 
+            <button class="wx-login white" bindtap="goLogin">手机号验证码登陆</button> 
+            <view style="color: #B2B2B2; width:100%; font-size: 28rpx; text-align: center; margin-top: 32rpx;" class=''
+                bindtap="goBack">
+                我想先看看
+            </view>
+
+            </view>
+        <view class="protocol-container" wx:if="{{protocolConfig.show}}"> <text style="{{protocolConfig.style}}">{{protocolConfig.preText}}</text>
+            <block wx:for="{{protocolConfig.protocolList}}" wx:key="{{id}}">
+                <navigator url="../webview/index?src={{item.encodedUrl}}" style="{{item.style}}" hover-class="none">{{item.text}} </navigator>
+                <block wx:if="{{ index < protocolConfig.protocolList.length - 1}}">{{protocolConfig.separator}}</block>
+            </block>
+        </view>
+    </view>
+
+
+    <button style="width:80%; left: 50%; position:fixed; top: 50%; transform: translate(-50%, -50%)" class='button blue' open-type="getUserInfo"
+        bindgetuserinfo="getUserInfo" wx:if="{{!auth && !choosePhone && !loading}}">
         授权登录
     </button>
+
+
+    <view style="width:100%; font-size: 26rpx; text-align: center;position: fixed;top: 55%;" class=''
+        bindtap="goBack" wx:if="{{!auth && !choosePhone && !loading}}">
+        我想先看看
+    </view>
+
+
+    <view class="act-wrap" wx:if="{{isActWrapShow}}" bind:tap="hideActWrap">
+        <view class="mask {{isActWrapShow ? 'active':''}}" bind:tap="hideActWrap"></view>
+        <view class="cnt" bind:tap="hideActWrap">
+        <view class="btn-close" bind:tap="hideActWrap"></view>
+        <image src="{{actImage}}" mode="widthFix"></image>
+        </view>
+    </view>
 
    
 

@@ -14,7 +14,7 @@
         </view>
     </view>
 
-    <view class="line">
+    <!-- <view class="line">
         <view class="line_title">
             奶包
         </view>
@@ -26,7 +26,7 @@
                 需要
             </view>
         </view>
-    </view>
+    </view> -->
 
     <view class="line">
         <view class="line_title">
@@ -45,7 +45,7 @@
 
     <view class="section">
         <view class="remark">
-            <textarea model="content" value="{{content}}" bindinput="dealName" placeholder='输入其他备注特殊要求（可不填）' placeholder-style="font-size: 27rpx;position: relative; top: 5rpx;"></textarea>
+            <textarea maxlength="30"  model="content" value="{{content}}" bindinput="dealName" placeholder='输入其他备注特殊要求（可不填）' placeholder-style="font-size: 27rpx;position: relative; top: 5rpx;"></textarea>
         </view>
     </view>
 

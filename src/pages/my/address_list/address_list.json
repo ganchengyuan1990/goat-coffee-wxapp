@@ -1,6 +1,0 @@
-{
-    "navigationBarTitleText": "管理地址",
-    "usingComponents": {
-        "address-item": "../../../components/address-item/address-item"
-    }
-}

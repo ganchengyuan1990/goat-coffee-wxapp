@@ -1,0 +1,3 @@
+<view class="direct-item" catchtap="onClick" data-id="{{item.id}}" data-info="{{item}}">
+    <slot></slot>
+</view>

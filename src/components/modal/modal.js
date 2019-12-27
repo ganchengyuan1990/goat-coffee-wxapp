@@ -17,6 +17,9 @@ Component({
         content: {
             type: String
         },
+        contentArr: {
+            type: Array
+        },
         okText: {
             type: String
         },
@@ -26,16 +29,29 @@ Component({
         otherFunctionType: {
             type: Number
         },
+        type: {
+            type: Number
+        },
         leftButtonFunctionType: {
             type: Number
         },
         otherFunction: {
             type: Function
+        },
+        actImage: {
+            type: String
         }
+    },
+
+    data: {
+       innerShown: true
     },
 
     methods: {
         close() {
+            // if (this.properties.type == 7) {
+            //     return ;
+            // }
             this.setData({
                 shown: false
             });
@@ -52,6 +68,39 @@ Component({
         leftButtonFunction() {
             this.close();
             this.triggerEvent('customevent', this.data.leftButtonFunctionType);
+        },
+
+        goJinmai() {
+            wx.navigateTo({
+                url: '/package/inviteJinmai/pages/invite/invite'
+            });
+        },
+
+        goTransport () {
+            wx.navigateTo({
+                url: `/pages/transport/transport?from=store&tab=selfTaking`
+            });
+            this.setData({
+                shown: false
+            });
+        },
+
+        goStore(e) {
+            let item = e.currentTarget.dataset.item;
+            this.triggerEvent('customevent', item);
+            this.setData({
+                shown: false
+            });
+        },
+
+        goBuy(e) {
+            wx.switchTab({ url: '/pages/store/store' });
+        },
+
+        goRecharge () {
+            wx.navigateTo({
+                url: `/pages/recharge/index`
+            });
         }
     }
 

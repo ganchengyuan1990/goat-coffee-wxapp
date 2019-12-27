@@ -1,0 +1,51 @@
+<template name="address-list">
+    <scroll-view class="suggestListWrap {{type == 2 ? 'suggestListWrapHigh' : ''}}" scroll-y="true">
+    <!-- <view class="suggestListWrap {{type == 2 ? 'suggestListWrapHigh' : ''}}"> -->
+        <view class="list_wrapper" wx:if="{{!loading && addressList.length > 0}}" wx:for="{{addressList}}" wx:key="index">
+            <!-- <view class='express_title'>我的收货地址</view> -->
+            <view class="address_item">
+                <!-- <address-item item="{{item}}" data-id="{{item.id}}"></address-item> -->
+                <view class="direct-item" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goStore">
+                    <view class="suggest-icon point-icon"></view>
+                    <view class="direct-content">
+                        <view class="direct-name">
+                            <view class="direct-name-container">
+                                <text  class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.area}}{{item.address}}</text>
+                                <!-- <text wx:for="{{item.splitName}}" wx:for-item="name" wx:key="splitItem"
+                                    class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{name.text}}</text> -->
+                                <view wx:if="{{item.hasdeals == 1}}" class="group-icon"></view>
+                                <view wx:elif="{{item.hasmopay == 1}}" class="mopay-icon"></view>
+                            </view>
+                            <view wx:if="{{item.distance}}" class="direct-distance"><text class="direct-distance-text">{{item.distance}}</text></view>
+                        </view>
+
+                        <view class="direct-bottom {{type == 1 ? 'cross' : ''}}">
+                            <view class='text added' wx:if="{{item.isdefault}}">默认</view>
+                            <view class="direct-category">{{item.contact}}</view>
+                            <view class="split-line" wx:if="{{item.categoryname}}">|</view>
+                            <view class="direct-address">
+                                <!-- <text wx:if="{{item.tel}}" class="direct-address-region">{{item.tel}}</text> -->
+                                <text wx:if="{{item.tel}}" class="direct-address-text {{item.regionname ? 'before-content' : ''}}">{{item.tel}}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class='icon' catchtap="goAddress" data-info="{{item}}" data-id="{{item.id}}" >
+                        <image src='../../images/bianji.png'/> 
+                    </view>
+                </view>
+            </view>
+        </view>
+
+        <!-- <view class="no_address" wx:if="{{!loading && addressList.length === 0}}">
+            <image src="../../../images/no_address.png"/>
+            <view>暂未设置配送地址</view>
+        </view> -->
+    </scroll-view>
+
+    <!-- <view class="addNewAddress" bindtap="goAddAddress" data-source="0">
+        <view class="address_text">
+            <image style="height: 30rpx; width: 30rpx; margin-right: 18rpx; position: relative; top: 2rpx;" src="../../../images/cross.png"/>
+            <text>添加地址</text>
+        </view>
+    </view> -->
+</template>

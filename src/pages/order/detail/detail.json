@@ -1,3 +1,9 @@
 {
-    "navigationBarTitleText": "订单详情"
+    "navigationBarTitleText": "订单详情",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "address-item": "../../components/address-item/address-item",
+        "toast": "../../../components/toast/toast",
+        "custom-tab-bar": "../../../custom-tab-bar/index"
+    }
 }

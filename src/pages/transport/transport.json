@@ -1,4 +1,7 @@
 {
-    "navigationBarTitleText": "配送方式",
-    "enablePullDownRefresh": false
+    "navigationBarTitleText": "选择门店",
+    "enablePullDownRefresh": false,
+    "usingComponents": {
+        "address-item": "../../components/address-item/address-item"
+    }
 }

@@ -1,10 +1,37 @@
+<import src="./templates/address-list.wxml" />
+
 <view class="container">
-    <view class='chosenCity'>  
-        所选城市：<text style='color: #333; margin-right: 10rpx;'>上海</text><image style="width: 18rpx; height: 10rpx;" src="../../images/arrow_down.png" />
+
+    <view class="top" bindtap="toggleNav" wx:if="{{type == 1}}">
+        <view class="city_name">{{city1}}</view>
+        <view class="city_name">{{city2}}</view>
+        <view class="city_name">{{city3}}</view>
+
+        <image class="arrow" src="../../images/arrow.png"/>
     </view>
-    <view class="header-tabs-container">
-        <view bindtap="goSelfGet" class="header-tab-item {{showSelfGet ? 'tab-item-active' : ''}}">门店自取</view>
-        <view bindtap="goExpress" class="header-tab-item {{showExpress ? 'tab-item-active' : ''}}">外卖到家</view>
+
+    <view wx:if="{{showCities}}" style="height: calc(100vh - 200rpx); overflow: hidden;">
+        <view class="nav_left">
+            <block wx:for="{{cities}}" wx:key="city" wx:for-item="item" wx:for-index="index" >
+                <view class="nav_left_items {{firstCitySelected == index ? 'active' : ''}}" bindtap="switchFirstTab" data-index="{{index}}">
+                    {{item.key}}
+                </view>
+                <view class="nav_left seconder">
+                    <block wx:for="{{secondCities}}" wx:key="city" wx:for-item="item_second" wx:for-index="second_index" >
+                        <view class="nav_left_items {{secondCitySelected == second_index ? 'active' : ''}}" bindtap="switchSecondTab" data-index="{{second_index}}" data-id="{{item_second.index}}">{{item_second.key}}</view>
+                        <view class="nav_left thirder">
+                            <block wx:for="{{thirdCities}}" wx:key="city" wx:for-item="item_third" wx:for-index="third_index">
+                                <view class="nav_left_items {{thirdCitySelected == third_index ? 'active' : ''}}" bindtap="switchThirdTab" data-index="{{third_index}}" data-id="{{item_second.index}}">{{item_third.key}}</view>
+                            </block>
+                        </view>
+                    </block>
+                </view>
+            </block>
+        </view>
+        
+
+        <view class="mask" bind:tap="toggleNav">
+        </view>
     </view>
 
     <!-- <view class="searchEntry" bindtap="onSearchShow" data-source="0" wx:if="{{!isGeoAuth}}">
@@ -14,27 +41,43 @@
         <view class="close-icon" catchtap="clearKeyWord" wx:if="{{keyword}}"><image mode="scaleToFill" src="https://www.jasongan.cn/uploads/close.png" /></view>
     </view> -->
 
+    <view class="header-tabs-container">
+        <view bindtap="goSelfGet" class="header-tab-item {{showSelfGet ? 'tab-item-active' : ''}}">
+            咖啡门店
+            <view wx:if="{{showSelfGet}}" class="bottom_line"></view>
+        </view>
+        <view bindtap="goExpress" class="header-tab-item {{showExpress ? 'tab-item-active' : ''}}">
+            自助咖啡机
+            <view wx:if="{{showExpress}}" class="bottom_line"></view>
+        </view>
+    </view>
+
     <view class="search-find-container">
-        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{!showExpress && searchSuggest && searchSuggest.length}}">
+        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}} {{type == 2 ? 'suggestListWrapHigh' : ''}}" wx:if="{{!showExpress && searchSuggest && searchSuggest.length}}">
             <scroll-view class="suggestList" scroll-y="true">
                 <view wx:key="index" wx:for="{{searchSuggest}}" class="suggest-container" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goStore">
                     <view class="direct-item border-bottom" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
-                        <view class="suggest-icon point-icon"></view>
-                        <view class="direct-content">
+                        <view class="suggest-icon point-icon" wx:if="{{item.isSelected}}">
+                            <view class="checkbox checked"></view>
+                        </view>
+                        <view class="direct-content {{item.isSelected ? '' : 'go-right'}}">
                             <view class="direct-name">
                                 <view class="direct-name-container">
-                                    <text class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.storeName}}</text>
+                                    <text class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.storeName}} <text wx:if="{{minIndex == index}}" class="closest">最近</text> </text>
                                     <view wx:if="{{item.hasdeals == 1}}" class="group-icon"></view>
                                     <view wx:elif="{{item.hasmopay == 1}}" class="mopay-icon"></view>
                                 </view>
-                                <view wx:if="{{item.distance}}" class="direct-distance"><text class="direct-distance-text">距您{{item.distance}}km</text></view>
+                                <view wx:if="{{item.distance}}" class="direct-distance">
+                                    <text class="direct-distance-text" wx:if="{{item.distanceReal < 3000}}">距您{{item.distance}}m</text>
+                                    <text class="direct-distance-text" wx:if="{{item.distanceReal >= 3000}}">距您{{item.distance}}km</text>
+                                </view>
                             </view>
          
-                            <view class="direct-bottom">
-                                <view class="direct-category"><image style='width: 20rpx; height: 20rpx; margin-right: 12rpx;' src="../../images/clock.png" />{{item.startTime}}-{{item.endTime}}</view>
+                            <view class="direct-bottom {{type == 1 ? 'cross' : ''}}">
+                                <view class="direct-category {{type == 1 ? 'lalala' : ''}}"><image style='width: 23rpx; height: 23rpx; margin-right: 12rpx;position: relative;top: 3rpx;' src="../../images/clock.png" />{{item.startTime}}-{{item.endTime}}</view>
                                 <view class="split-line" wx:if="{{item.categoryname}}">|</view>
                                 <view class="direct-address">
-                                    <image style='position: relative; top: 8rpx; width: 20rpx; height: 20rpx; margin-right: 9rpx;' src="../../images/location.png" />
+                                    <image style='position: relative; top: 8rpx; width: 20rpx; height: 24rpx; margin-right: 9rpx;' src="../../images/location.png" />
                                     <text wx:if="{{item.regionname}}" class="direct-address-region">{{item.regionname}}</text>
                                     <text wx:if="{{item.address}}" class="direct-address-text {{item.regionname ? 'before-content' : ''}}">{{item.address}}</text>
                                 </view>
@@ -45,48 +88,58 @@
             </scroll-view>
         </view>
 
-        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{showExpress && searchSuggest && searchSuggest.length > 0}}"  data-id="{{item.id}}">
-            <view class="suggestList" scroll-y="true">
-                <view class='express_title'>
-                    我的收货地址
-                    <view class='right' bindtap="goAddressList">管理收货地址</view>
-                </view>
-                <view wx:key="index" wx:for="{{searchSuggest}}" class="suggest-container">
-                    <view class="direct-item border-bottom" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goStore">
+       <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" scroll-y="true" wx:if="{{showExpress && searchSuggest && searchSuggest.length > 0}}"  data-id="{{item.id}}">
+            <scroll-view class="suggestList zizhuji" scroll-y="true">
+                <!-- <view wx:key="index" wx:for="{{zizhuList}}" class="suggest-container" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goStore">
+                    <view class="direct-item border-bottom" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
                         <view class="suggest-icon point-icon"></view>
                         <view class="direct-content">
                             <view class="direct-name">
                                 <view class="direct-name-container">
-                                    <text class="direct-name-text {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.area}}</text>
-                                    <text class="second direct-name-text {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.address}}</text>
+                                    <text class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.storeName}} <text wx:if="{{minIndex == index}}" class="closest">最近</text> </text>
+                                    <view wx:if="{{item.hasdeals == 1}}" class="group-icon"></view>
+                                    <view wx:elif="{{item.hasmopay == 1}}" class="mopay-icon"></view>
+                                </view>
+                                <view wx:if="{{item.distance}}" class="direct-distance">
+                                    <text class="direct-distance-text" wx:if="{{item.distanceReal < 3000}}">距您{{item.distance}}m</text>
+                                    <text class="direct-distance-text" wx:if="{{item.distanceReal >= 3000}}">距您{{item.distance}}km</text>
                                 </view>
                             </view>
          
-                            <view class="direct-bottom">
-                                <view class="direct-category">{{item.categoryname}}</view>
+                            <view class="direct-bottom {{type == 1 ? 'cross' : ''}}">
+                                <view class="direct-category {{type == 1 ? 'lalala' : ''}}"><image style='width: 23rpx; height: 23rpx; margin-right: 12rpx;position: relative;top: 3rpx;' src="../../images/clock.png" />{{item.startTime}}-{{item.endTime}}</view>
                                 <view class="split-line" wx:if="{{item.categoryname}}">|</view>
                                 <view class="direct-address">
-                                    <text class="direct-address-region">{{item.contact}}</text>
-                                    <text wx:if="{{item.tel}}" class="direct-address-text second {{item.regionname ? 'before-content' : ''}}">{{item.tel}}</text>
+                                    <image style='position: relative; top: 8rpx; width: 20rpx; height: 24rpx; margin-right: 9rpx;' src="../../images/location.png" />
+                                    <text wx:if="{{item.regionname}}" class="direct-address-region">{{item.regionname}}</text>
+                                    <text wx:if="{{item.address}}" class="direct-address-text {{item.regionname ? 'before-content' : ''}}">{{item.address}}</text>
                                 </view>
                             </view>
-
-                            <view class='text added' wx:if="{{item.isdefault}}">默认</view>
                         </view>
                     </view>
+                </view> -->
+                <view class="no_zizhuji">
+                    <image src="../../images/no_zizhuji.png" />
+                    <view>附近暂时没有咖啡机哦～</view>
                 </view>
-            </view>
+            </scroll-view>
         </view>
 
-        <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{showExpress && searchSuggest && searchSuggest.length === 0}}"  data-id="{{item.id}}">
+        <!-- <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" wx:if="{{showExpress && searchSuggest && searchSuggest.length === 0}}"  data-id="{{item.id}}">
             <view class="no_address">
-                <image src="../../../images/no_address.png"/>
-                <view>暂未设置配送地址</view>
+                <image src="../../../../../images/no_address.png"/>
+                <view style="margin-top: 30rpx;">您还没有添加收货地址，请尽快添加吧～</view>
             </view>
-        </view>
+        </view> -->
     </view>
 
-     <view class="addNewAddress" bindtap="goAddAddress" data-source="0" wx:if="{{showExpress}}">
+     <!-- <view class="addNewAddress" bindtap="goAddAddress" data-source="0" wx:if="{{showExpress}}">
         <view class="text"> + 添加新的收货地址</view>
-    </view>
+    </view> -->
+    <!-- <view class="addNewAddress" bindtap="goAddressList" data-source="0" wx:if="{{type == 2}}">
+        <view class="address_text">
+            <image style="height: 34rpx; width: 34rpx; margin-right: 8rpx; position: relative; top: 4rpx;" src="../../../../../images/cross.png"/>
+            <text>添加地址</text>
+        </view>
+    </view> -->
 </view>

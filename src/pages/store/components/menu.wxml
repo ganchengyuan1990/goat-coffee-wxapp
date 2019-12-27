@@ -4,8 +4,8 @@
       
       <view class="bottom">
           <view class="hd">
-            <image src="{{info.banner}}" mode="aspectFill" class="img-caption" data-src="{{info.banner}}" bindtap="previewImage"></image>
-            <image style="position: absolute; right: 20rpx;top: 30rpx;width: 50rpx;height: 50rpx;" src="../../../images/close.png"  catchtap="closeMenu"/>
+            <image src="{{info.banner}}" mode="aspectFill" class="img-caption" data-src="{{info.banner}}"></image>
+            <image style="position: absolute; right: 20rpx;top: 30rpx;width: 44rpx;height: 44rpx;" src="../../../images/close.png"  catchtap="closeMenu"/>
               <view class="tt">
                 <view class='flex-item'>
                   <view class="cn">{{info.productName}}</view>
@@ -13,9 +13,13 @@
                 </view>
               </view>
           </view>
-          <view style="padding: 0 40rpx;">
-            <view style="height: 2rpx; background: #c6c6c6"></view>
-            <scroll-view scroll-y="{{true}}" class="bd">
+          <view style="">
+            <!-- <view style="height: 2rpx; background: #c6c6c6"></view> -->
+            <scroll-view scroll-y="{{true}}" class="bd {{isHigh ? 'bh_high' : ''}}">
+                <view class="mess">
+                  <view>商品描述：</view>
+                  <view style="color: #999; font-size: 22rpx;margin: 10rpx 20rpx;">{{info.brief}}</view>
+                </view>
                 <view class="opt-group">
                     <view class="opt-tt">规格</view>
                     <view class="opt-bd">
@@ -28,7 +32,10 @@
                           data-val="{{item.propSkuName}}"
                           data-code="{{item.propSkuId}}"
                           catchtap="select">
-                            {{item.propSkuName}}
+
+                            <!-- <image style="margin-top: 10rpx; height: 63rpx; width: 52rpx;" src="../../../images/big_cup.png" wx:if="{{item.isdefault === 1}}"/>
+                            <image style="margin-top: 10rpx; height: 63rpx; width: 52rpx;" src="../../../images/small_cup.png" wx:if="{{item.isdefault !== 1}}"/> -->
+                            <text>{{item.propSkuName}}</text>
                         </view>
                     </view>
                 </view>              
@@ -36,7 +43,7 @@
                     <view class="opt-tt">{{item.name}}</view>
                     <view class="opt-bd">
                         <view 
-                          class="J_opt_item item {{item.default_val_id == tag.id ? 'active':''}}" 
+                          class="J_opt_item item {{item.name !== '温度' ? 'lowwer' : ''}} {{item.default_val_id == tag.id ? 'active':''}}" 
                           wx:for="{{item.val_list}}" 
                           wx:for-item="tag"
                           wx:key="{{tag.id}}"
@@ -48,41 +55,39 @@
                           data-code="{{tag.prop_id}}">{{tag.val}}<text wx:if="{{tag.price}}">{{tag.price}}元</text></view>
                     </view>
                 </view>
-                <view style='height: 1rpx; background: #f5f5f5;'></view>
-                <view class="mess">
-                  <view>商品描述：</view>
-                  <view style="color: #999; font-size: 24rpx;">{{info.brief}}</view>
-                </view>
+                <!-- <view style='height: 1rpx; background: #f6f6f6;'></view> -->
             </scroll-view>
-            <view style="position: relative; height: 2rpx; background: #e6e6e6; margin-left: -40rpx; margin-right: -40rpx;"></view>
-            <view class="ft">
-                <view class="counter-wrap">
-                    <view class="price-wrap">
-                        <view class="price" wx:if="{{salesTotalPrice < 0}}">
-                          ￥{{totalPrice}}
-                          <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
-                        </view>
-                        <view class="price" wx:if="{{salesTotalPrice > -1}}">
-                          ￥{{totalPrice}}
-                          <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
-                        </view>
-                        <view class="desc">{{customed}}</view>
-                    </view>
-                    <view class="counter">
-                        <view class="ico ico-minus {{count === 1 ? 'disable': ''}}" bind:tap="decrease">                                    
-                          <image src="../../../images/minus.png" mode="widthFix"/>
-                        </view>
-                        <view class="num">{{count < 10 ? '0'+count:count}}</view>
-                        <view class="ico ico-plus" bind:tap="increase">
-                          <image src="../../../images/add.png" mode="widthFix"/>
-                        </view>
-                    </view>
-                </view>
-                <view class='button_wrapper'>
-                  <view class="btn-confirm" bindtap="goPocket">{{activityName || '买五送七'}}</view>
-                  <view class="btn-confirm cart" bind:tap="save">加入购物车</view>
-                </view>
-            </view>
+           
+          </view>
+
+          <view class="ft" style="padding: 0 30rpx;">
+              <view style="position: relative; height: 2rpx; background: #e6e6e6; margin-left: -25rpx; margin-right: -30rpx;"></view>
+              <view class="counter-wrap">
+                  <view class="price-wrap">
+                      <view class="price" wx:if="{{salesTotalPrice < 0}}">
+                        ￥{{totalPrice}} <text class="price-del" wx:if="{{info.default_sku.price && info.default_sku.price != info.sale_price}}">{{customed}}</text>
+                        <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
+                      </view>
+                      <view class="price" wx:if="{{salesTotalPrice > -1}}">
+                        ￥{{totalPrice}}
+                        <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
+                      </view>
+                      <!-- <view class="desc">{{customed}}</view> -->
+                  </view>
+                  <view class="counter">
+                      <view class="ico ico-minus {{count === 1 ? 'disable': ''}}" bind:tap="decrease">                                    
+                        <image src="../../../images/minus.png" mode="widthFix"/>
+                      </view>
+                      <view class="num">{{count}}</view>
+                      <view class="ico ico-plus" bind:tap="increase">
+                        <image src="../../../images/add.png" mode="widthFix"/>
+                      </view>
+                  </view>
+              </view>
+              <view class='button_wrapper'>
+                <!-- <view class="btn-confirm" bindtap="goPocket">{{activityName || '买五送七'}}</view> -->
+                <view class="btn-confirm cart" bind:tap="save">立即购买</view>
+              </view>
           </view>
       </view>
   </view>

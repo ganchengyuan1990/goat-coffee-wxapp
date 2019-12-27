@@ -12,10 +12,14 @@ import {
 
 
 var app = getApp();
+let isOpening = false
 
 Page({
   data: {
+    showMemberMoney: true,
     checkedGoodsList: [],
+
+    zunshou: true,
     checkedAddress: {
       name: 'Jason',
       phone: 17602183915,
@@ -23,16 +27,22 @@ Page({
       address: 'sdsdsdsd'
     },
     checkedCoupon: [],
-    couponList: [],
+    // couponList: [],
+    redPackList: [],
+    couponRedpack: [],
     goodsTotalPrice: 0.00, //商品总价
     freightPrice: 0.00,    //快递费
     couponPrice: 0.00,     //优惠券的价格
     orderTotalPrice: 0.00,  //订单总价
     actualPrice: 0.00,     //实际需要支付的总价
+    actualPriceGap: 0.00,
+    actualOriginalPrice: 0.00,
     addressId: 0,
     couponId: 0,
     chooseSelf: true,
     chooseExpress: false,
+    chooseDaodian: false,
+    chooseCup: false,
     options: {},
     transportFee: 0,
     couponMoney: 0,
@@ -48,13 +58,16 @@ Page({
     voucherList: [],
     chosenCoupon: -1,
     chosenVoucher: -1,
+    chosenRedPack: -1,
     chooseType: -1,
     goBackFromChildPage: false,
     goBackFromRemark: false,
     fromAddress: false,
     chosenInfo: {},
-    chooseNoCoupon: false,
-    chooseNoVoucher: false,
+    chooseNoCoupon: true,
+    chooseNoVoucher: true,
+    chooseNoRedPack: true,
+    chooseItemXiguan: -1,
     tab: '',
     remark: '',
     userAddressId: 0,
@@ -67,7 +80,103 @@ Page({
     usePromotion: true,
     hasGetBestSolution: false,
     quanqianMoney: 0,
-    showCouponMention: false
+    showCouponMention: false,
+    resultPrice: -1,
+    currentSpecific: {},
+    isCatePanelShow: false,
+    addPriceGoods: [],
+    distance: -1,
+    addPriceIds: '',
+    initProduct: [],
+    levelMoney: 0,
+    member_recharge: 0,
+    useMemberReharge: false,
+    actualAfterMemberPrice: 0,
+    showNoOrder: false,
+    deliverMention: '',
+    guaerItems: [],
+    zidaibeiMoney: 5,
+    animated: false,
+    bestCouponArr: [],
+    toastTime: 3,
+    scrollTop: 0,
+    viewToNav: ''
+  },
+
+  showYouGuessItem () {
+    this.setData({
+      isCatePanelShow: true,
+      currentSpecific: {}
+    });
+  },
+
+  addPriceBuy (e) {
+    console.log(e);
+    let {
+      addPriceIds,
+      options,
+      product
+    } = this.data;
+    let addPriceIdsArr = [];
+    if (addPriceIds) {
+      addPriceIdsArr = addPriceIds.split(',');
+    } 
+    let newOptions = Object.assign({}, options);
+    let target = e.detail.addPrice.id;
+    let newProduct = {
+      banner: e.detail.banner,
+      number: 1,
+      totalPrice: e.detail.addPrice.coupon.jiagou_price == parseInt(e.detail.addPrice.coupon.jiagou_price) ? parseInt(e.detail.addPrice.coupon.jiagou_price) : parseFloat(e.detail.addPrice.coupon.jiagou_price).toFixed(1),
+      productId: 2,
+      productName: e.detail.productName,
+      // productPropIds: "182,184",
+      // skuId: 151,
+      skuName: "冷",
+      spec: e.detail.default_prop.value.join('/'),
+    }
+    product.push(newProduct);
+    newOptions.product.push(newProduct);
+    addPriceIdsArr.push(target);
+    let _a = new BigNumber(this.data.actualPrice);
+    let _b = new BigNumber(newProduct.totalPrice);
+    let actualPrice = _a.plus(_b);
+    this.setData({
+      product: product,
+      options: newOptions,
+      actualPrice: actualPrice.toFixed(1),
+      addPriceIds: addPriceIdsArr.join(',')
+    }, () => {
+      this.setData({
+        actualAfterMemberPrice: this.data.member_recharge > this.data.actualPrice ? 0 : (this.data.actualPrice - this.data.member_recharge),
+        actualOriginalPrice: this.data.actualPriceGap + this.data.actualPrice
+      })
+    })
+  },
+
+  toggleSpecific() {
+    if (isOpening) {
+      return
+    }
+    isOpening = true
+    let isShow = this.data.isCatePanelShow
+    if (isShow) {
+      isOpening = false;
+      this.setData({
+        isCatePanelShow: !isShow
+      })
+    } else {
+      this.setData({
+        isCatePanelShow: !isShow
+      })
+      // for temp 
+      setTimeout(() => {
+        isOpening = false
+      }, 500);
+    }
+  },
+
+  onClickStore () {
+    wx.switchTab({ url: '/pages/store/store' });
   },
 
   switchChange (e) {
@@ -76,20 +185,28 @@ Page({
     });
     if (!this.data.usePromotion) {
       model(`home/coupon/calculate-price-with-coupon`, {
-        couponList: [],
+        // couponList: [],
         productList: this.data.product,
         storeId: this.data.options.storeId,
         uid: wx.getStorageSync('token').user.id
       }).then(data => {
-        let result = parseFloat(data.data.discountPrice).toFixed(2);
+        let result = parseFloat(data.data.discountMoney).toFixed(2);
+        let levelMoney = parseFloat(data.data.levelMoney).toFixed(2);
         this.setData({
-          actualPrice: parseFloat(data.data.resultPrice + parseFloat(this.data.deliverFee)).toFixed(2),
+          actualPrice: parseFloat(data.data.resultPrice + parseFloat(this.data.deliverFee)).toFixed(1),
           couponMoney: result,
+          levelMoney: levelMoney && levelMoney !== 'NaN' ? levelMoney : 0,
           couponUserRelation: '',
           discountType: data.data.type,
           chosenInfo: {},
           chooseNoCoupon: false,
           chooseNoVoucher: false,
+          chooseNoRedPack: false,
+        }, () => {
+          this.setData({
+            actualAfterMemberPrice: this.data.member_recharge > this.data.actualPrice ? 0 : (this.data.actualPrice - this.data.member_recharge),
+            actualOriginalPrice: this.data.actualPriceGap + this.data.actualPrice
+          })
         })
       });
     }  else {
@@ -97,11 +214,19 @@ Page({
     }
   },
   onLoad: function (options) {
+    model('base/site/user-config-list').then(res => {
+      wx.setStorageSync('userConfigList', res.data)
+    }) 
+    if (wx.getStorageSync('deliverMention')) {
+      this.setData({
+        deliverMention: wx.getStorageSync('deliverMention')
+      });
+    }
 
     // options.tab = 'delivery';
 
     wx.showLoading({
-      title: 'Loading...', //提示的内容,
+      title: '加载中', //提示的内容,
       mask: true, //显示透明蒙层，防止触摸穿透,
     });
 
@@ -115,9 +240,12 @@ Page({
 
     this.getAvailableCoupon();
     this.getWaitTime();
+    this.getAddPriceGoods()
     // this.setData({
     //   goodsTotalPrice: parseInt(options.price)
     // })
+
+    this.setDistance()
 
     // 页面初始化 options为页面跳转所带来的参数
 
@@ -142,9 +270,47 @@ Page({
 
   },
 
+  setDistance () {
+    let STORE_INFO = wx.getStorageSync('STORE_INFO');
+    if (STORE_INFO) {
+      STORE_INFO = JSON.parse(STORE_INFO)
+      this.setData({
+        distance: STORE_INFO.distance,
+        lineNumber: STORE_INFO['line_number'],
+      })
+    }
+  },
+
+  getAddPriceGoods() {
+    
+    model('order/detail/add-price-goods', {
+      storeId: this.data.options.storeId
+      // openid: wx.getStorageSync('openid')
+    }).then(res => {
+      if (res.code === 'suc') {
+        this.setData({
+          addPriceGoods: res.data.addPriceGoods
+        })
+      }
+    })
+  },
+
+  checkedItem (e) {
+    let index = e.currentTarget.dataset.index;
+    if (index == 2) {
+      this.setData({
+        chooseItemXiguan: true
+      })
+    } else {
+      this.setData({
+        chooseItemXiguan: false
+      })
+    }
+  },
+
   calGetTime (waitTime) {
     let nowTime = Date.parse(new Date());
-    waitTime = this.data.chooseSelf ? (waitTime + 5) : (waitTime + 15);
+    waitTime = waitTime + 5 + this.data.totalNumber;
     let getTime = this.calcLeftTime(nowTime + waitTime * 60 * 1000);
     this.setData({
       getTime: getTime
@@ -157,6 +323,9 @@ Page({
     var left = parseInt((timeStr % 864e5) / 1000);
     var hours = parseInt(left / 3600);
     var realHours = hours + 8;
+    if (realHours >= 24) {
+      realHours = realHours - 24;
+    }
     var minutes = parseInt((left - hours * 3600) / 60);
     var seconds = parseInt((left - hours * 3600 - minutes * 60));
     return `${realHours < 10 && realHours !== 8 ? ('0' + realHours) : (realHours)}:${minutes < 10 ? ('0' + minutes) : minutes}`;
@@ -204,23 +373,57 @@ Page({
       console.log(parseInt(b));
       console.log(2048.8 * 100);
       if (data.data) {
-        let result = data.data;
+        let result = data.data.userCoupons;
         let couponList = result.filter(item => {
-          return item.type === 1; 
+          return item.coupon.coupon_type !== 5 && item.coupon.coupon_type !== 2;
         });
         let voucherList = result.filter(item => {
-          return item.type === 2;
+          return item.coupon.coupon_type === 5;
         });
-        this.setData({
-          couponList: couponList,
-          voucherList: voucherList
-        })
+        let redPackList = result.filter(item => {
+          return item.coupon.coupon_type === 2;
+        });
+        if (this.data.bestCouponArr.length > 0) {
+          let couponArr = this.data.bestCouponArr;
+          couponArr.forEach(item => {
+            if (item.couponType == 2) {
+              redPackList.forEach((ele, index) => {
+                if (ele.id == item.id) {
+                  var target = redPackList.splice(index, 1);
+                  redPackList.unshift(target[0]);
+                }
+              });
+            } else if (item.couponType == 5) {
+              voucherList.forEach((ele, index) => {
+                if (ele.id == item.id) {
+                  var target = voucherList.splice(index, 1);
+                  voucherList.unshift(target[0]);
+                }
+              });
+            } else {
+              couponList.forEach((ele, index) => {
+                if (ele.id == item.id) {
+                  var target = couponList.splice(index, 1);
+                  couponList.unshift(target[0]);
+                }
+              });
+            }
+          });
+        }
+        if (voucherList.length > 0 || couponList.length > 0 || redPackList.length > 0) {
+          this.setData({
+            couponList: couponList,
+            voucherList: voucherList,
+            redPackList: redPackList
+          })
+        }
+        
         
       } else {
         
       }
       wx.hideLoading({
-        title: 'Loading...', //提示的内容,
+        title: '加载中', //提示的内容,
         mask: true, //显示透明蒙层，防止触摸穿透,
       });
     })
@@ -234,34 +437,80 @@ Page({
       storeId: this.data.options.storeId
     }).then(data => {
       if (data.data) {
-        // let result = parseFloat(data.data.discountPrice).toFixed(2);
-        let result = data.data.discountPrice;
+        // let result = parseFloat(data.data.discountMoney).toFixed(2);
+        let result = parseFloat(data.data.discountMoney).toFixed(2);
+        let levelMoney = parseFloat(data.data.levelMoney).toFixed(2);
         let _a = new BigNumber(this.data.payAmount);
-        let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
+        let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.deliverFee);
         let actualPrice = _a.plus(_b).minus(result);
         // let actualPrice = _a.plus(_b).minus(parseFloat(result));
 
         let couponArr = data.data.solutionList;
         let couponUserRelation = []
+
+        this.setData({
+          bestCouponArr: couponArr,
+          zidaibeiMoney: parseFloat(data.data.zidaiOrderCouponMoney).toFixed(1) || 5
+        })
+
+        let {
+          couponList,
+          voucherList,
+          redPackList
+        } = this.data;
         
         couponArr.forEach(item => {
           couponUserRelation.push(item.userRelation);
         });
+        // setTimeout(() => {
+        //   couponArr.forEach(item => {
+        //     if (item.couponType == 2) {
+        //       redPackList.forEach((ele, index) => {
+        //         if (ele.id == item.id) {
+        //           var target = redPackList.splice(index, 1);
+        //           redPackList.unshift(target);
+        //         }
+        //       });
+        //     } else if (item.couponType == 5) {
+        //       voucherList.forEach((ele, index) => {
+        //         if (ele.id == item.id) {
+        //           var target = voucherList.splice(index, 1);
+        //           voucherList.unshift(target);
+        //         }
+        //       });
+        //     } else {
+        //       couponList.forEach((ele, index) => {
+        //         if (ele.id == item.id) {
+        //           var target = couponList.splice(index, 1);
+        //           couponList.unshift(target);
+        //         }
+        //       });
+        //     }
+        //   });
+        //   if (voucherList.length > 0 || couponList.length > 0 || redPackList.length > 0) {
+        //     this.setData({
+        //       couponList: couponList,
+        //       voucherList: voucherList,
+        //       redPackList: redPackList
+        //     })
+        //   }
+        // }, 1000);
         couponUserRelation = couponUserRelation.join(',');
-        if (data.data.type === 1) {
+        if (data.data.type === 2) {
           this.setData({
+            chooseNoCoupon: true,
             chooseNoVoucher: true,
-            chosenCoupon: couponArr[0].id,
+            chosenRedPack: couponArr[0].id,
             chosenInfo: {
               content: [{
                 id: couponArr[0].classId,
                 relationId: couponArr[0].id,
-                type: 1
+                type: 3
               }],
-              type: 1
+              type: 3
             }
           })
-        } else if (data.data.type === 2) {
+        } else if (data.data.type === 5) {
           let contents = [];
           couponArr.forEach(item => {
             contents.push({
@@ -271,38 +520,89 @@ Page({
             })
           });
           this.setData({
+            chooseNoRedPack: true,
             chooseNoCoupon: true,
-            // chosenVoucher: couponArr[0].id,
             chosenVoucher: couponUserRelation,
             chosenInfo: {
               content: contents,
               type: 2
             }
           })
+        } else {
+          let contents = [];
+          couponArr.forEach(item => {
+            contents.push({
+              id: item.classId,
+              relationId: item.id,
+              type: 1
+            })
+          });
+          this.setData({
+            chooseNoRedPack: true,
+            chooseNoCoupon: true,
+            chosenVoucher: couponUserRelation,
+            chosenInfo: {
+              content: contents,
+              type: 1
+            }
+          })
+        } 
+        let deliverFee = this.data.chooseExpress ? this.data.deliverFee : 0;
+        if (!this.data.chooseCup) {
+          actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice) : parseFloat(data.data.resultPrice).toFixed(1)
+        } else {
+          actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice - this.data.zidaibeiMoney) : parseFloat(data.data.resultPrice - this.data.zidaibeiMoney).toFixed(1)
         }
+        if (actualPrice < 0) {
+          actualPrice = 0;
+        }
+        actualPrice += deliverFee;
+        data.data.guaerItems && data.data.guaerItems.map(item => {
+          item.sku.sale_price = parseInt(item.sku.sale_price)
+          return item;
+        })
         this.setData({
-          couponMoney: result,
+          levelMoney: levelMoney && levelMoney !== 'NaN' ? levelMoney : 0,
+          couponMoney: result && result !== 'NaN' ? result : 0,
           hasGetBestSolution: true,
           // actualPrice: parseFloat(actualPrice).toFixed(2),
-          actualPrice: data.data.resultPrice.toFixed(2),
+          actualPrice: actualPrice,
           discountType: data.data.type,
           couponUserRelation: couponUserRelation,
-          quanqianMoney: data.data.resultPrice + data.data.discountPrice
-        });
-        if (this.data.quanqianMoney > 65) {
+          // quanqianMoney: data.data.resultPrice + data.data.discountMoney,
+          guaerItems: data.data.guaerItems || []
+        }, () => {
           this.setData({
-            deliverFee: 0
-          });
-        }
+            actualOriginalPrice: parseFloat(this.data.actualPriceGap) + parseFloat(this.data.actualPrice)
+          })
+        });
+        // if (this.data.quanqianMoney > 65) {
+        //   this.setData({
+        //     deliverFee: 0
+        //   });
+        // }
       } else {
         let _a = new BigNumber(this.data.payAmount);
         let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
         let actualPrice = _a.plus(_b);
+        if (!this.data.chooseCup) {
+          actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice) : parseFloat(data.data.resultPrice).toFixed(1)
+        } else {
+          actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice - this.data.zidaibeiMoney) : parseFloat(data.data.resultPrice - this.data.zidaibeiMoney).toFixed(1)
+        }
+        if (actualPrice < 0) {
+          actualPrice = 0
+        }
          this.setData({
            // actualPrice: parseFloat(actualPrice),
-          actualPrice: data.data.resultPrice.toFixed(2),
-           discountType: 0
-         });
+          actualPrice: actualPrice,
+          discountType: 0
+         }, () => {
+           this.setData({
+             actualAfterMemberPrice: this.data.member_recharge > this.data.actualPrice ? 0 : (this.data.actualPrice - this.data.member_recharge),
+             actualOriginalPrice: parseFloat(this.data.actualPriceGap) + parseFloat(this.data.actualPrice)
+           })
+         })
       }
       this.dealChildPageInfo();
     }).catch(e => {
@@ -324,7 +624,12 @@ Page({
       this.setData({
         actualPrice: parseFloat(actualPrice),
         discountType: 0
-      });
+      }, () => {
+        this.setData({
+          actualAfterMemberPrice: this.data.member_recharge > this.data.actualPrice ? 0 : (this.data.actualPrice - this.data.member_recharge),
+          actualOriginalPrice: parseFloat(this.data.actualPriceGap) + parseFloat(this.data.actualPrice)
+        })
+      })
     });
   },
 
@@ -336,7 +641,7 @@ Page({
       this.setData({
         waitProcessTime: waitProcessTime
       });
-      this.calGetTime(waitProcessTime);
+      this.calGetTime(data.data['line_number'] || 0);
     })
   },
 
@@ -349,15 +654,19 @@ Page({
       // options.product.forEach(item => {
       //   transportFee += item.transportFee;
       // })
-
-      let product = options.product;
+      let product = JSON.parse(JSON.stringify(options.product));
       let payAmount = 0;
+      let memberPayAmount = 0
+      let totalNumber = 0;
       product.forEach(item => {
         // item.pid = item.productId;
         // item.skuid = item.skuId;
         item.num = item.number;
+        item.memberPrice = parseFloat(parseFloat(item.number * parseFloat(item.memberPrice).toFixed(2)).toFixed(2));
         item.totalPrice = parseFloat(parseFloat(item.number * parseFloat(item.price).toFixed(2)).toFixed(2));
         payAmount += parseFloat(item.totalPrice);
+        memberPayAmount += parseFloat(item.memberPrice);
+        totalNumber += item.number;
         // delete item.skuName;
         // delete item.totalPrice;
         // delete item.productName;
@@ -365,19 +674,25 @@ Page({
         // delete item.number;
         // delete item.productPropIds;
       });
+      options.product = JSON.parse(JSON.stringify(product));
       this.setData({
+        actualPriceGap: parseFloat(payAmount - memberPayAmount).toFixed(1),
         options: options,
         product: product,
         payAmount: payAmount.toFixed(1),
         tab: items.tab,
+        totalNumber: totalNumber,
         fromTransportIndex: parseInt(items.fromTransportIndex),
         fromTransportId: parseInt(items.fromTransportId)
       });
       if (this.data.tab === 'delivery') {
         this.chooseExpress(false);
+        this.setData({
+          timeWords: '立即下单'
+        });
       } else {
         this.setData({
-          timeWords: '立即取餐'
+          timeWords: '立即下单'
         });
       }
     }
@@ -402,8 +717,10 @@ Page({
     this.setData({
       chooseSelf: true,
       chooseExpress: false,
+      chooseDaodian: false,
+      chooseCup: false,
       deliverFee: 0,
-      timeWords: '立即取餐',
+      timeWords: '立即下单',
       // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
       payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0)).toFixed(1)
     })
@@ -412,34 +729,124 @@ Page({
     // }
     this.getBestCouponByProduct();
     // this.dealChildPageInfo();
-    // this.getWaitTime();
+    this.getWaitTime();
   },
 
-  chooseExpress (notFirstLoad) {
+  chooseDaodian(notFirstLoad) {
     let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'))
-    if (this.data.payAmount > 65) {
-      this.setData({
-        deliverFee: 0
-      })
-    } else {
-      this.setData({
-        deliverFee: this.data.options.deliverFee || STORE_INFO.deliverFee || 0
-      })
-    }
     this.setData({
+      chooseDaodian: true,
+      chooseExpress: false,
       chooseSelf: false,
-      chooseExpress: true,
-      timeWords: '立即配送',
-      payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.deliverFee || 0)).toFixed(1)
-      // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
-    });
+      chooseCup: false,
+      deliverFee: 0,
+      timeWords: '立即下单',
+      // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
+      payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0)).toFixed(1)
+    })
     // if (!notFirstLoad) {
     //   this.getBestCouponByProduct();
     // }
     this.getBestCouponByProduct();
-
-    // this.dealChildPageInfo();
     this.getWaitTime();
+  },
+
+  chooseCup(notFirstLoad) {
+    if (this.data.distance <= 800 && this.data.distance > 0) {
+      let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'))
+      this.setData({
+        chooseDaodian: false,
+        chooseExpress: false,
+        chooseSelf: false,
+        chooseCup: true,
+        deliverFee: 0,
+        timeWords: '立即下单',
+        // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
+        payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0) - parseFloat(this.data.zidaibeiMoney || 5)).toFixed(1)
+      })
+      // if (!notFirstLoad) {
+      //   this.getBestCouponByProduct();
+      // }
+      this.getBestCouponByProduct();
+      this.getWaitTime();
+    }
+  },
+
+  chooseExpress (notFirstLoad, way) {
+    let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'))
+    if (this.data.distance < 0) {
+      this.setData({
+        distance: STORE_INFO.distance
+      })
+    }
+    if (way !== 'deliver') {
+      if (STORE_INFO.distance <= 3000 && STORE_INFO.distance >= 0) {
+        console.log(STORE_INFO.distance, 'STORE_INFO.distance')
+        if (!this.data.deliverMention) {
+          this.setData({
+            deliverFee: 0
+          })
+        } else {
+          console.log(this.data.options.deliverFee, 'this.data.options.deliverFee'),
+          console.log(STORE_INFO.deliverFee, 'STORE_INFO.deliverFee')
+          this.setData({
+            deliverFee: this.data.options.deliverFee || STORE_INFO.deliverFee || 0
+          })
+        }
+        this.setData({
+          chooseSelf: false,
+          chooseExpress: true,
+          chooseDaodian: false,
+          chooseCup: false,
+          timeWords: '立即下单',
+          payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.deliverFee || 0)).toFixed(1)
+          // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
+        });
+        // if (!notFirstLoad) {
+        //   this.getBestCouponByProduct();
+        // }
+        this.getBestCouponByProduct();
+
+        // this.dealChildPageInfo();
+        this.getWaitTime();
+        this.checkTransportFee(STORE_INFO);
+      }
+    } else {
+      if (wx.getStorageSync('chosenAddress')) {
+        let chosenAddress = wx.getStorageSync('chosenAddress')
+        model(`my/address/address-distance`, {
+          longitude: STORE_INFO.longitude,
+          latitude: STORE_INFO.latitude,
+          userAddressId: chosenAddress.id,
+        }).then(data => {
+          let distance = data.data.distance;
+          this.setData({
+            distance: distance
+          });
+          if (distance > 3000) {
+            this.chooseSelf(false);
+          }
+        })
+        // this.setData({
+        //   distance: chosenAddress.distance
+        // })
+      }
+    }
+    
+    
+  },
+
+  checkTransportFee(STORE_INFO) {
+    let deliverFee = this.data.options.deliverFee || STORE_INFO.deliverFee || 0;
+    let actualPrice = deliverFee + this.data.actualPrice;
+    this.setData({
+      deliverFee: deliverFee,
+      actualPrice: actualPrice == parseInt(actualPrice) ? parseInt(actualPrice) : parseFloat(actualPrice).toFixed(1)
+    }, () => {
+      this.setData({
+        actualOriginalPrice: parseFloat(this.data.actualPriceGap) + parseFloat(this.data.actualPrice)
+      })
+    });
   },
   // selectAddress() {
   //   wx.navigateTo({
@@ -460,10 +867,10 @@ Page({
   },
 
   goVoucher () {
-    wx.setStorageSync('voucherList', this.data.voucherList)
+    wx.setStorageSync('voucherList', this.data.voucherList);
+    // getApp().globalData.guaerItems = this.data.guaerItems;
     if (this.data.chosenInfo.type == 2) {
       wx.navigateTo({
-        // url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.voucherList.length >=10 ? this.data.voucherList.slice(0,10) : this.data.voucherList)}`,
         url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.couponUserRelation}&list=${JSON.stringify(this.data.voucherList.length >=10 ? this.data.voucherList.slice(0,10) : this.data.voucherList)}`,
       })
     } else {
@@ -476,21 +883,24 @@ Page({
 
   goCoupon () {
     wx.setStorageSync('couponList', this.data.couponList)
-    wx.navigateTo({
-      // url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
-      url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.content && this.data.chosenInfo.content[0] && this.data.chosenInfo.content[0].relationId : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
-    })
-    // if (this.data.chosenInfo.type == 2) {
-    //   wx.navigateTo({
-    //     url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
-    //   })
-    // } else {
-    //   wx.navigateTo({
-    //     // url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
-    //     url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.relationId : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
-    //   })
-    // }
+    if (this.data.chosenInfo.type == 1) {
+      wx.navigateTo({
+        url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.couponUserRelation}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
+      })
+    } else {
+      wx.navigateTo({
+        url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.relationId: this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList.length >=10 ? this.data.couponList.slice(0,10) : this.data.couponList)}`,
+      })
+    }
   },
+
+  goRedPack () {
+    wx.setStorageSync('redPackList', this.data.redPackList)
+    wx.navigateTo({
+      url: `/pages/pay/promotion-list/promotion-list?type=3&chosenRedPack=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.content && this.data.chosenInfo.content[0] && this.data.chosenInfo.content[0].relationId : this.data.chosenRedPack}&list=${JSON.stringify(this.data.redPackList.length >=10 ? this.data.redPackList.slice(0,10) : this.data.redPackList)}`,
+    })
+  },
+
   addAddress() {
     wx.navigateTo({
       url: '/pages/my/address/address',
@@ -511,21 +921,33 @@ Page({
       this.setData({
         chooseNoCoupon: true,
         chooseNoVoucher: true,
+        chooseNoRedPack: true,
         discountType: 0,
       })
     } else {
       this.setData({
-        chooseNoCoupon: this.data.chosenInfo.type === 2,
-        chooseNoVoucher: this.data.chosenInfo.type === 1
+        chooseNoCoupon: this.data.chosenInfo.type === 2 || this.data.chosenInfo.type === 3,
+        chooseNoVoucher: this.data.chosenInfo.type === 1 || this.data.chosenInfo.type === 3,
+        chooseNoRedPack: this.data.chosenInfo.type === 1 || this.data.chosenInfo.type === 2,
       })
     }
+    let userCouponIds = []
+    this.data.chosenInfo.content && this.data.chosenInfo.content.map(item => {
+      userCouponIds.push(item.relationId)
+      return item;
+    });
+    // if (userCouponIds.length == 0) {
+    //   return ;
+    // }
     model(`home/coupon/calculate-price-with-coupon`, {
-      couponList: this.data.chosenInfo.type ? this.data.chosenInfo.content : [],
+      // couponList: this.data.chosenInfo.type ? this.data.chosenInfo.content : [],
+      userCouponIds: this.data.chosenInfo.type ? userCouponIds.join(',') : '',
       productList: this.data.product,
       storeId: this.data.options.storeId,
       uid: wx.getStorageSync('token').user.id
     }).then(data => {
-      let result = parseFloat(data.data.discountPrice).toFixed(2);
+      let result = parseFloat(data.data.discountMoney).toFixed(2);
+      let levelMoney = parseFloat(data.data.levelMoney).toFixed(2);
       let toCancelOrders = data.data.toCancelOrders;
       if (toCancelOrders && toCancelOrders.length > 0) {
         this.setData({
@@ -536,25 +958,94 @@ Page({
       this.data.chosenInfo.content && this.data.chosenInfo.content.length > 0 && this.data.chosenInfo.content.forEach(item => {
         couponUserRelation.push(item.relationId);
       });
+      let actualPrice = 0;
+      if (!this.data.chooseCup) {
+        actualPrice = Number(parseFloat(parseFloat(data.data.resultPrice) + parseFloat(this.data.deliverFee)).toFixed(1))
+      } else {
+        actualPrice = Number(parseFloat(parseFloat(data.data.resultPrice) + parseFloat(this.data.deliverFee) - parseFloat(this.data.zidaibeiMoney)).toFixed(1))
+      }
+      if (actualPrice < 0) {
+        actualPrice = 0;
+      }
       couponUserRelation = couponUserRelation.join(',')
       this.setData({
-        actualPrice: parseFloat(data.data.resultPrice + parseFloat(this.data.deliverFee)).toFixed(2),
+        actualPrice: actualPrice,
         couponMoney: result,
+        levelMoney: levelMoney && levelMoney !== 'NaN' ? levelMoney : 0,
         couponUserRelation: couponUserRelation,
         discountType: data.data.type,
+      }, () => {
+        this.setData({
+          actualAfterMemberPrice: this.data.member_recharge > this.data.actualPrice ? 0 : (this.data.actualPrice - this.data.member_recharge),
+          actualOriginalPrice: parseFloat(this.data.actualPriceGap) + parseFloat(this.data.actualPrice)
+        })
       })
     });
   },
+
+   pageScrollToBottom: function () {
+    //  let scrollHeight = wx.getSystemInfoSync().windowHeight;
+    //  this.setData({
+    //    scrollTop: 500
+    //  });
+    const query = wx.createSelectorQuery();
+    query.select('#container').boundingClientRect();
+    query.selectViewport().scrollOffset();
+    query.exec((rect) => {
+      if (rect && rect[0] && rect[1]) {
+        console.log(rect[0].bottom, 'rect[0].bottom');
+        wx.pageScrollTo({
+          scrollTop: rect[0].bottom
+        });
+        this.setData({
+          viewToNav: 'xiguan'
+        });
+      }
+    });
+  },
+
   onReady: function () {
     // 页面渲染完成
 
   },
+
+  onPageScroll: function (e) {
+    // 页面滚动时执行
+    console.log(e, 'onPageScroll')
+  },
+
   onShow: function () {
     // 页面显示
     // wx.showLoading({
     //   title: '加载中...',
     // })
     // this.getCheckoutInfo();
+    let pages = getCurrentPages();
+    let prevPage = pages[pages.length - 2]; //上一个页面
+    if (wx.getStorageSync('showNoOrder')) {
+      this.setData({
+        showNoOrder: true
+      });
+      wx.removeStorageSync('showNoOrder')
+    }
+    if (wx.getStorageSync('deliverMention')) {
+      this.setData({
+        deliverMention: wx.getStorageSync('deliverMention')
+      });
+    }
+    let memberData = wx.getStorageSync('memberData');
+    if (memberData) {
+      this.setData({
+        member_recharge: Number(memberData.member_total_recharge)
+      });
+      if (memberData.member_total_recharge > 0) {
+
+      }
+    }
+    let fromTransport = wx.getStorageSync('fromTransport');
+    if (fromTransport == 'deliver') {
+      this.chooseExpress(false, 'deliver');
+    }
     if (this.data.goBackFromChildPage) {
       this.dealChildPageInfo() ;
     } else if (this.data.fromAddress) {
@@ -580,6 +1071,17 @@ Page({
 
   },
 
+  toggleMemberRecharge () {
+    this.setData({
+      useMemberReharge: !this.data.useMemberReharge
+    });
+    if (!this.data.useMemberReharge) {
+      this.setData({
+        actualAfterMemberPrice: this.data.member_recharge > this.data.actualPrice ? 0 : (this.data.actualPrice - this.data.member_recharge)
+      })
+    }
+  },
+
   getRemark () {
     this.setData({
       remark: wx.getStorageSync('remark')
@@ -587,157 +1089,216 @@ Page({
   },
 
   submit () {
-    wx.showLoading({
-      title: 'Loading...', //提示的内容,
-      mask: true, //显示透明蒙层，防止触摸穿透,
-      success: res => {}
-    });
-    let userAddressId = this.data.options.userAddressId || this.data.checkedExpress.id;
-    if (this.data.chooseSelf) {
-      userAddressId = null;
-    }
-    if (!userAddressId && this.data.chooseExpress) {
-      if (wx.getStorageSync('addressList') && wx.getStorageSync('addressList')[0]  && wx.getStorageSync('addressList')[0].id) {
-        userAddressId = wx.getStorageSync('addressList')[0].id
-      } else {
-        // userAddressId = 3;
-      }
-    }
-    let param = {
-      openId: wx.getStorageSync('openid'),
-      storeId: this.data.options.storeId,
-      userAddressId: userAddressId,
-      userId: wx.getStorageSync('token').user.id,
-      discountType: this.data.discountType,
-      deliverFee: this.data.deliverFee,
-      payAmount: this.data.actualPrice,
-      orderType: this.data.chooseSelf ? 3 : 1,
-      payType: 1,
-      remark: this.data.remark,
-      discountIds: this.data.couponUserRelation
-      // discountIds: '1,2,3'
-    }
-    // if (!this.data.options.userAddressId) {
-    //   delete param.userAddressId;
-    // }
-    if (!param.discountIds || param.discountIds === 'undefined') {
-      param.discountIds = '';
-    }
-    if (!param.userAddressId) {
-      delete param.userAddressId;
-    }
-    let paramStr = '';
-    let keys = Object.keys(param);
-    keys.forEach((item, index) => {
-      if (index !== keys.length - 1) {
-        paramStr += item + '=' + param[item] + '&';
-      } else {
-        paramStr += item + '=' + param[item];
-      }
-    })
-
-    let products = this.data.options.product;
-    products.forEach(item => {
-      if (!item.number) {
-        item.number = item.num;
-      }
-      delete item.num;
-      delete item.skuName;
-      delete item.totalPrice;
-      delete item.productName;
-      delete item.price;
-    })
-
-    // param.list = JSON.stringify(products);
-
-    param.storeId = this.data.options.storeId
-
-    // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
-    model(`order/detail/submit`, param, 'POST').then(data => {
-      wx.hideLoading();
-      if (data.code === 'suc') {
-        wx.removeStorageSync('remark');
-        wx.removeStorageSync('CART_LIST');
-        wx.removeStorageSync('remark');
-
-        if (data.data.ifComplete) {
-          wx.navigateTo({
-            // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
-            url: `/pages/order/detail/detail?id=${data.data.order.id}&orderClassify=1`
+    try {
+          wx.showLoading({
+            title: '加载中', //提示的内容,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
           });
-        } else {
-          let payParamStr = '';
-          let params = data.data;
-          for (let key of Object.keys(params)) {
-            if (key === 'package') {
-              params[key] = params[key].split('=')[1];
-            }
-            if (key === 'order') {
-              params[key] = params[key].id;
-            }
-            payParamStr += `${key}=${params[key]}&`;
+          let userAddressId = this.data.options.userAddressId || this.data.checkedExpress.id;
+          if (this.data.chooseSelf || this.data.chooseDaodian || this.data.chooseCup) {
+            userAddressId = null;
           }
-          payParamStr += `price=${this.data.actualPrice}`
-          wx.navigateTo({
-            // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
-            url: `/pages/pay/normalPay/normalPay?${payParamStr}`
-          });
-        }
-      }
-    }).catch(e => {
-      if (e.errMsg && e.errMsg.indexOf('fail') > 0) {
-        this.setData({
-          errorToast: true,
-          toastInfo: '暂无网络，请稍后重试'
-        });
-        setTimeout(() => {
-          this.setData({
-            errorToast: false
-          });
-        }, 1500);
-      } else {
-        this.setData({
-          errorToast: true,
-          toastInfo: e
-        });
-        setTimeout(() => {
-          this.setData({
-            errorToast: false
-          });
-        }, 1500);
-      }
-      wx.hideLoading({
-        title: 'Loading...', //提示的内容,
-        mask: true, //显示透明蒙层，防止触摸穿透,
+          if (!userAddressId && this.data.chooseExpress) {
+            if (wx.getStorageSync('addressList') && wx.getStorageSync('addressList')[0] && wx.getStorageSync('addressList')[0].id) {
+              userAddressId = wx.getStorageSync('addressList')[0].id
+            } else {
+              // userAddressId = 3;
+            }
+          }
+          let orderType = 1;
+          if (this.data.chooseCup) {
+            orderType = 4;
+          } else if (this.data.chooseDaodian) {
+            orderType = 2;
+          } else if (this.data.chooseSelf) {
+            orderType = 3;
+          }
+          let payType = 1;
+          if (this.data.useMemberReharge) {
+            payType = 15;
+          }
+          let param = {
+            openId: wx.getStorageSync('openid'),
+            storeId: this.data.options.storeId,
+            userAddressId: userAddressId,
+            // userId: wx.getStorageSync('token').user.id,
+            // discountType: this.data.discountType,
+            // deliverFee: this.data.deliverFee,
+            // payAmount: this.data.actualPrice,
+            orderType: orderType,
+            payType: payType,
+            remark: this.data.remark,
+            discountIds: this.data.couponUserRelation,
+            remark_json: JSON.stringify({
+              xiguan: this.data.chooseItemXiguan,
+              other: this.data.remark
+            })
+            // discountIds: '1,2,3'
+          }
+          if (this.data.chooseItemXiguan) {
+            param.remark += ' 需要吸管';
+          }
+          // if (!this.data.options.userAddressId) {
+          //   delete param.userAddressId;
+          // }
+          if (!param.discountIds || param.discountIds === 'undefined') {
+            param.discountIds = '';
+          }
+          if (!param.userAddressId) {
+            delete param.userAddressId;
+          }
+          if (this.data.addPriceIds) {
+            param.addPriceIds = this.data.addPriceIds
+          }
+          let paramStr = '';
+          let keys = Object.keys(param);
+          keys.forEach((item, index) => {
+            if (index !== keys.length - 1) {
+              paramStr += item + '=' + param[item] + '&';
+            } else {
+              paramStr += item + '=' + param[item];
+            }
+          })
+
+          let products = this.data.options.product;
+          products.forEach(item => {
+            if (!item.number) {
+              item.number = item.num;
+            }
+            delete item.num;
+            delete item.skuName;
+            delete item.totalPrice;
+            delete item.productName;
+            delete item.price;
+          })
+
+          if (this.data.guaerItems.length > 0) {
+            param.guaerUserCouponId = this.data.guaerItems[0].guaerUserCoupon.id
+          }
+
+          // param.list = JSON.stringify(products);
+
+          param.storeId = this.data.options.storeId
+              // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
+              model(`order/detail/submit`, param, 'POST').then(data => {
+                wx.hideLoading();
+                if (data.code === 'suc') {
+                  wx.removeStorageSync('remark');
+                  wx.removeStorageSync('CART_LIST');
+                  wx.removeStorageSync('remark');
+
+                  if (data.data.ifComplete) {
+                    wx.setStorageSync('showNoOrder', true);
+                    wx.navigateTo({
+                      url: `/pages/pay/pay_success/pay_success?orderId=${data.data.order.id}&varCode=${data.data.order.varCode}&price=${this.data.actualPrice}`
+                      // url: `/pages/order/detail/detail?id=${data.data.order.id}&orderClassify=1`
+                    });
+                  } else {
+                    let payParamStr = '';
+                    let params = data.data;
+                    for (let key of Object.keys(params)) {
+                      if (key === 'package') {
+                        params[key] = params[key].split('=')[1];
+                      }
+                      if (key === 'order') {
+                        // params['varCode'] = params[key].varCode;
+                        payParamStr += `varCode=${params['order']['verify_code']}&`;
+                        params[key] = params[key].id;
+                      }
+                      payParamStr += `${key}=${params[key]}&`;
+                    }
+                    payParamStr += `price=${this.data.actualPrice}`
+                    wx.navigateTo({
+                      // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
+                      url: `/pages/pay/normalPay/normalPay?${payParamStr}`
+                    });
+                  }
+                }
+              }).catch(e => {
+                if (e && e.errMsg && e.errMsg.indexOf('fail') > 0) {
+                  this.setData({
+                    errorToast: true,
+                    toastInfo: '暂无网络，请稍后重试'
+                  });
+                  setTimeout(() => {
+                    this.setData({
+                      errorToast: false
+                    });
+                  }, 1500);
+                } else {
+                  this.setData({
+                    errorToast: true,
+                    toastInfo: e || '下单失败'
+                  });
+                  setTimeout(() => {
+                    this.setData({
+                      errorToast: false
+                    });
+                  }, 1500);
+                }
+                wx.hideLoading({
+                  title: '加载中', //提示的内容,
+                  mask: true, //显示透明蒙层，防止触摸穿透,
+                });
+                // wx.navigateTo({
+                //   url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
+                // });
+              })
+    } catch (e) {
+      wx.hideLoading();
+      this.setData({
+        errorToast: true,
+        toastInfo: e
       });
-      // wx.navigateTo({
-      //   url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
-      // });
+    }
+  },
+
+  requestSubscribeAndSubmit() {
+    let self = this;
+    wx.requestSubscribeMessage({
+      tmplIds: ['YOVqvVUg2cXGRXbIzcOZZ5UmF0f8yr5BrmrYt30ONeA'],
+      success(res) {
+        console.log(res, 'success')
+        wx.setStorageSync('subscribe', true);
+        let reject = Object.keys(res).filter(e => res[e] === 'reject');
+
+        console.log(reject, 'reject');
+        if (reject.length === 0) {
+          self.setData({
+            subscribe: true
+          })
+        }
+        self.submit();
+      },
+      fail(e) {
+        console.log(e, 'fail')
+        self.submit();
+      }
+    });
+
+  },
+
+  goState() {
+    let config = wx.getStorageSync('config');
+    let url = config.baseUrl[config.env]
+    url += 'statement/pay-gas.html'
+    wx.navigateTo({
+      url: `/pages/webview/webview?url=${encodeURIComponent(url)}`
+    });
+  },
+
+  chooseXieyi() {
+    this.setData({
+      zunshou: !this.data.zunshou
     })
   },
 
-  showXieyi () {
-    let content = `一、您在同意授权书前应完整、仔细地阅读本授权书您勾选同意将被视为完全理解并接受以下全部授权书条款。您在加油咖啡上勾选同意本支付授权书后，即成为本支付授权书之授权人，该授权即刻发生效力。您如果不同意以下授权书条款，请勿勾选同意，且不要迸行后续操作支付授权书授权人兹授权上海活力山羊餐饮管理有限公司(以下简称“乙方”)通过第三方支付平台划扣服务费。\n
-
-        二、服务費是指授权人通过加油咖啡提交的订单上记载的。\n
-
-        三、总费用、在授权人成功提交订单后，乙方依照加油咖啡上公布的收费规则计算服务费用。授权人应在5分钟内根据页面指示完成支付。\n
-
-        四、如因授权人在第三方支付平台中的支付账户被锁定、无效、盗用、被往来银行拒绝等，以致支付账户请款失败时乙方有权依据与授权人之消费账单要求授权人支付服务费。\n
-
-        五、授权人如有冒用他人支付账户之行为，须自负法律责任。\n
-
-        六、在使用加油咖啡服务的过程中，如授权人未遵从相关规则，则乙方有权拒绝为授权人提供相关服务，且无需承担任何责任。因授权人的过错导致的任何损失由授权人承担，该等过错包括但不限于：不按照交易提示操作，未及时进行交易操作等。`
-    wx.showModal({
-      title: '咖啡支付协议', //提示的标题,
-      content: content, //提示的内容,
-      showCancel: false,
-      confirmColor: '#f50000',
-    });
-    
-  },
   submitOrder: function () {
-    if (this.data.chooseSelf) {
+    if (!this.data.zunshou) {
+      return ;
+    }
+    if (this.data.chooseSelf || this.data.chooseDaodian || this.data.chooseCup) {
       wx.showModal({
         // title: '提示', //提示的标题,
         content: `是否确认前往【${this.data.checkedAddress.storeName}】自提？订单确认后将无法更改`, //提示的内容,
@@ -757,7 +1318,7 @@ Page({
                 confirmColor: '#f50000', //确定按钮的文字颜色,
                 success: res => {
                   if (res.confirm) {
-                    this.submit();
+                    this.requestSubscribeAndSubmit();
                   } else if (res.cancel) {
                     console.log('用户点击取消')
                   }
@@ -767,7 +1328,7 @@ Page({
                 showCouponMention: false
               })
             } else {
-              this.submit();
+              this.requestSubscribeAndSubmit();
             }
           } else if (res.cancel) {
             console.log('用户点击取消')
@@ -777,7 +1338,7 @@ Page({
     } else {
       if (this.data.checkedExpress.id) {
         if (parseFloat(this.data.actualPrice) > 0) {
-          this.submit();
+          this.requestSubscribeAndSubmit();
         } else {
           console.log(8888);
           wx.showModal({
@@ -790,7 +1351,7 @@ Page({
             confirmColor: '#f50000', //确定按钮的文字颜色,
             success: res => {
               if (res.confirm) {
-                this.submit();
+                this.requestSubscribeAndSubmit();
               } else if (res.cancel) {
                 console.log('用户点击取消')
               }
@@ -798,7 +1359,25 @@ Page({
           });
         }
         
+      } else {
+        wx.showModal({
+          content: '您还没有收货地址',
+          showCancel: false, //是否显示取消按钮,
+          cancelColor: '#000000', //取消按钮的文字颜色,
+          confirmText: '去添加', //确定按钮的文字，默认为取消，最多 4 个字符,
+          confirmColor: '#DAA37F', //确定按钮的文字颜色,
+          success: res => {
+            if (res.confirm) {
+              wx.navigateTo({
+                url: '/pages/my/address/address',
+              })
+            } else if (res.cancel) {
+              console.log('查看发票记录')
+            }
+          }
+        })
       }
     }
+    
 }
 })

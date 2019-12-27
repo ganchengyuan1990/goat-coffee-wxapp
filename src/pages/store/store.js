@@ -22,7 +22,7 @@ Page({
 		viewToNav: "",
 		scrollTop: 0,
 		// scrollview 设定高度
-		listHeight: 300,
+		listHeight: 500,
 		activeIndex: 0,
 		isCatePanelShow: false,
 		isCartPanelShow: false,
@@ -40,70 +40,66 @@ Page({
 		// 配送地址id
 		userAddressInfo: {},
 		// 是否自提
-		isSelfTaking: true,
+		isselfTaking: true,
 		isLoadStorageCart: true,
 		actImage: '',
 		isActWrapShow: false,
 		fromTransport: '',
 		products: [],
 		resultPrice: -1,
-		gettingLocation: false
+		gettingLocation: false,
+		futitle: false,
+		isLogin: false,
+		memberName: '会员',
+		memberTagColor: '',
+		tagViewName: '',
+		chosenTaglength: 0,
+		showStoreModal: false,
+		fromShare: false,
+		fromPaySuccess: false,
+		storeArr: [],
+		isHigh: false,
 	},
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		let info = wx.getStorageSync('token') || {}
-		let isLogin = this.checkLogin()
-		// 登录检查逻辑后移
-		// if (!isLogin) {
-		// 	wx.redirectTo({
-		// 		url: '/pages/login/login'
-		// 	})
-		// 	return
-		// }
-		let isNew = info.ifNew
-		let configPic = ''
 
-		try {
-			configPic = info.config.newUserPic
-		} catch (e) {
-			// console.log(e);
-		}
-		// if (isNew && configPic) {
-		// 	this.setData({
-		// 		actImage: configPic,
-		// 		isActWrapShow: true
-		// 	})
-		// 	try {
-		// 		let token = wx.getStorageSync('token')
-		// 		token.ifNew = false
-		// 		wx.setStorageSync('token', token)
-		// 	} catch (e) {
-		// 		console.log(e);
-		// 	}
-		// }
+		const systemInfo = wx.getSystemInfoSync();
+
+
 		// 感觉跟onShow里的fetchLoaction重合了
-		this.fetchLoaction()  
+		// this.fetchLoaction()  
 		this.checkSaveUser()
 
-		if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
-			let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
-			model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
-				let sum = 0;
-				res.data.carts && res.data.carts.forEach(item => {
-					sum += item.num;
-				})
-				wx.setStorageSync('cartSum', sum);
-				wx.setTabBarBadge({
-					index: 3,
-					text: sum.toString()
-				});
-			}).catch(e => {
-				
+		model('base/site/config-list').then((res) => {
+			wx.setStorageSync('configData', res.data)
+			this.setData({
+				// existLuckActivity: false
+				youngHomeLongBanner: res.data['young-home-long-banner'],
+				youngHomeOrderImg: res.data['young-home-order-img'],
+				youngHomeNewsList: res.data['young-home-news-list'],
+				existInviteActivity: Boolean(res.data['exist-invite-activity']),
+				existLuckActivity: Boolean(res.data['exist-luck-activity']),
+				continueDrinkActivity: res.data['continue-drink-activity'],
+				youngYshareBanner: res.data['young-y-share-banner']
 			});
-		}
+		}).catch(e => {
+			//  wx.hideLoading();
+		});
+
+		this.setData({
+			isHigh: systemInfo.screenHeight > 800,
+			fromShare: Boolean(options.fromShare),
+			fromPaySuccess: options.from == 'pay_success'
+		})
+
+
+	},
+
+	goStoreIndex (item) {
+		this.formatStoreInfo(item.detail)
 	},
 
 
@@ -118,12 +114,12 @@ Page({
 				wx.setStorageSync('cartSum', sum);
 				if (sum) {
 					wx.setTabBarBadge({
-						index: 3,
+						index: 1,
 						text: sum.toString()
 					});
 				} else {
 					wx.removeTabBarBadge({
-						index: 3,
+						index: 1,
 					});
 				}
 			}).catch(e => {
@@ -145,10 +141,10 @@ Page({
 			let query1 = wx.createSelectorQuery();
 			query1.select(".J_img_wrap").boundingClientRect();
 			query1.exec(res => {
-				height2 = res[0].height;
+				height2 = res[0] && res[0].height;
 				console.log(height2);
 				this.setData({
-					listHeight: winHeight - height1 - height2
+					listHeight: winHeight - height1 - (height2 || 0)
 				});
 				// this.calculateHeight();
 			});
@@ -159,11 +155,17 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-		let isLogin = this.checkLogin()
-		if (!isLogin) {
-			return
+		if (typeof this.getTabBar === 'function' &&
+			this.getTabBar()) {
+			this.getTabBar().setData({
+				selected: 1
+			})
 		}
-		// console.log(app.globalData, 'globalData')
+		wx.removeStorageSync('showNoOrder');
+		let isLogin = this.checkLogin()
+		this.setData({
+			isLogin: isLogin
+		})
 		let fromTransport = app.globalData.fromTransport
 		// let isGeoAuth = app.globalData.isGeoAuth
 		if (fromTransport) {
@@ -173,7 +175,14 @@ Page({
 			})
 			app.globalData.fromTransport = ''
 		} else {
-			// this.fetchLoaction();
+			let fromPaySuccess = app.globalData.fromPaySuccess;
+			if (fromPaySuccess || this.data.fromShare || this.data.fromPaySuccess) {
+				this.fetchLoaction(null, true);
+				app.globalData.fromPaySuccess = '';
+			} else {
+				this.fetchLoaction(null, false);
+			}
+			
 			// if (!isGeoAuth) {
 			// 	this.checkAuth()
 			// }
@@ -192,14 +201,58 @@ Page({
 			// }
 			console.log(isGeoAuth, 'isGeoAuth');
 			if (!isGeoAuth && !this.data.gettingLocation) {
-				this.fetchLoaction()
+				this.fetchLoaction(null, false)
 			}
 
-			if (this.data.isLoadStorageCart) {
-				this.getStorageCart()
-			}
+			// if (this.data.isLoadStorageCart) {
+			// 	this.getStorageCart()
+			// }
 			// this.toggleTabBar(true);
 		}
+		if (!isLogin) {
+			return
+		}
+		let info = wx.getStorageSync('token') || {}
+		// let isLogin = this.checkLogin()
+		// 登录检查逻辑后移
+		let isNew = info.ifNew
+		let configPic = ''
+
+		try {
+			configPic = info.config.newUserPic
+		} catch (e) {
+			// console.log(e);
+		}
+		let memberData = wx.getStorageSync('memberData')
+		if (memberData) {
+			let lalala = {
+				"青麦": "linear-gradient(270deg,rgba(191,210,167,1) 0%,rgba(128,155,90,1) 100%)",
+				"银麦": "linear-gradient(270deg,rgba(209,209,209,1) 0%,rgba(148,148,148,1) 100%)",
+				'金麦': 'linear-gradient(270deg,rgba(216,204,178,1) 0%,rgba(193,175,136,1) 100%)',
+				'铂金': 'linear-gradient(270deg,rgba(195,174,214,1) 0%,rgba(124,97,149,1) 100%)',
+				'钻石': 'linear-gradient(270deg,rgba(202,155,155,1) 0%,rgba(161,86,86,1) 100%)',
+				'黑金': 'linear-gradient(270deg,rgba(132,132,132,1) 0%,rgba(0,0,0,1) 100%)'
+			}
+			this.setData({
+				memberName: memberData.currentDesign.name,
+				memberTagColor: lalala[memberData.currentDesign.name]
+			});
+		}
+		if (isNew && configPic) {
+			this.setData({
+				actImage: configPic,
+				isActWrapShow: true
+			})
+			try {
+				let token = wx.getStorageSync('token')
+				token.ifNew = false
+				wx.setStorageSync('token', token)
+			} catch (e) {
+				console.log(e);
+			}
+		}
+		// console.log(app.globalData, 'globalData')
+		
 		this.setTabStatus();
 	},
 
@@ -216,7 +269,19 @@ Page({
 	/**
 	 * 用户点击右上角分享
 	 */
-	onShareAppMessage() {},
+	onShareAppMessage() {
+		return {
+			title: '快来喝一杯加油咖啡',
+			path: `/pages/store/store?fromShare=1`,
+			success: function (res) {
+
+			},
+			fail: function (res) {
+				// 转发失败
+			}
+		}
+
+	},
 	checkLogin() {
 		let info = wx.getStorageSync('token') || {}
 		return info.token
@@ -257,7 +322,7 @@ Page({
 			let {
 				resultPrice
 			} = data.data;
-			if (data.data && data.data.discountPrice > 0) {
+			if (data.data && data.data.discountMoney > 0) {
 				this.setData({
 					resultPrice: resultPrice
 				})
@@ -279,60 +344,89 @@ Page({
 		if (type === 'deliver') {
 			this.setData({
 				userAddressInfo: info || {},
-				isSelfTaking: false
+				isselfTaking: false
 			})
-			this.fetchLoaction()
-		} else if (type === 'selftaking') {
+			this.fetchLoaction(info, true)
+		} else if (type === 'selfTaking') {
 			this.setData({
-				isSelfTaking: true
+				isselfTaking: true
 			})
 			this.formatStoreInfo(info)
 		} else {
-			this.fetchLoaction()
+			this.fetchLoaction(null, true)
 		}
 	},
 	/**
 	 * 获取经纬度
 	 */
-	fetchLoaction() {
+	fetchLoaction(info, forceUpdate) {
+		let configData = wx.getStorageSync('configData');
+		let token = wx.getStorageSync('token');
+		let appCache = configData['wxapp-cache-control'];
+		if (!forceUpdate && appCache && token) {
+			if (app.globalData.lastStoreTime) {
+				console.log(app.globalData.lastStoreTime, 99999);
+				let lastTime = app.globalData.lastStoreTime;
+				let nowTime = new Date().getTime();
+				app.globalData.lastStoreTime = nowTime;
+				if (nowTime - lastTime <= parseInt(appCache) * 1000) {
+					return;
+				}
+			} else {
+				app.globalData.lastStoreTime = new Date().getTime();
+			}
+		}
+		
 		let self = this
 		this.setData({
 			gettingLocation: true
 		})
-		// wx.showLoading({
-		// 	title: '加载中',
-		// })
-		wx.getLocation({
-			type: 'wgs84',
-			success(res) {
-				const {
-					latitude,
-					longitude
-				} = res
-				let geo = {
-					lng: longitude,
-					lat: latitude
-				}
-				self.setData({
-					gettingLocation: false
-				})
-				app.globalData.isGeoAuth = true
-				self.fetchStore(geo)
-			},
-			fail() {
-				self.setData({
-					gettingLocation: false
-				})
-				self.checkAuth()
-				app.globalData.isGeoAuth = false
-				wx.hideLoading()
-				wx.showToast({
-					title: '加载失败,请检查是否打开微信及小程序定位权限',
-					icon: 'none',
-					duration: 3500
-				})
-			}
+		wx.showLoading({
+			title: '加载中',
 		})
+		if (info) {
+			self.fetchStore({
+				lng: info.longitude,
+				lat: info.latitude
+			})
+		} else {
+			wx.getLocation({
+				type: 'wgs84',
+				success(res) {
+					let {
+						latitude,
+						longitude
+					} = res
+					console.log(latitude, longitude, '定位信息');
+					// latitude = 31.1949185300
+					// longitude = 121.3103584400
+					let geo = {
+						lng: longitude,
+						lat: latitude
+					}
+					self.setData({
+						gettingLocation: false
+					})
+					app.globalData.isGeoAuth = true
+					app.globalData.userGeo = geo
+					self.fetchStore(geo)
+				},
+				fail() {
+					self.setData({
+						gettingLocation: false
+					})
+					self.checkAuth()
+					app.globalData.isGeoAuth = false
+					wx.hideLoading()
+					wx.showToast({
+						title: '加载失败,请检查是否打开微信及小程序定位权限',
+						icon: 'none',
+						duration: 3500
+					})
+				}
+			})
+		}
+		
 	},
 	/**
 	 * 获取店铺信息
@@ -349,7 +443,7 @@ Page({
 			const {
 				data
 			} = res
-			if (data && data.length > 0) {
+			if (data && data.length == 1) {
 				// if (data.length > 1) {
 				// 	wx.showModal({
 				// 		title: '提示',
@@ -367,6 +461,14 @@ Page({
 				let storeInfo = data[0]
 				this.formatStoreInfo(storeInfo)
 				// }
+			} else if (data && data.length > 1) {
+				this.setData({
+					storeArr: data.slice(0,2),
+					showStoreModal: true
+				})
+				let storeInfo = data[0]
+				this.formatStoreInfo(storeInfo, true)
+				// wx.hideLoading();
 			}
 		}).catch(e => {
 			console.log(e)
@@ -378,33 +480,40 @@ Page({
 			})
 		})
 	},
-	formatStoreInfo(storeInfo) {
+	formatStoreInfo(storeInfo, noToast) {
 		if (!storeInfo) {
 			return
 		}
+		// debugger
 		wx.setStorage({
 			key: 'STORE_INFO',
 			data: JSON.stringify(storeInfo)
 		})
-		let distance = storeInfo.distance || 0
+		let distance = storeInfo.distance
 		let formatDistance = ''
 		try {
 			if (distance < 1000) {
 				formatDistance = `${Math.round(distance)}m`
-			} else if (distance < 10000) {
+			} else if (distance < 3000) {
 				formatDistance = `${parseFloat(distance/1000).toFixed(1)}km`
 			} else {
-				formatDistance = `>10km`
+				formatDistance = `>3km`
 			}
+			// wx.setStorageSync('distance', distance);
 		} catch (e) {
 			console.log(e);
 		}
-		if (parseFloat(storeInfo.distance) > 10000) {
+		if (parseFloat(storeInfo.distance) > 3000 && !noToast) {
+			let fromTransport = wx.getStorageSync('fromTransport');
+			let content = `您与店铺的距离超过3公里，请确认店铺是${storeInfo.storeName}`
+			if (fromTransport == 'deliver') {
+				content = "您与门店的距离太远了，已超出配送范围~"
+			}
 			wx.showModal({
 				title: '提示',
-				confirmColor: '#f50000', //确定按钮的文字颜色,
+				confirmColor: '#DE4132', //确定按钮的文字颜色,
 				showCancel: false,
-				content: `您与店铺的距离超过10公里，请确认店铺是${storeInfo.storeName}`,
+				content: content,
 				confirmText: '我知道了'
 			})
 		}
@@ -433,34 +542,87 @@ Page({
 
 			const list = data.classify_list;
 			// 计算单品价格
-			list.forEach(item => {
-				item.product_list.forEach(ele => {
-					if (ele.sku_list && ele.sku_list[0]) {
-						ele.price = ele.sku_list[0].price;
-					}
-					if (ele.default_sku) {
-						ele.default_sku.orinalPrice = parseFloat(parseFloat(ele.default_sku.sale_price) + parseFloat(ele.default_prop.price)).toFixed(2);
-					}
-				})
-				if (item.name === '能量包套餐组合') {
+			if (list.length > 0) {
+				list.map(item => {
+					item.isHeader = true;
 					item.product_list.forEach(ele => {
 						if (ele.sku_list && ele.sku_list[0]) {
-							ele.default_sku.orinalPrice = parseFloat(ele.default_sku.sale_price).toFixed(2);
-							var key_list = ele.key_list;
-							key_list.forEach(e => {
-								e.val_list.forEach(a => {
-									if (a.isdefault === 1) {
-										ele.default_sku.orinalPrice = parseFloat(parseFloat(ele.default_sku.orinalPrice) + a.price).toFixed(2);
-									}
-								})
-							})
+							ele.price = ele.sku_list[0].price;
+						}
+						if (ele.default_sku) {
+							let sss = parseFloat(parseFloat(ele.default_sku.sale_price) + parseFloat(ele.default_prop.price)).toFixed(2);
+							if (this.data.isLogin) {
+								sss = parseFloat(parseFloat(ele.default_sku.member_price) + parseFloat(ele.default_prop.price)).toFixed(2);
+							}
+							ele.default_sku.orinalPrice = (sss == parseInt(sss) ? parseInt(sss) : parseFloat(sss).toFixed(1));
+							if (ele.default_sku.price) {
+								ele.default_sku.price = (ele.default_sku.price == parseInt(ele.default_sku.price) ? parseInt(ele.default_sku.price) : parseFloat(ele.default_sku.price).toFixed(1));
+							}
+							ele.default_sku.sale_price = (ele.default_sku.sale_price == parseInt(ele.default_sku.sale_price) ? parseInt(ele.default_sku.sale_price) : parseFloat(ele.default_sku.sale_price).toFixed(1));
+							if (ele.default_prop.price) {
+								let sss_orinals = parseFloat(ele.default_prop.price).toFixed(2);
+								console.log(sss_orinals, 999);
+								ele.default_sku.price = (sss_orinals == parseInt(sss_orinals) ? parseInt(sss_orinals) : parseFloat(sss_orinals).toFixed(1));
+							}
+
 						}
 					})
-				}
-			});
+					if (item.name === '能量包套餐组合') {
+						item.product_list.forEach(ele => {
+							if (ele.sku_list && ele.sku_list[0]) {
+								ele.default_sku.orinalPrice = parseFloat(ele.default_sku.sale_price).toFixed(2);
+								if (this.data.isLogin) {
+									ele.default_sku.orinalPrice = parseFloat(ele.default_sku.member_price).toFixed(2);
+								}
+								ele.default_sku.sale_price = (ele.default_sku.sale_price == parseInt(ele.default_sku.sale_price) ? parseInt(ele.default_sku.sale_price) : parseFloat(ele.default_sku.sale_price).toFixed(1));
+								var key_list = ele.key_list;
+								key_list.forEach(e => {
+									e.val_list.forEach(a => {
+										if (a.isdefault === 1) {
+											ele.default_sku.orinalPrice = parseFloat(parseFloat(ele.default_sku.orinalPrice) + a.price).toFixed(2);
+										}
+									})
+								})
+							}
+						})
+					}
+					if (item.tips) {
+						// item.tips = item.tips.substr(0, item.tips.length - 1);
+					}
+					return item;
+				});
+			} else {
+				wx.showModal({
+					content: '此店铺目前暂时还未开业，敬请期待！',
+					showCancel: false, //是否显示取消按钮,
+					cancelColor: '#000000', //取消按钮的文字颜色,
+					confirmText: '去别处逛', //确定按钮的文字，默认为取消，最多 4 个字符,
+					confirmColor: '#DAA37F', //确定按钮的文字颜色,
+					success: res => {
+						if (res.confirm) {
+							wx.navigateTo({
+								url: '/pages/transport/transport?type=1'
+							});
+						} else if (res.cancel) {
+							console.log('查看发票记录')
+						}
+					}
+				})
+				wx.hideLoading()
+				return;
+			}
+			
+
+			const recommend = data.recommend
+			if (recommend) {
+				wx.setStorageSync('recommend', recommend);
+			}
+			list[0].isHeader = false;
 			this.setData({
 				scrollTop: 0,
-				menuList: list
+				menuList: list,
+				tagViewName: list && list.length > 0 ? list[0].name : '',
+				chosenTaglength: list && list.length > 0 ? list[0].product_list.length : 0,
 			})
 			this.generatePriceMap()
 			this.calculateHeight()
@@ -559,7 +721,8 @@ Page({
 			// console.log(res, 'res')
 			for (let i = 0; i < res[0].length; i++) {
 				height += parseInt(res[0][i].height);
-				heigthArr.push(height);
+				let addValue = i > 2 ? (30 * i - 23) : (30 * i + 3);
+				heigthArr.push(height + addValue);
 			}
 			this.setData({
 				heigthArr: heigthArr
@@ -568,10 +731,19 @@ Page({
 
 	},
 	selectNav(e) {
+		let menulist = JSON.parse(JSON.stringify(this.data.menuList));
+		menulist.map(item => {
+			item.isHeader = true;
+			return item;
+		})
+		menulist[e.currentTarget.dataset.index].isHeader = false;
 		// console.log(e.currentTarget.dataset.index, e.currentTarget.dataset.navid)
 		this.setData({
 			activeIndex: e.currentTarget.dataset.index,
-			viewToList: e.currentTarget.dataset.navid
+			viewToList: e.currentTarget.dataset.navid,
+			tagViewName: this.data.menuList[e.currentTarget.dataset.index].name,
+			chosenTaglength: this.data.menuList[e.currentTarget.dataset.index].product_list.length,
+			menuList: menulist
 		});
 	},
 
@@ -579,14 +751,24 @@ Page({
 	scroll(e) {
 		(util.throttle(() => {
 			let srollTop = e.detail.scrollTop;
+			// console.log(srollTop, 1000);
 			for (let i = 0; i < this.data.heigthArr.length; i++) {
 				if (
 					srollTop >= this.data.heigthArr[i] &&
 					srollTop < this.data.heigthArr[i + 1] &&
 					this.data.activeIndex != i
 				) {
+					let menulist = JSON.parse(JSON.stringify(this.data.menuList));
+					menulist.map(item => {
+						item.isHeader = true;
+						return item;
+					})
+					menulist[i].isHeader = false;
 					this.setData({
-						activeIndex: i
+						activeIndex: i,
+						tagViewName: this.data.menuList[i].name,
+						chosenTaglength: this.data.menuList[i].product_list.length,
+						menuList: menulist
 					});
 					if (i < 3) {
 						this.setData({
@@ -600,7 +782,7 @@ Page({
 					return;
 				}
 			}
-		}, 100))()
+		}, 80))()
 	},
 	orderProduct(e) {
 
@@ -815,11 +997,11 @@ Page({
 			userAddressId: this.data.userAddressInfo && this.data.userAddressInfo.id || info.userAddressId,
 			deliverFee: fee,
 			payAmount: totalPrice,
-			orderType: info.isSelfTaking ? 2 : 1,
+			orderType: info.isselfTaking ? 2 : 1,
 			product: products
 		}
 
-		const url = `/pages/pay/checkout/checkout?fromTransportIndex=${this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isSelfTaking?'selftaking':'delivery'}`
+		const url = `/pages/pay/checkout/checkout?fromTransportIndex=${this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${this.data.isselfTaking?'selfTaking':'delivery'}`
 		// this.setData({
 		// 	isCartPanelShow: false
 		// })
@@ -837,7 +1019,11 @@ Page({
 		})
 	},
 	selectAddress(e) {
-		let type = e.currentTarget.dataset.delivery
+		// let type = e.currentTarget.dataset.delivery
+		// if (type == 'delivery') {
+		// 	return ;
+		// }
+		const type = 'selfTaking';
 		wx.navigateTo({
 			url: `/pages/transport/transport?from=store&tab=${type}`
 		})
@@ -964,7 +1150,61 @@ Page({
 			url: `/pages/my/coupon/coupon?type=2`
 		})
 	},
+	getAchievement() {
+		model('my/achievement/info', {}, 'POST').then(res => {
+			// debugger
+			let result = res.data;
+			let total;
+			let user_info = result.user_info;
+			if (user_info && user_info.member_energy_score) {
+				result.member_energy_score_rate = parseInt(parseFloat(user_info.member_energy_score) / parseFloat(result.nextDesign.energy_low) * 100)
+			}
+			console.log(result.member_energy_score_rate, 888)
+			if (user_info.member_recharge && user_info.member_gift_recharge) {
+				total = parseFloat(user_info.member_recharge) + parseFloat(user_info.member_gift_recharge);
+				result.member_total_recharge = (total == parseInt(total) ? parseInt(total) : parseFloat(total).toFixed(1))
+			} else if (user_info.member_recharge && !user_info.member_gift_recharge) {
+				total = parseFloat(user_info.member_recharge);
+				result.member_total_recharge = (total == parseInt(total) ? parseInt(total) : parseFloat(total).toFixed(1))
+			}
+
+			if (result.targetAchievementDesign) {
+				result.capsRate = (result.achievementCups / result.targetAchievementDesign.caps * 100);
+			}
+			this.setData({
+				memberData: result,
+				loading: false
+			});
+			if (result.currentDesign.welfares) {
+				let _resArr = [];
+				_resArr = result.currentDesign.welfares.filter(item => {
+					return item.isAvailable;
+				})
+				this.setData({
+					welfares: result.currentDesign.welfares,
+					welfaresLength: _resArr.length
+				});
+
+			}
+
+			let lalala = {
+				"青麦": "linear-gradient(270deg,rgba(191,210,167,1) 0%,rgba(128,155,90,1) 100%)",
+				"银麦": "linear-gradient(270deg,rgba(209,209,209,1) 0%,rgba(148,148,148,1) 100%)",
+				'金麦': 'linear-gradient(270deg,rgba(216,204,178,1) 0%,rgba(193,175,136,1) 100%)',
+				'铂金': 'linear-gradient(270deg,rgba(195,174,214,1) 0%,rgba(124,97,149,1) 100%)',
+				'钻石': 'linear-gradient(270deg,rgba(202,155,155,1) 0%,rgba(161,86,86,1) 100%)',
+				'黑金': 'linear-gradient(270deg,rgba(132,132,132,1) 0%,rgba(0,0,0,1) 100%)'
+			}
+			this.setData({
+				memberName: result.currentDesign.name,
+				memberTagColor: lalala[result.currentDesign.name]
+			});
+			wx.setStorageSync('memberData', result);
+			wx.hideLoading();
+		});
+	},
 	checkSaveUser() {
+		this.getAchievement()
 		let self = this;
 		let token = wx.getStorageSync('token')
 		let userName = '';
@@ -1049,20 +1289,5 @@ Page({
 		} catch (e) {
 			console.log(e);
 		}
-	},
-
-	showManbipei () {
-		wx.showModal({
-		  title: '慢必赔', //提示的标题,
-		  content: '加油咖啡向您承诺，制作完成后30分钟内，外送必达。如超时送达，您可申请索赔本单经典意式咖啡、茶饮品、酷爽加加冰、健康饮品消费。', //提示的内容,
-		  showCancel: false,
-		   confirmColor: '#f50000',
-		});
-	},
-
-	goPocket () {
-		wx.navigateTo({
-			url: '/package/coffeePocket/pages/pocketCart/cart'
-		});
 	}
 });

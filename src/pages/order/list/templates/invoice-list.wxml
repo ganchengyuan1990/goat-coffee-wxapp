@@ -1,0 +1,41 @@
+<template name="invoice-list">
+    <!-- <view class="list-wrap invoice-wrap">
+        <view class="item" bindtap="goOpen">
+            <view class="tt">
+                <text>按订单开发票</text>
+            </view>
+            <view class="icon-arrow"></view>
+        </view>
+        <view class="item" bindtap="goRechargeOpen" data-type="2">
+            <view class="tt">
+                <text>按充值开发票</text>
+            </view>
+            <view class="icon-arrow"></view>
+        </view>
+        <view class="item" bindtap="goList" data-type="2">
+            <view class="tt">
+                <text>发票记录</text>
+            </view>
+            <view class="icon-arrow"></view>
+        </view>
+        <view class="item" bindtap="goTaitou" data-type="2">
+            <view class="tt">
+                <text>抬头类型</text>
+            </view>
+            <view class="icon-arrow"></view>
+        </view>
+        <view class="item" bindtap="goState" data-type="2">
+            <view class="tt">
+                <text>发票说明</text>
+            </view>
+            <view class="icon-arrow"></view>
+        </view>
+    </view> -->
+    <view style="max-height: 45vh; position: absolute; top: 360rpx; width: 100%; ">
+        <view class='progress_achive'>
+            <image class="imagess" src="../../../images/no_achive.png"></image>
+            <text style="margin-top: 20rpx;">敬请期待</text>
+        </view>
+
+    </view>
+</template>

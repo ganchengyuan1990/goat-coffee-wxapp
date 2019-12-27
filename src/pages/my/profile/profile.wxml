@@ -1,6 +1,6 @@
 <view class="profile-wrap">
     <view class="list-wrap">
-        <view class="item" bind:tap="chooseImage">
+        <view class="item" bind:tap="actionSheetImg">
             <view class="tt">
                 <text>头像</text>
             </view>
@@ -13,7 +13,7 @@
         </view>
         <view class="item" bind:tap="goEdit">
             <view class="tt">
-                <text>昵称</text>
+                <text>用户名</text>
             </view>
             <view class="cnt">
                 <view class="desc">{{name}}</view>
@@ -31,15 +31,54 @@
         </view>
         <view class="item">
             <view class="tt">
+                <text>生日</text>
+            </view>
+            <view class="cnt">
+                <picker class='picker' mode="date" bindchange="bindPickerChange" value="{{birthday}}">
+                    <view class="picker">
+                    {{birthday}}
+                    </view>
+                    <!-- <view class="picker" wx:if="{{region.length == 0}}">
+                    </view> -->
+                </picker>
+                <view class="icon-arrow"></view>
+            </view>
+        </view>
+        <view class="item">
+            <view class="tt">
+                <text>行业</text>
+            </view>
+            <view class="cnt">
+                <picker bindchange="bindWorkChange" value="{{index}}" range="{{range}}">
+                    <view class="picker">
+                    {{work}}
+                    </view>
+                </picker>
+                <view class="icon-arrow"></view>
+            </view>
+        </view>
+        <view class="item">
+            <view class="tt">
                 <text>绑定手机号</text>
             </view>
             <view class="cnt">
-                <view class="desc dark">{{userInfo.tel}}</view>
+                <view class="desc">{{userInfo.tel}}</view>
                 <!-- <view class="icon-arrow"></view> -->
             </view>
         </view>
+        <!-- <view class="item">
+            <view class="tt">
+                <text>绑定微信</text>
+            </view>
+            <view class="cnt">
+                <view class="desc" wx:if="{{isBind}}">已绑定</view>
+            </view>
+        </view> -->
     </view>
     <view class="btn-wrap">
-        <view class="btn-save" bind:tap="saveProfile">保存</view>
+        <view class="btn-save" bind:tap="goIndex">完成</view>
     </view>
+    <!-- <view class="btn-wrap">
+        <view class="btn-save" bind:tap="logout">退出登录</view>
+    </view> -->
 </view>

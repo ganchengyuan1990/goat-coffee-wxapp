@@ -19,7 +19,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 99999;
   /* background-color: rgba(0, 0, 0, 0.8); */
   display: flex;
   flex-direction: column;
@@ -41,14 +41,15 @@
 }
 .cate-panel .bottom {
   position: fixed;
-  top: 8%;
+  top: 6vh;
+  bottom: 6vh;
   display: flex;
   flex-direction: column;
   /* height: 80%; */
   /* padding: 40rpx; */
-  border-radius: 10rpx;
+  border-radius: 30rpx;
   font-size: 28rpx;
-  /* height: 90%; */
+  height: 88vh;
   /* width: 80%; */
   left: 5%;
   right: 5%;
@@ -74,16 +75,27 @@
 }
 
 .cate-panel .bd {
-  height: calc(37vh + 10rpx);
-  padding-top: 26rpx;
+  height: 44vh;
   /* border-bottom: 1rpx solid #c6c6c6; */
   overflow-y: scroll;
+  padding: 0 16px;
+  /* padding-top: 26rpx; */
+  padding-right: 0rpx;
+  width: 96%;
   /* box-shadow:0px 0px 5px 0px rgba(181, 181, 181, 0.5); */
+}
+
+.bh_high {
+  /* height: 43vh !important; */
 }
 .cate-panel .ft {
   flex: none;
   padding-bottom: 30rpx;
-  height: 16vh;
+  height: 20vh;
+  position: absolute;
+  bottom: 0;
+  width: 90%;
+  /* background: #fff; */
 }
 
 .tt {
@@ -99,7 +111,7 @@
   flex-direction: column;
   justify-content: center;
   /* align-items: center; */
-  margin-left: 20rpx;
+  /* margin-left: 20rpx; */
   margin-right: 20rpx;
   color: #fff;
 }
@@ -116,7 +128,7 @@
   height: 120rpx;
 }
 .opt-group {
-  display: flex;
+  /* display: flex; */
   margin-top: 1rpx;
   font-size: 28rpx;
 }
@@ -129,37 +141,52 @@
 }
 
 .opt-group .opt-bd {
+  margin-left: 0rpx;
+  margin-top: 10rpx;
   font-size: 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .opt-group .opt-bd .item {
-  padding: 0 10rpx;
-  display: inline-block;
-  min-width: 150rpx;
-  height: 60rpx;
-  margin: 0 30rpx 26rpx 0;
+  /* padding: 0 10rpx; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 188rpx;
+  /* height: 60rpx; */
+  margin: 0 15rpx 26rpx 0;
   /* padding: 14rpx 0; */
-  border: 2rpx solid #FFDBDB;
-  border-radius: 60rpx;
+  border: 2rpx solid rgba(222,65,50,0.3);
   text-align: center;
-  color: #DF0202;
-  font-size: 28rpx;
-  line-height: 60rpx;
+  color: #DE4132;
+  font-size: 20rpx;
+  /* line-height: 60rpx; */
+  border-radius:10rpx;
+  width: 120rpx;
+  height: 62rpx;
 }
 
 .opt-group .opt-bd .item.active {
-  color: #FF0000;
-  background: #FFDBDB;
+  color: #fff;
   border-color: #fff;
+  background:rgba(222,65,50,0.8);
 }
 
 .price-wrap .price {
-  font-size: 36rpx;
+  font-size: 32rpx;
+  font-weight:500;
+  position: relative;
+  left: -5rpx;
 }
 
 .price-wrap .desc {
   font-size: 20rpx;
   color: #c6c6c6;
+  position: relative;
+  top: -10rpx;
+  left: 5rpx;
 }
 
 .counter-wrap {
@@ -172,11 +199,13 @@
 .counter-wrap .counter {
   display: flex;
   align-items: center;
+  position: relative;
+  top: 0rpx;
 }
 
 .counter-wrap .counter .num {
-  padding: 0 30rpx;
-  font-size: 22rpx;
+  padding: 0 14rpx 5rpx 17rpx;
+  font-size: 32rpx;
 }
 
 .counter-wrap .counter .ico {
@@ -200,25 +229,32 @@
 .button_wrapper {
   display: flex;
   position: absolute;
-  bottom: 30rpx;
+  bottom: 25rpx;
   width: 100%;
 }
 .btn-confirm {
-  width: 40%;
-  height: 72rpx;
-  line-height: 72rpx;
+  width: 80%;
+  line-height: 90rpx;
   margin-top: 60rpx;
-  border-radius: 5rpx;
-  background: #ff8483;
   color: #fff;
   text-align: center;
-  font-size: 32rpx;
+  font-size: 30rpx;
   position: relative;
   z-index: 1000000;
+  width: 200rpx;
+  height: 90rpx;
+  background: #DE4132;
+  /* box-shadow: 0rpx 2rpx 10rpx 0rpx rgba(35,24,21,0.2); */
+  /* border-radius: 10rpx; */
 }
 
 .cart {
-  background: #F50000;
+  /* background: #F50000; */
+  position: absolute;
+  bottom: 0rpx;
+  right: 10rpx;
+  width: 82%;
+  border-radius: 6rpx;
 }
 
 .btn-confirm:last-child {
@@ -235,20 +271,33 @@
 
 .price-wrap {
   position: relative;
-  top: -8rpx;
+  top: 0rpx;
+  left: 10rpx;
 }
 
 .hd image {
-  height: 314rpx;
+  height: 24vh;
   width: 100%;
-  border-radius: 10rpx 10rpx 0 0 ;
+  border-radius: 30rpx 30rpx 0 0 ;
 }
 
 .mess {
-  margin: 20rpx 0;
+  margin: 36rpx 0;
+  margin-top: 10rpx;
 }
 
 .ico image {
-  width: 48rpx;
-  height: 48rpx;
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.lowwer {
+  height: 62rpx !important;
+}
+
+.price-del {
+  margin-left: 8rpx;
+  font-size: 28rpx;
+  color: rgba(35, 35, 35, 0.6);
+  text-decoration: line-through;
 }

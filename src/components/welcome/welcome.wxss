@@ -1,0 +1,325 @@
+/* pages/welcome/welcome.wxss */
+
+/**start.wxss**/
+
+.back {
+  height: 100%;
+  width: 100%;
+}
+.back image {
+  width: 128rpx;
+  height: 160rpx;
+}
+
+.container_inner {
+  position: fixed;
+  z-index: 100;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  /* opacity: 1;
+  background: linear-gradient(180deg, rgba(116, 75, 62, 1) 0%, rgba(47, 34, 30, 1) 100%); */
+  /* align-items: center; */
+  padding: 0;
+  /* height: 800rpx; */
+  overflow: hidden;
+  background: #fff;
+  align-items: center;
+  box-sizing: border-box;
+  /* transform: rotate(0.5turn); */
+  width: 200rpx;
+  height: 300rpx;
+}
+
+.content {
+  margin-top: 75rpx;
+  margin-bottom: 75rpx;
+  background-image: url(data:image/png;base64,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MDApviHaAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTAxLTA5VDAzOjIxOjE0KzA4OjAwWOOZZgAAAEN0RVh0c29mdHdhcmUAL3Vzci9sb2NhbC9pbWFnZW1hZ2ljay9zaGFyZS9kb2MvSW1hZ2VNYWdpY2stNy8vaW5kZXguaHRtbL21eQoAAAAldEVYdHN2Zzpjb21tZW50ACBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAwy8tIAAAAGHRFWHRUaHVtYjo6RG9jdW1lbnQ6OlBhZ2VzADGn/7svAAAAGHRFWHRUaHVtYjo6SW1hZ2U6OkhlaWdodAA3MTEVANZVAAAAF3RFWHRUaHVtYjo6SW1hZ2U6OldpZHRoADYyNNx0S3MAAAAZdEVYdFRodW1iOjpNaW1ldHlwZQBpbWFnZS9wbmc/slZOAAAAF3RFWHRUaHVtYjo6TVRpbWUAMTU0Njk3NTI3NDVBgzwAAAARdEVYdFRodW1iOjpTaXplADk0ODhC5xzL5gAAAGJ0RVh0VGh1bWI6OlVSSQBmaWxlOi8vL2hvbWUvd3d3cm9vdC9uZXdzaXRlL3d3dy5lYXN5aWNvbi5uZXQvY2RuLWltZy5lYXN5aWNvbi5jbi9maWxlcy8xMTUvMTE1NzcyNS5wbmeBJ2RTAAAAAElFTkSuQmCC);
+  flex: 1;
+  background-size: 100rpx 150rpx;
+  background-repeat: no-repeat;
+  display: flex;
+  /* position: relative; */
+  z-index: 10;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  width: 50%;
+  height: 150rpx;
+  /* padding-bottom: 250rpx; */
+  /* background: -webkit-gradient(linear, left top, left bottom, from(rgba(244, 244, 244, 0)), color-stop(0.1, #f4f4f4), to(#f4f4f4)); */
+  opacity: 1;
+  position: relative;
+  overflow: hidden;
+
+  /* transform: translate3d(0, 100%, 0); */
+  /* animation: rise 3s cubic-bezier(0.19, 1, 0.22, 1) 0.25s forwards; */
+}
+
+
+.remind-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 300rpx;
+}
+
+.remind-img {
+  width: 250rpx;
+  height: 200rpx;
+  padding-bottom: 25rpx;
+}
+
+@keyframes rise {
+  0% {
+    opacity: 0;
+    transform: translateY(300rpx);
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(350rpx);
+  }
+}
+
+
+/* .wave {
+  position: absolute;
+  z-index: 3;
+  right: 250rpx;
+  bottom: 300rpx;
+  opacity: 0.725;
+  height: 260rpx;
+  width: 1000rpx;
+  animation: wave 4s linear infinite;
+}
+
+.wave-bg {
+  z-index: 1;
+}
+
+@keyframes wave {
+  from {
+    transform: translate3d(110rpx, 0, 0);
+  }
+
+  to {
+    transform: translate3d(550rpx, 0rpx, 0);
+  }
+} */
+
+.wave {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  top: 0rpx;
+  opacity: 0.725;
+  height: 160rpx;
+  width: 100%;
+  /* height: 570rpx;
+  width: 2250rpx; */
+  /* animation: wave 3s linear infinite; */
+}
+
+.wave100 {
+  animation: wave100 2s linear infinite;
+}
+
+
+.wave90 {
+  animation: wave90 2s linear infinite;
+}
+
+.wave80 {
+  animation: wave80 2s linear infinite;
+}
+
+.wave70 {
+  animation: wave70 2s linear infinite;
+}
+
+.wave60 {
+  animation: wave60 2s linear infinite;
+}
+
+.wave50 {
+  animation: wave50 2s linear infinite;
+}
+
+.wave40 {
+  animation: wave40 2s linear infinite;
+}
+
+.wave30 {
+  animation: wave30 2s linear infinite;
+}
+
+.wave20 {
+  animation: wave20 2s linear infinite;
+}
+
+.wave10 {
+  animation: wave10 2s linear infinite;
+}
+
+@keyframes wave100 {
+  from {
+    transform: translateY(15rpx);
+  }
+
+  to {
+    transform: translateY(0rpx);
+  }
+}
+
+@keyframes wave90 {
+  from {
+    transform: translateY(30rpx);
+  }
+
+  to {
+    transform: translateY(15rpx);
+  }
+}
+
+@keyframes wave80 {
+  from {
+    transform: translateY(45rpx);
+  }
+
+  to {
+    transform: translateY(30rpx);
+  }
+}
+
+@keyframes wave70 {
+  from {
+    transform: translateY(60rpx);
+  }
+
+  to {
+    transform: translateY(45rpx);
+  }
+}
+
+@keyframes wave60 {
+  from {
+    transform: translateY(75rpx);
+  }
+
+  to {
+    transform: translateY(60rpx);
+  }
+}
+
+@keyframes wave50 {
+  from {
+    transform: translateY(90rpx);
+  }
+
+  to {
+    transform: translateY(75rpx);
+  }
+}
+
+@keyframes wave40 {
+  from {
+    transform: translateY(105rpx);
+  }
+
+  to {
+    transform: translateY(90rpx);
+  }
+}
+
+@keyframes wave30 {
+  from {
+    transform: translateY(120rpx);
+  }
+
+  to {
+    transform: translateY(105rpx);
+  }
+}
+
+@keyframes wave20 {
+  from {
+    transform: translateY(135rpx);
+  }
+
+  to {
+    transform: translateY(120rpx);
+  }
+}
+
+@keyframes wave10 {
+  from {
+    transform: translateY(150rpx);
+  }
+
+  to {
+    transform: translateY(135rpx);
+  }
+}
+
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: 1;
+  /* opacity: 0.; */
+  background: rgba(0,0,0,0.4);
+}
+
+.word {
+  width:336rpx;
+  height:80rpx;
+  position: fixed;
+  top: 57%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size:28rpx;
+  font-family:PingFangSC-Semibold,
+  PingFang SC;
+  font-weight:600;
+  color:rgba(255, 255, 255, 1);
+  line-height:40rpx;
+  text-align: center;
+  z-index: 1000;
+}
+
+.content-trigon-zhijiao {
+  width: 0px;
+  height: 0px;
+  /* opacity: 0.3; */
+  border-color: transparent #fff;
+  border-width: 160rpx 20rpx 0rpx 0rpx;
+  border-style: solid;
+  position: absolute;
+  top: 0rpx;
+  right: 0;
+  z-index: 10000;
+}
+
+.right_three {
+  border-width: 160rpx 0rpx 0rpx 20rpx;
+  top: 0rpx;
+  left: 0;
+}
+
+.hey {
+  background: #fff;
+}
+

@@ -1,0 +1,18 @@
+<view class="switch-env-container">
+  <picker bindchange="bindPickerChangeEnv" value="{{index}}" range="{{array}}" range-key="name">
+    <view class="env-item">
+        <view>
+            当前环境：{{array[index].name}}
+        </view>
+        <view><button class="btn">切换环境</button></view>
+    </view>
+  </picker>
+  <!-- <view class="env-item">
+      <text>
+          当前泳道:
+      </text>
+      <view><input class="swimlane-ipt" value="{{swimlane}}" placeholder="请输入泳道名称" bindblur="inptSwimLane"/></view>
+  </view> -->
+  <!-- <button bindtap="jumpToIndex">点击切换环境跳转至首页</button> -->
+  <!-- <button bindtap="openLx">获取灵犀验证</button> -->
+</view>

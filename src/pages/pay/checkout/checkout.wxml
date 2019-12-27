@@ -1,224 +1,319 @@
-<view class="container">
-    <view class='transport-way'>
-        <view class="trans_items">
-            <view class="item {{chooseSelf ? 'chosen' : 'no-border'}}" bindtap="chooseSelf">
-                自取
+<view class='outter' id="container">
+    <scroll-view scroll-y scroll-into-view="{{viewToNav}}" class="container {{member_recharge > 0 ? 'shorter_container' : ''}}" wx:if="{{!showNoOrder}}">
+        <view class="order-box">
+            <view class="address-box" bindtap="goAddressList">
+
+                <view class="right_arrow">
+                    <image wx:if="{{chooseExpress && !checkedExpress.id}}" class="arrow arrow_small" src="../../../images/arrow.png"/>
+                    <image wx:else class="arrow" src="../../../images/location.png"/>
+                </view>
+                
+                <view class="address-item" bindtap="selectAddress" wx:if="{{chooseSelf || chooseCup || chooseDaodian}}">
+                    <!-- <view class="address">
+                        自提门店
+                    </view> -->
+                    <view class="l">
+                        <!-- <text class="default">默认</text> -->
+                        <text class="address">{{checkedAddress.storeName}}</text>
+                    </view>
+                    <view class="m" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 90%;">
+                        <text class="name" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 90%;">{{checkedAddress.city}}{{checkedAddress.area}}{{checkedAddress.address}}</text>
+                        <!-- <text class="mobile">{{checkedAddress.phone}}</text> -->
+                        <!-- <text class="address">{{checkedAddress.region + checkedAddress.address}}</text> -->
+                    </view>
+                    <!-- <view class="r">
+                        <image src="/static/images/address_right.png"></image>
+                    </view> -->
+                </view>
+
+                <view class="address-item" bindtap="selectAddress" wx:if="{{chooseExpress && checkedExpress.id}}">
+                    <!-- <view class="address">
+                        配送地址
+                    </view> -->
+                    <view class="l">
+                        <!-- <text class="default">默认</text> -->
+                        <!-- <text class="address">{{checkedExpress.storeName}}</text> -->
+                        <text class="address">{{checkedExpress.city}}{{checkedExpress.area}}{{checkedExpress.address}}</text>
+                    </view>
+                    <view class="m">
+                        <!-- <text class="name">{{checkedExpress.city}}{{checkedExpress.area}}{{checkedExpress.address}}</text> -->
+                        <text class="name">{{checkedExpress.tel}}</text>
+                        <text class="mobile">{{checkedExpress.contact}}</text>
+                    </view>
+                    <!-- <view class="r">
+                        <image src="/static/images/address_right.png"></image>
+                    </view> -->
+                </view>
+                <view class="address-item address-empty" catchtap="addAddress" wx:if="{{chooseExpress && !checkedExpress.id}}">
+                    <view class="m empty">
+                        您还没有收货地址，请点击这里添加吧
+                    </view>
+                    <!-- <view class="r">
+                        <image src="/static/images/arrow.png"></image>
+                    </view> -->
+                    <!-- <view class="right_arrow">
+                        <image class="arrow" src="../../../images/arrow.png"/>
+                    </view> -->
+                </view>
             </view>
-            <view class="item {{chooseExpress ? 'chosen' : ''}}" bindtap="chooseExpress">
-                快递
+
+            <!-- 选择自提或是配送 -->
+            <view class='transport-way'>
+
+                <view class="float_left" wx:if="{{chooseSelf  || chooseDaodian}}">
+                    <view>{{timeWords}}</view>
+                </view>
+
+                <view class="float_left" wx:if="{{chooseCup }}">
+                    <view style="font-size: 28rpx">请您在<text style="font-size: 34rpx; color: #DE4132">30</text>分钟内自带咖啡杯到指定门店自取</view>
+                </view>
+
+                <view class="float_left" wx:if="{{chooseExpress}}">
+                    <view>{{timeWords}}</view>
+                </view>
+
+                <view class="float_right" wx:if="{{chooseSelf  || chooseDaodian}}">
+                    <view>约{{getTime}}可取</view>
+                </view>
+                <view class="float_right" wx:if="{{chooseExpress}}">
+                    <view>约<text class='time'>{{getTime}}</text>送达</view>
+                </view>
             </view>
         </view>
 
-        <view class="float_right" wx:if="{{chooseSelf}}">
-            <view>{{timeWords}}</view>
-            <view>约<text class='time'>{{getTime}}</text>可取</view>
-        </view>
-        <view class="float_right" wx:if="{{chooseExpress}}">
-            <view>{{timeWords}}</view>
-            <view>约<text class='time'>{{getTime}}</text>送达</view>
-        </view>
-    </view>
-    <view class="address-box" bindtap="goAddressList">
+        <view class="order-box">
+            <view style="">
+                <view class="order-title">
+                    <text class="name">订单详情</text>
+                </view>
 
-        <view class="right_arrow">
-            <image class="arrow" src="../../../images/arrow.png"/>
-        </view>
-        
-        <view class="address-item" bindtap="selectAddress" wx:if="{{chooseSelf}}">
-            <view class="address">
-                自提门店
+                <view class="seperate-title">
+                </view>
+                <view class="order-item" wx:for="{{options.product}}" wx:key="idx">
+                    <view class="good_img">
+                        <image src="{{item.banner}}" />
+                    </view>
+                    <view class="l">
+                        <text class="name">{{item.productName}}<text wx:if="{{false}}" class="zengpin">赠品</text></text>
+                        <text class="format">{{item.spec}}</text>
+                    </view>
+                    <view class="center">
+                        <text class="txt">X {{item.number}}</text>
+                    </view>
+                    <view class="r {{item.totalPrice !== item.memberPrice ? 'lower' : 'normal'}}">
+                        <text class="txt lefter txt-bolder">￥{{item.memberPrice}}</text>
+                        <text class="txt lefter price-del" wx:if="{{item.totalPrice !== item.memberPrice}}">￥{{item.totalPrice}}</text>
+                    </view>
+                </view>
+
+                <view class="order-item" wx:for="{{guaerItems}}" wx:for-item="item" wx:key="idx">
+                    <view class="good_img">
+                        <image src="{{item.goods.avatar}}" />
+                    </view>
+                    <view class="l">
+                        <view class="name">{{item.goods.name}}<text class="zengpin">赠品</text></view>
+                        <text class="format">来自挂耳兑换券赠送</text>
+                    </view>
+                    <view class="center">
+                        <text class="txt">X 1</text>
+                    </view>
+                    <view class="r">
+                        <text class="txt lefter price-del">￥{{item.sku.sale_price}}</text>
+                    </view>
+                </view>
+
+                <view class="transport-item shorter" wx:if="{{false}}">
+                    <view class="l">
+                        <text class="name">商品活动</text>
+                    </view>
+                    <view class="r">
+                        <text class="txt hasGood"> - ￥{{levelMoney}}</text>
+                    </view>
+                </view>
+
+                <!-- <view class="transport-item shorter" wx:if="{{levelMoney}}">
+                    <view class="l">
+                        <text class="name">会员优惠</text>
+                    </view>
+                    <view class="r">
+                        <text class="txt hasGood"> - ￥{{levelMoney}}</text>
+                    </view>
+                </view> -->
+
+                <!-- <view class="transport-item shorter" wx:if="{{chooseCup}}">
+                    <view class="l">
+                        <text class="name">自带杯</text>
+                    </view>
+                    <view class="r">
+                        <text class="txt hasGood"> - ￥{{zidaibeiMoney}}</text>
+                    </view>
+                </view>
+
+                <view style='height: 1rpx; background: #e6e6e6; width: 92%;margin-left: 4%; margin-top: 20rpx;margin-bottom: 20rpx;'></view>
+
+
+                <view class="transport-item shorter" bindtap="goCoupon">
+                    <view class="l">
+                        <text class="name">优惠券</text><text class='coupon_mention'>优惠不同享</text>
+                    </view>
+                    <view class="r">
+                        <text class="txt hasGood" wx:if="{{couponList.length > 0 && !chooseNoCoupon  && chosenInfo.type == 1}}"> - ￥{{couponMoney}}</text>
+                        <text class="txt hasGood" wx:if="{{couponList.length > 0 && chooseNoCoupon}}">有{{couponList.length}}张可用</text>
+                        <text class="txt" wx:if="{{couponList.length === 0}}">无可用</text>
+                        <image class="arrow arrow_small" src="../../../images/arrow.png"/>
+                    </view>
+                </view> -->
+
+
+                
             </view>
+        </view>
+
+        <view class="transport-item shorter top_gap" bindtap="goVoucher">
             <view class="l">
-                <!-- <text class="default">默认</text> -->
-                <text class="address">{{checkedAddress.storeName}}</text>
-            </view>
-            <view class="m">
-                <text class="name">{{checkedAddress.city}}{{checkedAddress.area}}{{checkedAddress.address}}</text>
-                <!-- <text class="mobile">{{checkedAddress.phone}}</text> -->
-                <!-- <text class="address">{{checkedAddress.region + checkedAddress.address}}</text> -->
-            </view>
-            <!-- <view class="r">
-                <image src="/static/images/address_right.png"></image>
-            </view> -->
-        </view>
-
-        <view class="address-item" bindtap="selectAddress" wx:if="{{chooseExpress && checkedExpress.id}}">
-            <view class="address">
-                配送地址
-            </view>
-            <view class="l">
-                <!-- <text class="default">默认</text> -->
-                <!-- <text class="address">{{checkedExpress.storeName}}</text> -->
-                <text class="address">{{checkedExpress.city}}{{checkedExpress.area}}{{checkedExpress.address}}</text>
-            </view>
-            <view class="m">
-                <!-- <text class="name">{{checkedExpress.city}}{{checkedExpress.area}}{{checkedExpress.address}}</text> -->
-                <text class="name">{{checkedExpress.contact}}</text>
-                <text class="mobile">{{checkedExpress.tel}}</text>
-            </view>
-            <!-- <view class="r">
-                <image src="/static/images/address_right.png"></image>
-            </view> -->
-        </view>
-        <view class="address-item address-empty" catchtap="addAddress" wx:if="{{chooseExpress && !checkedExpress.id}}">
-            <view class="m">
-               还没有收货地址，去添加
+                <text class="name">兑换券</text>
+                <!-- <text class='coupon_mention'>门店活动不能与优惠券同享</text> -->
             </view>
             <view class="r">
-                <image src="/static/images/address_right.png"></image>
+                <text class="txt" wx:if="{{voucherList.length === 0}}">无可用</text>
+                <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && chooseNoVoucher}}">有{{voucherList.length}}张可用</text>
+                <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher && chosenInfo.type == 2}}"> - ￥{{couponMoney}}</text>
+                <!-- <view class="arrow"></view> -->
+                <image class="arrow arrow_small" src="../../../images/arrow.png"/>
             </view>
         </view>
-    </view>
 
-    <!-- <view class="coupon-box">
-        <view class="coupon-item">
+
+
+        <!-- <view class="transport-item shorter" bindtap="goRedPack">
             <view class="l">
-                <text class="name">请选择优惠券</text>
-                <text class="txt">{{couponList.length}}张</text>
+                <text class="name">满减券</text><text class='coupon_mention'>优惠不同享</text>
             </view>
             <view class="r">
-                <image src="/static/images/address_right.png"></image>
-            </view>
-        </view>
-    </view> -->
-
-    <view class="order-box">
-        <view>
-            <view class="order-title">
-                <text class="name">订单详情</text>
-            </view>
-            <view class="order-item" wx:for="{{options.product}}" wx:key="idx">
-                <view class="l">
-                    <text class="name">{{item.productName}}</text>
-                    <text class="format">{{item.spec}}</text>
-                </view>
-                <view class="center">
-                    <text class="txt">X {{item.number}}</text>
-                </view>
-                <view class="r">
-                    <text class="txt lefter">￥{{item.totalPrice}}</text>
-                </view>
-            </view>
-            <view class="transport-item black" wx:if="{{deliverFee > 0}}">
-                <view class="l">
-                    <text class="name">配送费</text>
-                </view>
-                <view class="r">
-                    <text class="txt lefter">￥{{deliverFee}}</text>
-                </view>
-            </view>
-            <view style='height: 1rpx; background: #e5e5e5; width: 90%;margin-left: 5%;'>
-            </view>
-
-            <view class='heji'>
-                合计 <text style="font-size: 36rpx; font-weight: 500;">￥{{payAmount}}</text>
-            </view>
-        </view>
-
-
-        <view style="height: 8rpx; background: #F5F5F5; width: 100%;">
-        </view>
-
-        <view class="transport-item">
-            <view class="l">
-                <text class="name">使用优惠</text>
-            </view>
-            <view class="r">
-                <switch checked color="#F50000" bindchange="switchChange" />
-                <!-- <image class="txt" src="../../../images/arrow.png"/> -->
-            </view>
-        </view>
-        
-        <view wx:if="{{usePromotion}}">
-            <view class="transport-item" bindtap="goVoucher">
-                <view class="l">
-                    <text class="name">使用咖啡钱包</text>
-                </view>
-                <view class="r">
-                    <text class="txt" wx:if="{{voucherList.length === 0}}">无可用</text>
-                    <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && chooseNoVoucher}}">有{{voucherList.length}}张可用</text>
-                    <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher && chosenInfo.type == 2}}"> - ￥{{couponMoney}}</text>
-                    <!-- <view class="arrow"></view> -->
-                    <image class="arrow" src="../../../images/arrow.png"/>
-                    <!-- <image class="txt" src="../../../images/arrow.png"/> -->
-                </view>
-            </view>
-
-            <view class="transport-item" bindtap="goCoupon">
-                <view class="l">
-                    <text class="name">使用优惠券</text>
-                </view>
-                <view class="r">
-                    <text class="txt hasGood" wx:if="{{couponList.length > 0 && !chooseNoCoupon && chosenInfo.type == 1}}"> - ￥{{couponMoney}}</text>
-                    <text class="txt hasGood" wx:if="{{couponList.length > 0 && chooseNoCoupon}}">有{{couponList.length}}张可用</text>
-                    <text class="txt" wx:if="{{couponList.length === 0}}">无可用</text>
-                    <image class="arrow" src="../../../images/arrow.png"/>
-                    <!-- <image class="txt" src="../../../images/arrow.png"/> -->
-                </view>
-            </view>
-
-        </view>
-
-
-        <view class="special-item" bindtap="goRemark">
-            <view class="l">
-                <text class="name">备注特殊要求</text>
-            </view>
-            <view class="r">
-                <image class="arrow" src="../../../images/arrow.png"/>
-            </view>
-        </view>
-
-        <view class='remark' wx-if="{{remark}}">{{remark}}</view>
-
-        
-
-        
-        <!-- <view class="order-item no-border">
-            <view class="l">
-                <text class="name">优惠券</text>
-            </view>
-            <view class="r">
-                <text class="txt">-￥{{couponPrice}}</text>
+                <text class="txt hasGood" wx:if="{{redPackList.length > 0 && !chooseNoRedPack  && chosenInfo.type == 3}}"> - ￥{{couponMoney}}</text>
+                <text class="txt hasGood" wx:if="{{redPackList.length > 0 && chooseNoRedPack}}">有{{redPackList.length}}张可用</text>
+                <text class="txt" wx:if="{{redPackList.length === 0}}">无可用</text>
+                <image class="arrow arrow_small" src="../../../images/arrow.png"/>
             </view>
         </view> -->
-    </view>
 
-    <view class="protocol" catchtap="showXieyi">
-        <!-- <view class="checkbox {{item.checked ? 'checked' : ''}}" bindtap="checkedItem" data-item-index="{{index}}"></view> -->
-        <image src="../../../images/checkbox.png" />
-        <text class="name" style="color: #999;">我已同意<text style="color: #F50000;">《咖啡支付协议》</text></text>
-        <view style="color: #999999;line-height: 36rpx;padding-bottom: 30rpx">温馨提示：仅支持开具电子发票，请联系客服人员或门店电话开具</view>
-        <!-- <checkbox-group bindchange="checkboxChange">
-            <label class="checkbox">
-                <checkbox value="protocol" checked="protocalChecked" color="#fff" />我已同意《咖啡支付协议》
-            </label>
-        </checkbox-group> -->
-    </view>
 
-    <!-- <view class="goods-items">
-        <view class="item" wx:for="{{checkedGoodsList}}" wx:key="{{item.id}}">
-            <view class="img">
-                <image src="{{item.img[0]}}"></image>
+        <!-- <view class="transport-item black" wx:if="{{deliverFee > 0}}">
+            <view class="l">
+                <text class="name">配送费</text>
             </view>
-            <view class="info">
-                <view class="t">
-                    <text class="name">{{item.name}}</text>
-                    <text class="number">x{{item.number}}</text>
+            <view class="r">
+                <text class="txt lefter redder">￥{{deliverFee}}</text>
+            </view>
+        </view>
+        <view style='height: 1rpx; background: #e5e5e5; width: 90%;margin-left: 5%;'>
+        </view> -->
+
+        <view class='heji'>
+            <text class="float_left_hey">优惠合计</text>
+            <text class="price-red txt-bolder">-￥{{couponMoney}}</text>
+
+            <!-- <text style="font-size: 36rpx; font-weight: 500;">￥{{actualPrice}}</text> -->
+        </view>
+
+        <!-- <guess-you-like wx:if="{{addPriceGoods.length > 0}}" title="加价购" cartGoods="{{addPriceGoods}}" bindtogglemenu="addPriceBuy"></guess-you-like> -->
+
+        <view style="height: 18rpx; background: #F5F5F5; width: 100%;">
+        </view>
+<!-- 
+        <view class='third_part'>
+
+            <view class="special-item gogogo {{animated ? 'animated' : ''}}" id="xiguan">
+                <view class="l">
+                    <text class="name">吸管需求</text>
                 </view>
-                <view class="b">￥{{item.price}}</view>
+                <view class="m">
+                    <view bindtap="checkedItem" data-index="1">
+                        <view style="display:flex; align-items:center; margin: 0 40rpx 0 60rpx;">
+                            <view class="checkbox new {{chooseItemXiguan == false? 'checked' : ''}}" ></view>
+                            <text style="margin-left: 12rpx;">不需要</text><text style="color: rgba(211, 96, 94, 1); font-size: 20rpx;">（环保饮用）</text>
+                        </view>
+                    </view>
+
+                    <view bindtap="checkedItem"  data-index="2">
+                        <view style="display:flex; align-items:center" >
+                            <view class="checkbox new {{chooseItemXiguan == true ? 'checked' : ''}}"></view>
+                            <text style="margin-left: 12rpx;">需要</text>
+                        </view>
+                    </view>
+
+                </view>
             </view>
+
+            <view style="width:100%; height:1rpx;background: rgba(230,230,230,1);">
+            </view>
+
+            <view class="special-item gogogo second_item" bindtap="goRemark">
+                <view class="l">
+                    <text class="name">备注特殊要求</text>
+                </view>
+                <view class="r">
+                    <image class="arrow arrow_small" src="../../../images/arrow.png"/>
+                </view>
+            </view>
+
+            <view class='remark' wx-if="{{remark}}">{{remark}}</view>
+        </view>
+
+        <view class="protocol {{member_recharge > 0 ? '' : ''}}">
+            <image src="../../../images/checkbox.png" />
+            <view class="name" style="color: #999; display: inline-block;">我已同意<text style="color: #D32D25;" bindtap="goState">《咖啡支付协议》</text></view>
+            <view style="color: #999999;line-height: 36rpx;padding-bottom: 30rpx; font-size: 22rpx;">温馨提示：仅支持开具电子发票，请联系客服人员或门店电话开具</view>
+        </view> -->
+
+        
+
+        <toast wx:if="{{errorToast}}" is-show="{{errorToast}}" title="{{toastInfo}}" disappear-sec="{{toastTime}}"></toast>
+
+    </scroll-view>
+
+    <!-- <view class="member_total {{!useMemberReharge ? 'word_del' : ''}}" wx:if="{{member_recharge > 0}}" bindtap="toggleMemberRecharge">
+        <view class="member_title">
+            <image style="margin-right: 10rpx;" src="../../../images/checkbox.png" wx:if="{{useMemberReharge}}" />
+            <view class="checkbox_small" wx:else ></view>
+            <text wx:if="{{useMemberReharge}}">使用余额（余额：¥{{member_recharge}}）</text>
+            <text class="word_del" wx:else>不使用余额（余额：¥{{member_recharge}}）</text>
+        </view>
+        <view style="text-align: right; flex: 1; margin-right: 60rpx;">
+            抵扣： <text style="color: #DE4132;">￥{{member_recharge >= actualPrice ? actualPrice : member_recharge}}</text>
         </view>
     </view> -->
 
     <view class="order-total">
         <view class="l">
-            <text style="position: relative; top: -1rpx;">还需支付</text>
-            <text class='price'><text class='mark'>￥</text>{{actualPrice}}</text>
+            <text style="position: relative; top: -1rpx;">应付合计</text>
+            
+            <text class='price' wx:if="{{member_recharge > 0 && useMemberReharge}}"><text class='mark'>￥</text>{{actualAfterMemberPrice}}</text>
+
+            <text class='price' wx:else><text class='mark'>￥</text>{{actualPrice}}</text>
+
+            <text class='price-del' style="margin-left: 20rpx; font-size: 28rpx;" wx:if="{{payAmount != actualPrice}}">{{payAmount}}</text>
         </view>
-        <view class="r {{chooseExpress && !checkedExpress.id ? 'no_use' : ''}}" bindtap="submitOrder">去支付</view>
+        <view class="r {{zunshou ? '' : 'no_use'}}" bindtap="submitOrder">支付</view>
     </view>
 
-    <toast wx:if="{{errorToast}}" is-show="{{errorToast}}" title="{{toastInfo}}" disappear-sec="3"></toast>
+    <view class="protocol {{member_recharge > 0 ? '' : ''}}" catchtap="chooseXieyi">
+        <image src="../../../images/checkbox.png" wx:if="{{zunshou}}"/>
+        <image src="../../../images/check_not.png" wx:if="{{!zunshou}}"/>
+        <view class="name" style="color: #999; display: inline-block;">我已同意<text style="color: #D32D25;" catchtap="goState">《咖啡支付协议》</text></view>
+        <!-- <view style="color: #999999;line-height: 36rpx;padding-bottom: 30rpx; font-size: 22rpx;">温馨提示：仅支持开具电子发票，请联系客服人员或门店电话开具</view> -->
+    </view> 
 
+</view>
+
+
+<view class="search-empty" wx:if="{{showNoOrder}}">
+    <view>
+        <image style="margin: 346rpx 0 30rpx;width: 210rpx; height: 188rpx;" src="../../../images/no_member.png" />
+    </view>
+    <!-- <view class="search-empty-icon ui-error ui-error-order-no-login" /> -->
+    您的购物车已清空！
+    <view class="btn-login flex-center" bindtap="onClickStore">
+        随便逛逛
+    </view>
 </view>

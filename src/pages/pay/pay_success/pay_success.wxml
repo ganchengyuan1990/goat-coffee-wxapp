@@ -7,16 +7,74 @@
       <!-- <view class="coupon-sn">￥{{price}}</view> -->
       
       <view class="coupon-sn">支付成功</view> 
-      
-      <view style="position: relative;" bindtap="goRedPack">
-          <!-- <image src="http://img.goatup.net/banner/6redbao.png" style="width: 100%; height: 420rpx" /> -->
+
+      <!-- <view class="">支付成功</view>  -->
+
+
+      <view class="score_state">
+        取杯码{{varCode}}
+      </view>
+    
+      <!-- <view style="display: flex;" wx:if="{{existLuckActivity}}">
+        <view class="free line_button" bindtap="goZhuanpan">
+            免费喝咖啡
+        </view>
+
+        <view class="line_button ready" bindtap="goIndex" >
+            完成
+        </view>
+      </view> -->
+
+      <view class="pay_again" bindtap="goIndex">
+          完成
       </view>
 
-      <view style="font-size: 32rpx; color: #fff; margin: 30rpx auto;border-radius: 8rpx;height: 80rpx; line-height: 80rpx; display: inline-block; width: 316rpx; text-align: center; background: #F50000; align-items: center; justify-content:center;" bindtap="goIndex">
-          再点一杯
+      <!-- <view class="pay_again blank" style="opacity: 0;" bindtap="goInvice">
+          开发票
+      </view> -->
+
+      <view>
+        <!-- <view style="font-size: 26rpx;text-align: center; margin-bottom: 30rpx;">
+          <text>恭喜您获得首单赠礼</text>
+        </view> -->
+        <view class="coupon_image_wrapper">
+          <image class="coupon_image" src="{{newUserFirstPayActivity.coupon_modal_pic}}" />
+          <!-- <text class="text">有效期:自发券日起30天</text> -->
+        </view>
+      </view>
+
+      <view style="position: fixed; bottom: 80rpx; left: 6%; height: 190rpx; width: 88%">
+          <swiper 
+            mode="widthFix" 
+            autoplay="{{true}}" 
+            interval="{{4000}}" 
+            duration="{{600}}"
+            style="width: 100%; height: 190rpx">
+                <block wx:for="{{banner}}" wx:key="{{index}}" class="img-caption">
+                    <swiper-item>
+                      <ml-navigator redirect_url="{{item.redirect_url}}" redirect_route="{{item.redirect_route}}">
+                        <image mode="widthFix" src="{{item.pic}}"  style="width: 100%; height: 324rpx"/>
+                      </ml-navigator>
+                    </swiper-item>
+                </block>
+            </swiper>
+          <!-- <image src="{{banner}}" style="width: 100%; height: 324rpx" /> -->
       </view>
 
     </view>
+
     <!-- <button class="add-btn disabled">兑换</button> -->
   </view>
 </view>
+
+<welcome from="0" to='10' wx:if="{{showWelcome}}"/>
+
+
+<!-- <view class="gif" bindtap='showModalCups' wx:if="{{level > 1 && targetAchievementDesign}}">
+  <image src="{{drinkGiftPaymentImg}}" />
+</view> -->
+
+
+<modal bindcustomevent="dealModalFunction" title="{{modalTitle}}" shown="{{showModal}}" actImage="{{actImage}}" left-button-function-type="{{modalLeftFunctionType}}" type="6"></modal>
+
+<toast wx:if="{{errorToastShown}}" is-show="{{errorToastShown}}" title="{{errorInfo}}" disappear-sec="30" type="{{toastType}}"></toast>

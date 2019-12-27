@@ -1,15 +1,49 @@
 
 <wxs  src="../filter.wxs" module="filter"></wxs>
-<view class="orider-wrap">
+<import src="./templates/invoice-list.wxml" />
+<import src="./templates/address-list.wxml" />
+<view class="order-wrap" wx:if="{{hasLogin}}">
     <view class="filter-wrap {{isFilterShow?'active':''}}">
-        <view class="tab">
+        <!-- <view class="tab">
             <view 
                 class="item {{isFilterShow && currentPanel === item.tab ? 'active':''}}" 
                 wx:for="{{filterList}}"
                 wx:key="{{item.tab}}"
                 bind:tap="showCategory" 
                 data-tab="{{item.tab}}">{{item.tt}}<text></text></view>
+        </view> -->
+        <view class='nav_top'>
+            <view class="nav_left_items {{orderTypeId == 1 ? 'active' : ''}}" bindtap="setOrderTypeId" data-id="{{1}}">
+                <view class="title {{orderTypeId == 1 ? 'active' : ''}}">全部</view>
+                <view class="line" wx:if="{{orderTypeId == 1}}"></view>
+            </view>
+
+            <!-- <view bindtap="setOrderTypeId" data-id="{{1}}" class="bor-item {{orderTypeId == 1 ? 'chosen_item' : ''}}">全部</view>
+            <view bindtap="setOrderTypeId" data-id="{{2}}" class="bor-item {{orderTypeId == 2 ? 'chosen_item' : ''}}">待付款</view>
+            <view bindtap="setOrderTypeId" data-id="{{3}}" class="bor-item {{orderTypeId == 3 ? 'chosen_item' : ''}}">待评价</view>
+            <view bindtap="setOrderTypeId" data-id="{{4}}" class="bor-item {{orderTypeId == 4 ? 'chosen_item' : ''}}">退款/售后</view> -->
+
+
+            <!-- <view class="nav_left_items {{curNav == 1? 'active' : ''}}" catchtap="switchRightTab" data-index="1"
+                data-id="{{item.id}}">
+                <view class='image_wrapper1' wx:if="{{curNav != 1}}"><image src="../../../images/order_loc.png" /></view>
+                <view class='image_wrapper1' wx:if="{{curNav == 1}}"><image src="../../../images/chosen_order_loc.png" /></view>
+                <view class="title {{curNav == 1 ? 'active' : ''}}">收货地址</view>
+                <view class="line" wx:if="{{curNav == 1}}"></view>
+            </view> -->
+            <view class="nav_left_items {{orderTypeId == 2 ? 'active' : ''}}" bindtap="setOrderTypeId" data-id="{{2}}">
+                <view class="title {{orderTypeId == 2 ? 'active' : ''}}">待付款</view>
+                <view class="line" wx:if="{{orderTypeId == 2}}"></view>
+            </view>
+            <view class="nav_left_items {{orderTypeId == 5 ? 'active' : ''}}" bindtap="setOrderTypeId" data-id="{{5}}">
+                <!-- <view class='image_wrapper3' wx:if="{{curNav != 3}}"><image src="../../../images/order_head.png" /></view>
+                <view class='image_wrapper3' wx:if="{{curNav == 3}}"><image src="../../../images/chosen_order_head.png" /></view> -->
+                <view class="title {{orderTypeId == 5 ? 'active' : ''}}">制作中</view>
+                <view class="line" wx:if="{{orderTypeId == 5}}"></view>
+            </view>
         </view>
+
+
         <view class="cnt-wrap" wx:if="{{isFilterShow}}">
             <view class="cnt">
                 <view 
@@ -37,40 +71,64 @@
         </view>
         <view class="mask" bind:tap="cancel"></view>
     </view>
-    <view class="list-wrap">
-        <!-- <view class="panel" wx:for="{{orderList}}" wx:key="{{item.detail.id}}" bind:tap="showDetail" data-item="{{item.detail}}">
-            <view class="panel-hd">
-                <view>{{item.detail.consumeType}}订单：{{item.detail.orderNo}}</view>
-                <view class="{{item.detail.orderState === '00' ? 'active':''}}">{{filter.getOrderState(item.detail.orderState)}}</view>
-            </view>
-            <view class="panel-bd">
-                <view class="tt">{{filter.getAddr(item.detail)}}</view>
-                <view class="desc">{{filter.getOrderBrief(item)}}</view>
-                <view class="date">{{item.detail.CreateTime}}</view>
-            </view>
-            <view class="panel-ft">
-                <view class="price">￥{{item.detail.payAmount}}</view>
-                <view class="btn-buy" wx:if="{{item.detail.orderState === '00'}}" data-item="{{item.detail}}" catchtap="goPay">去支付</view>
-                <view class="btn-buy" wx:else data-item="{{item.detail}}" catchtap="goCheckout">再来一单</view>
-            </view>
+
+
+    <view>
+        <template is="address-list" data="{{loading: false, addressList: addressList}}" wx:if="{{curNav == 1}}"/>
+    </view>
+
+    <view style="overflow: hidden;">
+        <template is="invoice-list" data="{{labelInfo}}" wx:if="{{curNav == 2}}"/>
+    </view>
+
+    <view class="list-wrap" wx:if="{{curNav == 0}}">
+        <!-- <view class="bor-list fixed">
+            <view bindtap="setOrderTypeId" data-id="{{1}}" class="bor-item {{orderTypeId == 1 ? 'chosen_item' : ''}}">全部</view>
+            <view bindtap="setOrderTypeId" data-id="{{2}}" class="bor-item {{orderTypeId == 2 ? 'chosen_item' : ''}}">待付款</view>
+            <view bindtap="setOrderTypeId" data-id="{{3}}" class="bor-item {{orderTypeId == 3 ? 'chosen_item' : ''}}">待评价</view>
+            <view bindtap="setOrderTypeId" data-id="{{4}}" class="bor-item {{orderTypeId == 4 ? 'chosen_item' : ''}}">退款/售后</view>
         </view> -->
+
         <block wx:if="{{currentPanelList === 1}}">
             <view class="panel" wx:for="{{orderList}}" wx:key="{{item.order.orderNo}}" bind:tap="showDetail" data-item="{{item.order}}" data-list="{{item.order_detail}}" data-dtype="order">
+                <!-- <view class="item_flag">
+                    {{filter.getOrderTypeState(item.order.orderType)}}
+                </view> -->
                 <view class="panel-hd">
-                    <view>{{item.order.orderType === 3 ? '自提' : '外送'}}订单：{{item.order.orderNo}}</view>
-                    <view class="{{item.order.orderState === '00' ? 'active':''}}">{{filter.getOrderState(item.order.orderState)}}</view>
+                    <view class="tt">{{item.order.storeName}}<text wx:if="{{item.order.orderType === 1}}">(NO.{{item.order.varCode}})</text></view>
+                    <view class="active">{{filter.getOrderState(item.order.orderState)}}</view>
                 </view>
                 <view class="panel-bd">
                     <!-- <view class="tt">{{filter.getAddr(item.order)}}</view> -->
-                    <view class="tt">{{item.order.storeName}}<text wx:if="{{item.order.orderType === 1}}">(NO.{{item.order.varCode}})</text></view>
-                    <!-- <view class="desc">{{filter.getOrderBrief(item)}}</view> -->
-                    <view class="order_numer">{{item.order.CreateTime}}</view>
-                    <view class="date">{{filter.getBriefGoods(item.order_detail)}}</view>
+                    <!-- <view class="tt">{{item.order.storeName}}<text wx:if="{{item.order.orderType === 1}}">(NO.{{item.order.varCode}})</text></view> -->
+                    <view class="pro_icon">
+                        <image src="{{item.order_detail[0].productIcon}}" />
+                    </view>
+                    <view class="order_numer">
+                        <view>
+                            <view style="max-width: 68%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap; position: relative; top: -10rpx;"><text>{{filter.getProductBref(item.order_detail).name}}</text><text style="color: rgba(35, 24, 21, 0.5); font-size: 24rpx; margin-left: 15rpx">等{{filter.getProductBref(item.order_detail).num}}件商品</text></view>
+                            <text class="price">￥ {{item.order.payAmount}}</text>
+                        </view>
+                        <view class="time">{{item.order.CreateTime}}</view>
+                    </view>
+                    <!-- <view class="date">{{filter.getBriefGoods(item.order_detail)}}</view> -->
                     <!-- <view class="order_numer">{{item.order.varCode}}</view> -->
                 </view>
                 <view class="panel-ft">
-                    <view class="price">￥{{item.order.payAmount}}</view>
-                    <view class="btn-buy to-pay" wx:if="{{item.order.orderState === '00'}}" data-item="{{item.order}}" data-type="normal" catchtap="goPay">待支付</view>
+                    <view class="order_no">订单编号：{{item.order.orderNo}}</view>
+                    <!-- <view class="btn-cancel to-pay" wx:if="{{item.order.orderState === '00'}}" data-item="{{item.order}}" data-type="normal" catchtap="goCancel">取消订单</view> -->
+
+                    <view class="btn-buy to-pay" wx:if="{{item.order.orderState === '00'}}" data-item="{{item.order}}" data-type="normal" catchtap="goPay">付款</view>
+
+                    <!-- <view class="btn-buy to-pay invoice_button" wx:if="{{item.order.orderState === '100' && !item.order.billOrderID}}" data-item="{{item.order}}" data-type="normal" catchtap="goInvice">开发票</view> -->
+
+                    <view class="btn-cancel to-pay" wx:if="{{item.order.orderState === '100' && !item.order.isComment}}" data-item="{{item.order}}" data-type="normal" catchtap="goComment">评论</view>
+
+
+                    <view class="btn-buy qucan" wx:if="{{filter.getOrderTypeState(item.order.orderType)!= 1 && item.order.orderState == '02' || item.order.orderState == '03'}}" data-item="{{item}}" data-type="group" catchtap="goQrcode">
+                        取餐码
+                    </view>
+
                     <!-- <view class="btn-buy" wx:if="{{true}}" data-item="{{item.order}}" catchtap="goPay">去支付</view> -->
                     <!-- <view class="btn-buy" wx:else data-item="{{item.order}}" data-list="{{item.order_detail}}" catchtap="goCheckout">再来一单</view> -->
                 </view>
@@ -91,23 +149,65 @@
                 </view>
                 <view class="panel-ft">
                     <view class="price">￥{{item.payAmount}}</view>
+                    <view class="btn-cancel" wx:if="{{item.payState === '00'}}" data-item="{{item}}" data-type="group" catchtap="goCancel">
+                        取消订单
+                    </view>
                     <view class="btn-buy" wx:if="{{item.payState === '00'}}" data-item="{{item}}" data-type="group" catchtap="goPay">
                         去支付
                     </view>
+                    <!-- <view class="btn-buy" wx:if="{{item.orderState == '03' || item.orderState == '04'}}" data-item="{{item}}" data-type="group" catchtap="goQrcode">
+                        取餐码
+                    </view> -->
                     <!-- <view class="btn-buy" wx:else data-item="{{item}}" catchtap="goPageGroup">
                         再来一单
                     </view> -->
                 </view>
             </view>
         </block>
-        <view class="loading">{{isCompleted?'没有更多了':'加载中...'}}</view>
+        <view class="loading" wx:if="{{!isCompleted}}">{{isCompleted?'没有更多了':'加载中...'}}</view>
+        <view class="loading" wx:if="{{isCompleted && orderList.length == 0}}">
+            
+            <image style="width: 135rpx; height: 135rpx; margin-top: 200rpx; margin-bottom: 30rpx;" src="../../../images/no_orders.png" />
+            <view style="color: rgba(184, 184, 184, 1); font-size: 28rpx; margin-top:-10rpx;">没有更多订单信息了，去喝一杯吧～</view>
+            <view class="go_buy_one" bindtap="goIndex">去喝一杯</view>
+        </view>
     </view>
+
+
+    <view class="service-wrap" wx:if="{{curNav == 3}}">
+        <view class="service_title">
+            客服电话
+        </view>
+        <view class="service_phone">
+            {{phoneCall}}
+        </view>
+        <view class='service_button' bindtap="mobilePhone">
+            点击拨打
+        </view>
+
+        <view class="lianxi">
+            联系我们：customerservice@mellowercoffee.com
+        </view>
+    </view>
+
+    <toast wx:if="{{errorToastShown}}" is-show="{{errorToastShown}}" title="{{errorInfo}}" disappear-sec="3"></toast>
+
+
+    
 </view>
 
-<view class="search-empty" hidden="{{!hasLogin}}">
-    <view class="search-empty-icon ui-error ui-error-order-no-login" />
-    您还没有登录，请登录后查看订单
-    <view class="btn-login flex-center" bindtap="onClickAvatar">
-        登录
+<view class="search-empty" wx:if="{{!hasLogin}}">
+    <view>
+        <image style="margin: 346rpx 0 30rpx;width: 210rpx; height: 188rpx;" src="../../../images/no_member.png" />
     </view>
+    <!-- <view class="search-empty-icon ui-error ui-error-order-no-login" /> -->
+    您还没有登录，请登录后再查看订单！
+    <button class="btn-login flex-center"  open-type="getUserInfo"
+        bindgetuserinfo="getUserInfo">
+        登录
+    </button>
+</view>
+
+<view class="dibu">
+    
 </view>

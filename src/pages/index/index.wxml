@@ -1,57 +1,131 @@
 <view class="container">
   <view class="img-wrapper">
     <!-- <image src="{{banner}}" /> -->
-    <swiper style="min-height: 608rpx" indicator-active-color="#fff" mode="widthFix" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{5000}}" duration="{{1000}}">
+    <swiper 
+      style="min-height: 520rpx" 
+      indicator-active-color="#fff" 
+      mode="widthFix" 
+      indicator-dots="{{true}}" 
+      indicator-color="rgba(0, 0, 0, .5)"
+      indicator-active-color="rgba(0,0,0,0.2)"
+      autoplay="{{true}}" 
+      interval="{{4000}}" 
+      previous-margin="12px" 
+      circular="true" 
+      next-margin="12px"
+      duration="{{600}}">
       <block wx:for="{{banner}}" wx:key="{{index}}" class="img-caption">
         <swiper-item>
-          <image mode="widthFix" src="{{item.pic}}"/>
+          <ml-navigator redirect_url="{{item.redirect_url}}" redirect_route="{{item.redirect_route}}">
+            <image class="swiper_image" src="{{item.pic}}"/>
+          </ml-navigator>
         </swiper-item>
       </block>
     </swiper>
   </view>
   <!-- <view class="line">
   </view> -->
+
+  <!-- <view class="member_block">
+  </view> -->
+
   <view class="success-container">
-    <view class="block" bindtap='goStore'>
+    <view class="block fenhong" bindtap='goStore'>
       <view class="left">
-        <view class='title'>现在下单</view>
-        <view class='mark'>ORDER NOW</view>
+        <view class='title view'>现在下单</view>
+        <view class='mark view'>ORDER NOW</view>
       </view>
       <view class="right">
-        <image src="../../images/cup_red.png" />
+        <image src="{{youngHomeOrderImg}}" />
       </view>
     </view>
-    <view class="block" bindtap='goPocket'>
+    <!-- <view class="block" bindtap='goPocket'>
       <view class="left">
-        <view class='title'>咖啡钱包</view>
-        <view class='mark'>COFFEE WALLET</view>
-      </view>
-      <view class='tags'>
-        {{tags}}
+        <view class='title view'>充值<view class="dd_block"><text>充值送好礼</text></view></view>
+        <view class='mark view'>COFFEE WALLET</view>
       </view>
       <view class="right">
-        <image src="../../images/pocket.png" />
+        <image src="../../images/recharge.png" />
       </view>
+    </view> -->
+    <view class="block green_block {{!isLogin || !continueDrinkActivity ? 'no_border_bottom' : ''}}" bindtap='goPin' wx:if="{{existInviteActivity}}">
+      
+      <view class="left">
+          <view class='title view'>邀请返现</view>
+          <view class='mark view'>INTIVE RETURN</view>
+        </view>
+        <view class="right">
+          <image src="../../images/fanxian.png" />
+        </view>
     </view>
-    <view class="block" bindtap='goPin'>
-      <view class="left">
-        <view class='title'>邀请得杯</view>
-        <view class='mark'>INVITE FRIENDS</view>
+    <view class="block green_block">
+      <view class="block_item_up" catchtap='goDaka'>
+        <view class="left">
+          <view class='title view'>咖啡打卡<text class="data_txt">({{actualDrinkNum}}/7)</text></view>
+          <view class='mark view'>COFFEE PUNCH CEAD</view>
+        </view>
+        <view class="right">
+          <image src="../../images/punch.png" />
+        </view>
       </view>
-      <view class="right">
-        <image src="../../images/quan.png" />
+      <view class="block_item_down" catchtap='goQrcode'>
+        <view class="left">
+          <view class='title view'>会员码</view>
+          <view class='mark view'>MEMBERSHIP CODE</view>
+        </view>
+        <view class="right">
+          <image src="../../images/member_qrcode.png" />
+        </view>
       </view>
     </view>
   </view>
+
+
+  <image class="swiper_image bigger"/>
+
+  <!-- <view class="subscribe_wrap" wx:if="{{!subscribe && isLogin && canShowSubscribeInOneDay}}">
+    <view class="subscribe">
+      <view class="s_left">
+          <image src="../../images/lingdang.png" />
+        </view>
+        <view class="s_center">
+          <view class='s_title'>开启提醒通知</view>
+          <view class='s_content'>门店开始接单时，我们将以微信服务通知 的形式通知您</view>
+        </view>
+        <view class="s_right">
+          <view class='s_button s_top' bindtap="requestSubscribeMessage">开启</view>
+          <view class='s_button quxiao' bindtap="discardSubscribe">取消</view>
+        </view>
+    </view>
+  </view> -->
 
   <!-- <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button> -->
 
 
-  <view class="act-wrap" wx:if="{{isActWrapShow}}">
-    <view class="mask {{isActWrapShow ? 'active':''}}"></view>
+  <view class="act-wrap" wx:if="{{isActWrapShow}}" bindtap="closeToast">
+    <view class="mask {{isActWrapShow ? 'active':''}}" bindtap="closeToast"></view>
     <view class="cnt">
-      <view class="btn-close" bind:tap="hideActWrap"></view>
-      <image src="{{actImage}}" mode="widthFix" bind:tap="goPageCoupon"></image>
+      <view class="btn-close" catchtap="closeToast"></view>
+      <ml-navigator style="width: 100%;" redirect_url="{{actUrl}}" redirect_route="{{actRoute}}">
+        <image src="{{actImage}}" mode="widthFix" bindtap="handleImage"></image>
+      </ml-navigator>
     </view>
   </view>
 </view>
+
+
+<modal bindcustomevent="dealModalFunction" title="{{modalTitle}}" shown="{{showModal}}" actImage="{{actImage}}" left-button-function-type="{{modalLeftFunctionType}}" type="6"></modal>
+
+<toast wx:if="{{errorToastShown}}" is-show="{{errorToastShown}}" title="{{errorInfo}}" disappear-sec="3"></toast>
+
+<view class="dibu">
+    
+</view>
+
+<view wx:if="{{isLogin}}">
+  <!-- <image catchtap="goQrcode" class="qrcode_index" src='../../images/qrcode_index.png' /> -->
+
+  <image wx:if="{{existLuckActivity}}" catchtap="goZhuanpan" class="zhuanpan_index" src='../../images/zhuanpan.png' />
+</view>
+
+

@@ -13,7 +13,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    isSelfTaking: {
+    isselfTaking: {
       type: Boolean,
       value: false
     },
@@ -28,6 +28,11 @@ Component({
     basePrice: {
       type: Number,
       value: -1
+    },
+
+    isHigh: {
+      type: Boolean,
+      value: false
     },
     isShow: {
       type: Boolean,
@@ -80,9 +85,10 @@ Component({
     setDefault() {
       // 设置默认价格
       try {
-        let obj = this.data.info.sku_list.find(item => {
-          return item.isdefault === 1
-        })
+        // let obj = this.data.info.sku_list.find(item => {
+        //   return item.isdefault === 1
+        // })
+        let obj = this.data.info.default_sku;
         if (!obj) {
           let key = `info.sku_list[0].isdefault`
           this.setData({
@@ -90,10 +96,10 @@ Component({
           })
           obj = this.data.info.sku_list[0]
         }
-        let price = parseFloat(obj.sale_price);
+        let price = parseFloat(obj.orinalPrice);
         let priceTags = [];
 
-        if (obj.sale_price && this.data.info.key_list && this.data.info.key_list.length > 0) {
+        if (obj.orinalPrice && this.data.info.key_list && this.data.info.key_list.length > 0) {
           this.data.info.key_list.forEach(item => {
             item.val_list && item.val_list.forEach(ele => {
               if (ele.isdefault && ele.price) {
@@ -119,11 +125,12 @@ Component({
     },
     toggleMenu() {
       this.setData({
+        currentSku: {},
         priceTags: []
       });
-      if (this.data.info.default_sku && this.data.info.default_sku.sale_price) {
+      if (this.data.info && this.data.info.default_sku && this.data.info.default_sku.orinalPrice) {
         this.setData({
-          totalPrice: this.data.info.default_sku.sale_price
+          totalPrice: this.data.info.default_sku.orinalPrice
         });
       }
       this.triggerEvent('togglemenu', 'abc')
@@ -197,7 +204,7 @@ Component({
       // this.mergeCart(cart)
       // this.toggleMenu();
       // wx.navigateTo({
-      //   url: `/pages/newCart/cart?isNeedFee=${this.data.isSelfTaking ? 0: 1}`
+      //   url: `/pages/newCart/cart?isNeedFee=${this.data.isselfTaking ? 0: 1}`
       // });
       let propList = info.key_list
       let propIds = []
@@ -219,7 +226,7 @@ Component({
         sum += this.data.count;
         wx.setStorageSync('cartSum', sum)
         wx.setTabBarBadge({
-          index: 3,
+          index: 1,
           text: sum.toString()
         });
         console.log('请求成功');
@@ -233,7 +240,7 @@ Component({
           })
         }
         wx.navigateTo({
-          url: `/pages/newCart/cart?isNeedFee=${this.data.isSelfTaking ? 0: 1}`
+          url: `/pages/newCart/cart?isNeedFee=${this.data.isselfTaking ? 0: 1}`
         });
       }).catch(e => {
         console.log('请求失败');
@@ -252,7 +259,7 @@ Component({
      */
     select(e) {
       // wx.showLoading({
-      //   title: 'Loading...', //提示的内容,
+      //   title: '加载中', //提示的内容,
       //   mask: true, //显示透明蒙层，防止触摸穿透,
       //   success: res => {}
       // });
@@ -269,7 +276,7 @@ Component({
           item.isdefault = item.id === currentSku.id ? 1 : 0
         })
 
-        let finalPrice = currentSku.sale_price;
+        let finalPrice = currentSku.member_price;
         // let finalPrice = this.data.price;
         let customedKey = this.data.customedKey.split('-');
 
@@ -308,14 +315,12 @@ Component({
             return item.isdefault === 1;
           })
           
-          // let finalPrice = currentSku[0].sale_price;
-          // let customedKey = this.data.customedKey.split('-');
 
           let customVal = this.data.customVal.split('-');
 
           let finalPrice = this.data.price;
 
-          let priceTags = this.data.priceTags;
+          let priceTags = JSON.parse(JSON.stringify(this.data.priceTags));
 
           if (customVal.indexOf(e.currentTarget.dataset.code.toString()) < 0) {
           // if (true) {
@@ -326,15 +331,20 @@ Component({
               item.val_list.forEach(ele => {
                 if (e.currentTarget.dataset.code == ele.prop_id) {
                   targetIndex = index;
-                  if (ele.price) {
+                  if (ele.price || true) {
                     let flag = true;
                     priceTags.forEach(lll => {
                       if (lll.prop_id === ele.prop_id) {
                         flag = false
                       }
                     })
-                    flag && priceTags.push(ele);
-                    flag && (deltaPrice += parseFloat(ele.price));
+                    // flag && priceTags.push(ele);
+                    if (flag) {
+                      // priceTags.push(ele);
+                      priceTags = [ele];
+                      deltaPrice += parseFloat(ele.price)
+                    }
+                    // flag && (deltaPrice += parseFloat(ele.price));
                   }
                 }
                 // if (ele.price) {
@@ -370,15 +380,27 @@ Component({
             if (targetIndex >= 0 && priceTags.length > 0) {
               let flag = false;
               let targetKid_id = priceTags[priceTags.length - 1].kid;
-              priceTags.some((ele, index) => {
-                if (ele.kid === targetKid_id) {
-                  priceTags.splice(index, 1);
-                  flag = true;
-                }
-                if (flag) {
-                  return true;
-                }
-              })
+              // priceTags.some((ele, index) => {
+              //   if (ele.kid === targetKid_id) {
+              //     priceTags.splice(index, 1);
+              //     flag = true;
+              //   }
+              //   if (flag) {
+              //     return true;
+              //   }
+              // })
+                            // priceTags.forEach((ele, index) => {
+                            //   if (ele.prop_id === e.currentTarget.dataset.code) {
+                            //     // priceTags.splice(index, 1);
+                            //     priceTags = [ele]
+                            //     flag = true;
+                            //     // return false;
+                            //   }
+                            //   // if (flag) {
+                            //   //   return true;
+                            //   // }
+                            // })
+
               // debugger
               // this.data.info.key_list[targetIndex].val_list.some((item) => {
               //   priceTags.some((ele, index) => {
@@ -392,10 +414,16 @@ Component({
               //   }
               // });
             }
-            finalPrice = parseFloat(currentSku[0].sale_price);
+            finalPrice = parseFloat(currentSku[0].member_price);
             priceTags.forEach(item => {
               finalPrice += parseFloat(item.price);
             });
+          } else {
+            // priceTags.forEach((ele, index) => {
+            //   if (ele.prop_id == e.currentTarget.dataset.code) {
+            //     priceTags.splice(index, 1);
+            //   }
+            // })
           }
 
           
@@ -428,6 +456,7 @@ Component({
         count: count + 1,
       })
       this.setPrice()
+      this.getCustomed()
     },
     /**
      * 减少数量
@@ -439,6 +468,7 @@ Component({
           count: count - 1,
         })
         this.setPrice()
+        this.getCustomed()
       }
     },
     /**
@@ -475,17 +505,21 @@ Component({
           keys.push(item.dataset.code)
         });
         let customed = '';
-        if (this.data.currentSku.sale_price || this.data.info.default_sku) {
-          customed = `￥${parseFloat(this.data.currentSku.sale_price ? this.data.currentSku.sale_price : this.data.info.default_sku.sale_price).toFixed(1)}`;
+        if (this.data.currentSku.sale_price || (this.data.info && this.data.info.default_sku)) {
+          let _price = parseFloat(this.data.currentSku.member_price ? this.data.currentSku.member_price : this.data.info.default_sku.orinalPrice).toFixed(1);
+          if (this.data.info.default_sku.price && this.data.info.default_sku.price != this.data.info.default_sku.orinalPrice) {
+            _price = this.data.info.default_sku.price;
+          }
+          customed = `￥${_price * this.data.count}`;
 
-          this.data.priceTags.forEach(item => {
-            customed += ` + ${item.val}${item.price}元`
-          });
+          // this.data.priceTags.forEach(item => {
+          //   customed += ` + ${item.val}${item.price * this.data.count}元`
+          // });
         }
         
         this.setData({
           customed: customed,
-          customedKey: this.data.info.id + '-' + keys.join('-'),
+          customedKey: this.data.info && this.data.info.id + '-' + keys.join('-'),
           customVal: keys.slice(1).join('-'),
         })
       }).exec();

@@ -1,7 +1,0 @@
-{
-  "enablePullDownRefresh": false,
-  "navigationBarTitleText": "拼团订单详情",
-  "usingComponents": {
-    "toast": "../../../components/toast/toast"
-  }
-}

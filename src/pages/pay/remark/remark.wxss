@@ -30,7 +30,7 @@
     border-radius: 5px;
     margin-left: 5%;
     width: 93%;
-    background:rgba(245, 245, 245, 1);
+    background:#fff;
     color: #999999;
     height: 308rpx;
 }
@@ -63,18 +63,20 @@
     right: 0rpx;
     color: #fff;
     display: flex;
-    box-shadow:0px 0px 5px 0px rgba(181, 181, 181, 0.5);
+    /* box-shadow:0px 0px 5px 0px rgba(181, 181, 181, 0.5); */
 
 }
 
 .button button {
     border-radius: 0rpx;
-    background: #F50000;
-    margin: 20rpx 30rpx;
+    background: #231815;
+    /* margin: 20rpx 30rpx; */
     flex: 1;
     color: #fff;
-    margin-right: 15rpx;
-    margin-left: 15rpx;
+    /* margin-right: 15rpx; */
+    /* margin-left: 15rpx; */
+    height: 98rpx;
+    line-height: 98rpx;
 }
 
 .protocol {
@@ -100,6 +102,7 @@
 
 page {
     font-size: 14px;
+    background: #fff;
 }
 
 textarea {
@@ -107,6 +110,7 @@ textarea {
     font-size: 27rpx;
     line-height: 27rpx;
     width: 95%;
+    
     /* background:rgba(245, 245, 245, 1); */
 }
 
@@ -124,22 +128,23 @@ textarea {
 .button_line {
     padding-top: 38rpx;
     display: flex;
+    margin-left: 90rpx;
 }
 
 .little_button {
-    width: 152rpx;
-    height: 60rpx;
-    line-height: 60rpx;
-    border-radius: 30rpx;
+    width: 130rpx;
+    height: 64rpx;
+    line-height: 64rpx;
+    border-radius: 10rpx;
     text-align: center;
-    color: #999999;
-    background: #FAFAFA;
+    color: #3B3B3B;
+    background:rgba(215,215,215,1);
     border: 1rpx solid #FAFAFA;
     margin-right: 24rpx;
 }
 
 .chosen {
-    color: #DF0202;
-    background: #fff;
-    border: 1rpx solid #FFDBDB;
+    color: #000000;
+    background: #D32D25;
+    border: 1rpx solid #D32D25;
 }

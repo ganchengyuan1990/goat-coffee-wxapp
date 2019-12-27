@@ -17,11 +17,30 @@ Page({
     init: true,
     type: -1,
     isGeoAuth: true,
-    fromCheckout: false
+    fromCheckout: false,
+    showCities: false,
+    cities: [],
+    secondCities: [],
+    thirdCities: [],
+    firstCitySelected: 0,
+    secondCitySelected: 0,
+    thirdCitySelected: 0,
+    city1: '请点击选择您所在的城市',
+    city2: '',
+    city3: '',
+    minIndex: 0,
+    zizhuList: [],
+    initShopList: [],
+    selected: 0
   },
   onLoad: function (options) {
 
+    // wx.setNavigationBarTitle({
+    //   title: "动态标题"
+    // })
+
     if (options.fromCheckout) {
+      options.tab = 'delivery'
       this.setData({
         fromCheckout: true
       });
@@ -33,16 +52,24 @@ Page({
         showSelfGet: options.tab !== 'delivery',
         showExpress: options.tab === 'delivery',
         isGeoAuth: app.globalData.isGeoAuth,
-        type: options.tab === 'delivery' ? 2 : 1
+        type: options.tab === 'delivery' ? 2 : 1,
+        storeInfo: wx.getStorageSync('STORE_INFO') ? JSON.parse(wx.getStorageSync('STORE_INFO')) : {},
       })
+      this.getCityList();
     } else {
       this.setData({
         goodsTotalPrice: parseInt(options.price),
         type: parseInt(options.type),
         showExpress: parseInt(options.type) === 2,
-        showSelfGet: parseInt(options.type) === 1
+        showSelfGet: parseInt(options.type) === 1,
+        storeInfo: wx.getStorageSync('STORE_INFO') ? JSON.parse(wx.getStorageSync('STORE_INFO')) : {},
+
       })
     }
+
+    wx.setNavigationBarTitle({
+      title: options.tab !== 'delivery' ? '选择门店' : '收货地址'
+    })
 
     // 页面初始化 options为页面跳转所带来的参数
 
@@ -86,6 +113,62 @@ Page({
     this.showShopList();
   },
 
+  getCityList () {
+    wx.showLoading({
+      title: 'Loading...', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
+    let geo = getApp().globalData.userGeo;
+    console.log(geo, 33333);
+    var self = this;
+    model('home/lbs/get-store-list-with-city', {
+      // lat: 31.1949185300,
+      // lng: 121.3103584400,
+      lng: geo.lng,
+      lat: geo.lat,
+      // page: 1
+    }).then(data => {
+      if (data.code == 'suc') {
+        var shopList = [];
+        let result = data.data.cityMap;
+        var list = Object.keys(result).map(function (item) {
+          var value = Object.keys(result[item]).map(function (ele) {
+            var inner_value = Object.keys(result[item][ele]).map(function (inner) {
+              result[item][ele][inner].forEach(itemm => {
+                if (itemm.id == self.data.storeInfo.id) {
+                  itemm.isSelected = true;
+                }
+              })
+              shopList = shopList.concat(result[item][ele][inner])
+              return {
+                key: inner,
+                value: result[item][ele][inner]
+              };
+            });
+            return {
+              key: ele,
+              value: inner_value
+            };
+          });
+          return {
+            key: item,
+            value: value
+          };
+        });
+        // var arr = Object.keys(result).map((k) => result[k])
+        // result = result.concat(result);
+        // wx.setStorageSync('shopList', shopList);
+        this.setData({
+          cities: list,
+          initShopList: shopList
+        })
+        this.setAllShopList(shopList);
+      }
+      
+    })
+  },
+
   goExpress() {
     this.setData({
       showExpress: true,
@@ -96,29 +179,89 @@ Page({
     this.showExpressList();
   },
 
-  showExpressList () {
-    let addressList = wx.getStorageSync('addressList');
+  toggleNav () {
     this.setData({
-      searchSuggest: addressList
+      showCities: !this.data.showCities
+    })
+  },
+
+  switchRightTab(e) {
+    let index = parseInt(e.target.dataset.index);
+    this.setData({
+      curNav: index
     });
+    this.setData({
+      showCities: !this.data.showCities
+    })
+  },
+
+  switchFirstTab (e) {
+     let index = parseInt(e.target.dataset.index);
+     this.setData({
+       secondCities: this.data.cities[index].value,
+       thirdCities: [],
+       firstCitySelected: index,
+       city1: this.data.cities[index].key
+     });
+  },
+
+  switchSecondTab(e) {
+    let index = parseInt(e.target.dataset.index);
+    this.setData({
+      thirdCities: this.data.secondCities[index].value,
+      secondCitySelected: index,
+      city2: this.data.secondCities[index].key
+    });
+  },
+
+  switchThirdTab(e) {
+    let index = parseInt(e.target.dataset.index);
+    this.setData({
+      thirdCitySelected: index,
+      searchSuggest: this.data.thirdCities[index].value,
+      showCities: false,
+      city3: this.data.thirdCities[index].key
+    });
+  },
+
+  showExpressList () {
+    // let addressList = wx.getStorageSync('addressList');
+    // this.setData({
+    //   searchSuggest: addressList
+    // });
+    // let addressList = wx.getStorageSync('shopList');
+    // if (addressList) {
+    //   this.setData({
+    //     searchSuggest: addressList
+    //   });
+    // } else {
+    //   this.getCityList();
+    // }
   },
 
   showShopList() {
     let addressList = wx.getStorageSync('shopList');
     if (addressList) {
+      addressList = addressList.filter(item => {
+        return item.area == this.data.city3;
+      });
       this.setData({
         searchSuggest: addressList
       });
     } else {
-      this.getAllShopList();
+      this.getCityList();
     }
     
   },
 
-  goAddAddress () {
+  goAddressList() {
     if (wx.getStorageSync('token')) {
+      getApp().globalData.goAddress = true;
+      // wx.switchTab({
+      //   url: `/pages/order/list/list?type=1`
+      // });
       wx.navigateTo({
-        url: `/pages/my/address/address`
+        url: '/pages/my/address/address'
       });
     } else {
       wx.navigateTo({
@@ -128,17 +271,25 @@ Page({
     
   },
 
+  goAddress(e) {
+    let id = e.currentTarget.dataset.id;
+    wx.setStorageSync('chosenAddress', e.currentTarget.dataset.info)
+    wx.navigateTo({
+      url: `/pages/my/address/address?id=${id}`
+    });
+  },
+
   goStore (e) {
     var globalData = app.globalData;
 
     globalData.fromTransport = {
-      type: this.data.showSelfGet ? 'selftaking' : 'deliver',
+      type: this.data.showSelfGet ? 'selfTaking' : 'deliver',
       detail: {
         detail: this.data.searchSuggest[parseInt(e.currentTarget.dataset.idx)]
       },
       idx: parseInt(e.currentTarget.dataset.idx)
     }
-    wx.setStorageSync('fromTransport', this.data.showSelfGet ? 'selftaking' : 'deliver');
+    wx.setStorageSync('fromTransport', this.data.showSelfGet ? 'selfTaking' : 'deliver');
     wx.setStorageSync('chosenAddress', this.data.searchSuggest[parseInt(e.currentTarget.dataset.idx)]);
     if (this.data.fromCheckout && this.data.showSelfGet === false) {
       let pages = getCurrentPages();
@@ -167,7 +318,7 @@ Page({
 
     if (this.data.type === 1) {
       if (this.data.init) {
-        this.getAllShopList();
+        this.getCityList();
       } else {
         let addressList = wx.getStorageSync('shopList');
         if (addressList) {
@@ -176,6 +327,12 @@ Page({
           });
         }
       }
+      // let addressList = wx.getStorageSync('shopList');
+      // if (addressList) {
+      //   this.setData({
+      //     searchSuggest: addressList
+      //   });
+      // }
     } else {
       model('my/address/list', {
         userId: wx.getStorageSync('token').user.id,
@@ -190,31 +347,42 @@ Page({
     }
   },
 
-  getAllShopList () {
-    model('home/lbs/get-store-list-by-location', {
-      // lng: geo.lng,
-      // lat: geo.lat,
-      lng: 121.483821,
-      lat: 31.265335,
-      page: 1
-    }).then(data => {
-      let result = data.data;
-      // result = result.concat(result);
-      result.forEach(item => {
-        item.distance = item.distance > 10 ? '>10' : item.distance;
-      });
-      wx.setStorageSync('shopList', result);
-      this.setData({
-        searchSuggest: result
-      })
-    })
-  },
+  setAllShopList(shopList) {
+    let min = 100000000;
+    let minIndex = 0;
+    // console.log(result, 33333);
+    let initShopList = shopList.map((item, index) => {
+      if (parseInt(item.distance) === item.distance && parseInt(item.distance) < min) {
+        min = parseInt(item.distance);
+        minIndex = index;
+      }
+      item.distanceReal = item.distance;
+      item.distanceStatus = item.distance >= 3000 ? '>3' : item.distance;
+      item.distance = item.distance >= 3000 ? '>3' : item.distance;
+      return item;
+    });
 
-  goAddressList () {
-    wx.navigateTo({
-      url: '/pages/my/address_list/address_list'
+    shopList = initShopList.filter(item => {
+      return item.prov == initShopList[minIndex].prov && item.city == initShopList[minIndex].city && item.area == initShopList[minIndex].area;
+    })
+
+    wx.hideLoading();
+
+    wx.setStorageSync('shopList', initShopList);
+    this.setData({
+        city1: initShopList[minIndex].prov,
+        city2: initShopList[minIndex].city,
+        city3: initShopList[minIndex].area,
+        minIndex: minIndex,
+        searchSuggest: shopList
     });
   },
+
+  // goAddressList () {
+  //   wx.navigateTo({
+  //     url: '/pages/my/address_list/address_list'
+  //   });
+  // },
   onReady: function () {
     // 页面渲染完成
 

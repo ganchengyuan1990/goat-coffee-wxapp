@@ -1,11 +1,11 @@
 page {
-    background: #f6f6f6 !important;
+    background: #fff !important;
 }
 
 .wrapper {
     background: #f6f6f6;
     padding-bottom: 30rpx;
-    height: calc(100vh - 126rpx);
+    height: calc(100vh - 0rpx);
 }
 
 .promotion-tip {
@@ -55,15 +55,23 @@ page {
 
 .title {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    padding-left: 35rpx;
+    left: 5%;
+    /* transform: translateX(-50%); */
+    /* padding-left: 35rpx; */
     padding-right: 20rpx;
     background: #f6f6f6;
     display: block;
-    height: 74rpx;
-    line-height: 74rpx;
-    font-size: 30rpx;
+    height: 94rpx;
+    line-height: 94rpx;
+    font-size: 32rpx;
+}
+
+.number {
+    position: absolute;
+    right: 30rpx;
+    top: 25rpx;
+    color: #D32D25;
+    font-size: 28rpx;
 }
 
 .list-item {
@@ -71,12 +79,19 @@ page {
     flex-direction: column;
     padding: 10rpx;
     justify-content: space-between;
-    border-radius: 8rpx;
-    background: #fff;
-    margin: 40rpx;
+    /* background: #fff; */
     position: relative;
     /* padding: 36rpx 15rpx 36rpx 30rpx; */
     align-items: center;
+    box-shadow:0px 2px 10px 0px rgba(35, 24, 21, 0.2);
+    border-radius:10px;
+}
+
+.list-item-label {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 30rpx;
 }
 
 .row {
@@ -110,13 +125,13 @@ page {
 }
 
 .left-part {
-    padding: 56rpx 15rpx 76rpx 30rpx;
+    padding: 56rpx 0rpx 56rpx 30rpx;
     display: flex;
     flex-direction: column;
 }
 
 .left-part {
-    width: 170rpx;
+    width: 130rpx;
     border-top-right-radius: 0.5rem;
     /* border-right: 2rpx dashed #999; */
 }
@@ -203,7 +218,7 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
 
 .list-item-deal .deal-num {
     font-size: 54rpx;
-    color: #DF0202;
+    color: #D32D25;
 }
 
 .no_coupon_wrapper {
@@ -221,17 +236,23 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
 
 .no_coupon_wrapper {
     /* height: 200rpx; */
-    width: 210rpx;
+    width: 100%;
     position: fixed;
-    top: 40%;
-    left: 50%;
-    margin-top: -100rpx;
-    margin-left: -100rpx;
+    /* top: 40%; */
+    /* left: 50%; */
+    margin-top: -67rpx;
+    /* margin-left: -67rpx; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .no_coupon_wrapper image {
-    width: 200rpx;
-    height: 200rpx;
+    width: 135rpx;
+    height: 135rpx;
+    margin-bottom: 20rpx;
 }
 
 .mention {
@@ -275,12 +296,13 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
 }
 
 .inner_border {
-    border: 1rpx solid #FFABAB;
+    border: 1rpx solid #D32D25;
     display: flex;
     flex-direction: row;
     padding: 10rpx;
     justify-content: space-between;
     flex: 1;
+    background: #fff;
     /* margin-right: 50rpx; */
     width: 96%;
 }
@@ -299,9 +321,15 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
     width: 88rpx;
 }
 
+.use_inter {
+    position: relative;
+    color: #999;
+    font-size: 24rpx;
+}
+
 .fast_icon {
     box-sizing: border-box;
-    right: -10rpx;
+    left: 100rpx;
     position: absolute;
     height: 10rpx;
     top: 12rpx;
@@ -310,4 +338,37 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
     border-top: 10rpx solid #999;
     border-left: 10rpx solid transparent;
     border-right: 10rpx solid transparent;
+}
+
+.use_button {
+    width:160rpx;
+    height:60rpx;
+    line-height: 60rpx;
+    background:rgba(35, 24, 21, 1);
+    box-shadow: 0rpx 2rpx 10rpx 0rpx rgba(35, 24, 21, 0.2);
+    border-radius: 10rpx;
+    color: #D32D25;
+    font-size: 30rpx;
+    text-align: center;
+}
+
+.inner {
+    width: 640rpx;
+    display: flex;
+    flex-direction: row;
+    padding: 10rpx;
+    justify-content: space-between;
+    flex: 1;
+    background:rgba(250, 250, 250, 1);
+    box-shadow:0px 2px 4px 0px rgba(35, 24, 21, 0.18);
+    border-radius:0px 0px 10px 10px;
+    margin-left: 15rpx;
+}
+
+.bigger_text {
+    font-size:60rpx;
+    font-family:PingFangSC;
+    font-weight:400;
+    color:rgba(219, 163, 127, 1);
+    line-height:84rpx;
 }

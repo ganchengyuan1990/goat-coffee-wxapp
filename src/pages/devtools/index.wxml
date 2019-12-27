@@ -1,0 +1,6 @@
+<view class="dev-container">
+  <view class="title">当前小程序版本是{{SDKVersion}}</view>
+  <view class="route-item" wx:for="{{devRoutes}}" wx:for-item="route" wx:key="{{index}}" bindtap="navigatorTo" data-route="{{route}}">
+    {{route.name}}
+  </view>
+</view>

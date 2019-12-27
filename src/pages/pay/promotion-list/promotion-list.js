@@ -12,19 +12,129 @@ Page({
         // }],
         couponItems: [],
         voucherItems: [],
+        redPackItems: [],
         unActivedItems: [],
         chosenInfo: {},
         canUseRedPacketMeanwhile: false,
         type: 1,
         products: [],
         chosenVoucher: -1,
-        chosenCoupon: -1
+        chosenCoupon: -1,
+        chosenRedPack: -1,
+        couponType: 1,
+        totalItems: [],
+        guaerItems: []
+    },
+
+    getCouponItems(e) {
+        let type = 1;
+        if (e) {
+            type = parseInt(e.currentTarget.dataset.index);
+        }
+        this.setData({
+            couponType: type
+        })
+        // https: //heibanbao.wang/api/v1/server/my/coupon/list?userId=7447
+        let userId = wx.getStorageSync('token').user.id;
+        if (type == 2) {
+            Promise.all([model(`my/coupon/list?userId=${userId}&type=1`), model(`my/coupon/list?userId=${userId}&type=3`)]).then(resArr => {
+                let res1 = resArr[0];
+                let res2 = resArr[1];
+                let result = res1.data.userCoupons;
+                // let result = res1.data.userCoupons.concat(res2.data.userCoupons);
+                result = result.filter(element => {
+                    if (element.coupon.discount || element.coupon.discount == 0) {
+                        element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
+                    }
+                    if (element.coupon.manjian_cash) {
+                        element.coupon.manjian_cash = this.getVeryMoney(element.coupon.manjian_cash)
+                    }
+                    if (element.coupon.zhigou_cash) {
+                        element.coupon.zhigou_cash = this.getVeryMoney(element.coupon.zhigou_cash)
+                    }
+
+                    if (element.coupon.manjian_price_available) {
+                        element.coupon.manjian_price_available = this.getVeryMoney(element.coupon.manjian_price_available)
+                    }
+                    // element.couponBref = '21123123123';
+                    if (element.coupon.availabileStartTime) {
+                        element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0]
+                    }
+                    if (element.end_time) {
+                        element.end_time = element.end_time.split(' ')[0]
+                    }
+
+                    if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
+                        element.xianzhi = element.coupon.classifyNames[0]
+                    }
+
+                    if (element.coupon.goodsNames && element.coupon.goodsNames.length > 0) {
+                        element.xianzhi = element.coupon.goodsNames[0]
+                    }
+                    let _result = true;
+                    if (this.data.type == 2) {
+                        this.data.voucherItems.map(item => {
+                            if (item.coupon.id == element.coupon.id) {
+                                _result = false;
+                            }
+                        })
+                        if (element.coupon.coupon_type != 5) {
+                            _result = false;
+                        }
+                        // _result = (element.coupon.coupon_type == 5) && (element.coupon.classifyIds && element.coupon.classifyIds.length > 0)
+                    } else if (this.data.type == 3) {
+                        this.data.redPackItems.map(item => {
+                            if (item.coupon.id == element.coupon.id) {
+                                _result = false;
+                            }
+                        })
+                        if (element.coupon.coupon_type != 2) {
+                            _result = false;
+                        }
+                        // _result = (element.coupon.coupon_type == 2)
+                    } else if (this.data.type == 1) {
+                        this.data.couponItems.map(item => {
+                            if (item.coupon.id == element.coupon.id) {
+                                _result = false;
+                            }
+                        })
+                        if (element.coupon.coupon_type == 2 || element.coupon.coupon_type == 5) {
+                            _result = false;
+                        }
+                        // _result = (element.coupon.coupon_type != 2 && element.coupon.coupon_type != 5)
+                    }
+                    return _result;
+                });
+                this.setData({
+                    couponItems: result,
+                    voucherItems: result,
+                    redPackItems: result,
+                    loading: false
+                })
+            }).catch(e => {
+                this.setData({
+                    loading: false
+                })
+            });
+        } else {
+            this.setData({
+                couponItems: this.data.totalItems,
+                voucherItems: this.data.totalItems,
+                redPackItems: this.data.totalItems,
+                loading: false
+            })
+        }
+
     },
     onMyEvent: function (e) {
         // 选择一项就返回，并用setData把选中的那项以外的其他项checked设为空
+        if (this.data.couponType !== 1) {
+            return;
+        }
+
         let idArray = e.detail.value;
         let newValue;
-        if (this.data.type === 1) {
+        if (this.data.type === 3) {
             newValue = idArray.splice(idArray.length - 1, 1);
         } else {
             newValue = idArray;
@@ -36,9 +146,11 @@ Page({
             target = 'couponItems'
         } else if (this.data.type === 2) {
             target = 'voucherItems'
+        } else if (this.data.type === 3) {
+            target = 'redPackItems'
         }
         this.data[target].forEach((element, index) => {
-            if(this.data.type === 1) {
+            if (this.data.type === 3) {
                 if (index === parseInt(newValue[0])) {
                     if (!element.checked) {
                         let checkBool = target + '[' + index + '].checked';
@@ -47,8 +159,8 @@ Page({
                                 type: this.data.type,
                                 content: [{
                                     type: this.data.type,
-                                    id: element.tCoreUserVoucher.voucherId,
-                                    relationId: element.tCoreUserVoucher.id
+                                    id: element.coupon.id,
+                                    relationId: element.id
                                 }]
                             };
                         } else {
@@ -56,8 +168,8 @@ Page({
                                 type: this.data.type,
                                 content: [{
                                     type: this.data.type,
-                                    id: element.tCoreUserCoupon.couponId,
-                                    relationId: element.tCoreUserCoupon.id
+                                    id: element.coupon.id,
+                                    relationId: element.id
                                 }]
                             };
                         }
@@ -76,7 +188,7 @@ Page({
                         [checkBool]: false
                     });
                 }
-            } else {
+            } else if (this.data.type === 1 || this.data.type === 2) {
                 // 咖啡钱包逻辑不通
                 let checkBool = target + '[' + index + '].checked';
                 let targetArr = []
@@ -93,30 +205,54 @@ Page({
                     });
                 }
             }
-            
+
         });
 
 
-        if (this.data.type === 1) {
+        if (this.data.type === 3) {
             this.setData({
                 chosenInfo: chosenInfo
             });
         }
-        
+
     },
 
-    commitCoupon () {
-        if (this.data.type === 2) {
-            let chosenInfoArr = [];
-            this.data.voucherItems.forEach(element => {
-                if (element.checked) {
-                    chosenInfoArr.push({
-                        type: this.data.type,
-                        id: element.tCoreUserVoucher.voucherId,
-                        relationId: element.tCoreUserVoucher.id
-                    })
-                }
+    commitCoupon() {
+        if (this.data.couponItems.length == 0 && this.data.voucherItems.length == 0 && this.data.redPackItems.length == 0) {
+            let pages = getCurrentPages();
+            let prevPage = pages[pages.length - 2]; //上一个页面
+            prevPage.setData({
+                goBackFromChildPage: true
             });
+            wx.navigateBack({
+                url: '../order-create/order-create'
+            });
+            return;
+        }
+        if (this.data.type === 2 || this.data.type === 1) {
+            let chosenInfoArr = [];
+            if (this.data.type === 2) {
+                this.data.voucherItems.forEach(element => {
+                    if (element.checked) {
+                        chosenInfoArr.push({
+                            type: this.data.type,
+                            id: element.coupon.id,
+                            relationId: element.id
+                        })
+                    }
+                });
+            } else {
+                this.data.couponItems.forEach(element => {
+                    if (element.checked) {
+                        chosenInfoArr.push({
+                            type: this.data.type,
+                            id: element.coupon.id,
+                            relationId: element.id
+                        })
+                    }
+                });
+            }
+
             this.setData({
                 chosenInfo: {
                     type: this.data.type,
@@ -143,13 +279,40 @@ Page({
             url: '../order-create/order-create'
         });
     },
+
+    getVeryMoney(money) {
+        let result;
+        if (money == parseInt(money)) {
+            result = parseInt(money)
+        } else {
+            result = parseFloat(money).toFixed(1)
+        }
+        return result;
+    },
     onLoad: function (option) {
         // let array = JSON.parse(option.array);
         let chosenId = option.chosenId;
         let activedItems = [];
         let unActivedItems = [];
+        let guaerItems = getApp().globalData.guaerItems;
+        // let sssss = JSON.parse(JSON.stringify(wx.getStorageSync('couponList')))
+        // guaerItems = sssss.splice(0, 1);
+        // guaerItems.forEach(element => {
+        //     if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
+        //         element.xianzhi = element.coupon.classifyNames[0]
+        //     }
+
+        //     if (element.coupon.goodsNames && element.coupon.goodsNames.length > 0) {
+        //         element.xianzhi = element.coupon.goodsNames[0]
+        //     }
+        // });
         this.setData({
             type: parseInt(option.type),
+            guaerItems: guaerItems || []
+        })
+
+        wx.setNavigationBarTitle({
+            title: parseInt(option.type) == 3 ? '可用满减券' : parseInt(option.type) == 2 ? '可用兑换券' : '可用优惠券'
         })
         if (this.data.type === 1) {
             // let list = JSON.parse(option.list);
@@ -158,34 +321,129 @@ Page({
                 type: 1,
                 contents: []
             };
-            list.forEach(item => {
-                if (item.tCoreCoupon.discount) {
-                    item.tCoreCoupon.discount = parseFloat(item.tCoreCoupon.discount).toFixed(1);
+            let chosenCouponArr = option.chosenCoupon.split(',');
+            list.map(element => {
+                if (element.coupon.discount || element.coupon.discount == 0) {
+                    element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
                 }
-                if (item.tCoreCoupon.saveAmount) {
-                    item.tCoreCoupon.saveAmount = parseFloat(item.tCoreCoupon.saveAmount).toFixed(1);
+                if (element.coupon.manjian_cash) {
+                    element.coupon.manjian_cash = this.getVeryMoney(element.coupon.manjian_cash)
                 }
-                if (item.tCoreUserCoupon.id == option.chosenCoupon) {
-                    item.checked = true;
-                    chosenInfo.contents.push({
-                        type: 1,
-                        id: item.tCoreUserCoupon.couponId,
-                        relationId: item.tCoreUserCoupon.id
-                    });
-                } else {
-                    item.checked = false;
+                if (element.coupon.zhigou_cash) {
+                    element.coupon.zhigou_cash = this.getVeryMoney(element.coupon.zhigou_cash)
                 }
-                if (item.tCoreUserCoupon.startTime) {
-                    item.tCoreUserCoupon.startTime = item.tCoreUserCoupon.startTime.split(' ')[0]
+
+                if (element.coupon.manjian_price_available) {
+                    element.coupon.manjian_price_available = this.getVeryMoney(element.coupon.manjian_price_available)
                 }
-                if (item.tCoreUserCoupon.endTime) {
-                    item.tCoreUserCoupon.endTime = item.tCoreUserCoupon.endTime.split(' ')[0]
+                // element.couponBref = '21123123123';
+                if (element.coupon.availabileStartTime) {
+                    element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0]
                 }
-            })
+                if (element.end_time) {
+                    element.end_time = element.end_time.split(' ')[0]
+                }
+
+                if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
+                    element.xianzhi = element.coupon.classifyNames[0]
+                }
+
+                if (element.coupon.goodsNames && element.coupon.goodsNames.length > 0) {
+                    element.xianzhi = element.coupon.goodsNames[0]
+                }
+                let checked = false;
+                chosenCouponArr.forEach(ele => {
+                    if (element.id == ele) {
+                        checked = true;
+                    }
+                });
+                element.checked = checked;
+                // if (element.id == option.chosenCoupon) {
+                //     element.checked = true;
+                //     chosenInfo.contents.push({
+                //         type: 1,
+                //         id: element.coupon.id,
+                //         relationId: element.id
+                //     });
+                // } else {
+                //     element.checked = false;
+                // }
+
+                return element;
+            });
             this.setData({
                 chosenInfo: chosenInfo,
                 couponItems: list,
-                chosenCoupon: parseInt(option.chosenCoupon)
+                totalItems: list,
+                chosenCoupon: chosenCouponArr
+            })
+            // 优惠券
+            // model('my/coupon/list', {
+            //     userId: wx.getStorageSync('token').user.id
+            // }).then(data => {
+            //     let result = data.data;
+            //     result.forEach(element => {
+            //         element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0]
+            //         element.coupon.availabileEndTime = element.coupon.availabileEndTime.split('.')[0]
+            //     });
+            //     this.setData({
+            //         couponItems: data.data
+            //     })
+            // })
+        } else if (this.data.type === 3) {
+            // let list = JSON.parse(option.list);
+            let list = wx.getStorageSync('redPackList');
+            let chosenInfo = {
+                type: 3,
+                contents: []
+            };
+            list.map(element => {
+                if (element.coupon.discount || element.coupon.discount == 0) {
+                    element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
+                }
+                if (element.coupon.manjian_cash) {
+                    element.coupon.manjian_cash = this.getVeryMoney(element.coupon.manjian_cash)
+                }
+                if (element.coupon.zhigou_cash) {
+                    element.coupon.zhigou_cash = this.getVeryMoney(element.coupon.zhigou_cash)
+                }
+
+                if (element.coupon.manjian_price_available) {
+                    element.coupon.manjian_price_available = this.getVeryMoney(element.coupon.manjian_price_available)
+                }
+                // element.couponBref = '21123123123';
+                if (element.coupon.availabileStartTime) {
+                    element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0]
+                }
+                if (element.end_time) {
+                    element.end_time = element.end_time.split(' ')[0]
+                }
+
+                if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
+                    element.xianzhi = element.coupon.classifyNames[0]
+                }
+
+                if (element.coupon.goodsNames && element.coupon.goodsNames.length > 0) {
+                    element.xianzhi = element.coupon.goodsNames[0]
+                }
+                if (element.id == option.chosenRedPack) {
+                    element.checked = true;
+                    chosenInfo.contents.push({
+                        type: 3,
+                        id: element.coupon.id,
+                        relationId: element.id
+                    });
+                } else {
+                    element.checked = false;
+                }
+
+                return element;
+            });
+            this.setData({
+                chosenInfo: chosenInfo,
+                redPackItems: list,
+                totalItems: list,
+                chosenRedPack: parseInt(option.chosenRedPack)
             })
             // 优惠券
             // model('my/coupon/list', {
@@ -205,29 +463,30 @@ Page({
             let list = wx.getStorageSync('voucherList');
             let chosenVoucherArr = option.chosenVoucher.split(',');
             list.forEach(item => {
-                if (item.tCoreUserVoucher.discount) {
-                    item.tCoreUserVoucher.discount = parseFloat(item.tCoreUserVoucher.discount).toFixed(1);
+                if (item.coupon.discount) {
+                    item.coupon.discount = parseFloat(item.coupon.discount).toFixed(1);
                 }
-                if (item.tCoreUserVoucher.saveAmount) {
-                    item.tCoreUserVoucher.saveAmount = parseFloat(item.tCoreUserVoucher.discount).toFixed(1);
+                if (item.coupon.saveAmount) {
+                    item.coupon.saveAmount = parseFloat(item.coupon.discount).toFixed(1);
                 }
-                if (item.tCoreUserVoucher.startTime) {
-                    item.tCoreUserVoucher.startTime = item.tCoreUserVoucher.startTime.split(' ')[0]
+                if (item.coupon.startTime) {
+                    item.coupon.startTime = item.coupon.startTime.split(' ')[0]
                 }
-                if (item.tCoreUserVoucher.endTime) {
-                    item.tCoreUserVoucher.endTime = item.tCoreUserVoucher.endTime.split(' ')[0]
+                if (item.coupon.endTime) {
+                    item.coupon.endTime = item.coupon.endTime.split(' ')[0]
                 }
                 let checked = false;
                 chosenVoucherArr.forEach(ele => {
-                    if (item.tCoreUserVoucher.id == ele) {
+                    if (item.id == ele) {
                         checked = true;
                     }
                 });
                 item.checked = checked;
-                item.tCoreVoucher.voucherPrice = parseInt(item.tCoreVoucher.voucherPrice);
+                item.coupon.voucherPrice = parseInt(item.coupon.voucherPrice);
             })
             this.setData({
                 voucherItems: list,
+                totalItems: list,
                 chosenVoucher: chosenVoucherArr
             })
             // 兑换券
@@ -259,15 +518,24 @@ Page({
             //     })
             // })
         }
-        
+
     },
 
     showRule(e) {
         let index = e.currentTarget.dataset.index;
         let couponItems = this.data.couponItems;
-        couponItems[index].showRule = !couponItems[index].showRule;
-        this.setData({
-            couponItems: couponItems
-        })
+        let redPackItems = this.data.redPackItems;
+        if (this.data.type == 1) {
+            couponItems[index].showRule = !couponItems[index].showRule;
+            this.setData({
+                couponItems: couponItems
+            })
+        } else if (this.data.type == 3) {
+            redPackItems[index].showRule = !redPackItems[index].showRule;
+            this.setData({
+                redPackItems: redPackItems
+            })
+        }
+
     }
 });

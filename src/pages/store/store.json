@@ -5,6 +5,8 @@
   "enablePullDownRefresh": false,
   "usingComponents": {
     "cart": "./components/cart",
+    "modal": "../../components/modal/modal",
+    "ml-navigator": "../../components/ml-navigator/index",
     "menu-wrap": "./components/menu"
   }
 }

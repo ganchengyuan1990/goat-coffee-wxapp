@@ -37,7 +37,8 @@ Page({
     let pages = getCurrentPages()
     let prevPage = pages[pages.length - 2]
     prevPage.setData({ //直接给上一个页面赋值
-      name: iptVal
+      name: iptVal,
+      goBackFromName: true
     })
     wx.navigateBack({
       delta: 1

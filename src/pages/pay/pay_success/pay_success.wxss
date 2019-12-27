@@ -1,18 +1,18 @@
 page{
-    background: #fff;
+    background: rgb(240, 242, 245);
     min-height: 100%;
 }
 
 .container{
-    background: #fff;
+    background: rgb(240, 242, 245);
     min-height: 100%;
     padding-top: 30rpx;
 }
 
 .success-form {
-  height: 510rpx;
+  /* height: 510rpx; */
   /* width: 100%; */
-  background: #fff;
+  background: rgb(240, 242, 245);
   padding-left: 30rpx;
   padding-right: 30rpx;
   padding-top: 20rpx;
@@ -64,15 +64,16 @@ page{
 
 .coupon-sn{
   /* height: 50rpx; */
-  margin: 50rpx;
-  color: #000;
+  margin: -30rpx 0 60rpx 0;
+  color: rgba(35, 35, 35, 1);
   line-height: 50rpx;
-  font-size: 34rpx;
+  font-size: 30rpx;
 }
 
 .coupon-sn image {
-  width: 137px;
-  height:  93px;
+  margin-top: 100rpx;
+  width: 167rpx;
+  height: 167rpx;
 }
 
 .clear-icon{
@@ -228,4 +229,94 @@ page{
   bottom: 40rpx;
   border-radius: 40rpx;
   color: rgb(245, 65, 67);
+}
+
+.pay_again {
+  width:600rpx;
+  height:90rpx;
+  line-height: 90rpx;
+  background:rgba(222,65,50,1);
+  border-radius:6rpx;
+  color: #fff;
+  font-size: 36rpx;
+  margin-left: 50rpx;
+  margin-bottom: 60rpx;
+}
+
+.blank {
+  border:1px solid rgba(35, 24, 21, 1);
+  background: rgb(240, 242, 245);
+  color: #231815;
+}
+
+
+.coupon_image {
+  width:460rpx;
+  height:261rpx;
+  /* background:rgba(255, 255, 255, 1); */
+  /* box-shadow:0rpx 2rpx 10rpx 0rpx rgba(35, 24, 21, 0.2); */
+  border-radius:10rpx;
+}
+
+.coupon_image_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 460rpx;
+  margin: 0 auto;
+  margin-bottom: 50rpx;
+}
+
+.coupon_image_wrapper .text {
+  position: absolute;
+  right: 30rpx;
+  bottom: 20rpx;
+  color: #656565;
+  font-size: 20rpx;
+}
+
+.gif {
+  position: fixed;
+  right: 20rpx;
+  top: 15%;
+}
+
+.gif image{
+  width: 100rpx;
+  border-radius: 0;
+  height: 100rpx;
+}
+
+.score_state {
+  font-size: 52rpx;
+  font-family:PingFangSC-Medium,
+  PingFang SC;
+  font-weight:500;
+  color: #232323;
+  line-height:42rpx;
+  text-align: center;
+  margin-top: -25rpx;
+  margin-bottom: 100rpx;
+}
+
+.line_button {
+  width:286rpx;
+  height:102rpx;
+  line-height:102rpx;
+  background:rgba(35, 24, 21, 1);
+  border-radius:10rpx;
+  border:1rpx solid rgba(151, 151, 151, 1);
+  margin: 0 30rpx;
+}
+
+.free {
+  color: #DAA37F;
+  font-size: 34rpx;
+}
+
+.ready {
+  color: #231815;
+  background: rgb(240, 242, 245);
+  border:1rpx solid rgba(35, 24, 21, 1);
 }

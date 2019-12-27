@@ -4,16 +4,24 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
+		"coverView": true,
 		"autoAudits": false,
-		"checkInvalidKey": true
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.5.0",
+	"libVersion": "2.9.4",
 	"appid": "wx5bb95a5028390738",
 	"projectname": "%E5%8A%A0%E6%B2%B9%E5%92%96%E5%95%A1",
 	"isGameTourist": false,
@@ -34,6 +42,10 @@
 		},
 		"game": {
 			"currentL": -1,
+			"list": []
+		},
+		"gamePlugin": {
+			"current": -1,
 			"list": []
 		},
 		"miniprogram": {
@@ -231,9 +243,9 @@
 					"scene": null
 				},
 				{
-					"id": -1,
-					"name": "个人中心",
-					"pathName": "pages/my/index/index",
+					"id": 30,
+					"name": "会员中心",
+					"pathName": "pages/member/index/index",
 					"query": "",
 					"scene": null
 				},
@@ -291,6 +303,19 @@
 					"name": "赠送records",
 					"pathName": "package/sendOthers/pages/records/records",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "客服",
+					"pathName": "pages/my/service/service",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "环境",
+					"pathName": "pages/devtools/index",
 					"scene": null
 				}
 			]

@@ -1,0 +1,34 @@
+.dev-container {
+  font-size: 28rpx;
+  color: #666;
+  background-color: #f9f9f9;
+}
+
+.dev-container .title {
+  width:100%;
+  padding: 10rpx 0;
+  text-align: center;
+}
+
+.dev-container .route-item {
+  position: relative;
+  font-size: 30rpx;
+  color: #000;
+  height:100rpx;
+  line-height: 100rpx;
+  padding: 0 20rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #f1f1f1;
+}
+.dev-container .route-item:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top:40rpx;
+  right:50rpx;
+  width:20rpx;
+  height:20rpx;
+  border-top:2rpx solid #000;
+  border-right:2rpx solid #000;
+  transform:rotate(45deg);
+}

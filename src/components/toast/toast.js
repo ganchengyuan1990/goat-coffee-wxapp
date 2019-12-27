@@ -18,6 +18,10 @@ Component({
         },
         disappearSec: {
             type: Number
+        },
+        type: {
+            type: Number,
+            value: 1
         }
     },
 

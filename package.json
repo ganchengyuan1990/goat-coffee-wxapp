@@ -27,6 +27,7 @@
     "pump": "^1.0.2"
   },
   "dependencies": {
-    "gulp-minify-css": "^1.2.4"
+    "gulp-minify-css": "^1.2.4",
+    "miniprogram-recycle-view": "^0.1.5"
   }
 }

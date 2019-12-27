@@ -1,4 +1,10 @@
 {
   "enablePullDownRefresh": false,
-  "navigationBarTitleText": "支付成功"
+  "navigationBarTitleText": "支付成功",
+  "usingComponents": {
+    "toast": "../../../components/toast/toast",
+    "modal": "../../../components/modal/modal",
+    "welcome": "../../../components/welcome/welcome",
+    "ml-navigator": "../../../components/ml-navigator/index"
+  }
 }

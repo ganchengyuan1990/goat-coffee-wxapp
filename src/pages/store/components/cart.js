@@ -63,7 +63,7 @@ Component({
       //   }
       // }
     },
-    isSelfTaking: {
+    isselfTaking: {
       type: Boolean,
       observer(newVal, oldVal) {
         if (typeof newVal !== 'undefined') {
@@ -202,7 +202,7 @@ Component({
       let salesTotalPrice = this.data.salesTotalPrice;
       let hasSetTotalPrice = false;
       // remain = totalPrice > LIMIT_FEE ? 0 : BN(LIMIT_FEE).minus(totalPrice).valueOf()
-      if (remain > 0 && totalPrice > 0 && !this.data.isSelfTaking) {
+      if (remain > 0 && totalPrice > 0 && !this.data.isselfTaking) {
         cartTotalPrice = BN(totalPrice).plus(this.data.fee || 0).valueOf()
         salesTotalPrice = BN(salesTotalPrice).plus(this.data.fee || 0).valueOf();
         hasSetTotalPrice = true;

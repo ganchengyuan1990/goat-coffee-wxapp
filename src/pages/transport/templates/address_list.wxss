@@ -1,0 +1,217 @@
+.address_item {
+    height: 130rpx;
+    /* line-height: 70rpx; */
+    margin: 20rpx 20rpx;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    color: #383838;
+}
+address_text {
+    margin-right: 30rpx;
+    font-size: 36rpx;
+}
+
+.goPay {
+    display: inline-block;
+    width: 120rpx;
+    font-size: 30rpx;
+    position: absolute;
+    right: 30rpx;
+    bottom: 10rpx;
+}
+
+.no_address {
+    position: relative;
+    top: 40%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.no_address image {
+    width: 251rpx;
+    height: 185rpx;
+}
+
+.no_address view{
+    font-size: 28rpx;
+    color: #999;
+}
+
+.express_title {
+    position: relative;
+    color: #999;
+    font-size: 28rpx;
+    margin: 30rpx;
+    visibility: hidden;
+}
+
+.addNewAddress {
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    font-size: 36rpx;
+    width: 100%;
+    z-index: 10000;
+    border-top: 1rpx solid #ccc;
+    height:98rpx;
+    line-height: 98rpx;
+    background:rgba(35,24,21,1);
+    color: #D32D25;
+
+}
+
+.suggestListWrap {
+    position: absolute;
+    z-index: 5;
+    top: 130rpx;
+    left: 0;
+    right: 0;
+    bottom: 100rpx;
+    padding-bottom: 30rpx;
+    overflow: scroll;
+}
+
+
+
+.direct-item {
+    display: flex;
+    padding: 0 10rpx;
+    position: relative;
+}
+
+.direct-item .direct-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.direct-item .direct-name {
+    display: flex;
+    align-items: center;
+}
+
+.direct-item .direct-name-container {
+    display: flex;
+    flex: 1;
+    white-space: nowrap;
+    width: 560rpx;
+}
+
+.direct-item .direct-name-text {
+    font-family: PingFangSC-Regular;
+    font-size: 30rpx;
+    max-width: 68%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #333333;
+}
+
+.direct-item .text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.direct-item .important-text {
+    font-family: PingFangSC-Regular;
+    font-size: 30rpx;
+    color: #FF6633;
+}
+
+.direct-item .direct-middle {
+    display: flex;
+    align-items: center;
+    height: 24rpx;
+    padding: 4rpx 0;
+}
+
+.direct-item .direct-reviewcount-text {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #c6c6c6;
+}
+
+.direct-item .direct-bottom {
+    display: flex;
+    align-items: center;
+}
+
+.direct-item .direct-category {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #c6c6c6;
+    flex-shrink: 0;
+}
+
+.direct-item .split-line {
+    font-family: PingFangSC-Regular;
+    font-size: 20rpx;
+    color: #c6c6c6;
+    line-height: 33rpx;
+    width: 20rpx;
+    text-align: center;
+}
+
+.direct-item .direct-address {
+    display: flex;
+}
+
+.direct-item .direct-address-region {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #c6c6c6;
+}
+
+.direct-item .direct-address-text {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #c6c6c6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    max-width: 520rpx;
+    margin-left: 10rpx;
+}
+
+.direct-item .direct-distance {
+    display: flex;
+}
+
+.direct-item .direct-distance-text {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #c6c6c6;
+}
+
+.icon {
+    position: absolute;
+    right: 50rpx;
+    top: 30rpx;
+}
+
+.icon image {
+    width: 30rpx;
+    height: 30rpx;
+}
+
+.added {
+    top: 25rpx;
+    right: 30rpx;
+    width: 72rpx;
+    text-align: center;
+    font-size: 20rpx;
+    color: #D32D25;
+    margin-right: 18rpx;
+    height: 28rpx;
+    line-height: 28rpx;
+    background: rgba(35, 24, 21, 1);
+}
+
+.cross {
+    flex-direction: column;
+}

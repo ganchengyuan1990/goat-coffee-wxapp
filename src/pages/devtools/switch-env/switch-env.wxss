@@ -1,0 +1,21 @@
+.switch-env-container {
+  font-size: 32rpx;
+  color: #000;
+  background-color: #f9f9f9;
+  padding: 0 20rpx;
+}
+.env-item {
+  display: flex;
+  height: 100rpx;
+  justify-content: space-between;
+  align-items: center;
+}
+.switch-env-container .btn {
+  font-size: 32rpx;
+  height:60rpx;
+  line-height:60rpx;
+  background-color: #fff;
+}
+.swimlane-ipt {
+  text-align: right;
+}

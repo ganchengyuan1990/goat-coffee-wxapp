@@ -1,6 +1,6 @@
 
 <view class="font bigger" wx:if="{{varCode}}">取餐码：{{varCode}}</view>
-<view class="font">您好，请扫码</view>
+<view class="font">请出示二维码给店员</view>
 <view style="display: flex; justify-content: center;">
     <image style="width: 200px; height: 200px; margin-top: 100rpx;" src="{{qrcodeURL}}" />
 </view>

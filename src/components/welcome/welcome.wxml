@@ -1,0 +1,20 @@
+<!--pages/welcome/welcome.wxml-->
+<!--start.wxml-->
+<view wx:if="{{isShow}}" class='hey'>
+  <view class='mask' bindtap="close">
+  </view>
+  <view class="container_inner" bindtap="close">
+    <view class="content">
+      <image class="wave {{'wave' + heightNum}}" src="./wave.png" mode="aspectFill"></image>
+      <!-- <view class="content-trigon-zhijiao"></view>
+      <view class="content-trigon-zhijiao right_three"></view> -->
+      <!-- <image class="back" src="./cup_r.png" mode="aspectFill"></image> -->
+    </view>
+    
+  </view>
+
+  <view class='word' wx:if="{{showWord}}" bindtap="close">
+    <view>您已集满8杯</view>
+    <view>快去会员卡页面领取一杯吧</view>
+  </view>
+</view>

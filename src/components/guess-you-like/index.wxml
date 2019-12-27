@@ -1,0 +1,33 @@
+<!-- 猜你喜欢 -->
+<view class="cart-view">
+    <view class="title-box">
+        <text class="title">{{title}}</text>
+        <text class='number'>换一批</text>
+    </view>
+    <scroll-view scroll-x="true" class='scroll_view'>
+        <view wx:for="{{cartGoods}}" wx:key="{{item.id}}" class="caini_item">
+            <view class="img_view">
+                <image src="{{item.banner}}" />
+            </view>
+            <view class="content_view">
+                <view style="margin-left: 10rpx;">
+                    {{item.productName}}
+                </view>
+                <view class="content">
+                    <text class="price bottom_price" wx:if="{{title !== '加价购'}}">￥{{item.sku_list[0].sale_price}}</text>
+                    <text class="price bottom_price" wx:else>￥{{item.addPrice.coupon.jiagou_price}}</text>
+                    <text class="price bottom_price del" wx:if="{{title == '加价购'}}">￥{{item.sku_list[0].sale_price}}</text>
+                    <image src="../../images/add.png" class="btn btn-plus float_right" data-index="{{index}}" data-available="{{item.ifAvailable}}" bindtap="addCart"></image>
+                </view>
+            </view>
+        </view>
+    </scroll-view>
+
+    <!-- <menu-wrap 
+      salesTotalPrice="{{resultPrice}}"
+      info="{{currentSpecific}}" 
+      basePrice="{{currentSpecific.price}}" 
+      isShow="{{isCatePanelShow}}" 
+      bind:togglemenu="toggleSpecific" 
+      bind:save="addCart"></menu-wrap> -->
+</view>

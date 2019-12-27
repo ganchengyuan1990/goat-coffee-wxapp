@@ -1,5 +1,5 @@
 .list-wrap {
-    padding: 0 30rpx;
+    /* padding: 0 30rpx; */
 }
 
 .list-wrap .item {
@@ -10,7 +10,10 @@
     height: 112rpx;
     /* border-bottom: 2rpx solid #f2f2f2; */
     line-height: 112rpx;
+    background: rgba(255, 255, 255, 1);
     color: #333;
+    font-size: 30rpx;
+    padding: 0 30rpx;
 }
 
 .list-wrap .item .tt {
@@ -18,7 +21,7 @@
     align-items: center;
     position: relative;
     height: 100%;
-    font-size: 32rpx;
+    font-size: 30rpx;
 }
 .list-wrap .item .cnt,
 .list-wrap .item .desc {

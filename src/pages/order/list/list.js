@@ -15,11 +15,15 @@ Page({
    * 页面的初始数据
    */
   data: {
+    orderTypeId: 1,
+    errorToastShown: '',
+    errorInfo: {},
     userInfo: {},
     // 订单列表
     orderList: [],
     // 当前页码
     page: 1,
+    curNav: 0,
     // 数据是否请求中
     isLoading: false,
     // 显示筛选面板
@@ -33,7 +37,7 @@ Page({
     orderState: OSTATUS.default,
     // 显示筛选面板 order/订单类型 state/订单状态
     currentPanel: 'order',
-    hasLogin: true,
+    addressList: [],
     filterList: [{
         tab: 'order',
         tt: '普通订单',
@@ -63,33 +67,30 @@ Page({
         }]
       }
     ],
-    originalObj: {}
+    originalObj: {},
+    index: 1,
+    hasLogin: true,
+    phoneCall: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    let userInfo = wx.getStorageSync('token')
-    // console.log(userInfo);
-    if (!userInfo.token) {
-      // wx.navigateTo({
-      //   url: '/pages/login/login'
-      // })
-      this.setData({
-        hasLogin: false
-      })
-    }
+
+    let configData = wx.getStorageSync('configData');
     this.setData({
-      userInfo: userInfo
+      phoneCall: configData['customer-service-tel'] || '17821410731'
     })
-  },
+    
+  }, 
 
   onClickAvatar () {
     wx.navigateTo({
       url: '/pages/login/login'
     })
   },
+  
 
   setTabStatus() {
     if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
@@ -102,12 +103,12 @@ Page({
         wx.setStorageSync('cartSum', sum);
         if (sum) {
           wx.setTabBarBadge({
-            index: 3,
+            index: 1,
             text: sum.toString()
           });
         } else {
           wx.removeTabBarBadge({
-            index: 3,
+            index: 1,
           });
         }
       }).catch(e => {
@@ -127,13 +128,47 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    if (typeof this.getTabBar === 'function' &&
+      this.getTabBar()) {
+      this.getTabBar().setData({
+        selected: 4
+      })
+    }
     let userInfo = wx.getStorageSync('token')
+    // console.log(userInfo);
     if (!userInfo.token) {
-      wx.navigateTo({
-        url: '/pages/login/login'
+      this.setData({
+        // curNav: 0,
+        hasLogin: false
       })
       return
+    } else {
+      this.setData({
+        // curNav: 0,
+        hasLogin: true
+      })
     }
+    if (getApp().globalData.goAddress) {
+      getApp().globalData.goAddress = null;
+      this.setData({
+        curNav: 1
+      })
+    }
+    if (this.data.curNav == 1) {
+      model('my/address/list', {
+        userId: wx.getStorageSync('token').user.id,
+      }).then(data => {
+        wx.setStorageSync('addressList', data.data);
+        this.setData({
+          addressList: data.data
+        });
+      }).catch(e => {
+        console.log(e);
+      });
+    }
+    this.setData({
+      userInfo: userInfo
+    })
     // this.fetchOrderList(1)
     this.refreshList()
     this.setTabStatus();
@@ -159,6 +194,108 @@ Page({
     let page = this.data.page
     this.fetchOrderList(page + 1)
   },
+
+  goInvice(e) {
+    let item = e.currentTarget.dataset.item;
+    wx.setStorageSync('martsListArr', [{
+      id: item.id,
+      real_due: item.totalAmount
+    }]);
+    wx.navigateTo({
+      url: `/package/invoice/pages/open/open`
+    });
+  },
+
+
+  switchRightTab(e) {
+    var index = e.currentTarget.dataset.index;
+    this.setData({
+      curNav: index
+    })
+    if (index == 1) {
+      model('my/address/list', {
+        userId: wx.getStorageSync('token').user.id,
+      }).then(data => {
+        wx.setStorageSync('addressList', data.data);
+        // data.data = [];
+
+        this.setData({
+          addressList: data.data
+        });
+      }).catch(e => {
+        console.log(e);
+      });
+    }
+  },
+
+  setOrderTypeId (e) {
+    var index = parseInt(e.currentTarget.dataset.id);
+    this.setData({
+      orderList: [],
+      orderTypeId: index,
+      isLoading: true,
+      isCompleted: false
+    })
+    let obj = {
+      page: 1,
+      userId: this.data.userInfo && this.data.userInfo.user.id,
+      type: index
+    }
+    model('order/detail/list', obj).then(res => {
+      // console.log('order res', res)
+      let {
+        data
+      } = res
+      if (data && Array.isArray(data)) {
+        let uid = this.data.userInfo && this.data.userInfo.user.id
+
+        let len = data.length
+        let list = this.data.orderList
+        let arr = []
+
+        console.log(len);
+        // 因为没有判断数据总数量的字段
+        // 所以为0的时候认定没有更多
+        // 另一种情况，第一页的数据条数少的情况隐藏加载中的状态
+        if (len < 5) {
+          this.setData({
+            isCompleted: true
+          })
+        }
+        if (len === 0) {
+          this.setData({
+            isCompleted: true
+          })
+          arr = []
+        } else {
+          // 普通订单
+          data = data.map(item => {
+            if (item.order.orderState == '100' && item.order.isComment) {
+              item.order.orderState = '101'
+            }
+            item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(1))
+            return item;
+          })
+          arr = data
+        }
+        this.setData({
+          orderList: arr,
+          page: 1,
+          currentPanelList: this.data.orderClassify
+        })
+      }
+      this.setData({
+        isLoading: false
+      })
+      wx.stopPullDownRefresh()
+    }).catch(e => {
+      this.setData({
+        isLoading: false,
+        isCompleted: true
+      });
+      wx.stopPullDownRefresh()
+    })
+  },
   /**
    * 重设列表数据
    */
@@ -179,14 +316,15 @@ Page({
     let obj = {
       page: page,
       userId: this.data.userInfo && this.data.userInfo.user.id,
-      orderClassify: this.data.orderClassify || OCLASSIFY.normal
+      // orderClassify: this.data.orderClassify || OCLASSIFY.normal,
+      type: this.data.orderTypeId
     }
     if (this.data.orderState > -1) {
       obj.oStatus = this.data.orderState
     }
     model('order/detail/list', obj).then(res => {
       // console.log('order res', res)
-      const {
+      let {
         data
       } = res
       if (data && Array.isArray(data)) {
@@ -195,6 +333,11 @@ Page({
         let len = data.length
         let list = isResetList ? [] : this.data.orderList
         let arr = []
+
+        data = data.map(item => {
+          item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(1))
+          return item;
+        })
 
         console.log(len);
         // 因为没有判断数据总数量的字段
@@ -381,6 +524,40 @@ Page({
       })
     }
   },
+
+  goCancel (e) {
+    let order = e.currentTarget.dataset.item
+    let type = e.currentTarget.dataset.type
+    if (!order) {
+      return
+    }
+    model(`order/detail/cancel`, {
+      id: order.id
+    }, 'POST').then(res => {
+      if (res.code == 'suc') {
+        wx.showToast({
+          title: '取消订单成功', //提示的内容,
+          icon: 'none', //图标,
+          duration: 2000, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {}
+        });
+        setTimeout(() => {
+          this.refreshList()
+        }, 1500);
+      }
+    }).catch(e => {
+      console.log(e)
+    })
+  },
+
+  goQrcode (e) {
+    let order = e.currentTarget.dataset.item.order
+    wx.navigateTo({
+      url: `/pages/order/varcode/detail?orderNo=${order.orderNo}&varCode=${order.varCode}`
+    });
+  },
+
   goPay(e) {
     let order = e.currentTarget.dataset.item
     let type = e.currentTarget.dataset.type
@@ -407,6 +584,7 @@ Page({
       obj.package = prepayId
       obj.prepayId = prepayId
       obj.price = order.payAmount
+      obj.order = order.id
       // let str = Object.entries(obj).map(i => `${i[0]&i[1]}`).join('&')
       let str = Object.entries(obj).reduce((acc, arr) => acc + '&' + arr.join('='), '')
       str = str.slice(1)
@@ -417,7 +595,13 @@ Page({
       })
     }).catch(e => {
       // show model
-      console.log(e)
+      wx.showToast({
+        title: '支付失败', //提示的内容,
+        icon: 'none', //图标,
+        duration: 2000, //延迟时间,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
     })
     // return
 
@@ -442,8 +626,129 @@ Page({
     if (item) {
       item.dtype = dtype
       wx.navigateTo({
+        /// url: `/pages/order/detail/detail?id=21121&orderClassify=${this.data.orderClassify}`
         url: `/pages/order/detail/detail?id=${item.id}&orderClassify=${this.data.orderClassify}`
       })
     }
-  }
+  },
+
+  mobilePhone () {
+    wx.makePhoneCall({
+      phoneNumber: this.data.phoneCall
+    });
+  },
+
+  goOpen () {
+    wx.navigateTo({
+      url: `/package/invoice/pages/chooseOrder/chooseOrder?type=1`
+    });
+  },
+
+  goRechargeOpen() {
+    wx.navigateTo({
+      url: `/package/invoice/pages/chooseOrder/chooseOrder?type=2`
+    });
+  },
+
+  goTaitou() {
+    wx.navigateTo({
+      url: `/package/invoice/pages/taitou-list/taitou-list`
+    });
+  },
+
+  // goState() {
+  //   wx.navigateTo({
+  //     url: `/package/invoice/pages/statement/statement`
+  //   });
+  // },
+
+  goState() {
+    let config = wx.getStorageSync('config');
+    let url = config.baseUrl[config.env]
+    url += 'statement/invoice.html'
+    wx.navigateTo({
+      url: `/pages/webview/webview?url=${encodeURIComponent(url)}`
+    });
+  },
+
+  goList () {
+    wx.navigateTo({
+      url: `/package/invoice/pages/list/list`
+    });
+  },
+
+  goIndex () {
+    wx.switchTab({ url: '/pages/store/store' });
+  },
+
+  goAddAddress() {
+    if (wx.getStorageSync('token')) {
+      wx.navigateTo({
+        url: `/pages/my/address/address`
+      });
+    } else {
+      wx.redirectTo({
+        url: `/pages/login/login?fromTransport=1`
+      });
+    }
+
+  },
+
+  goComment(e) {
+    let item = e.currentTarget.dataset.item
+    wx.navigateTo({
+      url: `/package/orderComment/pages/comment/remark?orderId=${item.id}`
+    });
+  },
+
+  getUserInfo() {
+    let self = this;
+    wx.login({
+      success: function (res) {
+        console.log(res);
+        if (res.code) {
+          model('my/user/get-open-id', {
+            code: res.code
+          }).then(res => {
+            // wx.setStorageSync('openid', res.data);
+            wx.setStorageSync('openid', res.data.openid);
+            let session_key = res.data.session_key;
+            if (res.data.unionid) {
+              wx.setStorageSync('unionId', res.data.unionid);
+              wx.setStorageSync('unionid', res.data.unionid);
+            }
+            if (session_key) {
+              wx.setStorageSync('session_key', session_key);
+            }
+            wx.getUserInfo({
+              withCredentials: true,
+              success: function (res) {
+                var userInfo = res.userInfo
+                let iv = res.iv;
+                let encryptedData = res.encryptedData;
+                console.log(session_key);
+                console.log(iv);
+                console.log(encryptedData);
+                wx.setStorageSync('personal_info', {
+                  nickName: userInfo.nickName,
+                  avatarUrl: userInfo.avatarUrl,
+                  gender: userInfo.gender,
+                  province: userInfo.province,
+                  city: userInfo.city,
+                  country: userInfo.country
+                });
+                wx.setStorageSync('encryptedData', res);
+                self.onClickAvatar();
+                self.setData({
+                  auth: true
+                })
+              }
+            })
+          })
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
+      }
+    });
+  },
 })

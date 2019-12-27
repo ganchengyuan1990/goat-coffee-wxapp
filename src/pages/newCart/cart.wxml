@@ -1,68 +1,137 @@
-<view class="container">
-    <!-- <view class="service-policy">
-    <view class="item">30天无忧退货</view>
-    <view class="item">48小时快速退款</view>
-    <view class="item">满88元免邮费</view>
-  </view> -->
-    <!-- <view class='img_wrapper' wx:if="{{showImg}}" bindtap="goInvite">
-        <image mode="widthFix" src="{{cartImage}}" />
-    </view> -->
-    <view class="no-cart" wx:if="{{cartGoods.length <= 0 && !loading}}">
-        <view class="c">
-            <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
-            <text>您的购物车空空如也</text>
-            <view style="display: flex; align-items: center; justify-content: center; margin-top: 50rpx;">
-              <view class="add_button" bindtap="goStore">去喝一杯</view>
+<view wx:if="{{hasLogin}}">
+    <view class="container {{cartTotal.checkedGoodsAmount > 0 ? 'heyhey' : ''}}">
+        <swiper wx:if="{{banners && banners.length > 0}}" indicator-dots="{{false}}" autoplay="{{true}}" interval="{{5000}}" duration="{{1000}}" style="height: 240rpx;">
+            <block wx:for="{{banners}}" wx:key="{{index}}">
+                <swiper-item>
+                    <ml-navigator redirect_url="{{item.redirect_url}}" redirect_route="{{item.redirect_route}}">
+                        <image src="{{item.pic}}" class="img_wrapper"/>
+                    </ml-navigator>
+                </swiper-item>
+            </block>
+        </swiper>
+        <view class="no-cart" wx:if="{{cartGoods.length <= 0 && !loading}}">
+            <view class="c {{banners && banners.length > 0 ? '' : 'downer'}}">
+                <image src="../../images/no_cart.png" bindtap="openDevByMultyClick"/>
+                <text>您的购物车空空如也，快去喝一杯吧～</text>
+                <view style="display: flex; align-items: center; justify-content: center; margin-top: 70rpx;">
+                <view class="add_button" bindtap="goStore">去喝一杯</view>
+                </view>
             </view>
         </view>
-    </view>
-    
-    <view class="cart-view">
-        <view class="list">
-            <view class="group-item">
-                <view class="goods">
-                    <view class="item {{!item.ifAvailable ? 'not_online' : ''}} {{item.ifAvailable && !item.sku.can_distribution && isNeedFee ? 'not_delever' : ''}}" wx:for="{{cartGoods}}" wx:key="{{item.id}}">
-                        <view class="checkbox {{!item.ifAvailable || (item.ifAvailable && !item.sku.can_distribution && isNeedFee) ? '' : 'checked'}}" bindtap="checkedItem" data-item-index="{{index}}"></view>
-                        <view class="cart-goods">
-                            <view class="info">
-                                <view class="t">
-                                    <text class="name">{{item.goods.name}}</text>
-                                    <!-- <text class="guige" wx:if="{{item.choosenSkuItem}}">规格： {{item.choosenSkuItem.name}}</text> -->
-                                </view>
-                                <view class="attr">
-                                    <!-- <text>{{ isEditCart ? '已选择:' : ''}}</text> -->
-                                    <text class="guige" wx:if="{{item.propsStr}}">规格： {{item.propsStr}}</text>
-                                </view>
-                                
-                            </view>
-                            <view wx:if="{{!item.ifAvailable}}" style="position: absolute; top: 15rpx; right: 40rpx; font-size: 26rpx; color: #999;">
-                                暂时不可下单
-                            </view>
-                            <view wx:if="{{item.ifAvailable && !item.sku.can_distribution && isNeedFee}}" style="position: absolute; top: 15rpx; right: 40rpx; font-size: 26rpx; color: #999;">
-                                暂时不支持外送
-                            </view>
-                            <view class="order-create-form-item">
-                                <view class="content">
-                                    <view class="b">
-                                        <text class="price">￥{{item.unitPrice}}</text>
+        
+        <scroll-view class="cart-view">
+            <view class="list">
+                <view class="group-item">
+                    <view class="goods">
+                        <view class="item {{item.ifAvailable && !item.sku.can_distribution && isNeedFee ? 'not_delever' : ''}}" wx:for="{{cartGoods}}" wx:key="{{item.id}}" style="position:relative;">
+                            <view class="wrap_item {{item.x < 0 ? 'turned' : ''}}" data-index="{{index}}">
+                                <!-- <view class="checkbox {{item.checked === false || !item.ifAvailable || (item.ifAvailable && !item.sku.can_distribution && isNeedFee) ? '' : 'checked'}}" data-item-index="{{index}}"></view> -->
+                                <view class="checkbox {{item.checked === false || !item.ifAvailable || (item.ifAvailable && !item.sku.can_distribution && isNeedFee) ? '' : 'checked'}}" bindtap="checkedItem" data-item-index="{{index}}"></view>
+                                <view class="cart-goods">
+                                    <view class="info first {{!item.ifAvailable ? '' : ''}}">
+                                        <view class="good_img">
+                                            <image src="{{item.goods.avatar}}" />
+                                        </view>
+                                        
                                     </view>
-                                    <image src="../../images/minus.png" class="btn btn-minus {{(item.count <= 0)? 'btn-disable' : ' '}}" data-index="{{index}}" data-available="{{item.ifAvailable}}" bindtap="decreaseRoomCount"></image>
-                                    <text class="room-count" type="text">{{item.num}}</text>
-                                    <image src="../../images/add.png" class="btn btn-plus" data-index="{{index}}" data-available="{{item.ifAvailable}}" bindtap="increaseRoomCount"></image>
+                                    <view class="info {{!item.ifAvailable ? 'not_online' : ''}} {{item.x < 0 ? 'name_turned' : ''}}">
+                                        <view class="t {{item.propsStr ? '' : 'lower'}}">
+                                            <text class="name">{{item.goods.name}}</text>
+                                            <view class="shouqin" wx:if="{{!item.ifAvailable}}">售罄</view>
+                                            <!-- <text class="guige" wx:if="{{item.choosenSkuItem}}">规格： {{item.choosenSkuItem.name}}</text> -->
+                                        </view>
+                                        <view class="attr">
+                                            <!-- <text>{{ isEditCart ? '已选择:' : ''}}</text> -->
+                                            <text class="guige" wx:if="{{item.propsStr}}">{{item.propsStr}}</text>
+                                        </view>
+
+                                        <view class="b">
+                                            <text class="price" >￥{{item.memberPrice}}</text>
+                                            <text class="price price-del" wx:if="{{item.orinalPrice !== 'NaN' && item.orinalPrice !== item.memberPrice}}">￥{{item.orinalPrice}}</text>
+
+                                        </view>
+                                        <!-- <view  wx:if="{{!item.sku.can_distribution}}" class="attr {{!item.ifAvailable ? 'grrr' : ''}}">
+                                            仅限门店自提
+                                        </view> -->
+                                        
+                                    </view>
+                                    <!-- <view wx:if="{{!item.ifAvailable}}" style="position: absolute; top: 15rpx; right: 40rpx; font-size: 26rpx; color: #999;">
+                                        暂时不可下单
+                                    </view> -->
+
+                                    <view class="order-create-form-item ">
+                                        <view class="content">
+                
+                                            <image src="../../images/minus_new.png" class="btn btn-minus {{(item.count <= 0)? 'btn-disable' : ' '}}" data-index="{{index}}" data-available="true" bindtap="decreaseRoomCount"></image>
+                                            <text class="room-count" type="text">{{item.num}}</text>
+                                            <image src="../../images/add.png" class="btn btn-plus" data-index="{{index}}" data-available="true" bindtap="increaseRoomCount"></image>
+                                        </view>
+                                    </view>
                                 </view>
-                              </view>
+                            </view>
+                            <view class="delete" wx:if="{{item.x < 0}}" data-index="{{index}}" catchtap="dealItem"><text>删除</text></view>
+
                         </view>
                     </view>
                 </view>
-            </view>
 
+            </view>
+        </scroll-view>
+
+        <!-- 猜你喜欢 -->
+        <!-- <view class="cart-view" wx:if="{{recommend && recommend.length > 0}}">
+            <view class="title-box">
+                <text class="title">猜你喜欢</text>
+            </view>
+            <scroll-view scroll-x="true" class='scroll_view'>
+                <view wx:for="{{recommend}}" wx:for-item="item" wx:key="{{item.id}}" class="caini_item">
+                    <view class="img_view">
+                        <image src="{{item.banner}}" />
+                    </view>
+                    <view class="content_view">
+                        <view style="margin-left: 20rpx; margin-top: 8rpx;">
+                            {{item.productName}}
+                        </view>
+                        <view class="content">
+                            <text class="price bottom_price">￥{{item.default_sku.sale_price}}</text>
+                            <text class="price bottom_price yuanjia" wx:if="{{item.default_sku.sale_price}}">￥{{item.default_sku.price}}</text>
+                            <image src="../../images/add.png" class="btn btn-plus float_right" data-kind="add" data-index="{{index}}" data-available="{{item.state}}" bindtap="increaseRoomCount"></image>
+                        </view>
+                    </view>
+                </view>
+            </scroll-view >
+        </view> -->
+
+        <!-- <guess-you-like title="猜你喜欢" wx:if="{{recommend && recommend.length > 0}}" cartGoods="{{recommend}}" bindtogglemenu="addPriceBuy"></guess-you-like> -->
+
+    </view>
+
+    <view class="cart-bottom" wx:if="{{cartTotal.checkedGoodsAmount > 0}}">
+        <!-- <view class="checkbox {{checkedAllStatus ? 'checked' : ''}}" bindtap="checkedAll">全选({{cartTotal.checkedGoodsCount}})</view> -->
+        <view class="total {{deliverMention ? 'higher' : ''}}">
+            <view>应付金额 <text class='signal'>￥</text><text class='money'>{{cartTotal.checkedGoodsAmount}}</text><text wx:if="{{cartTotal.checkedGoodsAmount != cartTotal.totalOriginalAmount}}" class='money price-del' style="margin-left:15rpx; position:relative; top: 3rpx;">{{cartTotal.totalOriginalAmount}}</text></view>
+            <view class="delievy_fee">{{deliverMention}}</view>
         </view>
-        <view class="cart-bottom">
-            <!-- <view class="checkbox {{checkedAllStatus ? 'checked' : ''}}" bindtap="checkedAll">全选({{cartTotal.checkedGoodsCount}})</view> -->
-            <view class="total">应付金额 <text class='signal'>￥</text><text class='money'>{{cartTotal.checkedGoodsAmount}}</text></view>
-            <!-- <view class="delete" bindtap="editCart">{{!isEditCart ? '编辑' : '完成'}}</view> -->
-            <!-- <view class="checkout" bindtap="deleteCart" wx:if="{{isEditCart}}">删除所选</view> -->
-            <view class="checkout {{cartGoods.length == 0  ? 'gray' : ''}}" bindtap="checkoutOrder">去结算</view>
-        </view>
+        <!-- <view class="delete" bindtap="editCart">{{!isEditCart ? '编辑' : '完成'}}</view> -->
+        <!-- <view class="checkout" bindtap="deleteCart" wx:if="{{isEditCart}}">删除所选</view> -->
+        <view class="checkout {{cartGoods.length == 0  ? 'gray' : ''}}" bindtap="checkoutOrder">去结算</view>
     </view>
 </view>
+
+
+<view class="search-empty" wx:if="{{!hasLogin}}">
+    <view>
+        <image style="margin: 346rpx 0 30rpx;width: 127rpx; height: 127rpx;" src="../../images/no_member.png" />
+    </view>    您还没有登录，请登录后查看购物车
+    <button class="btn-login flex-center"  open-type="getUserInfo"
+        bindgetuserinfo="getUserInfo">
+        登录
+    </button>
+</view>
+
+<!-- <view class="dibu">
+    
+</view> -->
+
+
+<toast wx:if="{{errorToastShown}}" is-show="{{errorToastShown}}" title="{{errorInfo}}" disappear-sec="3"></toast>

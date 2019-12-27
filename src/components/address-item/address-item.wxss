@@ -125,13 +125,11 @@
     top: 25rpx;
     right: 30rpx;
     width: 72rpx;
-    height: 44rpx;
-    line-height: 44rpx;
-    border-radius: 22rpx;
-    background: #FFDBDB;
     text-align: center;
-    font-size: 24rpx;
-    color: #F50000;
-    border: 1rpx solid #FFDBDB;
+    font-size: 20rpx;
+    color: #D32D25;
     margin-right: 18rpx;
+    height:28rpx;
+    line-height: 28rpx;
+    background:rgba(35,24,21,1);
 }

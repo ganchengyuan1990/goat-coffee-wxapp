@@ -4,16 +4,27 @@
  * 开发： dev
  */
 const CONFIG = {
-    env: 'prod'
+    env: wx.getStorageSync('env') || 'dev'
 }
+
 export const BASE_URL = (() => {
     let url = {
-        prod: 'https://goatup.net/api/v1/server/',
-        test: '',
-        dev: `https://heibanbao.wang/api/v1/server/`
+        prod: 'https://goatup.cn/api/v1/server/',
+        test: 'http://127.0.0.1:8000/api/v1/server/',
+        dev: `http://test.goatup.net/api/v1/server/`
     }
     return url[CONFIG.env]
 })()
+
+wx.setStorageSync('config', {
+    env: CONFIG.env,
+    baseUrl: {
+        prod: 'https://goatup.cn/',
+        test: 'http://127.0.0.1:8000/',
+        dev: `http://test.goatup.net/`
+
+    }
+});
 
 const model = (name = '', data = {}, method = 'GET', header, ip) => {
     let url = `${BASE_URL}${name}`
@@ -38,7 +49,7 @@ const model = (name = '', data = {}, method = 'GET', header, ip) => {
                 'Authorization': _token ? `${_token.user.id} ${_token.token}` : '',
                 'X-Requested-With': 'XMLHttpRequest'
             },
-            success(res) {
+            success(res) { 
                 const { statusCode, errMsg, data} = res
                 if (statusCode === 200 && data.code === 'suc') {
                     resolve(data)

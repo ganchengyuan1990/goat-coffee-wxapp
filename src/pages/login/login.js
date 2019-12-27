@@ -32,30 +32,32 @@ Page({
         })
     },
 
-    dealPhone: function(e) {
+    dealPhone: function (e) {
         this.setData({
             phoneNum: e.detail.value,
             actived: this.data.phoneCode.length > 0 && e.detail.value.length > 0
+        }, () => {
+            if (this.data.phoneNum.length === 11) {
+                this.setData({
+                    canGetVerify: true
+                })
+            } else {
+                this.setData({
+                    canGetVerify: false
+                })
+            }
         });
-        if (this.data.phoneNum.length === 11) {
-            this.setData({
-                canGetVerify: true
-            })
-        } else {
-            this.setData({
-                canGetVerify: false
-            })
-        }
+
     },
 
-    dealVerify (e) {
+    dealVerify(e) {
         this.setData({
             phoneCode: e.detail.value,
             actived: this.data.phoneNum.length > 0 && e.detail.value.length > 0
         })
     },
 
-    getMessage () {
+    getMessage() {
 
         if (!this.data.showSeconds && this.data.phoneNum && this.data.phoneNum.length === 11) {
             model('my/sms/send-phone-code', {
@@ -64,6 +66,7 @@ Page({
                 this.setData({
                     showSeconds: true
                 });
+                wx.setStorageSync('phoneNum', this.data.phoneNum)
                 console.log(data.data.code);
                 // this.setData({
                 //     phoneCode: data.data.code
@@ -106,7 +109,7 @@ Page({
                 } else if (e && e.indexOf('触发天级流控') >= 0) {
                     wx.showModal({
                         title: '提示', //提示的标题,
-                        content: '当2日验证码获取超过次数，请24小时以后再试', //提示的内容,
+                        content: '当日验证码获取超过次数，请24小时以后再试', //提示的内容,
                         showCancel: false, //是否显示取消按钮,
                         cancelColor: '#000000', //取消按钮的文字颜色,
                         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
@@ -144,7 +147,110 @@ Page({
         }
     },
 
-    register () {
+    getPhoneNumber(e) {
+        console.log(e.detail.errMsg)
+        console.log(e.detail.iv)
+        console.log(e.detail.encryptedData)
+        model(`my/user/login`, {
+            unionId: wx.getStorageSync('unionId'),
+            sessionKey: wx.getStorageSync('session_key'),
+            sysinfo: JSON.stringify(this.data.sysinfo),
+            // phoneNum: this.data.phoneNum,
+            // sms_code: this.data.phoneCode,
+            phoneEncryptedData: e.detail.encryptedData,
+            phoneIv: e.detail.iv,
+            openId: wx.getStorageSync('openid'),
+            user_name: wx.getStorageSync('personal_info').nickName,
+        }, 'POST').then(data => {
+            this.setData({
+                token: data.data
+            })
+
+            if (data.data && data.data.user && data.data.user.wxUnionid) {
+                wx.setStorageSync('unionId', data.data.user.wxUnionid);
+                wx.setStorageSync('unionid', data.data.user.wxUnionid);
+            }
+            try {
+                let avatar = data.data.user && data.data.user.avatar
+                if (!avatar) {
+                    // let imgUrl = wx.getStorageSync('personal_info').avatarUrl
+                    let info = wx.getStorageSync('personal_info')
+                    this.saveUser(info)
+                }
+            } catch (e) {
+                console.log(e);
+            }
+            wx.setStorageSync('phoneNum', this.data.phoneNum)
+            wx.setStorageSync('token', data.data);
+
+            if (this.judgeNewUser()) {
+                wx.switchTab({ url: '/pages/store/store' });
+            } else {
+                if (!data.data.ifNew) {
+                    wx.switchTab({
+                        url: '/pages/store/store'
+                    });
+                } else {
+                    wx.switchTab({
+                        url: '/pages/store/store'
+                    });
+                }
+                
+                return ;
+                if (this.data.fromPin) {
+                    let pages = getCurrentPages();
+                    let prevPage = pages[pages.length - 2];
+                    console.log(pages)
+                    if (prevPage) {
+                        prevPage.setData({
+                            fromLogin: true,
+                            pinType: this.data.pinType
+                        });
+                    }
+
+                    // wx.navigateTo({
+                    //   url: `/pages/pin/pin_detail/pin_detail?id=${this.data.pinId}&fromLogin=1&pinType=${this.data.pinType}` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    // });
+                    wx.redirectTo({
+                        url: `/pages/pin/checkout/checkout` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    });
+                } else if (this.data.fromTransport) {
+                    wx.redirectTo({
+                        url: `/pages/my/address/address?fromLogin=1` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    });
+                } else if (this.data.fromInvite) {
+                    wx.redirectTo({
+                        url: `/package/invite/pages/inviteOthers/invite` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    });
+                } else if (this.data.fromPocket) {
+                    wx.redirectTo({
+                        url: '/package/coffeePocket/pages/pocketCart/cart'
+                    });
+                } else if (this.data.goBack) {
+                    wx.navigateBack({
+                        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                    });
+                } else {
+                    wx.switchTab({
+                        url: '/pages/index/index'
+                    });
+                }
+            };
+
+        }).catch(e => {
+
+            wx.showModal({
+                // title: '提示', //提示的标题,
+                content: '您已是加油咖啡会员了\n快去喝一杯吧', //提示的内容,
+                showCancel: false, //是否显示取消按钮,
+                cancelColor: '#000000', //取消按钮的文字颜色,
+                confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                confirmColor: '#DE4132', //确定按钮的文字颜色
+            });
+        });
+    },
+
+    register() {
         if (!this.data.phoneCode) {
             this.setData({
                 errorToastShown: true,
@@ -178,54 +284,64 @@ Page({
                 } catch (e) {
                     console.log(e);
                 }
+                wx.setStorageSync('phoneNum', this.data.phoneNum)
                 wx.setStorageSync('token', data.data);
-                if (this.data.fromPin) {
-                    let pages = getCurrentPages();
-                    let prevPage = pages[pages.length - 2];
-                    console.log(pages)
-                    if (prevPage) {
-                        prevPage.setData({
-                            fromLogin: true,
-                            pinType: this.data.pinType
+                
+                if(this.judgeNewUser()) {
+
+                } else {
+                    if (this.data.fromPin) {
+                        let pages = getCurrentPages();
+                        let prevPage = pages[pages.length - 2];
+                        console.log(pages)
+                        if (prevPage) {
+                            prevPage.setData({
+                                fromLogin: true,
+                                pinType: this.data.pinType
+                            });
+                        }
+
+                        // wx.navigateTo({
+                        //   url: `/pages/pin/pin_detail/pin_detail?id=${this.data.pinId}&fromLogin=1&pinType=${this.data.pinType}` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                        // });
+                        wx.redirectTo({
+                            url: `/pages/pin/checkout/checkout` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                        });
+                    } else if (this.data.fromTransport) {
+                        wx.redirectTo({
+                            url: `/pages/my/address/address?fromLogin=1` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                        });
+                    } else if (this.data.fromInvite) {
+                        wx.redirectTo({
+                            url: `/package/invite/pages/inviteOthers/invite` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                        });
+                    } else if (this.data.fromPocket) {
+                        wx.redirectTo({
+                            url: '/package/coffeePocket/pages/pocketCart/cart'
+                        });
+                    } else if (this.data.goBack) {
+                        wx.navigateBack({
+                            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                        });
+                    } else {
+                        wx.switchTab({
+                            url: '/pages/index/index'
                         });
                     }
-                    
-                    // wx.navigateTo({
-                    //   url: `/pages/pin/pin_detail/pin_detail?id=${this.data.pinId}&fromLogin=1&pinType=${this.data.pinType}` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-                    // });
-                    wx.redirectTo({
-                        url: `/pages/pin/checkout/checkout` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-                    });
-                } else if (this.data.fromTransport) {
-                    wx.redirectTo({
-                        url: `/pages/my/address/address?fromLogin=1` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-                    });
-                } else if (this.data.fromInvite) {
-                    wx.redirectTo({
-                        url: `/package/invite/pages/inviteOthers/invite` //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-                    });
-                } else if (this.data.fromPocket) {
-                    wx.redirectTo({
-                        url: '/package/coffeePocket/pages/pocketCart/cart'
-                    });
-                } else {
-                    wx.switchTab({
-                        url: '/pages/index/index'
-                    });
-                }
+                };
             }).catch(e => {
                 wx.showModal({
                     title: '提示', //提示的标题,
                     content: e, //提示的内容,
                     showCancel: false, //是否显示取消按钮,
                     cancelColor: '#000000', //取消按钮的文字颜色,
-                    confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                    confirmColor: '#3CC51F', //确定按钮的文字颜色
+                    confirmText: '我知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
+                    confirmColor: 'rgba(219, 163, 127, 1)', //确定按钮的文字颜色
                 });
             });
         }
-        
-        
+
+
     },
 
     getUserInfo() {
@@ -234,7 +350,7 @@ Page({
             success: function (res) {
                 console.log(res);
                 if (res.code) {
-                    model('my/user/get-open-id2', {
+                    model('my/user/get-open-id', {
                         code: res.code
                     }).then(res => {
                         // wx.setStorageSync('openid', res.data);
@@ -264,6 +380,7 @@ Page({
                                     city: userInfo.city,
                                     country: userInfo.country
                                 });
+                                wx.setStorageSync('encryptedData', res);
                                 self.setData({
                                     auth: true
                                 })
@@ -276,6 +393,7 @@ Page({
             }
         });
     },
+    
     saveUser(info) {
         if (!info) {
             return
@@ -288,9 +406,15 @@ Page({
         model('file/qiniu/fetch', {
             sourceUrl: avatarUrl
         }, 'POST').then(res => {
-            const {code, data} = res
+            const {
+                code,
+                data
+            } = res
             if (code === 'suc') {
-                let { key, url } = data
+                let {
+                    key,
+                    url
+                } = data
                 if (key) {
                     model('my/user/update-user', {
                         avatar: key,
@@ -315,11 +439,30 @@ Page({
         try {
             let token = wx.getStorageSync('token')
             let userInfo = token.user
-            token.user = Object.assign(userInfo, {avatar: avatar})
+            token.user = Object.assign(userInfo, {
+                avatar: avatar
+            })
             wx.setStorageSync('token', token)
         } catch (e) {
             console.log(e);
         }
+    },
+
+    hideActWrap() {
+        this.setData({
+            isActWrapShow: false
+        })
+        setTimeout(() => {
+            wx.switchTab({ url: '/pages/index/index' });
+        }, 500);
+    },
+    goPageCoupon() {
+        this.setData({
+            isActWrapShow: false
+        })
+        wx.navigateTo({
+            url: `/pages/my/coupon/coupon?type=2`
+        })
     },
     /**
      * 页面的初始数据
@@ -346,13 +489,38 @@ Page({
         actived: false,
         fromPin: false,
         fromInvite: false,
-        fromPocket: false
+        fromPocket: false,
+        goBack: false,
+        actImage: '',
+        isActWrapShow: false,
+        configData: {},
+        choosePhone: false,
+        loading: true,
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        this.checkSession();
+        let configData = wx.getStorageSync('configData');
+        if (!configData) {
+            model('base/site/config-list').then(res => {
+                this.setData({
+                    configData: res.data
+                })
+                wx.setStorageSync('configData', res.data)
+            })
+        } else {
+            this.setData({
+                configData: configData
+            })
+        }
+        if (wx.getStorageSync('phoneNum')) {
+            this.setData({
+                phoneNum: wx.getStorageSync('phoneNum')
+            })
+        }
         if (options.fromTransport) {
             this.setData({
                 fromTransport: true
@@ -373,6 +541,11 @@ Page({
         if (options.from === 'pocket') {
             this.setData({
                 fromPocket: true
+            })
+        }
+        if (options.from === 'goBack') {
+            this.setData({
+                goBack: true
             })
         }
         let self = this;
@@ -409,13 +582,13 @@ Page({
                     hasUserInfo: true
                 })
             }
-            
+
             let openid = wx.getStorageSync('openid')
             this.setData({
                 openid: openid
             })
         }
-        
+
     },
 
     /**
@@ -431,6 +604,12 @@ Page({
     onShow: function () {
 
     },
+
+    // closeToast() {
+    //     this.setData({
+    //         isActWrapShow: false
+    //     });
+    // },
 
     /**
      * 生命周期函数--监听页面隐藏
@@ -466,5 +645,98 @@ Page({
     onShareAppMessage: function () {
 
     },
+
+    goBack() {
+        wx.navigateBack({
+            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+        });
+    },
+
+    judgeNewUser() {
+        let result = false;
+        let info = wx.getStorageSync('token') || {}
+        let isNew = info.ifNew;
+        let configDate = this.data.configData;
+        let configPic = '';
+        try {
+            configPic = configDate['new-user-alert-img']
+        } catch (e) {
+            // console.log(e);
+        }
+        if (isNew && configPic) {
+            this.setData({
+                actImage: configPic,
+                isActWrapShow: true
+            });
+            result = true;
+            try {
+                let token = wx.getStorageSync('token')
+                token.ifNew = false
+                wx.setStorageSync('token', token)
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        return result;
+    },
+
+    goState() {
+        let config = wx.getStorageSync('config');
+        let url = config.baseUrl[config.env]
+        url += 'statement/register-gas.html'
+        wx.navigateTo({
+            url: `/pages/webview/webview?url=${encodeURIComponent(url)}`
+        });
+    },
+
+    goLogin () {
+        wx.navigateTo({ url: '/pages/login/entry/index' });
+    }, 
+
+    checkSession () {
+        var self = this;
+        wx.checkSession({
+            success: function (res) {
+                wx.getUserInfo({
+                    withCredentials: true,
+                    success: function (res) {
+                        var userInfo = res.userInfo
+                        let iv = res.iv;
+                        let encryptedData = res.encryptedData;
+                        console.log(iv);
+                        console.log(encryptedData);
+                        wx.setStorageSync('personal_info', {
+                            nickName: userInfo.nickName,
+                            avatarUrl: userInfo.avatarUrl,
+                            gender: userInfo.gender,
+                            province: userInfo.province,
+                            city: userInfo.city,
+                            country: userInfo.country
+                        });
+                        wx.setStorageSync('encryptedData', res);
+                        self.setData({
+                            auth: wx.getStorageSync('session_key') ? true : false,
+                            loading: false
+                        })
+                    },
+                    fail: (res) => {
+                        self.setData({
+                            auth: false,
+                            loading: false
+                        })
+                    }
+                })
+            },
+            fail: function (res) {
+                console.log(res, '登录过期了')
+                self.setData({
+                    auth: false,
+                    loading: false
+                })
+                self.getUserInfo();
+            }
+        })
+    }
+
 
 })

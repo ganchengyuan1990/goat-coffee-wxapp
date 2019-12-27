@@ -1,0 +1,77 @@
+.address_item {
+    height: 105rpx;
+    /* line-height: 70rpx; */
+    margin: 20rpx 20rpx;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    color: #383838;
+}
+address_text {
+    margin-right: 30rpx;
+    font-size: 36rpx;
+}
+
+.goPay {
+    display: inline-block;
+    width: 120rpx;
+    font-size: 30rpx;
+    position: absolute;
+    right: 30rpx;
+    bottom: 10rpx;
+}
+
+.no_address {
+    position: relative;
+    top: 40%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.no_address image {
+    width: 251rpx;
+    height: 185rpx;
+}
+
+.no_address view{
+    font-size: 28rpx;
+    color: #999;
+    margin-top: 30rpx;
+}
+
+.express_title {
+    position: relative;
+    color: #999;
+    font-size: 28rpx;
+    margin: 30rpx;
+    visibility: hidden;
+}
+
+.addNewAddress {
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    font-size: 36rpx;
+    width: 100%;
+    z-index: 10000;
+    border-top: 1rpx solid #ccc;
+    height:98rpx;
+    line-height: 98rpx;
+    background:rgba(35,24,21,1);
+    color: #D32D25;
+
+}
+
+.suggestListWrap {
+    position: absolute;
+    z-index: 5;
+    top: 130rpx;
+    left: 0;
+    right: 0;
+    bottom: 100rpx;
+    padding-bottom: 30rpx;
+    overflow: scroll;
+}
+

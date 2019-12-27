@@ -5,6 +5,6 @@
         <view class="icon-del"></view>
     </view>
     <view class="btn-wrap">
-        <view class="btn-save" bind:tap="saveName">保存</view>
+        <view class="btn-save" bind:tap="saveName">完成</view>
     </view>
 </view>

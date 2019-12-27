@@ -7,7 +7,11 @@
       arr.push(size)
     }
     if (props) {
-      arr = arr.concat(props.toString().split(','))
+      var _arr = props.toString().split(',');
+      if (_arr.indexOf('无') >= 0) {
+        _arr.splice(_arr.indexOf('无'), 1);
+      } 
+      arr = arr.concat(_arr)
     }
     return arr.join('/')
   }
@@ -26,56 +30,77 @@
   }
 </wxs>
 <view class="store-container">
-  <view class="hd-wrap J_hd_wrap">
-    <view class="store-addr">
-      <block wx:if="{{!isSelfTaking}}">
-        <view wx:if="{{userAddressInfo}}">
-          <view class="tt" bind:tap="selectAddress" data-delivery="delivery">
-            <view class="addr">{{userAddressInfo.city}}{{userAddressInfo.area}}{{userAddressInfo.address}}</view>
-          </view>
-          <view class="distance">{{userAddressInfo.contact}} {{userAddressInfo.tel}}</view>
-          <view class="distance" bindtap="showManbipei"><text style="color: #f50000">面价满￥65免配送费 </text> <text style="color: #999">| 慢必赔</text>        <image style='width: 24rpx; height: 24rpx; position: relative; top: 7rpx; margin-left: 5rpx;' src='../../images/flag.png'/></view>
-        </view>
-        <view wx:else>
-          <view class="tt" bind:tap="selectAddress" data-delivery="delivery">
-            <view class="addr">暂未添加配送地址</view>
-          </view>
-          <view class="distance">请点击添加</view>
-        </view>
-      </block>
-      <block wx:else>
-        <view class="tt tt_high" bind:tap="selectAddress" data-delivery="selftaking">
-          <view class="addr">{{storeInfo.storeName}}</view>
-        </view>
-        <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
-      </block>
 
-    </view>
-    <view class="delivery">
-      <view class="btn-delivery">
-        <view class="item {{isSelfTaking ? 'active':''}}" bind:tap="selectAddress" data-delivery="selftaking">自提</view>
-        <view class="item {{!isSelfTaking ? 'active':''}}" bind:tap="selectAddress" data-delivery="delivery">外送</view>
-      </view>
-    </view>
-  </view>
-  <view class="img-wrap J_img_wrap">
+  
+  
+  <view class="img-wrap J_img_wrap" wx:if="{{storeInfo.banners && storeInfo.banners.length > 0}}">
     <swiper indicator-dots="{{false}}" autoplay="{{true}}" interval="{{5000}}" duration="{{1000}}">
       <block wx:for="{{storeInfo.banners}}" wx:key="{{index}}">
         <swiper-item>
-          <image src="{{item.pic}}" class="img-caption" catchtap="goPocket"/>
+          <ml-navigator redirect_url="{{item.redirect_url}}" redirect_route="{{item.redirect_route}}">
+            <image src="{{item.pic}}" class="img-caption"/>
+          </ml-navigator>
         </swiper-item>
       </block>
     </swiper>
     <!-- <view class="info-wrap">公告：全场任意饮品购买2杯或消费金额满36元免配送费</view> -->
   </view>
+
+  <view class="hd-wrapper">
+    <view class="hd-wrap J_hd_wrap" bind:tap="selectAddress">
+      <view class="store-addr">
+        <block wx:if="{{!isselfTaking}}">
+          <view wx:if="{{userAddressInfo}}">
+            <view class="tt" data-delivery="delivery">
+              <view class="addr">{{userAddressInfo.city}}{{userAddressInfo.area}}{{userAddressInfo.address}}</view>
+            </view>
+            <view class="distance">{{userAddressInfo.contact}} {{userAddressInfo.tel}}</view>
+            <!-- <view class="distance" bindtap="showManbipei"><text style="color: #f50000">面价满￥65免配送费 </text> <text style="color: #999">| 慢必赔</text>        <image style='width: 24rpx; height: 24rpx; position: relative; top: 7rpx; margin-left: 5rpx;' src='../../images/flag.png'/></view> -->
+          </view>
+          <view wx:else>
+            <view class="tt" data-delivery="delivery">
+              <view class="addr">暂未添加配送地址</view>
+            </view>
+            <view class="distance">请点击添加</view>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="tt tt_high" data-delivery="selfTaking">
+            <view class="addr">{{storeInfo.storeName}}</view>
+            <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
+          </view>
+          <!-- <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view> -->
+        </block>
+
+      </view>
+      <view class="delivery">
+        <view class="btn-delivery">
+          <view class="item" data-delivery="selfTaking">自提</view>
+          <!-- <view class="item {{!isselfTaking ? 'active':''}}  gray" bind:tap="selectAddress" data-delivery="delivery">
+            <view>外送</view>
+            <view style="font-size: 16rpx; position: relative; top: 4rpx;">(敬请期待)</view>
+          </view> -->
+
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  
   <view class="list-wrap" style="height:{{listHeight}}px">
     <view class="list-nav">
       <scroll-view scroll-y scroll-with-animation scroll-into-view="{{viewToNav}}" style="height:{{listHeight}}px">
         <view class="list-nav-item {{activeIndex==index?'active':''}}" wx:for="{{menuList}}" wx:key="item.id" bindtap="selectNav" data-index="{{index}}" data-navid="{{'list'+item.id}}" id="{{'nav'+item.id}}">
+          <view class='nav-dot' wx:if="{{activeIndex==index}}"></view>
           <view class="tt">
             <!-- <view class="icon-crown"></view> -->
-            <image src="../../images/top.png" style="width: 26rpx;height: 26rpx;margin-right: 5rpx; position: relative; top: 2rpx;" wx:if="{{item.name === '人气TOP'}}"/>{{item.name}}
-            <text class='discount' wx:if="{{item.tips}}"><text style="font-size: 18rpx;">{{item.tips}}</text></text>
+            <image src="../../images/top.png" style="width: 26rpx;height: 26rpx;margin-right: 8rpx; position: relative; top: 2rpx;" wx:if="{{item.name.indexOf('人气') >= 0}}"/>{{item.name}}
+            <image src="../../images/tip_back.png" class="discount" wx:if="{{item.tips}}">
+              <view class="tips_word">{{item.tips}}</view>
+              <!-- <view style="font-size: 10rpx; display: block; position: absolute; top: 18rpx; left: 4rpx; width: 38rpx; height: 10rpx;text-align: center; display: inline-block;">折</view> -->
+              <view></view>
+              <!-- style="font-size: 18rpx; position: absolute; top: 5rpx; left: 5rpx;width: 38rpx; height: 13rpx; text-align: center; display: inline-block;" -->
+            </image>
             <!-- <text class='mentionText' wx:if="{{item.name === '新人专享'}}">AM8-11,PM3-5</text> -->
           </view>
         </view>
@@ -84,47 +109,93 @@
     <view class="list-cnt"> 
       <view class="list-cover"> 
       </view> 
+      <view class="title first_title {{futitle ? 'lowersss' : ''}} {{menuList.length > 0 ? '' : 'no_visibale'}}">
+        <!-- <view style="flex: 1;height:2rpx;background: rgba(230,230,230,1);margin-right: 15rpx;"></view> -->
+        <view>{{tagViewName}}<text wx:if="{{chosenTaglength > 0}}">({{chosenTaglength}})</text></view>
+        <view style="flex: 1;height:2rpx;background: rgba(230,230,230,1);margin-left: 15rpx;"></view>
+      </view>
       <scroll-view scroll-y scroll-with-animation style="height:{{listHeight}}px" scroll-into-view="{{viewToList}}" scroll-top="{{scrollTop}}" bindscroll="scroll">
-        <view style="padding-bottom: 50rpx">
+        <view style="padding-bottom: 50rpx; padding-top: 20rpx">
           <view wx:for="{{menuList}}" wx:key="item.id" class="title-group J_group" wx:for-index="idx" id="{{'list'+item.id}}">
-            <view class="title">
-              <view>{{item.name}}</view>
-              <view class="line"></view>
+            <view class="title {{futitle ? 'lowersss' : ''}}" wx:if="{{item.isHeader}}">
+              <!-- <view style="flex: 1;height:2rpx;background: rgba(230,230,230,1);margin-right: 15rpx;"></view> -->
+              <view>{{item.name}}({{item.product_list.length}})</view>
+              <view style="flex: 1;height:2rpx;background: rgba(230,230,230,1);margin-left: 15rpx;"></view>
             </view>
+            <!-- <view  class="fix-header" id="fixed-header">
+              {{item.name}}({{item.product_list.length}})
+            </view> -->
+            <!-- <view class='futitle' wx:if="{{item.description}}">
+              {{item.description}}
+            </view> -->
             <view 
               wx:for="{{item.product_list}}" 
               bindtap="orderProduct" 
               wx:for-item="product" 
               wx:key="product.id" 
-              class="list-detail" 
+              class="list-detail {{filter.judgeSoldout(product.sku_list) ? '' : ''}}" 
               wx:for-index="index"
               data-groupidx="{{idx}}" 
               data-skulist="{{product.sku_list}}"
               data-productidx="{{index}}">
-              <view class="img">
+              <view class="img {{filter.judgeSoldout(product.sku_list) ? 'mask_opacity' : ''}}">
                 <image src="{{product.icon}}"></image>
-                <image class="tag tag_pic" wx:if="{{product.tips}}" src="../../images/tag.png"><view class="pic_word">{{product.tips}}</view></image>
-                <image class="tag tag_pic lefter_top" wx:if="{{product.sku_list && product.sku_list[0] && !product.sku_list[0].can_distribution}}" src="../../images/tag.png"><view class="pic_word">仅自取</view></image>
+                <image src="../../images/tip_back.png" class='discount sss' wx:if="{{product.tips}}">
+                  <view class="tips_word {{product.tips.length > 2 ? 'lower_txt' : ''}}">{{product.tips}}</view>
+                </image>
+                <!-- <view class="pic_word" wx:if="{{product.tips}}">{{product.tips}}</view> -->
+                <!-- <image class="tag tag_pic" wx:if="{{product.tips}}" src="../../images/tag.png"><view class="pic_word">{{product.tips}}</view></image> -->
+                <!-- <image class="tag tag_pic lefter_top" wx:if="{{product.sku_list && product.sku_list[0] && !product.sku_list[0].can_distribution}}" src="../../images/tag.png"><view class="pic_word">仅自取</view></image> -->
+                <view class='sold_up' wx:if="{{filter.judgeSoldout(product.sku_list)}}">
+                  售罄
+                </view>
                 <view class='sold_up' wx:if="{{filter.judgeSoldout(product.sku_list)}}">
                   售罄
                 </view>
               </view>
               <view class="info">
-                <view>
-                  <view class="name">{{product.productName}}</view>
-                  <view class="note" wx:if="{{product.brief}}">{{product.productEnName}}</view>
-                  <view class="note">默认：{{filter.getSpecific(product)}}</view>
+                <view style="margin-top: 5rpx;">
+                  <view class="name {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}">{{product.productName}}</view>
+                  <view class="note {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}" wx:if="{{product.brief}}">{{product.productEnName}}</view>
+                  <view class="note {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}">{{filter.getSpecific(product)}}</view>
                 </view>
                 <view class="price-count">
                   <!-- <view class="price">{{product.default_sku.sale_price > 0 ? '￥'+product.default_sku.sale_price:'暂无价格'}} -->
-                  <view class="price">{{product.default_sku.orinalPrice > 0 ? '￥'+product.default_sku.orinalPrice:'暂无价格'}}
-                  <text class="price-del" wx:if="{{product.default_sku.price}}">￥{{product.default_sku.price}}</text>
+                  <view class="price {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}" wx:if="{{false}}">
+                    <text class="price-del" wx:if="{{product.default_sku.price && !isLogin}}">￥ {{product.default_sku.price == parseInt(product.default_sku.price) ? parseInt(product.default_sku.price) : product.default_sku.price}}</text>
+                    <!-- <text class="price-member" style="background: {{memberTagColor}}">{{memberName}}价￥30</text> -->
+                    <view class="price-member" style="background: {{memberTagColor}}" wx:if="{{product.default_sku.member_price && isLogin && product.default_sku.member_price != product.default_sku.sale_price}}">
+                      {{memberName}}价<text wx:if="{{product.default_sku.orinalPrice > 0}}">￥ <text style="font-size: 24rpx;">{{product.default_sku.orinalPrice}}</text></text>
+                      <text wx:else>暂无价格</text>
+                    </view>
+                    <text class="price-del" wx:if="{{product.default_sku.member_price && isLogin && product.default_sku.member_price != product.default_sku.price}}">{{product.default_sku.price > 0 ? '￥ '+product.default_sku.price:'暂无价格'}}</text>
+                    <text class="new_price" wx:if="{{!isLogin}}" style="marign-right: 20rpx;" >{{product.default_sku.orinalPrice > 0 ? '￥ '+product.default_sku.orinalPrice:'暂无价格'}}</text>
+                    <text class="" wx:if="{{isLogin && !(product.default_sku.member_price && product.default_sku.member_price != product.default_sku.sale_price)}}" style="marign-right: 20rpx;">{{!product.default_sku.orinalPrice  ? '暂无价格' : ('￥ '+product.default_sku.orinalPrice)}}</text>
                   </view>
+
+                  <view class="price {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}" wx:else>
+                  <!-- <text class="price-del" wx:if="{{product.default_sku.price}}">￥ {{parseInt(product.default_sku.price)}}</text> -->
+                    <!-- <text class="price-member" style="background: {{memberTagColor}}">{{memberName}}价￥30</text> -->
+                    <view class="price-member" style="background: {{memberTagColor}}" wx:if="{{product.default_sku.member_price && isLogin && product.default_sku.member_price < product.default_sku.sale_price}}">
+                      {{memberName}}价<text wx:if="{{product.default_sku.orinalPrice > 0}}">￥ <text style="font-size: 24rpx;position: relative; top: 2rpx;right: 2rpx;">{{product.default_sku.orinalPrice}}</text></text>
+                      <text wx:else>暂无价格</text>
+                    </view>
+                    <!-- <view class="price-member" style="background: {{memberTagColor}}">
+                      {{memberName}}价<text>￥ <text style="font-size: 24rpx;position: relative; top: 2rpx;right: 2rpx;">30</text></text>
+                    </view> -->
+                    <text class="priec_lala {{product.default_sku.member_price && product.default_sku.member_price < product.default_sku.price ? 'highlight' : ''}}">{{product.default_sku.sale_price > 0 ? '￥ '+product.default_sku.sale_price:'暂无价格'}}</text>
+                    <text class="price-del" wx:if="{{product.default_sku.member_price  && product.default_sku.member_price < product.default_sku.price}}">{{product.default_sku.price > 0 ? '￥'+product.default_sku.price:'暂无价格'}}</text>
+
+                    <!-- <text class="{{product.default_sku.price && product.default_sku.orinalPrice != product.default_sku.price ? 'new_price' : ''}}" wx:if="{{!isLogin}}" style="marign-right: 20rpx;" >{{product.default_sku.orinalPrice > 0 ? '￥'+product.default_sku.orinalPrice:'暂无价格'}}</text>
+                    <text class="price-del" wx:if="{{product.default_sku.price && !isLogin}}">￥ {{product.default_sku.price == parseInt(product.default_sku.price) ? parseInt(product.default_sku.price) : product.default_sku.price}}</text> -->
+
+                  </view> 
                   
                   <!-- <view class="count"> -->
                     <view class="add btn" data-item="{{item}}">
                       <view class="">
-                        <image style="height: 37rpx; width: 37rpx; position: relative; top: 1rpx;" src="../../images/add.png"/>
+                        <!-- <image style="height: 40rpx; width: 40rpx; position: relative; top: 1rpx;" src="../../images/gray_add.png" wx:if="{{filter.judgeSoldout(product.sku_list)}}"/> -->
+                        <image class="{{filter.judgeSoldout(product.sku_list) ? 'mask_opacity' : ''}}" style="height: 40rpx; width: 40rpx; position: relative; top: 1rpx;" src="../../images/add.png"/>
                       </view>
                     </view>
                   <!-- </view> -->
@@ -143,12 +214,13 @@
       info="{{cartList}}" 
       fee="{{storeInfo.deliverFee}}" 
       rules="{{storeInfo.deliverFees}}"
-      isSelfTaking="{{isSelfTaking}}"
+      isselfTaking="{{isselfTaking}}"
       bind:checkout="checkout" 
       bind:togglecart="toggleCart"
       bind:save="saveCart"></cart>
     <menu-wrap 
-      isSelfTaking="{{isSelfTaking}}"
+      isHigh="{{isHigh}}"
+      isselfTaking="{{isselfTaking}}"
       salesTotalPrice="{{resultPrice}}"
       info="{{currentSpecific}}" 
       basePrice="{{currentSpecific.price}}" 
@@ -160,7 +232,7 @@
     <view class="mask {{isActWrapShow ? 'active':''}}"></view>
     <view class="cnt">
       <view class="btn-close" bind:tap="hideActWrap"></view>
-      <image src="{{actImage}}" mode="widthFix" bind:tap="goPageCoupon"></image>
+      <image src="{{actImage}}" mode="widthFix"></image>
     </view>
   </view>
 
@@ -168,3 +240,9 @@
     <text>1</text>
   </view> -->
 </view>
+
+<!-- <view class="dibu">
+    
+</view> -->
+
+<modal title="离您最近的门店" bindcustomevent="goStoreIndex" contentArr="{{storeArr}}" shown="{{showStoreModal}}" type="7"/>

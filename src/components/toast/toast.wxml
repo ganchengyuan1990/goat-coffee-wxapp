@@ -1,7 +1,10 @@
-<view class="hfe-vue-dialog-backdrop" wx:if="{{isShow}}" bindtouchstart="closeToast" data-eventid="{{'0'}}" data-comkey="{{$k}}">
+<view class="hfe-vue-dialog-backdrop {{type == 2 ? 'type2_drop' : ''}}" wx:if="{{isShow}}" bindtouchstart="closeToast" data-eventid="{{'0'}}" data-comkey="{{$k}}">
     <view class="_div hfe-vue-dialog-toast-wrapper">
-        <view class="_div hfe-vue-dialog-toast-content-backdrop">
-        <label wx:if="{{title}}" class="_span wc">{{title}}</label>
+        <view class="_div hfe-vue-dialog-toast-content-backdrop" wx:if="{{type == 1}}">
+            <label wx:if="{{title}}" class="_span wc">{{title}}</label>
+        </view>
+        <view class="_div type2" wx:if="{{type == 2}}">
+            <rich-text nodes="{{title}}" class="_span wc type2_text"></rich-text>
         </view>
     </view>
 </view>

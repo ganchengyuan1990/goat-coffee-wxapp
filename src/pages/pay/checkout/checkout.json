@@ -1,7 +1,10 @@
 {
     "usingComponents": {
         "modal": "/components/modal/modal",
-        "toast": "../../../components/toast/toast"
+        "toast": "../../../components/toast/toast",
+        "guess-you-like": "../../../components/guess-you-like/index",
+        "menu-wrap": "../../store/components/menu"
+
     },
     "enablePullDownRefresh": false
 }
