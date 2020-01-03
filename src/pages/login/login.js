@@ -232,7 +232,7 @@ Page({
                     });
                 } else {
                     wx.switchTab({
-                        url: '/pages/index/index'
+                        url: '/pages/store/store'
                     });
                 }
             };
@@ -246,6 +246,11 @@ Page({
                 cancelColor: '#000000', //取消按钮的文字颜色,
                 confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
                 confirmColor: '#DE4132', //确定按钮的文字颜色
+                success(res) {
+                    wx.switchTab({
+                        url: '/pages/store/store'
+                    });
+                }
             });
         });
     },
@@ -325,7 +330,7 @@ Page({
                         });
                     } else {
                         wx.switchTab({
-                            url: '/pages/index/index'
+                            url: '/pages/store/store'
                         });
                     }
                 };
@@ -453,7 +458,9 @@ Page({
             isActWrapShow: false
         })
         setTimeout(() => {
-            wx.switchTab({ url: '/pages/index/index' });
+            wx.switchTab({
+                url: '/pages/store/store'
+            });
         }, 500);
     },
     goPageCoupon() {
@@ -509,7 +516,7 @@ Page({
                 this.setData({
                     configData: res.data
                 })
-                wx.setStorageSync('configData', res.data)
+                wx.setStorageSync('configData', res.data['config-set'])
             })
         } else {
             this.setData({
@@ -551,7 +558,7 @@ Page({
         let self = this;
         if (wx.getStorageSync('token')) {
             wx.switchTab({
-                url: '/pages/index/index'
+                url: '/pages/store/store'
             });
         } else {
             wx.getSystemInfo({

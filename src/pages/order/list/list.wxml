@@ -122,11 +122,11 @@
 
                     <!-- <view class="btn-buy to-pay invoice_button" wx:if="{{item.order.orderState === '100' && !item.order.billOrderID}}" data-item="{{item.order}}" data-type="normal" catchtap="goInvice">开发票</view> -->
 
-                    <view class="btn-cancel to-pay" wx:if="{{item.order.orderState === '100' && !item.order.isComment}}" data-item="{{item.order}}" data-type="normal" catchtap="goComment">评论</view>
+                    <!-- <view class="btn-cancel to-pay" wx:if="{{item.order.orderState === '100' && !item.order.isComment}}" data-item="{{item.order}}" data-type="normal" catchtap="goComment">评论</view> -->
 
 
-                    <view class="btn-buy qucan" wx:if="{{filter.getOrderTypeState(item.order.orderType)!= 1 && item.order.orderState == '02' || item.order.orderState == '03'}}" data-item="{{item}}" data-type="group" catchtap="goQrcode">
-                        取餐码
+                    <view class="qucan" wx:if="{{filter.getOrderTypeState(item.order.orderType)!= 1 && item.order.orderState == '02' || item.order.orderState == '03'}}" data-item="{{item}}" data-type="group">
+                        取餐码: <text style="font-size: 35rpx;margin-left: 10rpx;font-weight: 500;">{{item.order.varCode}}</text>
                     </view>
 
                     <!-- <view class="btn-buy" wx:if="{{true}}" data-item="{{item.order}}" catchtap="goPay">去支付</view> -->

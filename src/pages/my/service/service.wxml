@@ -3,7 +3,7 @@
     <view class="image_wrap">
         <image src="../../../images/phone.png" />
     </view>
-    <view class="service_title">
+    <view class="service_title" bindtap="openDevByMultyClick">
         客服电话
     </view>
     <view class="service_phone">

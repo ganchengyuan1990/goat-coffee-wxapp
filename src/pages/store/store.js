@@ -73,21 +73,7 @@ Page({
 		// this.fetchLoaction()  
 		this.checkSaveUser()
 
-		model('base/site/config-list').then((res) => {
-			wx.setStorageSync('configData', res.data)
-			this.setData({
-				// existLuckActivity: false
-				youngHomeLongBanner: res.data['young-home-long-banner'],
-				youngHomeOrderImg: res.data['young-home-order-img'],
-				youngHomeNewsList: res.data['young-home-news-list'],
-				existInviteActivity: Boolean(res.data['exist-invite-activity']),
-				existLuckActivity: Boolean(res.data['exist-luck-activity']),
-				continueDrinkActivity: res.data['continue-drink-activity'],
-				youngYshareBanner: res.data['young-y-share-banner']
-			});
-		}).catch(e => {
-			//  wx.hideLoading();
-		});
+		
 
 		this.setData({
 			isHigh: systemInfo.screenHeight > 800,
@@ -98,8 +84,117 @@ Page({
 
 	},
 
+
+	setTabStatus() {
+		if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
+			let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
+			model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
+				let sum = 0;
+				res.data.carts && res.data.carts.forEach(item => {
+					sum += item.num;
+				})
+				wx.setStorageSync('cartSum', sum);
+				if (sum) {
+					wx.setTabBarBadge({
+						index: 1,
+						text: sum.toString()
+					});
+				} else {
+					wx.removeTabBarBadge({
+						index: 1,
+					});
+				}
+			}).catch(e => {
+
+			});
+		}
+	},
+
+	setFirstAlert(activityId) {
+		let indexToastArr = wx.getStorageSync('indexToastArr') || {};
+		let toast = false;
+		if (!indexToastArr[activityId]) {
+			toast = true;
+			indexToastArr[activityId] = new Date().getTime();
+		} else {
+			let now = new Date().getTime();
+			if (now - indexToastArr[activityId] > 86400000) {
+				indexToastArr[activityId] = now;
+				toast = true;
+			}
+		}
+		if (toast) {
+			wx.setStorageSync('indexToastArr', indexToastArr);
+		}
+		return toast;
+	},
+
+	showActivityToast(dailyActivitys, enableMaps) {
+		let enableArrs = [];
+		let enableMapsArr = Object.keys(enableMaps || {});
+		// let firstDailyActivityId = dailyActivitys[0].id;
+		if (!wx.getStorageSync('token')) {
+			dailyActivitys = dailyActivitys.filter(item => {
+				return item['no_login_user_if_alert'] === 1;
+			});
+		}
+		if (!dailyActivitys[0]) {
+			return;
+		}
+		if (enableMapsArr.length == 0 && this.setFirstAlert(dailyActivitys[0].id)) {
+			return dailyActivitys[0];
+		} else {
+			enableMapsArr.map(item => {
+				if (enableMaps[item]) {
+					enableArrs.push(parseInt(item));
+				}
+				return item;
+			})
+		}
+		let index = -1;
+
+		for (let i = 0; i < dailyActivitys.length; i++) {
+			index = enableArrs.indexOf(dailyActivitys[i].id);
+			if (index >= 0 && this.setFirstAlert(dailyActivitys[i].id)) {
+				return dailyActivitys[i];
+			}
+		}
+		return null;
+	},
+
 	goStoreIndex (item) {
 		this.formatStoreInfo(item.detail)
+	},
+
+	closeToast(e) {
+		this.setData({
+			isActWrapShow: false
+		});
+		if (e && e.detail === true) {
+			return ;
+		}
+		if (this.data.toShowModal) {
+			if (this.data.toShowModal.type === 0) {
+				wx.showModal({
+					title: '提示',
+					confirmColor: '#DE4132', //确定按钮的文字颜色,
+					showCancel: false,
+					content: this.data.toShowModal.content,
+					confirmText: '我知道了'
+				})
+			} else {
+				const data = this.data.toShowModal.content;
+				this.setData({
+					storeArr: data.slice(0, 2),
+					showStoreModal: true
+				})
+				let storeInfo = data[0]
+				this.formatStoreInfo(storeInfo, true)
+			}
+			this.setData({
+				toShowModal: null
+			});
+		}
 	},
 
 
@@ -155,6 +250,91 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
+		if (wx.getStorageSync('token')) {
+			Promise.all([model('base/site/config-list'), model('base/site/user-config-list')]).then((resArr) => {
+				const res = resArr[0];
+				const userRes = resArr[1];
+				// const userRes = resArr[1];
+				let configSet = res.data['config-set'];
+				wx.setStorageSync('configData', res.data['config-set']);
+				if (res.data.homeBanners && res.data.homeBanners[0] && res.data.homeBanners[0].pic) {
+					let banners = [];
+
+					this.setData({
+						banner: res.data.homeBanners
+						// banner: ['https://img.goatup.cn/img/banner/home-banner-1.png'
+					})
+				}
+				this.setData({
+					youngYshareBanner: configSet['jy-share-banner'],
+					enableWeeklyActivity: userRes.data["enable-weekly-activity"],
+					actualDrinkNum: userRes.data["actual-drink-num"],
+					// existLuckActivity: false
+					youngHomeOrderImg: res.data['young-home-order-img'],
+					existInviteActivity: Boolean(configSet['exist-invite-activity']),
+					existLuckActivity: Boolean(configSet['exist-luck-activity']),
+					continueDrinkActivity: Boolean(configSet['continue-drink-activity']),
+				});
+				let activityObj = this.showActivityToast(res.data.dailyActivitys, userRes.data['enable-daily-activity-map']);
+				let extra_config_json = {};
+				if (activityObj && activityObj.extra_config_json) {
+					extra_config_json = JSON.parse(activityObj.extra_config_json);
+				}
+
+				if (activityObj) {
+					this.setData({
+						actImage: activityObj.coupon_modal_pic,
+						actUrl: extra_config_json.redirect_url,
+						actRoute: extra_config_json.redirect_route,
+						activityObj: activityObj,
+						isActWrapShow: true
+					});
+				}
+				wx.hideLoading();
+			}).catch(e => {
+				wx.hideLoading();
+			});
+		} else {
+			model('base/site/config-list').then(res => {
+				let configSet = res.data['config-set'];
+				wx.setStorageSync('configData', res.data['config-set']);
+				if (res.data.homeBanners && res.data.homeBanners[0] && res.data.homeBanners[0].pic) {
+					let banners = [];
+					// res.data.homeBanners.forEach(item => {
+					//     banners.push(item.pic);
+					// })
+					this.setData({
+						banner: res.data.homeBanners
+					})
+				}
+				this.setData({
+					youngYshareBanner: configSet['jy-share-banner'],
+					// existLuckActivity: false
+					youngHomeOrderImg: res.data['young-home-order-img'],
+					existInviteActivity: Boolean(configSet['exist-invite-activity']),
+					existLuckActivity: Boolean(configSet['exist-luck-activity']),
+					continueDrinkActivity: Boolean(configSet['continue-drink-activity']),
+				})
+				wx.hideLoading();
+				// this.judgeNewUser(res.data);
+				let activityObj = {};
+				// let activityObj = this.showActivityToast(res.data.dailyActivitys, {});
+				if (activityObj && activityObj.extra_config_json) {
+					extra_config_json = JSON.parse(activityObj.extra_config_json);
+				}
+				if (activityObj) {
+					this.setData({
+						actUrl: extra_config_json.redirect_url,
+						actRoute: extra_config_json.redirect_route,
+						actImage: activityObj.coupon_modal_pic,
+						activityObj: activityObj,
+						isActWrapShow: true
+					});
+				}
+			}).catch(e => {
+				wx.hideLoading();
+			});
+		}
 		if (typeof this.getTabBar === 'function' &&
 			this.getTabBar()) {
 			this.getTabBar().setData({
@@ -273,6 +453,8 @@ Page({
 		return {
 			title: '快来喝一杯加油咖啡',
 			path: `/pages/store/store?fromShare=1`,
+
+			imageUrl: this.data.youngYshareBanner,
 			success: function (res) {
 
 			},
@@ -462,6 +644,15 @@ Page({
 				this.formatStoreInfo(storeInfo)
 				// }
 			} else if (data && data.length > 1) {
+				if (this.data.isActWrapShow) {
+					this.setData({
+						toShowModal: {
+							type: 1,
+							content: data.slice(0, 2)
+						}
+					})
+					return;
+				}
 				this.setData({
 					storeArr: data.slice(0,2),
 					showStoreModal: true
@@ -509,13 +700,22 @@ Page({
 			if (fromTransport == 'deliver') {
 				content = "您与门店的距离太远了，已超出配送范围~"
 			}
-			wx.showModal({
-				title: '提示',
-				confirmColor: '#DE4132', //确定按钮的文字颜色,
-				showCancel: false,
-				content: content,
-				confirmText: '我知道了'
-			})
+			if (this.data.isActWrapShow) {
+				this.setData({
+					toShowModal: {
+						type: 0,
+						content: content
+					}
+				})
+			} else {
+				wx.showModal({
+					title: '提示',
+					confirmColor: '#DE4132', //确定按钮的文字颜色,
+					showCancel: false,
+					content: content,
+					confirmText: '我知道了'
+				})
+			}
 		}
 		storeInfo.distance = formatDistance
 		this.setData({

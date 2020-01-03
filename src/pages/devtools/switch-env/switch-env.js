@@ -90,13 +90,13 @@ const config = {
   },
   jumpToIndex() {
     wx.reLaunch({
-      url: '/pages/index/index?devtools=1',
+      url: '/pages/store/store?devtools=1',
     });
   },
   _getEnvStorage() {
     const self = this;
     wx.getStorage({
-      key: ENV_KEY,
+      key: 'env',
       success({
         data,
       }) {

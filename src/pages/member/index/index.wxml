@@ -8,7 +8,7 @@
 </view>
 
 
-<image wx:if="{{hasLogin}}" class='back-img' src="http://img.goatup.net/img/config/%E8%83%8C%E6%99%AF@2x.png" mode="widthFix" />
+<image wx:if="{{hasLogin}}" class='back-img' src="https://aoimg.goatup.net/img/config/%E8%83%8C%E6%99%AF@2x.png" />
 
 <view class="user-container" wx:if="{{hasLogin}}">
 
@@ -67,6 +67,10 @@
                 </view>
 
             </view>
+
+            <!-- <view style="height: 200rpx;position: fixed;bottom:0; width: 100%;" bindtap="openDevByMultyClick">
+
+            </view> -->
         <!-- </view> -->
     </view>
     

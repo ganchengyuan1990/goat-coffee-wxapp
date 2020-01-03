@@ -4,12 +4,12 @@
  * 开发： dev
  */
 const CONFIG = {
-    env: wx.getStorageSync('env') || 'dev'
+    env: wx.getStorageSync('env') || 'prod'
 }
 
 export const BASE_URL = (() => {
     let url = {
-        prod: 'https://goatup.cn/api/v1/server/',
+        prod: 'https://goatup.net/api/v1/server/',
         test: 'http://127.0.0.1:8000/api/v1/server/',
         dev: `http://test.goatup.net/api/v1/server/`
     }
@@ -19,7 +19,7 @@ export const BASE_URL = (() => {
 wx.setStorageSync('config', {
     env: CONFIG.env,
     baseUrl: {
-        prod: 'https://goatup.cn/',
+        prod: 'https://goatup.net/',
         test: 'http://127.0.0.1:8000/',
         dev: `http://test.goatup.net/`
 

@@ -22,10 +22,26 @@ Component({
                     redirect_route
                 }
             } = this;
+            setTimeout(() => {
+                this.triggerEvent('customevent', true);
+            }, 500);
+            
             if (redirect_route) {
-                wx.navigateTo({
-                    url: redirect_route,
-                });
+                const _backup = [
+                    '/pages/store/store',
+                    '/pages/member/index/index',
+                    '/pages/newCart/cart'
+                ];
+                if (_backup.indexOf(redirect_route) >= 0) {
+                    wx.switchTab({
+                        url: redirect_route,
+                    });
+                } else {
+                    wx.navigateTo({
+                        url: redirect_route,
+                    });
+                }
+                
             }
             if (redirect_url) {
                 wx.navigateTo({

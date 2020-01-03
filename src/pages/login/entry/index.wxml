@@ -54,7 +54,7 @@
     </button>
 
 
-    <view style="width:100%; font-size: 26rpx; text-align: center;position: fixed;top: 55%;" class=''
+    <view style="width:100%; font-size: 28rpx; text-align: center;position: fixed;top: 58%; color: #B2B2B2;" class=''
         bindtap="goBack" wx:if="{{!auth && !choosePhone}}">
         我想先看看
     </view>

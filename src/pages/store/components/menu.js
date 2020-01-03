@@ -66,7 +66,7 @@ Component({
     let configData = wx.getStorageSync('configData');
     if (!configData) {
       model('base/site/config-list').then(res => {
-        wx.setStorageSync('configData', res.data);
+        wx.setStorageSync('configData', res.data['config-set']);
         let configData = res.data;
         this.setData({
           activityName: configData['voucher-text']

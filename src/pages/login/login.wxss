@@ -93,13 +93,14 @@
 }
 
 button {
-    background: #231815;
-    border-radius: 10rpx;
+    background:rgba(211,45,37,1);
+    border-radius:6px;
+    /* border-radius: 10rpx; */
     width: 549rpx;
-    height: 98rpx;
-    line-height:98rpx;
-    color: #D32D25;
-    font-size: 36rpx;
+    height: 84rpx;
+    line-height:84rpx;
+    color: #fff;
+    font-size: 32rpx;
 }
 
 .black {

@@ -598,5 +598,25 @@ Page({
     wx.navigateTo({
       url: `/pages/my/coupon/coupon?type=2`
     })
-  }
+  },
+
+  openDevByMultyClick() {
+    this.clickNum = this.clickNum || 0;
+    ++this.clickNum;
+    console.log(this.clickNum);
+
+    if (!this.setTimeoutNum) {
+      this.setTimeoutNum = setTimeout(() => {
+        this.clickNum = 0;
+        clearTimeout(this.setTimeoutNum);
+        this.setTimeoutNum = 0;
+      }, 1000);
+    }
+
+    if (this.clickNum > 5) {
+      wx.navigateTo({
+        url: '/pages/devtools/index',
+      });
+    }
+  },
 })

@@ -1,0 +1,35 @@
+<view class="clear-data-container">
+  <view class="storage-head-wrap">
+    <view class="head-title">
+      storage数据
+    </view>
+    <view><button class="clear-btn" bindtap="clearAllStorage">全部清除</button></view>
+  </view>
+  <view class="use-msg">当前占用空间大小（kb）：{{currentSize}}</view>
+  <view class="limit-msg">限制的空间大小（kb）：{{limitSize}}</view>
+  <view class="storage-body-wrap">
+      <view class="storage-item" wx:for="{{storageArr}}" wx:for-item="storageItem" wx:key="{{index}}">
+          <text>{{storageItem}}</text>
+          <view><button class="clear-btn" bindtap="clearStorageItem" data-key="{{storageItem}}">清除</button></view>
+      </view>
+  </view>
+  <view class="auth-head-wrap">
+      <view class="head-title">
+          授权数据
+      </view>
+      <view><button class="clear-btn" open-type="openSetting" bindopensetting="closeAuth">关闭授权</button></view>
+  </view>
+  <view class="auth-head-wrap">
+      <view class="head-title">
+          定位缓存
+      </view>
+  </view>
+    <view class="loc-storage">
+        {{locstorage}}
+      </view>
+  <view class="auth-body-wrap">
+      <view class="auth-item" wx:for="{{authArr}}" wx:for-item="authItem" wx:key="{{index}}">
+          <text>{{authItem}}:开启</text>
+      </view>
+  </view>
+</view>

@@ -429,7 +429,7 @@ Page({
                 this.setData({
                     configData: res.data
                 })
-                wx.setStorageSync('configData', res.data)
+                wx.setStorageSync('configData', res.data['config-set'])
             })
         } else {
             this.setData({

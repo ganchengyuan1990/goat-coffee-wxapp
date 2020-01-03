@@ -241,25 +241,19 @@ Page({
         
 
         if (wx.getStorageSync('token')) {
-            // model('base/site/config-list').then((resArr) => {
             Promise.all([model('base/site/config-list'), model('base/site/user-config-list')]).then((resArr) => {
                 const res = resArr[0];
                 const userRes = resArr[1];
                 // const userRes = resArr[1];
-                wx.setStorageSync('configData', res.data);
+                wx.setStorageSync('configData', res.data['config-set']);
                 if (res.data.homeBanners && res.data.homeBanners[0] && res.data.homeBanners[0].pic) {
                     let banners = [];
-                    // res.data.homeBanners.forEach(item => {
-                    //     banners.push(item.pic);
-                    // })
+   
                     this.setData({
                         banner: res.data.homeBanners
                         // banner: ['https://img.goatup.cn/img/banner/home-banner-1.png'
                     })
                 }
-                // this.setData({
-                //     tags: res.data['voucher-text']
-                // })
                 this.setData({
                     enableWeeklyActivity: userRes.data["enable-weekly-activity"],
                     actualDrinkNum: userRes.data["actual-drink-num"],
@@ -269,22 +263,6 @@ Page({
                     existLuckActivity: Boolean(res.data['exist-luck-activity']),
                     continueDrinkActivity: Boolean(res.data['continue-drink-activity']),
                 });
-                // if (userRes.data["enable-order-activity"]) {
-                //     wx.setStorageSync('enable-order-activity', true);
-                // }
-                // if (this.judgeNewUser(res.data)) {
-
-                // } else if (this.data.enableWeeklyActivity) {
-                //     model('activity/coupon-activity/weekly-send', {}, 'POST').then(res => {
-                //         //
-                //     }).catch(e => {
-                //         console.log(e);
-                //     });
-                //     this.setData({
-                //         actImage: res.data['weekly-activity'] && res.data['weekly-activity'].coupon_modal_pic,
-                //         isActWrapShow: true
-                //     });
-                // }
                 let activityObj = this.showActivityToast(res.data.dailyActivitys, userRes.data['enable-daily-activity-map']);
                 if (activityObj) {
                     this.setData({
@@ -302,7 +280,7 @@ Page({
             this.getAchievement();
         } else {
             model('base/site/config-list').then(res => {
-                wx.setStorageSync('configData', res.data);
+                wx.setStorageSync('configData', res.data['config-set']);
                 if (res.data.homeBanners && res.data.homeBanners[0] && res.data.homeBanners[0].pic) {
                     let banners = [];
                     // res.data.homeBanners.forEach(item => {
@@ -382,7 +360,7 @@ Page({
     onShareAppMessage() {
         return {
             title: '加油咖啡',
-            path: '/pages/index/index',
+            path: '/pages/store/store',
             success: function (res) {
                 console.log('转发失败');
             },

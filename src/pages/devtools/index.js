@@ -14,10 +14,10 @@ Page({
         name: '环境切换',
         url: '/switch-env/switch-env',
       },
-      // clearData: {
-      //   name: '数据清理',
-      //   url: '/clear-data/clear-data',
-      // },
+      clearData: {
+        name: '数据清理',
+        url: '/clear-data/clear-data',
+      },
       // switchPage: {
       //   name: '页面切换',
       //   url: '/switch-page/switch-page',

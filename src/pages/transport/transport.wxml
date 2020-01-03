@@ -57,7 +57,7 @@
             <scroll-view class="suggestList" scroll-y="true">
                 <view wx:key="index" wx:for="{{searchSuggest}}" class="suggest-container" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goStore">
                     <view class="direct-item border-bottom" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
-                        <view class="suggest-icon point-icon" wx:if="{{item.isSelected}}">
+                        <view class="suggest-icon point-icon" wx:if="{{item.isSelected}}" style="width: 120rpx;display: flex;align-items: center;justify-content: center;">
                             <view class="checkbox checked"></view>
                         </view>
                         <view class="direct-content {{item.isSelected ? '' : 'go-right'}}">
@@ -78,8 +78,8 @@
                                 <view class="split-line" wx:if="{{item.categoryname}}">|</view>
                                 <view class="direct-address">
                                     <image style='position: relative; top: 8rpx; width: 20rpx; height: 24rpx; margin-right: 9rpx;' src="../../images/location.png" />
-                                    <text wx:if="{{item.regionname}}" class="direct-address-region">{{item.regionname}}</text>
-                                    <text wx:if="{{item.address}}" class="direct-address-text {{item.regionname ? 'before-content' : ''}}">{{item.address}}</text>
+                                    <view wx:if="{{item.regionname}}" class="direct-address-region">{{item.regionname}}</view>
+                                    <view wx:if="{{item.address}}" class="direct-address-text {{item.regionname ? 'before-content' : ''}}">{{item.address}}</view>
                                 </view>
                             </view>
                         </view>

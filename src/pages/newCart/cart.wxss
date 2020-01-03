@@ -7,7 +7,7 @@ page{
     background:#f6f6f6;
     width: 100%;
     height:calc(100vh - 96rpx);
-    overflow: hidden;
+    /* overflow: hidden; */
     /* overflow-y:scroll; */
     /* min-height: 100%; */
     /* overflow: hidden; */
@@ -144,6 +144,7 @@ page{
     /* align-items: center; */
     justify-content: center;
     margin-right: 18rpx;
+    margin-left: 30rpx;
     /* flex: 1; */
     /* margin: 15rpx 16rpx 1rpx 0rpx; */
 }
@@ -749,8 +750,9 @@ page{
     color:rgba(35, 35, 35, 0.6);
     font-size:28rpx !important;
     margin-left: 10rpx;
-    top: 5rpx;
+    top: 2rpx;
     position: relative;
+    font-weight: 400;
 }
 
 .btn-login::after {

@@ -136,6 +136,7 @@ page {
     position: relative;
     top: 10rpx;
     color: #E87E7A;
+    font-size: 28rpx;
 }
 .panel .panel-hd .tt {
     width: 80%;
@@ -145,13 +146,14 @@ page {
     color: #333;
     font-size: 28rpx;
     line-height: 40rpx;
+    font-weight: 500;
 }
 
 .panel .panel-bd {
     display: flex;
     align-items: center;
-    margin-top: 20rpx;
-    border-bottom: 2rpx solid #f2f2f2;
+    margin-top: 17rpx;
+    border-bottom: 2rpx dashed #f2f2f2;
     padding-bottom: 20rpx;
 }
 .panel .panel-bd .desc {
@@ -167,7 +169,7 @@ page {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 20rpx 0 20rpx;
+    padding: 24rpx 0 24rpx;
     position: relative;
     min-height: 52rpx;
 }
@@ -257,6 +259,7 @@ page {
   position: absolute;
   right: 30rpx;
   top: 0rpx;
+  font-weight: 500;
 }
 
 .order_numer .time {
@@ -533,8 +536,8 @@ page {
 }
 
 .qucan {
-    color: #daa37f !important;
-    border: 1rpx solid #daa37f !important;
+    color: #DE4132 !important;
+    /* border: 1rpx solid #daa37f !important; */
 }
 
 .progress_achive {

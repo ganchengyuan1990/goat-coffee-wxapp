@@ -16,8 +16,8 @@ page {
     /* box-shadow:0px 2rpx 6rpx 0rpx rgba(0,0,0,0.2); */
     border-radius:10rpx;
 }
-.border-line {
-    border-top: 2rpx solid #f2f2f2;
+.border-line1 {
+    border-top: 2rpx solid rgba(0,0,0,.1);
 }
 .hd-wrap {
     padding: 30rpx 32rpx 0  32rpx;
@@ -47,7 +47,7 @@ page {
 .order-title {
     display: flex;
     justify-content: space-between;
-    padding: 15rpx 0 30rpx 0;
+    padding: 30rpx 0 30rpx 0;
     color: #999;
     font-size: 24rpx;
 }
@@ -92,12 +92,13 @@ page {
 
 .transport-item {
     position: relative;
-    color: #666666;
+    color: #232323;
     font-size: 28rpx;
 }
 
 .transport-item .l {
     margin: 25rpx 0;
+    color: #232323;
 }
 
 .transport-item .r {
@@ -110,6 +111,17 @@ page {
     white-space: nowrap;
     display: inline-block;
     /* margin: 30rpx; */
+}
+
+.transport-item .r_ds {
+    position: absolute;
+    right: 0rpx;
+    top: 15rpx;
+    max-width: 470rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
 }
 
 .special-item {
@@ -154,6 +166,7 @@ page {
 .order-title .name {
     font-size: 32rpx;
     color: #3a3a3a;
+    font-weight: 500;
 }
 
 .addr-box .addr {
@@ -400,6 +413,8 @@ page {
 }
 
 .product_name_sss {
+  color: #232323;
+  font-weight:400;
     max-width:300rpx;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -434,7 +449,8 @@ page {
 }
 
 .price-del {
-    color: #999;
+    color: rgba(35,35,35,0.6);
+    font-weight: 400;
     text-decoration: line-through;
 }
 
@@ -467,7 +483,7 @@ page {
     color: #666666;
     font-size: 30rpx;
     text-align: center;
-    margin-top: 60rpx;
+    margin-top: 20rpx;
 }
 
 .font {
@@ -485,7 +501,7 @@ page {
     color:#DE4132;
     line-height:110rpx;
     text-align: center;
-    margin: 30rpx auto;
+    margin: 0rpx auto;
 }
 
 .rrr {

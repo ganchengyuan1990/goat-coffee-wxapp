@@ -316,6 +316,13 @@
 					"id": -1,
 					"name": "环境",
 					"pathName": "pages/devtools/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "clear-data",
+					"pathName": "pages/devtools/clear-data/clear-data",
 					"scene": null
 				}
 			]

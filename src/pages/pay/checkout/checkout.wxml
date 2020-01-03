@@ -81,7 +81,7 @@
             </view>
         </view>
 
-        <view class="order-box">
+        <view class="order-box no_margin-top">
             <view style="">
                 <view class="order-title">
                     <text class="name">订单详情</text>
@@ -218,12 +218,11 @@
 
         <!-- <guess-you-like wx:if="{{addPriceGoods.length > 0}}" title="加价购" cartGoods="{{addPriceGoods}}" bindtogglemenu="addPriceBuy"></guess-you-like> -->
 
-        <view style="height: 18rpx; background: #F5F5F5; width: 100%;">
-        </view>
-<!-- 
+        
+
         <view class='third_part'>
 
-            <view class="special-item gogogo {{animated ? 'animated' : ''}}" id="xiguan">
+            <!-- <view class="special-item gogogo {{animated ? 'animated' : ''}}" id="xiguan">
                 <view class="l">
                     <text class="name">吸管需求</text>
                 </view>
@@ -243,10 +242,10 @@
                     </view>
 
                 </view>
-            </view>
+            </view> -->
 
-            <view style="width:100%; height:1rpx;background: rgba(230,230,230,1);">
-            </view>
+            <!-- <view style="width:100%; height:1rpx;background: rgba(230,230,230,1);">
+            </view> -->
 
             <view class="special-item gogogo second_item" bindtap="goRemark">
                 <view class="l">
@@ -260,11 +259,22 @@
             <view class='remark' wx-if="{{remark}}">{{remark}}</view>
         </view>
 
-        <view class="protocol {{member_recharge > 0 ? '' : ''}}">
+        <!-- <view class="protocol {{member_recharge > 0 ? '' : ''}}">
             <image src="../../../images/checkbox.png" />
             <view class="name" style="color: #999; display: inline-block;">我已同意<text style="color: #D32D25;" bindtap="goState">《咖啡支付协议》</text></view>
             <view style="color: #999999;line-height: 36rpx;padding-bottom: 30rpx; font-size: 22rpx;">温馨提示：仅支持开具电子发票，请联系客服人员或门店电话开具</view>
         </view> -->
+
+
+        <view style="height: 18rpx; background: #F5F5F5; width: 100%;">
+        </view>
+
+
+        <view class="protocol {{member_recharge > 0 ? '' : ''}}" catchtap="chooseXieyi">
+            <image src="../../../images/checkbox.png" wx:if="{{zunshou}}"/>
+            <image src="../../../images/check_not.png" wx:if="{{!zunshou}}"/>
+            <view class="name" style="color: #999; display: inline-block;">我已同意<text style="color: #D32D25;" catchtap="goState">《咖啡支付协议》</text></view>
+        </view> 
 
         
 
@@ -297,12 +307,7 @@
         <view class="r {{zunshou ? '' : 'no_use'}}" bindtap="submitOrder">支付</view>
     </view>
 
-    <view class="protocol {{member_recharge > 0 ? '' : ''}}" catchtap="chooseXieyi">
-        <image src="../../../images/checkbox.png" wx:if="{{zunshou}}"/>
-        <image src="../../../images/check_not.png" wx:if="{{!zunshou}}"/>
-        <view class="name" style="color: #999; display: inline-block;">我已同意<text style="color: #D32D25;" catchtap="goState">《咖啡支付协议》</text></view>
-        <!-- <view style="color: #999999;line-height: 36rpx;padding-bottom: 30rpx; font-size: 22rpx;">温馨提示：仅支持开具电子发票，请联系客服人员或门店电话开具</view> -->
-    </view> 
+    
 
 </view>
 

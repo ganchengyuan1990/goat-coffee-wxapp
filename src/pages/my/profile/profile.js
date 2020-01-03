@@ -256,7 +256,9 @@ Page({
 
 
   goIndex () {
-    wx.switchTab({ url: '/pages/index/index' });
+    wx.switchTab({
+      url: '/pages/store/store'
+    });
   },
 
   saveProfile() {

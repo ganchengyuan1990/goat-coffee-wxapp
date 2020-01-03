@@ -23,7 +23,8 @@
     "pages/my/coupon/coupon",
     "pages/webview/webview",
     "pages/devtools/index",
-    "pages/devtools/switch-env/switch-env"
+    "pages/devtools/switch-env/switch-env",
+    "pages/devtools/clear-data/clear-data"
   ],
   "permission": {
     "scope.userLocation": {

@@ -69,7 +69,7 @@
 
 .button button {
     border-radius: 0rpx;
-    background: #231815;
+    background: #DE4132;
     /* margin: 20rpx 30rpx; */
     flex: 1;
     color: #fff;
@@ -144,7 +144,7 @@ textarea {
 }
 
 .chosen {
-    color: #000000;
-    background: #D32D25;
-    border: 1rpx solid #D32D25;
+    color: #fff;
+    background: #DE4132;
+    border: 1rpx solid #DE4132;
 }

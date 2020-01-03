@@ -53,13 +53,13 @@
     </view>
 
 
-    <button style="width:80%; left: 50%; position:fixed; top: 50%; transform: translate(-50%, -50%)" class='button blue' open-type="getUserInfo"
+    <button style="width:80%; left: 50%; position:fixed; top: 40%; transform: translate(-50%, -50%)" class='button blue' open-type="getUserInfo"
         bindgetuserinfo="getUserInfo" wx:if="{{!auth && !choosePhone && !loading}}">
         授权登录
     </button>
 
 
-    <view style="width:100%; font-size: 26rpx; text-align: center;position: fixed;top: 55%;" class=''
+    <view style="width:100%; font-size: 26rpx; text-align: center;position: fixed;top: 46%; color: #B2B2B2;" class=''
         bindtap="goBack" wx:if="{{!auth && !choosePhone && !loading}}">
         我想先看看
     </view>

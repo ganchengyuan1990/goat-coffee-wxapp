@@ -25,22 +25,22 @@
 
 
 
-            <view class="refund_detail" wx:if="{{detail.orderState == 01}}">预计5分钟内接单，请耐心等待</view>
+            <!-- <view class="refund_detail" wx:if="{{detail.orderState == 01}}">预计5分钟内接单，请耐心等待</view>
             <view class="refund_detail" wx:if="{{detail.orderState == 02}}">预计{{lineNumber}}取餐，请耐心等待。</view>
-            <view class="refund_detail" wx:if="{{detail.orderState == 03}}">请在{{lineNumber}}前取餐。</view>
+            <view class="refund_detail" wx:if="{{detail.orderState == 03}}">请在{{lineNumber}}前取餐。</view> -->
             
             <view wx:if="{{detail.orderState == '02' || detail.orderState == '03'}}" style="display: flex; justify-content: center;">
                 <image style="width: 200px; height: 200px; margin-top: 40rpx;" src="{{qrcodeURL}}" />
             </view>
 
-            <view class="font" wx:if="{{detail.orderState == '02' || detail.orderState == '03'}}">请出示二维码给店员</view>
+            <!-- <view class="font" wx:if="{{detail.orderState == '02' || detail.orderState == '03'}}">请出示二维码给店员</view> -->
 
 
             
             <!-- <view class="desc">感谢您光临麦隆咖啡YOUNG</view> -->
             <!-- <view class="time_delivery" wx:if="{{detail.orderState == '01' || detail.orderState == '02' || detail.orderState == '03'}}">预计将在<text style="color: rgba(218, 163, 127, 1);">{{waitTime}}</text>前可取餐</view> -->
             <!-- <view class="order_numer">NO.{{detail.varCode}}</view> -->
-            <view style="display: flex; justify-content: center; margin-top: 50rpx; margin-bottom: 50rpx;">
+            <view wx:if="{{detail.orderState == '00'}}" style="display: flex; justify-content: center; margin-top: 50rpx; margin-bottom: 50rpx;">
                 <!-- <view class="btn-buy to-pay" catchtap="goStore" wx:if="{{detail.orderState == '02'}}">再来一单</view> -->
                 <view class="btn-buy to-pay go-cancel" catchtap="goCancel" wx:if="{{detail.orderState == '00'}}">取消订单</view>
                 <view class="btn-buy to-pay" catchtap="goStore" wx:if="{{detail.orderState == '00'}}">立即支付</view>
@@ -49,10 +49,15 @@
 
 
                 <!-- <view class="btn-buy to-pay" catchtap="goVarcode" wx:if="{{filter.getOrderState(detail.orderState) !=1 && detail.orderState == '02' && detail.orderState != '03'}}">取餐码</view> -->
-                <view class="btn-buy to-pay" catchtap="goComment" wx:if="{{detail.orderState == '100' && !detail.isComment}}">订单评价</view>
+                <!-- <view class="btn-buy to-pay" catchtap="goComment" wx:if="{{detail.orderState == '100' && !detail.isComment}}">订单评价</view> -->
             </view>
 
-            <view class="order-title border-line">
+            <view wx:else style="display: flex; justify-content: center; margin-bottom: 50rpx;">
+                <view class="btn-buy to-pay go-cancel" catchtap="goCancel" wx:if="{{detail.orderState == '00'}}">取消订单</view>
+                <view class="btn-buy to-pay" catchtap="goStore" wx:if="{{detail.orderState == '00'}}">立即支付</view>
+            </view>
+
+            <view class="order-title border-line1">
                 <text class="name">{{detail.storeName}}</text>
                 <image style='position: relative; top: 8rpx; width: 30rpx; height: 37rpx; margin-right: 9rpx;' src="../../../images/location.png" />
             </view>
@@ -118,7 +123,7 @@
                     <text class="txt">￥{{detail.deliverFee}}</text>
                 </view>
             </view>
-            <view style="height:2rpx; background: #f2f2f2"></view>
+            <view style="height:2rpx; background: rgba(0,0,0,.1)"></view>
             <view class="transport-item llll" wx:if="{{detail.levelAmount}}">
                 <view class="l">
                     <text class="name">会员优惠</text>
@@ -151,7 +156,7 @@
                     <!-- <image class="txt" src="../../../images/arrow.png"/> -->
                 </view>
             </view>
-            <view style="height:2rpx; background: #f2f2f2"></view>
+            <view style="height:2rpx; background: rgba(0,0,0,.1)"></view>
             <view class="special-item">
                 <view class="l">
                     <!-- <text class="name">共{{filter.getSum(detail.detailList)}}件商品</text> -->
@@ -174,7 +179,7 @@
                 <view class="l">
                     <text class="name">订单编号</text>
                 </view>
-                <view class="r rrr">
+                <view class="r_ds rrr">
                     <text class="addr">{{detail.orderNo}}</text>
                 </view>
             </view>
@@ -190,7 +195,7 @@
                 <view class="l">
                     <text class="name">下单时间</text>
                 </view>
-                <view class="r rrr">
+                <view class="r_ds rrr">
                     <text class="addr">{{detail.CreateTime}}</text>
                 </view>
             </view>
@@ -201,15 +206,15 @@
                 <view class="r">
                     <text class="addr">{{detail.xiguan}}</text>
                 </view>
-            </view>
+            </view> -->
             <view class="transport-item second {{detail.remarkJson.other ? 'higher' : ''}}">
                 <view class="l">
                     <text class="name">备注特殊要求</text>
                 </view>
-                <view class="r {{detail.remarkJson.other ? 'zhoujielun' : 'linjunjie'}}">
+                <view class="r_ds {{detail.remarkJson.other ? 'zhoujielun' : 'linjunjie'}}">
                     <text class="addr">{{detail.remarkJson.other || '不需要纸巾、不需要糖包'}}</text>
                 </view>
-            </view> -->
+            </view>
         </view>
     </block>
     <block wx:if="{{dtype === 'group'}}">

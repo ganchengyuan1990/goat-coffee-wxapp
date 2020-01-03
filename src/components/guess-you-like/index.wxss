@@ -2,6 +2,7 @@ page {
   height: 100%;
   min-height: 100%;
   background: #f6f6f6;
+  /* overflow: hidden; */
 }
 
 
@@ -124,7 +125,7 @@ page {
 }
 
 .cart-view .item .b {
-  po line-height: 30rpx;
+  line-height: 30rpx;
   margin-right: 40rpx;
   /* height: 28rpx;
     line-height: 28rpx; */

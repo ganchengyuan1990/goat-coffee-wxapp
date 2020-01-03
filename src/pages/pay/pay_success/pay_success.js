@@ -102,7 +102,7 @@ Page({
                 const res = resArr[0];
                 const res2 = resArr[1];
                 const userRes = wx.getStorageSync('userConfigList');
-                 wx.setStorageSync('configData', res.data)
+                 wx.setStorageSync('configData', res.data['config-set'])
                  this.setData({
                      varCode: options.varCode,
                      newUserFirstPayActivity: res.data.newUserFirstPayActivity,
@@ -129,7 +129,7 @@ Page({
                 })
                 wx.hideLoading();
              });
-             this.getAchievement();
+            //  this.getAchievement();
         }
 
         

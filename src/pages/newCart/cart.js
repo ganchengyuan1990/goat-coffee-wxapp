@@ -261,6 +261,9 @@ Page({
          item.propsStr.push(item.sku.name);
          item.rPropGoodsArray.forEach(ele => {
            item.propsStr.push(ele.propValue.prop_value);
+           if (parseFloat(ele.propValue.price)) {
+             item.orinalPrice = parseFloat(item.orinalPrice) + parseFloat(ele.propValue.price);
+           }
          });
          item.propsStr = item.propsStr.join('/');
          item.checked = true;
@@ -447,7 +450,7 @@ Page({
       cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
       cancelColor: '#000000', //取消按钮的文字颜色,
       confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-      confirmColor: '#DAA37F', //确定按钮的文字颜色,
+      confirmColor: '#DE4132', //确定按钮的文字颜色,
       success: res => {
         if (res.confirm) {
           model(`home/cart/change-number`, {
@@ -543,7 +546,7 @@ Page({
         cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
         cancelColor: '#000000', //取消按钮的文字颜色,
         confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-        confirmColor: '#DAA37F', //确定按钮的文字颜色,
+        confirmColor: '#DE4132', //确定按钮的文字颜色,
         success: res => {
           if (res.confirm) {
             model(`home/cart/change-number`, {
@@ -846,7 +849,6 @@ Page({
       return
     }
     let products = cartList.map(item => {
-      debugger
       return Object.assign({}, {
         productName: item.goods.name,
         productId: item.goods.id,
@@ -854,7 +856,7 @@ Page({
         skuName: item.sku.name,
         number: item.num,
         memberPrice: item.memberPrice,
-        price: item.sku.price || item.unitPrice,
+        price: item.orinalPrice !== 'NaN' ? item.orinalPrice : item.unitPrice,
         productPropIds: item.rPropGoodsIds.join(','),
         spec: item.propsStr,
         banner: item.goods.avatar

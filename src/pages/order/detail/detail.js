@@ -392,8 +392,8 @@ Page({
         errorCorrectLevel: 'M',
         size: 500
       })
-      if (detail.orderState == '02' || detail.orderState == '03') {
-        // this.getWebsocket(detail.orderNo);
+      if ((detail.orderState == '02' || detail.orderState == '03') && wx.getStorageSync('env') !== 'dev') {
+        this.getWebsocket(detail.orderNo);
       }
       this.setData({
         guaerItems: guaerItems || [],
