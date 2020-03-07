@@ -1,6 +1,8 @@
 "use strict";
 import model from '../../../utils/model';
-
+import {
+    mockData,
+} from './mockData.js';
 
 Page({
     data: {
@@ -16,7 +18,7 @@ Page({
         unActivedItems: [],
         chosenInfo: {},
         canUseRedPacketMeanwhile: false,
-        type: 1,
+        type: 2,
         products: [],
         chosenVoucher: -1,
         chosenCoupon: -1,
@@ -60,8 +62,8 @@ Page({
                     if (element.coupon.availabileStartTime) {
                         element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0]
                     }
-                    if (element.end_time) {
-                        element.end_time = element.end_time.split(' ')[0]
+                    if (element.couEndDate) {
+                        element.couEndDate = element.couEndDate.split(' ')[0]
                     }
 
                     if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
@@ -140,7 +142,7 @@ Page({
             newValue = idArray;
         }
         let chosenInfo = {};
-        console.log(e.target.dataset.id);
+        console.log(e.target.dataset.couCode);
         let target = '';
         if (this.data.type === 1) {
             target = 'couponItems'
@@ -150,17 +152,17 @@ Page({
             target = 'redPackItems'
         }
         this.data[target].forEach((element, index) => {
-            if (this.data.type === 3) {
+            if (this.data.type === 100) {
                 if (index === parseInt(newValue[0])) {
                     if (!element.checked) {
                         let checkBool = target + '[' + index + '].checked';
-                        if (this.data.type === 2) {
+                        if (this.data.type === 1) {
                             chosenInfo = {
                                 type: this.data.type,
                                 content: [{
                                     type: this.data.type,
-                                    id: element.coupon.id,
-                                    relationId: element.id
+                                    id: element.couCode,
+                                    relationId: element.couCode
                                 }]
                             };
                         } else {
@@ -168,45 +170,61 @@ Page({
                                 type: this.data.type,
                                 content: [{
                                     type: this.data.type,
-                                    id: element.coupon.id,
-                                    relationId: element.id
+                                    id: element.couCode,
+                                    relationId: element.couCode
                                 }]
                             };
                         }
+                        console.log(checkBool, 'checkBooltrue');
                         this.setData({
                             [checkBool]: true
                         });
                     } else {
                         let checkBool = target + '[' + index + '].checked';
+                        console.log(checkBool, 'checkBool');
                         this.setData({
                             [checkBool]: false
                         });
                     }
                 } else {
                     let checkBool = target + '[' + index + '].checked';
+                    console.log(checkBool, 'checkBool2');
                     this.setData({
                         [checkBool]: false
                     });
                 }
-            } else if (this.data.type === 1 || this.data.type === 2) {
+            } else if (this.data.type === 1 || this.data.type === 3 || this.data.type === 2) {
                 // 咖啡钱包逻辑不通
                 let checkBool = target + '[' + index + '].checked';
-                let targetArr = []
-                newValue.forEach((itm) => {
-                    targetArr.push(parseInt(itm));
+                let target = parseInt(newValue[newValue.length - 1]);
+                // newValue.forEach((itm) => {
+                //     targetArr.push(parseInt(itm));
+                // })
+                let voucherItems = this.data.voucherItems;
+                voucherItems.forEach(item => {
+                    item.checked = false;
                 })
-                if (targetArr.indexOf(index) > -1) {
-                    this.setData({
-                        [checkBool]: true
-                    });
-                } else {
-                    this.setData({
-                        [checkBool]: false
-                    });
+                if (newValue.length > 0) {
+                    voucherItems[target].checked = true;
                 }
+                
+                this.setData({
+                    voucherItems: voucherItems
+                })
+                // if (targetArr.indexOf(index) > -1) {
+                //     this.setData({
+                //         [checkBool]: true
+                //     });
+                // } else {
+                //     this.setData({
+                //         [checkBool]: false
+                //     });
+                // }
             }
 
         });
+
+        this.commitCoupon();
 
 
         if (this.data.type === 3) {
@@ -225,7 +243,7 @@ Page({
                 goBackFromChildPage: true
             });
             wx.navigateBack({
-                url: '../order-create/order-create'
+                delta: 1
             });
             return;
         }
@@ -236,8 +254,8 @@ Page({
                     if (element.checked) {
                         chosenInfoArr.push({
                             type: this.data.type,
-                            id: element.coupon.id,
-                            relationId: element.id
+                            id: element.couCode,
+                            relationId: element.couCode
                         })
                     }
                 });
@@ -246,8 +264,8 @@ Page({
                     if (element.checked) {
                         chosenInfoArr.push({
                             type: this.data.type,
-                            id: element.coupon.id,
-                            relationId: element.id
+                            id: element.couCode,
+                            relationId: element.couCode
                         })
                     }
                 });
@@ -276,7 +294,7 @@ Page({
             // promotionSubtitle: this.data.array[this.data.chosenId].subtitle
         });
         wx.navigateBack({
-            url: '../order-create/order-create'
+            delta: 1
         });
     },
 
@@ -295,7 +313,7 @@ Page({
         let activedItems = [];
         let unActivedItems = [];
         let guaerItems = getApp().globalData.guaerItems;
-        // let sssss = JSON.parse(JSON.stringify(wx.getStorageSync('couponList')))
+        let voucherList = JSON.parse(JSON.stringify(wx.getStorageSync('voucherList')))
         // guaerItems = sssss.splice(0, 1);
         // guaerItems.forEach(element => {
         //     if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
@@ -307,13 +325,17 @@ Page({
         //     }
         // });
         this.setData({
-            type: parseInt(option.type),
+            type: parseInt(option.type) || 2,
+
+            voucherItems: voucherList,
             guaerItems: guaerItems || []
         })
 
         wx.setNavigationBarTitle({
             title: parseInt(option.type) == 3 ? '可用满减券' : parseInt(option.type) == 2 ? '可用兑换券' : '可用优惠券'
         })
+
+        // return ;
         if (this.data.type === 1) {
             // let list = JSON.parse(option.list);
             let list = wx.getStorageSync('couponList');
@@ -463,26 +485,27 @@ Page({
             let list = wx.getStorageSync('voucherList');
             let chosenVoucherArr = option.chosenVoucher.split(',');
             list.forEach(item => {
-                if (item.coupon.discount) {
-                    item.coupon.discount = parseFloat(item.coupon.discount).toFixed(1);
+                if (item.discount) {
+                    item.discount = parseFloat(item.discount).toFixed(1);
                 }
-                if (item.coupon.saveAmount) {
-                    item.coupon.saveAmount = parseFloat(item.coupon.discount).toFixed(1);
+                if (item.saveAmount) {
+                    item.saveAmount = parseFloat(item.discount).toFixed(1);
                 }
-                if (item.coupon.startTime) {
-                    item.coupon.startTime = item.coupon.startTime.split(' ')[0]
+                if (item.startTime) {
+                    item.startTime = item.startTime.split(' ')[0]
                 }
-                if (item.coupon.endTime) {
-                    item.coupon.endTime = item.coupon.endTime.split(' ')[0]
+                if (item.endTime) {
+                    item.endTime = item.endTime.split(' ')[0]
                 }
-                let checked = false;
-                chosenVoucherArr.forEach(ele => {
-                    if (item.id == ele) {
-                        checked = true;
-                    }
-                });
+                let checked = (chosenVoucherArr[0] === item.couCode);
+                // chosenVoucherArr.forEach(ele => {
+                //     debugger
+                //     if (item.couCode == ele) {
+                //         checked = true;
+                //     }
+                // });
                 item.checked = checked;
-                item.coupon.voucherPrice = parseInt(item.coupon.voucherPrice);
+                item.voucherPrice = parseInt(item.voucherPrice);
             })
             this.setData({
                 voucherItems: list,
@@ -525,6 +548,8 @@ Page({
         let index = e.currentTarget.dataset.index;
         let couponItems = this.data.couponItems;
         let redPackItems = this.data.redPackItems;
+        let voucherItems = this.data.voucherItems;
+        
         if (this.data.type == 1) {
             couponItems[index].showRule = !couponItems[index].showRule;
             this.setData({
@@ -534,6 +559,11 @@ Page({
             redPackItems[index].showRule = !redPackItems[index].showRule;
             this.setData({
                 redPackItems: redPackItems
+            })
+        } else if (this.data.type == 2) {
+            voucherItems[index].showRule = !voucherItems[index].showRule;
+            this.setData({
+                voucherItems: voucherItems
             })
         }
 

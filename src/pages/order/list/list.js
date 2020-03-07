@@ -570,7 +570,7 @@ Page({
     } = userInfo.user
     let target = type === 'group' ? 'pay/wx/wx-pre-pay-group' : 'pay/wx/wx-pre-pay'
     model(target, {
-      openId: wxOpenid,
+      openId: wx.getStorageSync('openid'),
       orderNo: order.id
       // orderMsg: ''
     }, 'POST').then(res => {
@@ -584,10 +584,18 @@ Page({
       obj.package = prepayId
       obj.prepayId = prepayId
       obj.price = order.payAmount
+      obj.varCode = obj.order.verify_code
       obj.order = order.id
+
+      
+      
       // let str = Object.entries(obj).map(i => `${i[0]&i[1]}`).join('&')
       let str = Object.entries(obj).reduce((acc, arr) => acc + '&' + arr.join('='), '')
       str = str.slice(1)
+
+      if (order.storeCoffeeMakerId) {
+        str += '&coffeeMaker=1'
+      }
       // console.log(str);
       // return
       wx.navigateTo({

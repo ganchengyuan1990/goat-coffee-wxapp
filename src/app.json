@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/store/store",
+    "pages/transport/transport",
     "pages/login/login",
     "pages/login/entry/index",
     "pages/newCart/cart",
@@ -12,7 +13,6 @@
     "pages/pay/promotion-list/promotion-list",
     "pages/pay/remark/remark",
     "pages/pay/statement/statement",
-    "pages/transport/transport",
     "pages/my/profile/profile",
     "pages/my/profile/edit",
     "pages/my/service/service",
@@ -24,7 +24,8 @@
     "pages/webview/webview",
     "pages/devtools/index",
     "pages/devtools/switch-env/switch-env",
-    "pages/devtools/clear-data/clear-data"
+    "pages/devtools/clear-data/clear-data",
+    "pages/devtools/scanpage/clear-data"
   ],
   "permission": {
     "scope.userLocation": {

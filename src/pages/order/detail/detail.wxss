@@ -17,7 +17,7 @@ page {
     border-radius:10rpx;
 }
 .border-line1 {
-    border-top: 2rpx solid rgba(0,0,0,.1);
+    border-top: 1rpx solid rgba(0,0,0,.1);
 }
 .hd-wrap {
     padding: 30rpx 32rpx 0  32rpx;
@@ -508,4 +508,16 @@ page {
     line-height: 88rpx;
     height: 88rpx;
     top: 0 !important;
+}
+
+.coffee_maker {
+    height: 29rpx;
+    font-size: 30rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: rgba(112, 112, 112, 1);
+    line-height: 64rpx;
+    text-align: center;
+    margin-top: 5rpx;
+    margin-bottom: 15rpx;
 }

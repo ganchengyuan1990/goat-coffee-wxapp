@@ -5,7 +5,7 @@ page {
 .wrapper {
   background: #fafafa;
   padding-bottom: 30rpx;
-  height:calc(100vh - 126rpx);
+  height: 100vh;
   overflow: scroll;
 }
 .promotion-tip {
@@ -79,7 +79,7 @@ page {
   box-shadow:0rpx 2rpx 10rpx 0rpx rgba(35,24,21,0.2);
   /* padding-bottom: 0; */
   /* padding: 36rpx 15rpx 36rpx 30rpx; */
-  align-items: center;
+  /* align-items: center; */
 }
 
 .nonono {
@@ -115,15 +115,16 @@ page {
 .higher {
   margin-bottom: 0rpx;
 }
-.left-part {
-  padding: 8rpx 0rpx 16rpx 15rpx;
+.first-part {
+  margin: 0rpx 20rpx 5rpx 20rpx;
   display: flex;
-  flex-direction: column;
+  border-bottom :2rpx solid rgba(229, 229, 229, 1);
+  /* flex-direction: column; */
 }
 
-.left-part {
-  width: 130rpx;
-  border-top-right-radius: 0.5rem;
+.second-part {
+  /* width: 130rpx; */
+  /* border-top-right-radius: 0.5rem; */
   /* border-right: 2rpx dashed #999; */
 }
 
@@ -169,6 +170,19 @@ page {
 .promotion-limit-tip {
   font-size: 22rpx;
   color: #999999;
+  padding-bottom: 20rpx;
+}
+
+.promotion-limit-name {
+  font-size: 30rpx;
+  color: #232323;
+  padding: 20rpx 0;
+}
+
+.promotion-limit-type {
+  color: #D55048;
+  font-size: 24rpx;
+  padding: 20rpx 0;
 }
 
 checkbox {
@@ -184,7 +198,7 @@ checkbox .wx-checkbox-input{
 }
 checkbox .wx-checkbox-input.wx-checkbox-input-checked{
   border: none;
-  background: #333;
+  background: #DE4132;
 }
 checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
   border-radius: 50%;
@@ -281,7 +295,7 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
   position: relative;
   flex: 1;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -291,8 +305,9 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
 
 .inner_border {
   /* border: 1rpx solid #D32D25; */
+  /* display: flex;
+  flex-direction: row; */
   display: flex;
-  flex-direction: row;
   padding: 10rpx;
   justify-content: space-between;
   flex: 1;

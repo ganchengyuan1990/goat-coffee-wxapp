@@ -8,6 +8,7 @@ var app = getApp();
 
 Page({
     data: {
+        coffeeMaker: false,
         price: 0,
         orderId: '',
         varCode: '',
@@ -104,6 +105,7 @@ Page({
                 const userRes = wx.getStorageSync('userConfigList');
                  wx.setStorageSync('configData', res.data['config-set'])
                  this.setData({
+                     coffeeMaker: Boolean(options.coffeeMaker),
                      varCode: options.varCode,
                      newUserFirstPayActivity: res.data.newUserFirstPayActivity,
                      showNewUser: userRes['enable-new-user-after-pay-activity'] && (options.from != 'recharge'),
@@ -121,6 +123,7 @@ Page({
              }).catch(e => {
                 //  wx.hideLoading();
                 this.setData({
+                    coffeeMaker: Boolean(options.coffeeMaker),
                     varCode: options.varCode,
                     price: options.price || 0,
                     orderId: options.orderId || 0,

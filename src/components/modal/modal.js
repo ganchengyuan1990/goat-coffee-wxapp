@@ -40,6 +40,9 @@ Component({
         },
         actImage: {
             type: String
+        },
+        isCoffeeMaker: {
+            type: Boolean
         }
     },
 
@@ -77,6 +80,8 @@ Component({
         },
 
         goTransport () {
+            // let item = e.currentTarget.dataset.item;
+            // console.log(item);
             wx.navigateTo({
                 url: `/pages/transport/transport?from=store&tab=selfTaking`
             });
@@ -85,8 +90,18 @@ Component({
             });
         },
 
+        goTransportSecond() {
+            wx.navigateTo({
+                url: `/pages/transport/transport?from=store&tab=delivery`
+            });
+            this.setData({
+                shown: false
+            });
+        },
+
         goStore(e) {
             let item = e.currentTarget.dataset.item;
+            console.log(item);
             this.triggerEvent('customevent', item);
             this.setData({
                 shown: false

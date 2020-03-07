@@ -8,11 +8,13 @@
       
       <view class="coupon-sn">支付成功</view> 
 
+      <view class="coffee_maker" wx:if="{{coffeeMaker}}">请通过自助咖啡机兑换饮品</view>
+
       <!-- <view class="">支付成功</view>  -->
 
 
       <view class="score_state">
-        取杯码{{varCode}}
+        取货码{{varCode}}
       </view>
     
       <!-- <view style="display: flex;" wx:if="{{existLuckActivity}}">

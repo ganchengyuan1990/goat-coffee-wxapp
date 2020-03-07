@@ -80,7 +80,8 @@
                 </view>
             </view>
             <view class="button">
-                <view class="store-button" bindtap="goTransport">更多门店 ></view>
+                <view class="store-button" data-item="{{item}}" bindtap="goTransport" wx:if="{{!isCoffeeMaker}}">更多门店&咖啡机 ></view>
+                <view class="store-button" bindtap="goTransportSecond" wx:else>更多门店&咖啡机 ></view>
             </view>
         </view>
     </view>

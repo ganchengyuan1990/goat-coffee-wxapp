@@ -100,7 +100,8 @@ Page({
     bestCouponArr: [],
     toastTime: 3,
     scrollTop: 0,
-    viewToNav: ''
+    viewToNav: '',
+    isCoffeeMaker: false
   },
 
   showYouGuessItem () {
@@ -184,7 +185,7 @@ Page({
       usePromotion: e.detail.value
     });
     if (!this.data.usePromotion) {
-      model(`home/coupon/calculate-price-with-coupon`, {
+      model(`home/coupon/calculate-price-with-ded-coupon`, {
         // couponList: [],
         productList: this.data.product,
         storeId: this.data.options.storeId,
@@ -359,8 +360,10 @@ Page({
   },
 
   getAvailableCoupon () {
-    model(`home/coupon/get-available-coupon`, {
+    model(`home/coupon/get-available-ded-coupon`, {
       uid: wx.getStorageSync('token').user.id,
+
+      // storeId: 23
       storeId: this.data.options.storeId
       // list: [{
       //   "productId": 28,
@@ -373,50 +376,44 @@ Page({
       console.log(parseInt(b));
       console.log(2048.8 * 100);
       if (data.data) {
-        let result = data.data.userCoupons;
-        let couponList = result.filter(item => {
-          return item.coupon.coupon_type !== 5 && item.coupon.coupon_type !== 2;
-        });
-        let voucherList = result.filter(item => {
-          return item.coupon.coupon_type === 5;
-        });
-        let redPackList = result.filter(item => {
-          return item.coupon.coupon_type === 2;
-        });
-        if (this.data.bestCouponArr.length > 0) {
-          let couponArr = this.data.bestCouponArr;
-          couponArr.forEach(item => {
-            if (item.couponType == 2) {
-              redPackList.forEach((ele, index) => {
-                if (ele.id == item.id) {
-                  var target = redPackList.splice(index, 1);
-                  redPackList.unshift(target[0]);
-                }
-              });
-            } else if (item.couponType == 5) {
-              voucherList.forEach((ele, index) => {
-                if (ele.id == item.id) {
-                  var target = voucherList.splice(index, 1);
-                  voucherList.unshift(target[0]);
-                }
-              });
-            } else {
-              couponList.forEach((ele, index) => {
-                if (ele.id == item.id) {
-                  var target = couponList.splice(index, 1);
-                  couponList.unshift(target[0]);
-                }
-              });
-            }
-          });
-        }
-        if (voucherList.length > 0 || couponList.length > 0 || redPackList.length > 0) {
-          this.setData({
-            couponList: couponList,
-            voucherList: voucherList,
-            redPackList: redPackList
-          })
-        }
+        let result = data.data.coupons;
+        // let couponList = result.filter(item => {
+        //   return item.coupon.coupon_type !== 5 && item.coupon.coupon_type !== 2;
+        // });
+        let voucherList = result;
+        // let redPackList = result.filter(item => {
+        //   return item.coupon.coupon_type === 2;
+        // });
+        // if (this.data.bestCouponArr.length > 0) {
+        //   let couponArr = this.data.bestCouponArr;
+        //   couponArr.forEach(item => {
+        //     if (item.couponType == 2) {
+        //       redPackList.forEach((ele, index) => {
+        //         if (ele.id == item.id) {
+        //           var target = redPackList.splice(index, 1);
+        //           redPackList.unshift(target[0]);
+        //         }
+        //       });
+        //     } else if (item.couponType == 5) {
+        //       voucherList.forEach((ele, index) => {
+        //         if (ele.id == item.id) {
+        //           var target = voucherList.splice(index, 1);
+        //           voucherList.unshift(target[0]);
+        //         }
+        //       });
+        //     } else {
+        //       couponList.forEach((ele, index) => {
+        //         if (ele.id == item.id) {
+        //           var target = couponList.splice(index, 1);
+        //           couponList.unshift(target[0]);
+        //         }
+        //       });
+        //     }
+        //   });
+        // }
+        this.setData({
+          voucherList
+        })
         
         
       } else {
@@ -426,12 +423,14 @@ Page({
         title: '加载中', //提示的内容,
         mask: true, //显示透明蒙层，防止触摸穿透,
       });
+    }).catch(e => {
+      wx.hideLoading();
     })
   },
 
   getBestCouponByProduct () {
     
-    model(`home/coupon/get-best-coupon-by-product`, {
+    model(`home/coupon/get-available-ded-coupon`, {
       uid: wx.getStorageSync('token').user.id,
       // uid: 1,
       storeId: this.data.options.storeId
@@ -445,7 +444,7 @@ Page({
         let actualPrice = _a.plus(_b).minus(result);
         // let actualPrice = _a.plus(_b).minus(parseFloat(result));
 
-        let couponArr = data.data.solutionList;
+        let couponArr = data.data.coupons;
         let couponUserRelation = []
 
         this.setData({
@@ -459,9 +458,9 @@ Page({
           redPackList
         } = this.data;
         
-        couponArr.forEach(item => {
-          couponUserRelation.push(item.userRelation);
-        });
+        // couponArr.forEach(item => {
+        //   couponUserRelation.push(item.userRelation);
+        // });
         // setTimeout(() => {
         //   couponArr.forEach(item => {
         //     if (item.couponType == 2) {
@@ -500,22 +499,22 @@ Page({
           this.setData({
             chooseNoCoupon: true,
             chooseNoVoucher: true,
-            chosenRedPack: couponArr[0].id,
+            chosenRedPack: couponArr[0].couCode,
             chosenInfo: {
               content: [{
-                id: couponArr[0].classId,
-                relationId: couponArr[0].id,
+                id: couponArr[0].couCode,
+                relationId: couponArr[0].couCode,
                 type: 3
               }],
               type: 3
             }
           })
-        } else if (data.data.type === 5) {
+        } else if (true) {
           let contents = [];
           couponArr.forEach(item => {
             contents.push({
-              id: item.classId,
-              relationId: item.id,
+              id: item.couCode,
+              relationId: item.couCode,
               type: 2
             })
           });
@@ -683,10 +682,11 @@ Page({
         tab: items.tab,
         totalNumber: totalNumber,
         fromTransportIndex: parseInt(items.fromTransportIndex),
-        fromTransportId: parseInt(items.fromTransportId)
+        fromTransportId: parseInt(items.fromTransportId),
+        isCoffeeMaker: Boolean(items.isCoffeeMaker)
       });
       if (this.data.tab === 'delivery') {
-        this.chooseExpress(false);
+        // this.chooseExpress(false);
         this.setData({
           timeWords: '立即下单'
         });
@@ -724,9 +724,6 @@ Page({
       // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
       payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0)).toFixed(1)
     })
-    // if (!notFirstLoad) {
-    //   this.getBestCouponByProduct();
-    // }
     this.getBestCouponByProduct();
     // this.dealChildPageInfo();
     this.getWaitTime();
@@ -744,9 +741,6 @@ Page({
       // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
       payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0)).toFixed(1)
     })
-    // if (!notFirstLoad) {
-    //   this.getBestCouponByProduct();
-    // }
     this.getBestCouponByProduct();
     this.getWaitTime();
   },
@@ -764,9 +758,6 @@ Page({
         // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
         payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0) - parseFloat(this.data.zidaibeiMoney || 5)).toFixed(1)
       })
-      // if (!notFirstLoad) {
-      //   this.getBestCouponByProduct();
-      // }
       this.getBestCouponByProduct();
       this.getWaitTime();
     }
@@ -802,9 +793,6 @@ Page({
           payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.deliverFee || 0)).toFixed(1)
           // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
         });
-        // if (!notFirstLoad) {
-        //   this.getBestCouponByProduct();
-        // }
         this.getBestCouponByProduct();
 
         // this.dealChildPageInfo();
@@ -855,8 +843,9 @@ Page({
   // },
 
   goAddressList () {
+    let type = this.data.isCoffeeMaker ? 'delivery' : 'selfTaking'
     wx.navigateTo({
-      url: `/pages/transport/transport?type=${this.data.chooseSelf ? 1 : 2}&fromCheckout=1`,
+      url: `/pages/transport/transport?from=store&tab=${type}`,
     })
   },
 
@@ -936,16 +925,18 @@ Page({
       userCouponIds.push(item.relationId)
       return item;
     });
-    // if (userCouponIds.length == 0) {
-    //   return ;
-    // }
-    model(`home/coupon/calculate-price-with-coupon`, {
+    
+    let param = {
       // couponList: this.data.chosenInfo.type ? this.data.chosenInfo.content : [],
-      userCouponIds: this.data.chosenInfo.type ? userCouponIds.join(',') : '',
+      // couCodes: this.data.chosenInfo.type ? this.data.chosenInfo.content[0].id : '',
       productList: this.data.product,
       storeId: this.data.options.storeId,
       uid: wx.getStorageSync('token').user.id
-    }).then(data => {
+    }
+    if (userCouponIds.length > 0) {
+      param.couCodes = this.data.chosenInfo.type ? this.data.chosenInfo.content[0].id : ''
+    }
+    model(`home/coupon/calculate-price-with-ded-coupon`, param).then(data => {
       let result = parseFloat(data.data.discountMoney).toFixed(2);
       let levelMoney = parseFloat(data.data.levelMoney).toFixed(2);
       let toCancelOrders = data.data.toCancelOrders;
@@ -1043,9 +1034,9 @@ Page({
       }
     }
     let fromTransport = wx.getStorageSync('fromTransport');
-    if (fromTransport == 'deliver') {
-      this.chooseExpress(false, 'deliver');
-    }
+    // if (fromTransport == 'deliver') {
+    //   this.chooseExpress(false, 'deliver');
+    // }
     if (this.data.goBackFromChildPage) {
       this.dealChildPageInfo() ;
     } else if (this.data.fromAddress) {
@@ -1129,12 +1120,14 @@ Page({
             orderType: orderType,
             payType: payType,
             remark: this.data.remark,
-            discountIds: this.data.couponUserRelation,
             remark_json: JSON.stringify({
               xiguan: this.data.chooseItemXiguan,
               other: this.data.remark
             })
             // discountIds: '1,2,3'
+          }
+          if (this.data.chosenInfo && this.data.chosenInfo.content && this.data.chosenInfo.content[0] && this.data.chosenInfo.content[0].id) {
+            param.couCodes = this.data.chosenInfo.content[0].id;
           }
           if (this.data.chooseItemXiguan) {
             param.remark += ' 需要吸管';
@@ -1209,6 +1202,9 @@ Page({
                       payParamStr += `${key}=${params[key]}&`;
                     }
                     payParamStr += `price=${this.data.actualPrice}`
+                    if (this.data.checkedAddress.coffeeMakerId) {
+                      payParamStr += `&coffeeMaker=1`
+                    }
                     wx.navigateTo({
                       // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
                       url: `/pages/pay/normalPay/normalPay?${payParamStr}`
@@ -1299,9 +1295,13 @@ Page({
       return ;
     }
     if (this.data.chooseSelf || this.data.chooseDaodian || this.data.chooseCup) {
+      let content = `是否确认前往【${this.data.checkedAddress.storeName}】自提？订单确认后将无法更改`;
+      if (this.data.checkedAddress.coffeeMakerId) {
+        content = `是否确认前往【${this.data.checkedAddress.storeName}（编号${this.data.checkedAddress.coffeeMakerId}）】自提？订单确认后将无法更改`;
+      }
       wx.showModal({
         // title: '提示', //提示的标题,
-        content: `是否确认前往【${this.data.checkedAddress.storeName}】自提？订单确认后将无法更改`, //提示的内容,
+        content: content, //提示的内容,
         showCancel: true, //是否显示取消按钮,
         cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
         cancelColor: '#000000', //取消按钮的文字颜色,

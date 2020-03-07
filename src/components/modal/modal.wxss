@@ -219,7 +219,7 @@
 }
 
 .store-button {
-  color: #DAA37F;
+  color: #f50000;
   font-size: 26rpx;
   height: 90rpx;
   line-height: 90rpx;
@@ -247,11 +247,11 @@
 }
 
 .store-distance {
-  color: #DAA37F;
+  color: #f50000;
   font-size: 24rpx;
   position: absolute;
   right: 0;
-  top: 28rpx;
+  /* top: 28rpx; */
 }
 
 .store-name {
@@ -264,7 +264,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 280rpx;
+  max-width: 250rpx;
 }
 
 .store-pic {
@@ -305,7 +305,7 @@
 }
 
 .dialog8 {
-  width: 480rpx;
+  width: 520rpx;
 }
 
 .dialog9 {

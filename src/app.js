@@ -9,12 +9,12 @@ App({
     wx.setStorageSync('logs', logs);
     wx.setStorageSync('fromTransport', 'selfTaking');
 
-    if (!wx.getStorageSync('hasVisited')) {
-      wx.clearStorage();
-      setTimeout(() => {
-        wx.setStorageSync('hasVisited', 1);
-      }, 3000);
-    }
+    // if (!wx.getStorageSync('hasVisited')) {
+    //   wx.clearStorage();
+    //   setTimeout(() => {
+    //     wx.setStorageSync('hasVisited', 1);
+    //   }, 3000);
+    // }
     // 登录
 
     // 获取用户信息
@@ -42,6 +42,7 @@ App({
   globalData: {
     userInfo: null,
     cartFood: [],
+    lastStoreTime: null,
     windowHeight:null
   }
 })

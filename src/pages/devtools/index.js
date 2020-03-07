@@ -18,6 +18,10 @@ Page({
         name: '数据清理',
         url: '/clear-data/clear-data',
       },
+      scanPage: {
+        name: '扫码打开页面',
+        url: '/scanpage/clear-data',
+      },
       // switchPage: {
       //   name: '页面切换',
       //   url: '/switch-page/switch-page',

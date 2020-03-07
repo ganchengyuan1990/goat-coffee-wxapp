@@ -42,7 +42,12 @@ Component({
           this.setDefault()
         }
       }
-    }
+    },
+
+    type: {
+      type: Number,
+      value: 1
+    },
   },
   /**
    * 组件的初始数据
@@ -60,7 +65,9 @@ Component({
     currentSku: {},
     currentProp: [],
     priceTags: [],
-    activityName: ''
+    activityName: '',
+
+    toggled: false
   },
   ready() {
     let configData = wx.getStorageSync('configData');
@@ -82,6 +89,12 @@ Component({
    * 组件的方法列表
    */
   methods: {
+
+    toggleShow() {
+      this.setData({
+        toggled: !this.data.toggled
+      });
+    },
     setDefault() {
       // 设置默认价格
       try {
@@ -126,7 +139,8 @@ Component({
     toggleMenu() {
       this.setData({
         currentSku: {},
-        priceTags: []
+        priceTags: [],
+        toggled: false
       });
       if (this.data.info && this.data.info.default_sku && this.data.info.default_sku.orinalPrice) {
         this.setData({
@@ -173,6 +187,75 @@ Component({
         data: JSON.stringify(arr)
       })
     },
+
+    goOrder() {
+      if (!wx.getStorageSync('token')) {
+        this.toggleMenu();
+        wx.navigateTo({
+          url: '/pages/login/login'
+        });
+        return;
+      }
+      let info = this.data.info
+      let spec = this.data.customed
+      let skuList = info.sku_list
+      let hasDefault = skuList.filter(item => item.isdefault === 1)
+      if (!hasDefault) {
+        wx.showToast({
+          title: '请选择规格',
+          icon: 'none'
+        })
+        return
+      }
+      let propList = info.key_list
+      let propIds = []
+      propList.forEach(i => {
+        let idObj = i.val_list.find(j => {
+          return parseInt(j.id) === parseInt(i.default_val_id)
+        })
+
+        if (idObj) {
+          propIds.push(idObj.prop_id)
+        }
+      })
+
+      model(`home/cart/change-number`, {
+        ifClearOther: true,
+        skuId: hasDefault[0].id,
+        rPropGoodsIds: propIds.join(','),
+        delta: this.data.count
+      }, 'POST').then(data => {
+        // let sum = wx.getStorageSync('cartSum');
+        // sum += this.data.count;
+        // wx.setStorageSync('cartSum', sum)
+        // wx.setTabBarBadge({
+        //   index: 1,
+        //   text: sum.toString()
+        // });
+        console.log('请求成功');
+        console.log(data.data);
+        let {
+          resultPrice
+        } = data.data;
+        if (data.data && data.data.discountPrice > 0) {
+          this.setData({
+            resultPrice: resultPrice
+          })
+        }
+        this.triggerEvent('goorder')
+        this.toggleMenu()
+      }).catch(e => {
+        console.log('请求失败');
+        console.log(JSON.stringify(e));
+        wx.showToast({
+          title: '加入购物车失败', //提示的内容,
+          icon: 'none', //图标,
+          duration: 1500, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {}
+        });
+      });
+    },
     save() {
       if (!wx.getStorageSync('token')) {
         wx.navigateTo({ url: '/pages/login/login' });
@@ -197,6 +280,7 @@ Component({
         spec: spec,
         customedKey: this.data.customedKey
       }))
+      
       // let cart = [];
       // if (info) {
       //   cart.push(info)

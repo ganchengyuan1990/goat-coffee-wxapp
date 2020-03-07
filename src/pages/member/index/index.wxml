@@ -17,13 +17,12 @@
 
     <view class="head-wrap">
 
-        <view class="gogogo" bind:tap="goProfile">
+        <!-- <view class="gogogo" bind:tap="goProfile">
             <view class="nav_left_items {{curNav == 0 ? 'active' : ''}}" catchtap="goMyCoupon" data-index="0"
                 data-id="{{item.id}}">
                 <view style="height: 50rpx;">0<text style='font-size: 21rpx'>张</text></view>
                 <view class='title'>优惠券</view>
                 
-                <!-- <view class="line" wx:if="{{curNav == 0}}"></view> -->
             </view>
             <view class="nav_left_items {{curNav == 1? 'active' : ''}}" catchtap="goMyCoupon" data-index="1"
                 data-id="{{item.id}}">
@@ -31,17 +30,13 @@
                 <view class='title'>兑换券</view>
                 <view class="seperate-line seperate-line-left"></view>
                 <view class="seperate-line"></view>
-                <!-- <view class="line" wx:if="{{curNav == 1}}"></view> -->
             </view>
             <view class="nav_left_items {{curNav == 2? 'active' : ''}}" catchtap="goMyCoupon" data-index="2"
                 data-id="{{item.id}}">
-                <!-- <view class="red_dot" wx:if="{{showDot}}"></view> -->
                 <view style="height: 50rpx;">0<text style='font-size: 21rpx'>张</text></view>
                 <view class='title'>满减券</view>
-                <!-- <view class="line" wx:if="{{curNav == 2}}"></view> -->
             </view>
-            <!-- <image src="{{img}}"></image> -->
-        </view>
+        </view> -->
         
         <!-- <view class="right" bindtap="goQrCode">
             <image src="../../../images/mofang.png"></image>
@@ -50,12 +45,54 @@
 
         <!-- <view style="background: #fff;"> -->
 
+            <view class="panel" wx:for="{{orderList}}" wx:key="{{item.order.orderNo}}" bind:tap="showDetail" data-item="{{item.order}}" data-list="{{item.order_detail}}" data-dtype="order">
+                <!-- <view class="item_flag">
+                    {{filter.getOrderTypeState(item.order.orderType)}}
+                </view> -->
+                <view class="panel-hd">
+                    <view class="tt">{{item.order.storeName}}<text wx:if="{{item.order.storeCoffeeMakerId}}">（编号{{item.order.storeCoffeeMakerId}}）</text><text wx:if="{{item.order.orderType === 1}}">(NO.{{item.order.varCode}})</text></view>
+                    <view class="active">待领取</view>
+                </view>
+                <view class="panel-bd">
+                    <!-- <view class="tt">{{filter.getAddr(item.order)}}</view> -->
+                    <!-- <view class="tt">{{item.order.storeName}}<text wx:if="{{item.order.orderType === 1}}">(NO.{{item.order.varCode}})</text></view> -->
+                    <view class="pro_icon">
+                        <image src="{{item.order_detail[0].productIcon}}" />
+                    </view>
+                    <view class="order_numer">
+                        <view class="qucan" wx:if="item.order.orderState == '01' || item.order.orderState == '02' || item.order.orderState == '03'}}" data-item="{{item}}" data-type="group">
+                            取货码: {{item.order.varCode}}
+                        </view>
+                        <view>
+                            <view style="max-width: 68%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap; position: relative;  top: -1rpx;font-size: 28rpx; color: #232323;"><text>{{item.order_detail[0].productName}}</text><text style="color: rgba(35, 24, 21, 0.5); font-size: 24rpx; margin-left: 15rpx"></text></view>
+                        </view>
+                        <view class="time">下单时间：{{item.order.CreateTime}}</view>
+                    </view>
+                    <!-- <view class="date">待领取</view> -->
+                    <!-- <view class="order_numer">{{item.order.varCode}}</view> -->
+                </view>
+                <!-- <view class="panel-ft">
+                    <view class="order_no">订单编号：{{item.order.orderNo}}</view>
 
-            <view style="max-height: 45vh; position: absolute; top: 100rpx; width: 100%; ">
+                    <view class="btn-buy to-pay" wx:if="{{item.order.orderState === '00'}}" data-item="{{item.order}}" data-type="normal" catchtap="goPay">付款</view>
+                    <view class="qucan" wx:if="{{filter.getOrderTypeState(item.order.orderType)!= 1 && (item.order.orderState == '01' || item.order.orderState == '02' || item.order.orderState == '03')}}" data-item="{{item}}" data-type="group">
+                        取货码: <text style="font-size: 35rpx;margin-left: 10rpx;font-weight: 500;">{{item.order.varCode}}</text>
+                    </view>
+                </view> -->
+            </view>
+
+
+            <view style="max-height: 45vh; margin-top: 24rpx; width: 100%; ">
                 <view class='progress_wrap'>
                     <view class="chi_item" bindtap="goMyOrder">
                         <image class="my_icon" src="../../../images/my_order.png"/>
                         <text style="margin-left: 60rpx;">我的订单</text>
+                        <image class="arrow" src="../../../images/arrow.png"/>
+                        <view class="arrow-line"></view>
+                    </view>
+                    <view class="chi_item" bindtap="goMyCoupon">
+                        <image class="my_icon" src="../../../images/youhuiquan.png"/>
+                        <text style="margin-left: 60rpx;">我的优惠券</text>
                         <image class="arrow" src="../../../images/arrow.png"/>
                         <view class="arrow-line"></view>
                     </view>

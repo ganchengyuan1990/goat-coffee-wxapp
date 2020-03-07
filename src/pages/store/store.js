@@ -59,6 +59,8 @@ Page({
 		fromPaySuccess: false,
 		storeArr: [],
 		isHigh: false,
+		isCoffeeMaker: false,
+		modalTitle: '离您最近的门店&咖啡机'
 	},
 
 	/**
@@ -73,9 +75,11 @@ Page({
 		// this.fetchLoaction()  
 		this.checkSaveUser()
 
-		
+
+		var globalData = app.globalData;
 
 		this.setData({
+			isCoffeeMaker: Boolean(options.isCoffeeMaker),
 			isHigh: systemInfo.screenHeight > 800,
 			fromShare: Boolean(options.fromShare),
 			fromPaySuccess: options.from == 'pay_success'
@@ -85,30 +89,30 @@ Page({
 	},
 
 
-	setTabStatus() {
-		if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
-			let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
-			model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
-				let sum = 0;
-				res.data.carts && res.data.carts.forEach(item => {
-					sum += item.num;
-				})
-				wx.setStorageSync('cartSum', sum);
-				if (sum) {
-					wx.setTabBarBadge({
-						index: 1,
-						text: sum.toString()
-					});
-				} else {
-					wx.removeTabBarBadge({
-						index: 1,
-					});
-				}
-			}).catch(e => {
+	// setTabStatus() {
+	// 	if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
+	// 		let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
+	// 		model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
+	// 			let sum = 0;
+	// 			res.data.carts && res.data.carts.forEach(item => {
+	// 				sum += item.num;
+	// 			})
+	// 			wx.setStorageSync('cartSum', sum);
+	// 			if (sum) {
+	// 				wx.setTabBarBadge({
+	// 					index: 1,
+	// 					text: sum.toString()
+	// 				});
+	// 			} else {
+	// 				wx.removeTabBarBadge({
+	// 					index: 1,
+	// 				});
+	// 			}
+	// 		}).catch(e => {
 
-			});
-		}
-	},
+	// 		});
+	// 	}
+	// },
 
 	setFirstAlert(activityId) {
 		let indexToastArr = wx.getStorageSync('indexToastArr') || {};
@@ -162,8 +166,17 @@ Page({
 		return null;
 	},
 
-	goStoreIndex (item) {
-		this.formatStoreInfo(item.detail)
+	goStoreIndex (e) {
+		const item = e.detail;
+		if (item.coffeeMakerId) {
+			this.setData({
+				isCoffeeMaker: true
+			}, this.formatStoreInfo(item))
+		} else {
+			this.setData({
+				isCoffeeMaker: false
+			}, this.formatStoreInfo(item))
+		}
 	},
 
 	closeToast(e) {
@@ -186,7 +199,8 @@ Page({
 				const data = this.data.toShowModal.content;
 				this.setData({
 					storeArr: data.slice(0, 2),
-					showStoreModal: true
+					showStoreModal: true,
+					modalTitle: this.data.isCoffeeMaker ? '离您最近的门店&咖啡机' : '离您最近的门店&咖啡机'
 				})
 				let storeInfo = data[0]
 				this.formatStoreInfo(storeInfo, true)
@@ -198,10 +212,10 @@ Page({
 	},
 
 
-	setTabStatus() {
+	setTabStatus(id) {
 		if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
 			let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
-			model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
+			model(`home/cart/list?storeId=${id || STORE_INFO.id}`).then(res => {
 				let sum = 0;
 				res.data.carts && res.data.carts.forEach(item => {
 					sum += item.num;
@@ -250,6 +264,9 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
+		if (this.data.isCoffeeMaker) {
+			// this.clearCart();
+		}
 		if (wx.getStorageSync('token')) {
 			Promise.all([model('base/site/config-list'), model('base/site/user-config-list')]).then((resArr) => {
 				const res = resArr[0];
@@ -349,11 +366,15 @@ Page({
 		let fromTransport = app.globalData.fromTransport
 		// let isGeoAuth = app.globalData.isGeoAuth
 		if (fromTransport) {
-			this.loadAddress(fromTransport)
 			this.setData({
-				fromTransport: fromTransport
+				fromTransport: fromTransport,
+				isCoffeeMaker: Boolean(fromTransport && fromTransport.isCoffeeMaker)
+			}, () => {
+				if (this.data.isCoffeeMaker) {
+					// this.clearCart();
+				}
+				this.loadAddress(fromTransport);
 			})
-			app.globalData.fromTransport = ''
 		} else {
 			let fromPaySuccess = app.globalData.fromPaySuccess;
 			if (fromPaySuccess || this.data.fromShare || this.data.fromPaySuccess) {
@@ -464,6 +485,14 @@ Page({
 		}
 
 	},
+
+	clearCart() {
+		model(`home/cart/change-number`, {
+			ifClearOther: true
+		}, 'POST').then(data => {
+		}).catch(e => {
+		});
+	},
 	checkLogin() {
 		let info = wx.getStorageSync('token') || {}
 		return info.token
@@ -526,13 +555,14 @@ Page({
 		if (type === 'deliver') {
 			this.setData({
 				userAddressInfo: info || {},
-				isselfTaking: false
+				isselfTaking: true
 			})
 			this.fetchLoaction(info, true)
 		} else if (type === 'selfTaking') {
 			this.setData({
 				isselfTaking: true
 			})
+			this.setTabStatus(info.id)
 			this.formatStoreInfo(info)
 		} else {
 			this.fetchLoaction(null, true)
@@ -546,6 +576,7 @@ Page({
 		let token = wx.getStorageSync('token');
 		let appCache = configData['wxapp-cache-control'];
 		if (!forceUpdate && appCache && token) {
+			console.log(app.globalData.lastStoreTime, 888);
 			if (app.globalData.lastStoreTime) {
 				console.log(app.globalData.lastStoreTime, 99999);
 				let lastTime = app.globalData.lastStoreTime;
@@ -567,11 +598,29 @@ Page({
 			title: '加载中',
 		})
 		if (info) {
-			self.fetchStore({
-				lng: info.longitude,
-				lat: info.latitude
-			})
+			if (self.data.isCoffeeMaker && info.id) {
+				self.formatStoreInfo(info, true)
+				self.setTabStatus(info.id)
+			} else {
+				self.setTabStatus(info.id)
+				self.fetchStore({
+					lng: info.longitude,
+					lat: info.latitude
+				}, self.data.isCoffeeMaker)
+			}
+			
 		} else {
+			if (app.globalData.storeInfo) {
+				let _info = app.globalData.storeInfo;
+				if (self.data.isCoffeeMaker && _info.id) {
+					self.formatStoreInfo(_info, true)
+					self.setTabStatus(_info.id)
+				} else {
+					self.setTabStatus(_info.id)
+					self.formatStoreInfo(_info, true)
+				}
+				return ;
+			}
 			wx.getLocation({
 				type: 'wgs84',
 				success(res) {
@@ -591,7 +640,8 @@ Page({
 					})
 					app.globalData.isGeoAuth = true
 					app.globalData.userGeo = geo
-					self.fetchStore(geo)
+					console.log(8989);
+					self.fetchStore(geo, self.data.isCoffeeMaker)
 				},
 				fail() {
 					self.setData({
@@ -614,12 +664,16 @@ Page({
 	 * 获取店铺信息
 	 * 
 	 */
-	fetchStore(geo) {
-		model('home/lbs/get-store-list-by-location', {
+	fetchStore(geo, isCoffeeMaker) {
+		let targetUrl = 'home/lbs/get-store-list-by-location'
+		// if (isCoffeeMaker) {
+		// 	targetUrl = 'home/lbs/get-store-list-by-location-for-vmc'
+		// }
+		model(targetUrl, {
 			lng: geo.lng,
 			lat: geo.lat,
-			// lng: 121.419114,
-			// lat: 31.239629,
+			// lng: 121.3105785000,
+			// lat: 31.1947329100,
 			page: 1
 		}).then(res => {
 			const {
@@ -655,7 +709,8 @@ Page({
 				}
 				this.setData({
 					storeArr: data.slice(0,2),
-					showStoreModal: true
+					showStoreModal: true,
+					modalTitle: this.data.isCoffeeMaker ? '离您最近的门店&咖啡机' : '离您最近的门店&咖啡机'
 				})
 				let storeInfo = data[0]
 				this.formatStoreInfo(storeInfo, true)
@@ -675,6 +730,7 @@ Page({
 		if (!storeInfo) {
 			return
 		}
+		app.globalData.storeInfo = storeInfo;
 		// debugger
 		wx.setStorage({
 			key: 'STORE_INFO',
@@ -696,10 +752,11 @@ Page({
 		}
 		if (parseFloat(storeInfo.distance) > 3000 && !noToast) {
 			let fromTransport = wx.getStorageSync('fromTransport');
-			let content = `您与店铺的距离超过3公里，请确认店铺是${storeInfo.storeName}`
-			if (fromTransport == 'deliver') {
-				content = "您与门店的距离太远了，已超出配送范围~"
-			}
+			let place = this.data.isCoffeeMaker ? '咖啡机' : '店铺';
+			let content = `您与${place}的距离超过3公里，请确认${place}是${storeInfo.storeName}`
+			// if (fromTransport == 'deliver') {
+			// 	content = "您与门店的距离太远了，已超出配送范围~"
+			// }
 			if (this.data.isActWrapShow) {
 				this.setData({
 					toShowModal: {
@@ -719,7 +776,8 @@ Page({
 		}
 		storeInfo.distance = formatDistance
 		this.setData({
-			storeInfo: storeInfo
+			storeInfo: storeInfo,
+			isCoffeeMaker: storeInfo.scene === 2
 		})
 
 		// console.log(storeInfo, 'storeinfo')
@@ -1074,6 +1132,69 @@ Page({
 		this.mergeCart(cart)
 		this.getBestPaySolution();
 	},
+
+	goOrder(info) {
+		wx.showLoading({
+			title: '跳转提单页', //提示的内容,
+			mask: true, //显示透明蒙层，防止触摸穿透,
+			success: res => {}
+		});
+		model(`home/cart/list?storeId=${this.data.storeInfo.id}`).then(data => {
+			let {
+				carts
+			} = data.data;
+			let sum = 0;
+			let products = carts.map(item => {
+				//  item.ifAvailable = false;
+				//  item.sku.can_distribution = 0;
+				item.unitPrice = parseFloat(item.unitPrice).toFixed(1);
+				item.memberPrice = parseFloat(item.memberUnitPrice).toFixed(1);
+				item.propsStr = [];
+				item.propsStr.push(item.sku.name);
+				item.rPropGoodsArray && item.rPropGoodsArray.forEach(ele => {
+					item.propsStr.push(ele.propValue.prop_value);
+				});
+				item.propsStr = item.propsStr.join('/');
+				item.checked = true;
+				sum += item.num;
+				return Object.assign({}, {
+					productName: item.goods.name,
+					productId: item.goods.id,
+					skuId: item.sku.id,
+					skuName: item.sku.name,
+					number: item.num,
+					memberPrice: item.memberPrice,
+					price: item.unitPrice,
+					productPropIds: (item.rPropGoodsIds || []).join(','),
+					spec: item.propsStr,
+					banner: item.goods.avatar
+				})
+			});
+			// wx.setStorageSync('cartSum', sum)
+
+
+			let obj = {
+				storeId: this.data.storeInfo.id,
+				payAmount: 0,
+				orderType: 1,
+				product: products
+			}
+
+			const url = `/pages/pay/checkout/checkout?isCoffeeMaker=1&fromTransportId=${this.data.fromTransport && this.data.fromTransport.id}&fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=selfTaking`
+			wx.navigateTo({
+				url: url,
+				success() {}
+			})
+
+			wx.hideLoading();
+		}).catch(e => {
+			wx.hideLoading();
+			this.setData({
+				loading: false
+			});
+			console.log(e);
+		});
+	},
 	toggleCart() {
 		if (isOpening) {
 			return
@@ -1223,7 +1344,7 @@ Page({
 		// if (type == 'delivery') {
 		// 	return ;
 		// }
-		const type = 'selfTaking';
+		let type = this.data.storeInfo.coffeeMakerId ? 'delivery' : 'selfTaking'
 		wx.navigateTo({
 			url: `/pages/transport/transport?from=store&tab=${type}`
 		})

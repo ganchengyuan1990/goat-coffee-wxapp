@@ -6,6 +6,22 @@ var ald = require('../../utils/sdk/ald-stat.js');
 
 var app = getApp();
 
+
+var AObject = function () {
+    this.name = "Jason";
+}
+var A = function () {
+    if (!AObject.instance) {
+        AObject.instance = new AObject();
+    }
+    return AObject.instance;
+}
+
+var a = new A();
+var b = new A();
+
+console.log(a === b, a, a.name)
+
 Page({
     data: {
         tags: '',

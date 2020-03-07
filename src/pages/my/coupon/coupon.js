@@ -1,4 +1,8 @@
 import model from '../../../utils/model'
+
+import {
+  mockData,
+} from './mockData.js';
 Page({
 
   /**
@@ -40,6 +44,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      // couponItems: mockData,
+      loading: false
+    })
 
   },
   fetchCouponList() {

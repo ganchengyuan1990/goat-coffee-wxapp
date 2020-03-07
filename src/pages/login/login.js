@@ -166,6 +166,8 @@ Page({
                 token: data.data
             })
 
+            console.log(data, 'login_info');
+
             if (data.data && data.data.user && data.data.user.wxUnionid) {
                 wx.setStorageSync('unionId', data.data.user.wxUnionid);
                 wx.setStorageSync('unionid', data.data.user.wxUnionid);

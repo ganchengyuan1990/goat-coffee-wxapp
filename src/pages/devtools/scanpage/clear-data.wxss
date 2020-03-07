@@ -1,0 +1,38 @@
+.clear-data-container {
+  font-size: 28rpx;
+  color: #000;
+  background-color: #f9f9f9;
+  padding: 0 20rpx;
+}
+.storage-head-wrap, .auth-head-wrap {
+  display: flex;
+  height: 100rpx;
+  justify-content: space-between;
+  align-items: center;
+}
+.head-title {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.clear-btn {
+  font-size: 32rpx;
+  height:60rpx;
+  line-height:60rpx;
+  background-color: #fff;
+}
+.storage-body-wrap, .auth-body-wrap {
+  font-size: 30rpx;
+  background-color: #fff;
+  padding: 10rpx;
+}
+.storage-item, .auth-item {
+  display: flex;
+  height: 60rpx;
+  margin-bottom: 20rpx;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loc-storage {
+  word-break: break-all;
+}

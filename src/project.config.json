@@ -67,20 +67,22 @@
 					"id": 2,
 					"name": "配送方式",
 					"pathName": "pages/transport/transport",
-					"query": "from=store",
+					"query": "fromCoffeeMaker=1&from=store",
 					"scene": null
 				},
 				{
 					"id": 3,
 					"name": "promotion-list",
 					"pathName": "pages/pay/promotion-list/promotion-list",
-					"query": "array=[]"
+					"query": "",
+					"scene": null
 				},
 				{
-					"id": -1,
-					"name": "coupon",
-					"pathName": "pages/coupon/coupon",
-					"query": ""
+					"id": 4,
+					"name": "pages/my/coupon/coupon",
+					"pathName": "pages/my/coupon/coupon",
+					"query": "",
+					"scene": null
 				},
 				{
 					"id": 5,
@@ -323,6 +325,21 @@
 					"id": -1,
 					"name": "clear-data",
 					"pathName": "pages/devtools/clear-data/clear-data",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "咖啡机",
+					"pathName": "pages/store/store",
+					"query": "isCoffeeMaker=1",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "devtools",
+					"pathName": "pages/devtools/index",
+					"query": "fromCoffeeMaker=1&from=store",
 					"scene": null
 				}
 			]

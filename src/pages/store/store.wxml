@@ -66,7 +66,7 @@
         </block>
         <block wx:else>
           <view class="tt tt_high" data-delivery="selfTaking">
-            <view class="addr">{{storeInfo.storeName}}</view>
+            <view class="addr">{{storeInfo.storeName}}<text wx:if="{{storeInfo.coffeeMakerId}}">（编号{{storeInfo.coffeeMakerId}}）</text></view>
             <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
           </view>
           <!-- <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view> -->
@@ -163,7 +163,6 @@
                   <!-- <view class="price">{{product.default_sku.sale_price > 0 ? '￥'+product.default_sku.sale_price:'暂无价格'}} -->
                   <view class="price {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}" wx:if="{{false}}">
                     <text class="price-del" wx:if="{{product.default_sku.price && !isLogin}}">￥{{product.default_sku.price == parseInt(product.default_sku.price) ? parseInt(product.default_sku.price) : product.default_sku.price}}</text>
-                    <!-- <text class="price-member" style="background: {{memberTagColor}}">{{memberName}}价￥30</text> -->
                     <view class="price-member" style="background: {{memberTagColor}}" wx:if="{{product.default_sku.member_price && isLogin && product.default_sku.member_price != product.default_sku.sale_price}}">
                       {{memberName}}价<text wx:if="{{product.default_sku.orinalPrice > 0}}">￥<text style="font-size: 24rpx;">{{product.default_sku.orinalPrice}}</text></text>
                       <text wx:else>暂无价格</text>
@@ -175,14 +174,10 @@
 
                   <view class="price {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}" wx:else>
                   <!-- <text class="price-del" wx:if="{{product.default_sku.price}}">￥{{parseInt(product.default_sku.price)}}</text> -->
-                    <!-- <text class="price-member" style="background: {{memberTagColor}}">{{memberName}}价￥30</text> -->
                     <view class="price-member" style="background: {{memberTagColor}}" wx:if="{{product.default_sku.member_price && isLogin && product.default_sku.member_price < product.default_sku.sale_price}}">
                       {{memberName}}价<text wx:if="{{product.default_sku.orinalPrice > 0}}">￥<text style="font-size: 24rpx;position: relative; top: 2rpx;right: 2rpx;">{{product.default_sku.orinalPrice}}</text></text>
                       <text wx:else>暂无价格</text>
                     </view>
-                    <!-- <view class="price-member" style="background: {{memberTagColor}}">
-                      {{memberName}}价<text>￥<text style="font-size: 24rpx;position: relative; top: 2rpx;right: 2rpx;">30</text></text>
-                    </view> -->
                     <text class="priec_lala {{product.default_sku.member_price && product.default_sku.member_price < product.default_sku.price ? 'highlight' : ''}}">{{product.default_sku.sale_price > 0 ? '￥'+product.default_sku.sale_price:'暂无价格'}}</text>
                     <text class="price-del" wx:if="{{product.default_sku.member_price  && product.default_sku.member_price < product.default_sku.price}}">{{product.default_sku.price > 0 ? '￥'+product.default_sku.price:'暂无价格'}}</text>
 
@@ -219,6 +214,7 @@
       bind:togglecart="toggleCart"
       bind:save="saveCart"></cart>
     <menu-wrap 
+      type="{{isCoffeeMaker ? 2 : 1}}"
       isHigh="{{isHigh}}"
       isselfTaking="{{isselfTaking}}"
       salesTotalPrice="{{resultPrice}}"
@@ -226,7 +222,8 @@
       basePrice="{{currentSpecific.price}}" 
       isShow="{{isCatePanelShow}}" 
       bind:togglemenu="toggleSpecific" 
-      bind:save="addCart"></menu-wrap>
+      bind:save="addCart"
+      bind:goorder="goOrder"></menu-wrap>
   </view>
   <view class="act-wrap" wx:if="{{isActWrapShow}}">
     <view class="mask {{isActWrapShow ? 'active':''}}"></view>
@@ -256,4 +253,4 @@
     
 </view> -->
 
-<modal title="离您最近的门店" bindcustomevent="goStoreIndex" contentArr="{{storeArr}}" shown="{{showStoreModal}}" type="7"/>
+<modal title="{{modalTitle}}" bindcustomevent="goStoreIndex" contentArr="{{storeArr}}" shown="{{showStoreModal}}" type="7" isCoffeeMaker="{{isCoffeeMaker}}"/>

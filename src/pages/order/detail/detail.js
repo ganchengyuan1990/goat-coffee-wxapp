@@ -458,10 +458,15 @@ Page({
       obj.package = prepayId
       obj.prepayId = prepayId
       obj.price = this.data.detail.payAmount
+      obj.varCode = obj.order.verify_code
       obj.order = this.data.id
       // let str = Object.entries(obj).map(i => `${i[0]&i[1]}`).join('&')
       let str = Object.entries(obj).reduce((acc, arr) => acc + '&' + arr.join('='), '')
       str = str.slice(1)
+      if (this.data.detail.storeCoffeeMakerId) {
+        str += '&coffeeMaker=1'
+      }
+
       // console.log(str);
       // return
       wx.navigateTo({

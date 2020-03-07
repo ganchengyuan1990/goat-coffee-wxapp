@@ -5,7 +5,7 @@
 
                 <view class="right_arrow">
                     <image wx:if="{{chooseExpress && !checkedExpress.id}}" class="arrow arrow_small" src="../../../images/arrow.png"/>
-                    <image wx:else class="arrow" src="../../../images/location.png"/>
+                    <image wx:else class="arrow" src="../../../images/order_loc.png"/>
                 </view>
                 
                 <view class="address-item" bindtap="selectAddress" wx:if="{{chooseSelf || chooseCup || chooseDaodian}}">
@@ -14,7 +14,7 @@
                     </view> -->
                     <view class="l">
                         <!-- <text class="default">默认</text> -->
-                        <text class="address">{{checkedAddress.storeName}}</text>
+                        <text class="address">{{checkedAddress.storeName}}<text wx:if="{{checkedAddress.coffeeMakerId}}">（编号{{checkedAddress.coffeeMakerId}}）</text></text>
                     </view>
                     <view class="m" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 90%;">
                         <text class="name" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 90%;">{{checkedAddress.city}}{{checkedAddress.area}}{{checkedAddress.address}}</text>
@@ -171,7 +171,7 @@
 
         <view class="transport-item shorter top_gap" bindtap="goVoucher">
             <view class="l">
-                <text class="name">兑换券</text>
+                <text class="name">满减券</text>
                 <!-- <text class='coupon_mention'>门店活动不能与优惠券同享</text> -->
             </view>
             <view class="r">

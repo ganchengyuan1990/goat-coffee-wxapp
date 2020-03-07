@@ -95,7 +95,7 @@
                     {{filter.getOrderTypeState(item.order.orderType)}}
                 </view> -->
                 <view class="panel-hd">
-                    <view class="tt">{{item.order.storeName}}<text wx:if="{{item.order.orderType === 1}}">(NO.{{item.order.varCode}})</text></view>
+                    <view class="tt">{{item.order.storeName}}<text wx:if="{{item.order.storeCoffeeMakerId}}">（编号{{item.order.storeCoffeeMakerId}}）</text><text wx:if="{{item.order.orderType === 1}}">(NO.{{item.order.varCode}})</text></view>
                     <view class="active">{{filter.getOrderState(item.order.orderState)}}</view>
                 </view>
                 <view class="panel-bd">
@@ -125,8 +125,8 @@
                     <!-- <view class="btn-cancel to-pay" wx:if="{{item.order.orderState === '100' && !item.order.isComment}}" data-item="{{item.order}}" data-type="normal" catchtap="goComment">评论</view> -->
 
 
-                    <view class="qucan" wx:if="{{filter.getOrderTypeState(item.order.orderType)!= 1 && item.order.orderState == '02' || item.order.orderState == '03'}}" data-item="{{item}}" data-type="group">
-                        取餐码: <text style="font-size: 35rpx;margin-left: 10rpx;font-weight: 500;">{{item.order.varCode}}</text>
+                    <view class="qucan" wx:if="{{filter.getOrderTypeState(item.order.orderType)!= 1 && (item.order.orderState == '01' || item.order.orderState == '02' || item.order.orderState == '03')}}" data-item="{{item}}" data-type="group">
+                        取货码: <text style="font-size: 35rpx;margin-left: 10rpx;font-weight: 500;">{{item.order.varCode}}</text>
                     </view>
 
                     <!-- <view class="btn-buy" wx:if="{{true}}" data-item="{{item.order}}" catchtap="goPay">去支付</view> -->

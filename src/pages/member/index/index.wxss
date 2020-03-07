@@ -17,7 +17,7 @@ page {
 }
 
 .head-wrap {
-    display: flex;
+    /* display: flex; */
     /* flex-direction: column; */
     justify-content: center;
     /* align-items: center; */
@@ -857,4 +857,115 @@ page::after {
     height: 2rpx;
     background-color: #CCC;
     z-index: 9999;
+}
+
+.panel {
+    margin: 20rpx 30rpx 20rpx 30rpx;
+    padding: 0 30rpx;
+    background: #fff;
+    color: #999;
+    font-size: 22rpx;
+    position: relative;
+    /* box-shadow: 0px 2rpx 6rpx 0rpx rgba(35, 24, 21, 0.2); */
+    border-radius: 10rpx;
+}
+
+.panel .panel-hd {
+    display: flex;
+    justify-content: space-between;
+    padding: 25rpx 0 15rpx 0;
+    line-height: 1;
+    color: #232323;
+}
+
+.panel .panel-hd .active {
+    position: relative;
+    top: 10rpx;
+    font-size:30rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(218,82,70,1);
+    opacity:0.9;
+}
+
+.panel .panel-hd .tt {
+    width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* margin-top: 30rpx; */
+    color: #333;
+    font-size: 30rpx;
+    line-height: 40rpx;
+    font-weight: 600;
+}
+
+.panel .panel-bd {
+    display: flex;
+    align-items: center;
+    margin-top: 17rpx;
+    border-bottom: 2rpx dashed #f2f2f2;
+    padding-bottom: 20rpx;
+}
+
+.panel .panel-bd .desc {
+    margin-top: 8rpx;
+    line-height: 32rpx;
+}
+
+.panel .panel-bd .date {
+    color: #ccc;
+    margin-top: 16rpx;
+    line-height: 32rpx;
+    font-size:30rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(218,82,70,1);
+    opacity:0.9;
+}
+
+.panel .panel-ft {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 24rpx 0 24rpx;
+    position: relative;
+    min-height: 52rpx;
+}
+
+.panel .panel-ft .price {
+    color: #000;
+    font-size: 36rpx;
+    line-height: 50rpx;
+}
+
+.pro_icon image {
+    width: 118rpx;
+    height: 118rpx;
+    background: rgba(216, 216, 216, 1);
+    border-radius: 12rpx;
+}
+
+.qucan {
+   color: #D9493D;
+   font-size: 30rpx;
+   font-weight:600;
+   line-height:44rpx;
+   position: relative;
+   top: -3rpx;
+   /* margin-bottom: 10rpx; */
+}
+
+.order_numer .time {
+    color: #B2B2B2;
+    font-size: 24rpx;
+    position: relative;
+    line-height:50rpx;
+    top: -3rpx;
+    /* top: -8rpx; */
+}
+
+.order_numer {
+    margin-left: 12rpx;
+    /* position: relative;
+    top: -8rpx; */
 }

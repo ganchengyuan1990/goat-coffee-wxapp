@@ -258,6 +258,18 @@ page{
   border-radius:10rpx;
 }
 
+
+.coffee_maker {
+  height:29rpx;
+  font-size:30rpx;
+  font-family:PingFang SC;
+  font-weight:400;
+  color:rgba(112, 112, 112, 1);
+  line-height:64rpx;
+  text-align: center;
+  margin-top: -30rpx;
+  margin-bottom: 60rpx;
+}
 .coupon_image_wrapper {
   display: flex;
   align-items: center;
@@ -296,7 +308,7 @@ page{
   color: #232323;
   line-height:42rpx;
   text-align: center;
-  margin-top: -25rpx;
+  /* margin-top: -25rpx; */
   margin-bottom: 100rpx;
 }
 

@@ -9,9 +9,12 @@ const CONFIG = {
 
 export const BASE_URL = (() => {
     let url = {
-        prod: 'https://goatup.net/api/v1/server/',
-        test: 'http://127.0.0.1:8000/api/v1/server/',
-        dev: `http://test.goatup.net/api/v1/server/`
+        // prod: 'https://goatup.net/api/v1/server/',
+        // test: 'http://127.0.0.1:8000/api/v1/server/',
+        // dev: `http://test.goatup.net/api/v1/server/`
+        prod: 'https://goatup.cn/api/v1/server/',
+        test: 'https://test-mellower-main.powercoffee.cn/api/v1/server/',
+        dev: `https://heibanbao.wang/api/v1/server/`
     }
     return url[CONFIG.env]
 })()
@@ -39,6 +42,10 @@ const model = (name = '', data = {}, method = 'GET', header, ip) => {
         _token = wx.getStorageSync('token');
     }
     return new Promise((resolve, reject) => {
+        if (_token && _token.user) {
+            // console.log(`${_token.user.id} ${_token.token}`);
+            console.log(url);
+        }
         wx.request({
             url: url,
             data: data,
@@ -47,7 +54,8 @@ const model = (name = '', data = {}, method = 'GET', header, ip) => {
                 'content-type': 'application/x-www-form-urlencoded',
                 // 'Accept': 'application/json',
                 'Authorization': _token ? `${_token.user.id} ${_token.token}` : '',
-                'X-Requested-With': 'XMLHttpRequest'
+                'X-Requested-With': 'XMLHttpRequest',
+                'source': 'addoil'
             },
             success(res) { 
                 const { statusCode, errMsg, data} = res
@@ -60,6 +68,7 @@ const model = (name = '', data = {}, method = 'GET', header, ip) => {
                 }
             },
             fail(err) {
+                console.log(`${_token.user.id} ${_token.token}`);
                 reject(err)
             }
         })

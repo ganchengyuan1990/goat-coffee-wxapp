@@ -8,6 +8,7 @@ import model from '../../../utils/model';
 
 Page({
     data: {
+        coffeeMaker: false,
         openid: '',
         appId: '',
         nonceStr: '',
@@ -28,6 +29,7 @@ Page({
         })
         let openid = wx.getStorageSync('openid');
         this.setData({
+            coffeeMaker: Boolean(option.coffeeMaker),
             orderId: option.order,
             varCode: option.varCode,
             appId: option.appId,
@@ -84,16 +86,24 @@ Page({
                     // wx.navigateBack({
                     //   delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
                     // });
+                    let url = `/pages/pay/pay_success/pay_success?from=recharge&orderId=${self.data.orderId}&varCode=${self.data.varCode}`;
+                    if (self.data.coffeeMaker) {
+                        url = `/pages/pay/pay_success/pay_success?coffeeMaker=${self.data.coffeeMaker}&from=recharge&orderId=${self.data.orderId}&varCode=${self.data.varCode}`;
+                    }
                     wx.navigateTo({
-                        url: `/pages/pay/pay_success/pay_success?from=recharge&orderId=${self.data.orderId}&varCode=${self.data.varCode}`
+                        url: url
                     });
                 } else {
                     wx.setStorageSync('showNoOrder', true);
                     // wx.navigateTo({
                     //     url: `/pages/order/detail/detail?id=${self.data.orderId}&orderClassify=1&showDialog=1`
                     // });
+                    let url = `/pages/pay/pay_success/pay_success?price=${self.data.price}&orderId=${self.data.orderId}&varCode=${self.data.varCode}`
+                    if (self.data.coffeeMaker) {
+                        url = `/pages/pay/pay_success/pay_success?coffeeMaker=${self.data.coffeeMaker}&price=${self.data.price}&orderId=${self.data.orderId}&varCode=${self.data.varCode}`
+                    }
                     wx.navigateTo({
-                        url: `/pages/pay/pay_success/pay_success?price=${self.data.price}&orderId=${self.data.orderId}&varCode=${self.data.varCode}`
+                        url: url
                     });
                 }
                 

@@ -537,6 +537,9 @@ page {
 
 .qucan {
     color: #DE4132 !important;
+    position: relative;
+    top: -8rpx;
+
     /* border: 1rpx solid #daa37f !important; */
 }
 

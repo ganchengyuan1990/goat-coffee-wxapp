@@ -88,12 +88,14 @@
             </scroll-view>
         </view>
 
-       <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" scroll-y="true" wx:if="{{showExpress && searchSuggest && searchSuggest.length > 0}}"  data-id="{{item.id}}">
+       <view class="suggestListWrap {{isGeoAuth ? 'higher' : ''}}" scroll-y="true" wx:if="{{showExpress  && zizhuList && zizhuList.length >= 0}}"  data-id="{{item.id}}">
             <scroll-view class="suggestList zizhuji" scroll-y="true">
-                <!-- <view wx:key="index" wx:for="{{zizhuList}}" class="suggest-container" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goStore">
+                <view wx:key="index" wx:for="{{zizhuList}}" class="suggest-container" data-id="{{item.id}}" data-idx="{{index}}" bindtap="goCoffeemaker">
                     <view class="direct-item border-bottom" data-url="{{item.url}}" data-keyword="{{item.keyword}}">
-                        <view class="suggest-icon point-icon"></view>
-                        <view class="direct-content">
+                        <view class="suggest-icon point-icon" wx:if="{{item.isSelected}}" style="width: 120rpx;display: flex;align-items: center;justify-content: center;">
+                            <view class="checkbox checked"></view>
+                        </view>
+                        <view class="direct-content {{item.isSelected ? '' : 'go-right'}}">
                             <view class="direct-name">
                                 <view class="direct-name-container">
                                     <text class="{{name.isImportant ? 'direct-name-text' : 'direct-name-text'}} {{index === item.splitName.length - 1 ? 'text-overflow' : ''}}">{{item.storeName}} <text wx:if="{{minIndex == index}}" class="closest">最近</text> </text>
@@ -111,14 +113,14 @@
                                 <view class="split-line" wx:if="{{item.categoryname}}">|</view>
                                 <view class="direct-address">
                                     <image style='position: relative; top: 8rpx; width: 20rpx; height: 24rpx; margin-right: 9rpx;' src="../../images/location.png" />
-                                    <text wx:if="{{item.regionname}}" class="direct-address-region">{{item.regionname}}</text>
-                                    <text wx:if="{{item.address}}" class="direct-address-text {{item.regionname ? 'before-content' : ''}}">{{item.address}}</text>
+                                    <view wx:if="{{item.regionname}}" class="direct-address-region">{{item.regionname}}</view>
+                                    <view wx:if="{{item.address}}" class="direct-address-text {{item.regionname ? 'before-content' : ''}}">{{item.address}}</view>
                                 </view>
                             </view>
                         </view>
                     </view>
-                </view> -->
-                <view class="no_zizhuji">
+                </view>
+                <view class="no_zizhuji" wx:if="{{!zizhuList || zizhuList.length === 0}}">
                     <image src="../../images/no_zizhuji.png" />
                     <view>附近暂时没有咖啡机哦～</view>
                 </view>

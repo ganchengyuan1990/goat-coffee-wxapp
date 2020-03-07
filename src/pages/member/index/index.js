@@ -36,12 +36,28 @@ Page({
     isActWrapShow: false,
     actImage: '',
     level: 1,
+    orderList: [],
+    firstClock: true,
+    getClockBack: false,
+    waitUntilDiffOrderIds: []
   },
 
   handleSwitch() {
     app.globalData.switchTab = 2;
     wx.switchTab({
       url: 'pages/test2/test2',
+    })
+  },
+
+  onHide() {
+    this.setData({
+      getClockBack: false
+    })
+  },
+
+  onUnload() {
+    this.setData({
+      getClockBack: false
     })
   },
 
@@ -62,11 +78,13 @@ Page({
     let userCouponCountMention = wx.getStorageSync('userCouponCountMention');
     if (!userCouponCountMention) {
       this.setData({
-        showDot: true
+        showDot: true,
+        getClockBack: true
       })
     } else if (new Date().getTime() - userCouponCountMention > 86400000) {
       this.setData({
-        showDot: true
+        showDot: true,
+        getClockBack: true
       })
     }
     wx.hideTabBarRedDot({
@@ -183,9 +201,84 @@ Page({
     
     
     this.setTabStatus();
+    this.getTodoOrderList();
   },
   onPullDownRefresh() {
     wx.stopPullDownRefresh()
+  },
+
+  getTodoOrderList() {
+    if (!this.data.firstClock && !this.data.getClockBack) {
+      return ;
+    }
+    let obj = {
+      page: 1,
+      userId: this.data.userInfo && this.data.userInfo.id,
+      type: 6,
+      waitTime: 30,
+      scene: 2,
+      waitUntilDiffOrderIds: this.data.waitUntilDiffOrderIds.join(',')
+    }
+    model('order/detail/list', obj).then(res => {
+      // console.log('order res', res)
+      let {
+        data
+      } = res
+      if (data && Array.isArray(data)) {
+
+        let len = data.length
+        let arr = []
+        let _waitUntilDiffOrderIds = []
+        if (len < 5) {
+          this.setData({
+            isCompleted: true
+          })
+        }
+        if (len === 0) {
+          this.setData({
+            isCompleted: true
+          })
+          arr = []
+        } else {
+          // 普通订单
+          
+          data = data.map(item => {
+            if (item.order.orderState == '100' && item.order.isComment) {
+              item.order.orderState = '101'
+            }
+            _waitUntilDiffOrderIds.push(item.order.id);
+            item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(1))
+            return item;
+          })
+          arr = data
+        }
+        this.setData({
+          orderList: arr.slice(0, 2),
+          getClockBack: true,
+          waitUntilDiffOrderIds: _waitUntilDiffOrderIds
+        }, () => {
+          setTimeout(() => {
+              this.getTodoOrderList();
+          }, 0);
+          
+        });
+      }
+      wx.stopPullDownRefresh()
+    }).catch(e => {
+      this.setData({
+        isLoading: false,
+        isCompleted: true,
+        getClockBack: true
+      }, () => {
+        setTimeout(() => {
+          this.getTodoOrderList();
+        }, 0);
+      });
+      wx.stopPullDownRefresh()
+    })
+    this.setData({
+      firstClock: false
+    });
   },
   getProfile() {
     let info = wx.getStorageSync('token')

@@ -9,6 +9,7 @@ var app = getApp();
 
 Page({
   data: {
+    loading: true,
     searchSuggest: [],
     showSearchitem: {},
     showSelfGet: true,
@@ -31,67 +32,126 @@ Page({
     minIndex: 0,
     zizhuList: [],
     initShopList: [],
-    selected: 0
+    selected: 0,
+
+    showNewModal: false
   },
   onLoad: function (options) {
-
-    // wx.setNavigationBarTitle({
-    //   title: "动态标题"
-    // })
-
-    if (options.fromCheckout) {
-      options.tab = 'delivery'
-      this.setData({
-        fromCheckout: true
-      });
+    var self = this;
+    if (!options.from && !options.fromCoffeeMaker) {
+      options.fromCoffeeMaker = 1;
+      options.from = 'store';
     }
-
-    if (options.from === 'store') {
-      this.setData({
-        from: options.tab === 'delivery' ? 'delivery' : 'selfExtracting',
-        showSelfGet: options.tab !== 'delivery',
-        showExpress: options.tab === 'delivery',
-        isGeoAuth: app.globalData.isGeoAuth,
-        type: options.tab === 'delivery' ? 2 : 1,
-        storeInfo: wx.getStorageSync('STORE_INFO') ? JSON.parse(wx.getStorageSync('STORE_INFO')) : {},
+    if (!app.globalData.isGeoAuth || !app.globalData.userGeo) {
+      wx.getLocation({
+        type: 'wgs84',
+        success(res) {
+          let {
+            latitude,
+            longitude
+          } = res
+          console.log(latitude, longitude, '定位信息');
+          // latitude = 31.1949185300
+          // longitude = 121.3103584400
+          let geo = {
+            lng: longitude,
+            lat: latitude
+          }
+          // if (options.fromCoffeeMaker) {
+          //   wx.showModal({
+          //     title: '提示', //提示的标题,
+          //     content: '请选择门店或自助咖啡机自提饮品', //提示的内容,
+          //     showCancel: false, //是否显示取消按钮,
+          //     cancelColor: '#000000', //取消按钮的文字颜色,
+          //     confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+          //     confirmColor: '#f50000', //确定按钮的文字颜色
+          //   });
+          // }
+          self.setData({
+            gettingLocation: false
+          })
+          app.globalData.isGeoAuth = true
+          app.globalData.userGeo = geo
+          self.actionAfterLocation(options)
+        },
+        fail() {
+          self.setData({
+            gettingLocation: false
+          })
+          self.checkAuth()
+          app.globalData.isGeoAuth = false
+          wx.hideLoading()
+          wx.showToast({
+            title: '加载失败,请检查是否打开微信及小程序定位权限',
+            icon: 'none',
+            duration: 3500
+          })
+        }
       })
-      this.getCityList();
     } else {
-      this.setData({
-        goodsTotalPrice: parseInt(options.price),
-        type: parseInt(options.type),
-        showExpress: parseInt(options.type) === 2,
-        showSelfGet: parseInt(options.type) === 1,
-        storeInfo: wx.getStorageSync('STORE_INFO') ? JSON.parse(wx.getStorageSync('STORE_INFO')) : {},
-
-      })
+      this.actionAfterLocation(options)
+        // if (options.fromCoffeeMaker) {
+        //   wx.showModal({
+        //     title: '提示', //提示的标题,
+        //     content: '请选择门店或自助咖啡机自提饮品', //提示的内容,
+        //     showCancel: false, //是否显示取消按钮,
+        //     cancelColor: '#000000', //取消按钮的文字颜色,
+        //     confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+        //     confirmColor: '#f50000', //确定按钮的文字颜色
+        //   });
+        // }
     }
 
-    wx.setNavigationBarTitle({
-      title: options.tab !== 'delivery' ? '选择门店' : '收货地址'
-    })
+  },
 
-    // 页面初始化 options为页面跳转所带来的参数
+  actionAfterLocation(options) {
+     if (options.from === 'store') {
+       this.setData({
+         from: options.tab === 'delivery' ? 'delivery' : 'selfExtracting',
+         showSelfGet: options.tab !== 'delivery',
+         showExpress: options.tab === 'delivery',
+         isGeoAuth: app.globalData.isGeoAuth,
+         type: options.tab === 'delivery' ? 1 : 1,
+         storeInfo: wx.getStorageSync('STORE_INFO') ? JSON.parse(wx.getStorageSync('STORE_INFO')) : {},
+       })
+       if (options.tab === 'delivery') {
+         this.showExpressList();
+       }
+       this.getCityList();
+     } else {
+       this.setData({
+         goodsTotalPrice: parseInt(options.price),
+         type: parseInt(options.type),
+         showExpress: parseInt(options.type) === 2,
+         showSelfGet: parseInt(options.type) === 1,
+         storeInfo: wx.getStorageSync('STORE_INFO') ? JSON.parse(wx.getStorageSync('STORE_INFO')) : {},
 
-    try {
-      var addressId = wx.getStorageSync('addressId');
-      if (addressId) {
-        this.setData({
-          'addressId': addressId
-        });
-      }
+       })
+     }
 
-      var couponId = wx.getStorageSync('couponId');
-      if (couponId) {
-        this.setData({
-          'couponId': couponId
-        });
-      }
-    } catch (e) {
-      // Do something when catch error
-    }
+     wx.setNavigationBarTitle({
+       title: options.tab !== 'delivery' ? '选择门店' : '选择咖啡机'
+     })
 
+     // 页面初始化 options为页面跳转所带来的参数
 
+     try {
+       var addressId = wx.getStorageSync('addressId');
+       if (addressId) {
+         this.setData({
+           'addressId': addressId
+         });
+       }
+
+       var couponId = wx.getStorageSync('couponId');
+       if (couponId) {
+         this.setData({
+           'couponId': couponId
+         });
+       }
+     } catch (e) {
+       // Do something when catch error
+     }
   },
 
   calcTotalWeight () {
@@ -159,11 +219,15 @@ Page({
         // var arr = Object.keys(result).map((k) => result[k])
         // result = result.concat(result);
         // wx.setStorageSync('shopList', shopList);
+        const originalShopList = JSON.parse(JSON.stringify(shopList));
+        shopList = shopList.filter(item => item.scene === 1);
+        let zizhuList = originalShopList.filter(item => item.scene === 2);
         this.setData({
           cities: list,
-          initShopList: shopList
+          initShopList: shopList,
+          zizhuList: zizhuList
         })
-        this.setAllShopList(shopList);
+        this.setAllShopList(shopList, zizhuList);
       }
       
     })
@@ -225,6 +289,7 @@ Page({
   },
 
   showExpressList () {
+    this.getCityList();
     // let addressList = wx.getStorageSync('addressList');
     // this.setData({
     //   searchSuggest: addressList
@@ -237,6 +302,28 @@ Page({
     // } else {
     //   this.getCityList();
     // }
+    // let geo = getApp().globalData.userGeo;
+    // console.log(geo, 33333);
+    // let targetUrl = 'home/lbs/get-store-list-by-location'
+    // model(targetUrl, {
+    //   lng: geo.lng,
+    //   lat: geo.lat,
+    //   // lng: 121.419114,
+    //   // lat: 31.239629,
+    //   page: 1
+    // }).then(data => {
+    //   let result = data.data;
+    //   result = result.filter(item => item.scene === 2);
+    //   this.setData({
+    //     loading: false,
+    //     zizhuList: result
+    //   });
+    // }).catch(e => {
+    //   this.setData({
+    //     loading: false
+    //   });
+    //   console.log(e);
+    // });
   },
 
   showShopList() {
@@ -282,7 +369,11 @@ Page({
   goStore (e) {
     var globalData = app.globalData;
 
+    let nowTime = new Date().getTime();
+    globalData.lastStoreTime = nowTime;
+
     globalData.fromTransport = {
+      isCoffeeMaker: null,
       type: this.data.showSelfGet ? 'selfTaking' : 'deliver',
       detail: {
         detail: this.data.searchSuggest[parseInt(e.currentTarget.dataset.idx)]
@@ -291,7 +382,8 @@ Page({
     }
     wx.setStorageSync('fromTransport', this.data.showSelfGet ? 'selfTaking' : 'deliver');
     wx.setStorageSync('chosenAddress', this.data.searchSuggest[parseInt(e.currentTarget.dataset.idx)]);
-    if (this.data.fromCheckout && this.data.showSelfGet === false) {
+    //  暂时屏蔽
+    if (false && (this.data.fromCheckout && this.data.showSelfGet === false)) {
       let pages = getCurrentPages();
       let prevPage = pages[pages.length - 2];
       console.log(pages)
@@ -311,6 +403,44 @@ Page({
     }
     
     
+  },
+
+  goCoffeemaker(e) {
+    var globalData = app.globalData;
+
+    let nowTime = new Date().getTime();
+    globalData.lastStoreTime = nowTime;
+
+    globalData.fromTransport = {
+      isCoffeeMaker: 1,
+      type: this.data.showSelfGet ? 'selfTaking' : 'deliver',
+      detail: {
+        detail: this.data.zizhuList[parseInt(e.currentTarget.dataset.idx)]
+      },
+      idx: parseInt(e.currentTarget.dataset.idx)
+    }
+    wx.setStorageSync('fromTransport', this.data.showSelfGet ? 'selfTaking' : 'deliver');
+    wx.setStorageSync('chosenAddress', this.data.zizhuList[parseInt(e.currentTarget.dataset.idx)]);
+    if (false && this.data.fromCheckout && this.data.showSelfGet === false) {
+      let pages = getCurrentPages();
+      let prevPage = pages[pages.length - 2];
+      console.log(pages)
+      if (prevPage) {
+        prevPage.setData({
+          fromAddress: true,
+          fromTransportIndex: parseInt(e.currentTarget.dataset.idx)
+        });
+      }
+      wx.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+      });
+    } else {
+      wx.switchTab({
+        url: `/pages/store/store`
+      });
+    }
+
+
   },
 
   getCheckoutInfo: function () {
@@ -335,7 +465,7 @@ Page({
       // }
     } else {
       model('my/address/list', {
-        userId: wx.getStorageSync('token').user.id,
+        userId: wx.getStorageSync('token') && wx.getStorageSync('token').user.id,
       }).then(data => {
         wx.setStorageSync('addressList', data.data);
         this.setData({
@@ -347,11 +477,22 @@ Page({
     }
   },
 
-  setAllShopList(shopList) {
+  setAllShopList(shopList, zizhuList) {
     let min = 100000000;
     let minIndex = 0;
     // console.log(result, 33333);
     let initShopList = shopList.map((item, index) => {
+      if (parseInt(item.distance) === item.distance && parseInt(item.distance) < min) {
+        min = parseInt(item.distance);
+        minIndex = index;
+      }
+      item.distanceReal = item.distance;
+      item.distanceStatus = item.distance >= 3000 ? '>3' : item.distance;
+      item.distance = item.distance >= 3000 ? '>3' : item.distance;
+      return item;
+    });
+
+    zizhuList = zizhuList.map((item, index) => {
       if (parseInt(item.distance) === item.distance && parseInt(item.distance) < min) {
         min = parseInt(item.distance);
         minIndex = index;
@@ -374,7 +515,8 @@ Page({
         city2: initShopList[minIndex].city,
         city3: initShopList[minIndex].area,
         minIndex: minIndex,
-        searchSuggest: shopList
+        searchSuggest: shopList,
+        zizhuList: zizhuList,
     });
   },
 

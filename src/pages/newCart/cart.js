@@ -822,7 +822,7 @@ Page({
         }
         return item.ifAvailable && item.checked;
     });
-    if (!gogogo) {
+    if (!gogogo && !this.data.storeInfo.coffeeMakerId) {
       wx.showModal({
         title: '提醒', //提示的标题,
         content: '某些商品不支持外送哦，麻烦您手动删除标红的商品哦', //提示的内容,
