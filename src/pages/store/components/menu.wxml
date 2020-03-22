@@ -6,8 +6,8 @@
         <view class="hd">
             <image src="{{info.banner}}" mode="aspectFill" class="img-caption" data-src="{{info.banner}}"></image>
             <image style="position: absolute; right: 20rpx;top: 30rpx;width: 44rpx;height: 44rpx;" src="../../../images/close.png" catchtap="closeMenu" />
-            <view class="tt">
-                <view class='flex-item'>
+            <view class="tt tt2">
+                <view class='flex-item flex-item2'>
                     <view class="cn">{{info.productName}}</view>
                     <view class="en" wx:if="{{info.brief}}">{{info.productEnName}}</view>
                 </view>
@@ -31,11 +31,30 @@
                         </view>
                     </view>
                 </view>
-                <view class="opt-group" wx:for="{{info.key_list}}" wx:key="{{index}}" wx:for-index="idx">
+                <!-- <view class="opt-group" wx:for="{{info.key_list}}" wx:key="{{index}}" wx:for-index="idx">
                     <view class="opt-tt">{{item.name}}</view>
                     <view class="opt-bd">
                         <view class="J_opt_item item {{item.name !== '温度' ? 'lowwer' : ''}} {{item.default_val_id == tag.id ? 'active':''}}" wx:for="{{item.val_list}}" wx:for-item="tag" wx:key="{{tag.id}}" catchtap="select" data-group="opt" data-groupidx="{{idx}}" data-tagidx="{{index}}"
                             data-val="{{tag.val}}" data-code="{{tag.prop_id}}">{{tag.val}}<text wx:if="{{tag.price}}">{{tag.price}}元</text></view>
+                    </view>
+                </view> -->
+                <view wx:for="{{info.sku_list}}" wx:key="idxOut" wx:for-index="idxOut" wx:for-item="skuItem" wx:if="{{skuIndex == idxOut}}">
+                    <view class="opt-group" wx:for="{{skuItem.key_list}}" wx:key="index" wx:for-index="idx" wx:for-item="item">
+                        <view class="opt-tt">{{item.name}}</view>
+                        <view class="opt-bd">
+                            <view 
+                            class="J_opt_item item {{item.name !== '温度' ? 'lowwer' : ''}} {{item.default_val_id == tag.id ? 'active':''}}" 
+                            wx:for="{{item.val_list}}" 
+                            wx:for-item="tag"
+                            wx:key="tag.id"
+                            catchtap="select"
+                            data-tagid="{{tag.id}}"
+                            data-group="opt"
+                            data-groupidx="{{idx}}"
+                            data-tagidx="{{index}}"
+                            data-val="{{tag.val}}"
+                            data-code="{{tag.prop_id}}">{{tag.val}}<text wx:if="{{tag.price}}">{{tag.price}}元</text></view>
+                        </view>
                     </view>
                 </view>
                 <!-- <view style='height: 1rpx; background: #f6f6f6;'></view> -->
@@ -48,14 +67,15 @@
             <view class="counter-wrap">
                 <view class="price-wrap">
                     <view class="price" wx:if="{{salesTotalPrice < 0}}">
-                        ￥{{totalPrice}} <text class="price-del" wx:if="{{info.default_sku.price && info.default_sku.price != info.sale_price}}">{{customed}}</text>
+                        ￥{{totalPrice}} 
+                        <!-- <text class="price-del" wx:if="{{info.default_sku.price && info.default_sku.price != info.sale_price}}">￥{{info.default_sku.price}}</text> -->
                         <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
                     </view>
                     <view class="price" wx:if="{{salesTotalPrice > -1}}">
                         ￥{{totalPrice}}
                         <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
                     </view>
-                    <!-- <view class="desc">{{customed}}</view> -->
+                    <view class="desc">{{customed}}</view>
                 </view>
                 <view class="counter">
                     <view class="ico ico-minus {{count === 1 ? 'disable': ''}}" bind:tap="decrease">
@@ -108,16 +128,38 @@
                         </view>
                     </view>
                 </view>
-                <view class="showMore" bindtap="toggleShow" wx:if="{{!toggled && info.key_list.length > 0}}">
+                <view class="showMore" bindtap="toggleShow" wx:if="{{!toggled && info.sku_list && info.sku_list[0] && info.sku_list[0].key_list && info.sku_list[0].key_list.length > 0}}">
                   展示更多个性化 <image style="width: 19rpx; height: 10rpx;" src="../../../images/lay_down.png" />
                 </view>
-                <view wx:if="{{toggled}}" class="opt-group" wx:for="{{info.key_list}}" wx:key="{{index}}" wx:for-index="idx">
+                <!-- <view wx:if="{{toggled}}" class="opt-group" wx:for="{{info.key_list}}" wx:key="{{index}}" wx:for-index="idx">
                     <view class="opt-tt">{{item.name}}</view>
                     <view class="opt-bd">
                         <view class="J_opt_item item item2 {{item.name !== '温度' ? 'lowwer' : ''}} {{item.default_val_id == tag.id ? 'active':''}}" wx:for="{{item.val_list}}" wx:for-item="tag" wx:key="{{tag.id}}" catchtap="select" data-group="opt" data-groupidx="{{idx}}" data-tagidx="{{index}}"
                             data-val="{{tag.val}}" data-code="{{tag.prop_id}}">{{tag.val}}<text wx:if="{{tag.price}}">{{tag.price}}元</text></view>
                     </view>
+                    
+                </view> -->
+
+                <view wx:if="{{toggled}}" wx:for="{{info.sku_list}}" wx:key="idxOut" wx:for-index="idxOut" wx:for-item="skuItem">              
+                  <view class="opt-group" wx:for="{{skuItem.key_list}}" wx:key="index" wx:for-index="idx" wx:for-item="item">
+                      <view class="opt-tt">{{item.name}}</view>
+                      <view class="opt-bd">
+                          <view 
+                            class="J_opt_item item {{item.name !== '温度' ? 'lowwer' : ''}} {{item.default_val_id == tag.id ? 'active':''}}" 
+                            wx:for="{{item.val_list}}" 
+                            wx:for-item="tag"
+                            wx:key="tag.id"
+                            catchtap="select"
+                            data-tagid="{{tag.id}}"
+                            data-group="opt"
+                            data-groupidx="{{idx}}"
+                            data-tagidx="{{index}}"
+                            data-val="{{tag.val}}"
+                            data-code="{{tag.prop_id}}">{{tag.val}}<text wx:if="{{tag.price}}">{{tag.price}}元</text></view>
+                      </view>
+                  </view>
                 </view>
+
                 <!-- <view style='height: 1rpx; background: #f6f6f6;'></view> -->
             </scroll-view>
 
@@ -128,7 +170,7 @@
             <view class="counter-wrap counter-wrap2">
                 <view class="price-wrap">
                     <view class="price downer" wx:if="{{salesTotalPrice < 0}}">
-                        ￥{{totalPrice}} <view class="price-del" wx:if="{{info.default_sku.price && info.default_sku.price != info.sale_price}}">{{customed}}</view>
+                        ￥{{totalPrice}} <view class="price-del" wx:if="{{info.default_sku.price && info.default_sku.price != info.sale_price}}">￥{{info.default_sku.price}}</view>
                         <!-- <text style="color: #F63; font-size: 34rpx;margin-left: 20rpx;">￥{{salesTotalPrice}}</text> -->
                     </view>
                     <view class="price" wx:if="{{salesTotalPrice > -1}}">

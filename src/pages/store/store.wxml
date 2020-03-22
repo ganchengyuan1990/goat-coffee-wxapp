@@ -146,12 +146,12 @@
                 <!-- <view class="pic_word" wx:if="{{product.tips}}">{{product.tips}}</view> -->
                 <!-- <image class="tag tag_pic" wx:if="{{product.tips}}" src="../../images/tag.png"><view class="pic_word">{{product.tips}}</view></image> -->
                 <!-- <image class="tag tag_pic lefter_top" wx:if="{{product.sku_list && product.sku_list[0] && !product.sku_list[0].can_distribution}}" src="../../images/tag.png"><view class="pic_word">仅自取</view></image> -->
-                <view class='sold_up' wx:if="{{filter.judgeSoldout(product.sku_list)}}">
+                <view class='sold_up' wx:if="{{product.state !== 1}}">
                   售罄
                 </view>
-                <view class='sold_up' wx:if="{{filter.judgeSoldout(product.sku_list)}}">
+                <!-- <view class='sold_up' wx:if="{{filter.judgeSoldout(product.sku_list)}}">
                   售罄
-                </view>
+                </view> -->
               </view>
               <view class="info">
                 <view style="margin-top: 5rpx;">
@@ -203,7 +203,7 @@
     </view>
   </view>
   <view bind:touchstart="handleTouchStart" catch:touchend="handleTouchEnd" catch:touchmove="handleTouchMove">
-    <cart 
+    <!-- <cart 
       salesTotalPrice="{{resultPrice}}"
       isCartPanelShow="{{isCartPanelShow}}" 
       info="{{cartList}}" 
@@ -212,7 +212,7 @@
       isselfTaking="{{isselfTaking}}"
       bind:checkout="checkout" 
       bind:togglecart="toggleCart"
-      bind:save="saveCart"></cart>
+      bind:save="saveCart"></cart> -->
     <menu-wrap 
       type="{{isCoffeeMaker ? 2 : 1}}"
       isHigh="{{isHigh}}"

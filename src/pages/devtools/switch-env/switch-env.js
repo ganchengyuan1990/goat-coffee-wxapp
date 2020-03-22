@@ -7,6 +7,10 @@ const ENV_ARRAY = [{
   },
   {
     name: '测试环境',
+    value: 'test',
+  },
+  {
+    name: '开发环境',
     value: 'dev',
   }
 ];

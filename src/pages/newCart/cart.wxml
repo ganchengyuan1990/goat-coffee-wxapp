@@ -47,7 +47,7 @@
 
                                         <view class="b">
                                             <text class="price" >￥{{item.memberPrice}}</text>
-                                            <text class="price price-del" wx:if="{{item.orinalPrice !== 'NaN' && item.orinalPrice !== item.memberPrice}}">￥{{item.orinalPrice}}</text>
+                                            <text class="price price-del" wx:if="{{item.orinalPrice !== 'NaN' && item.orinalPrice != item.memberPrice}}">￥{{item.orinalPrice}}</text>
 
                                         </view>
                                         <!-- <view  wx:if="{{!item.sku.can_distribution}}" class="attr {{!item.ifAvailable ? 'grrr' : ''}}">
@@ -62,9 +62,9 @@
                                     <view class="order-create-form-item ">
                                         <view class="content">
                 
-                                            <image src="../../images/minus_new.png" class="btn btn-minus {{(item.count <= 0)? 'btn-disable' : ' '}}" data-index="{{index}}" data-available="true" bindtap="decreaseRoomCount"></image>
-                                            <text class="room-count" type="text">{{item.num}}</text>
-                                            <image src="../../images/add.png" class="btn btn-plus" data-index="{{index}}" data-available="true" bindtap="increaseRoomCount"></image>
+                                            <image wx:if="{{!storeInfo.coffeeMakerId}}" src="../../images/minus_new.png" class="btn btn-minus {{(item.count <= 0)? 'btn-disable' : ' '}}" data-index="{{index}}" data-available="true" bindtap="decreaseRoomCount"></image>
+                                            <view class="room-count" type="text"><view style="margin-right: 15rpx; font-size: 52rpx; line-height:60rpx;" wx:if="{{storeInfo.coffeeMakerId}}">*</view>{{item.num}}</view>
+                                            <image wx:if="{{!storeInfo.coffeeMakerId}}" src="../../images/add.png" class="btn btn-plus" data-index="{{index}}" data-available="true" bindtap="increaseRoomCount"></image>
                                         </view>
                                     </view>
                                 </view>

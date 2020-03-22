@@ -448,7 +448,7 @@ page{
 }
 
 .room-count {
-  display: inline-block;
+  display: inline-flex;
   padding: 0 25rpx;
   margin-top: 3.2rpx;
   font-size: 28rpx;

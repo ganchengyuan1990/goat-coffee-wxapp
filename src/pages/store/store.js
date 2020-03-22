@@ -24,7 +24,7 @@ Page({
 		// scrollview 设定高度
 		listHeight: 500,
 		activeIndex: 0,
-		isCatePanelShow: false,
+		// isCatePanelShow: false,
 		isCartPanelShow: false,
 		heigthArr: [],
 		storeInfo: {
@@ -808,20 +808,22 @@ Page({
 							ele.price = ele.sku_list[0].price;
 						}
 						if (ele.default_sku) {
-							let sss = parseFloat(parseFloat(ele.default_sku.sale_price) + parseFloat(ele.default_prop.price)).toFixed(2);
+							let sss = parseFloat(parseFloat(ele.default_sku.sale_price));
+							// let sss = parseFloat(parseFloat(ele.default_sku.sale_price) + parseFloat(ele.default_prop.price)).toFixed(2);
 							if (this.data.isLogin) {
-								sss = parseFloat(parseFloat(ele.default_sku.member_price) + parseFloat(ele.default_prop.price)).toFixed(2);
+								sss = parseFloat(parseFloat(ele.default_sku.member_price));
+								// sss = parseFloat(parseFloat(ele.default_sku.member_price) + parseFloat(ele.default_prop.price)).toFixed(2);
 							}
 							ele.default_sku.orinalPrice = (sss == parseInt(sss) ? parseInt(sss) : parseFloat(sss).toFixed(1));
 							if (ele.default_sku.price) {
 								ele.default_sku.price = (ele.default_sku.price == parseInt(ele.default_sku.price) ? parseInt(ele.default_sku.price) : parseFloat(ele.default_sku.price).toFixed(1));
 							}
 							ele.default_sku.sale_price = (ele.default_sku.sale_price == parseInt(ele.default_sku.sale_price) ? parseInt(ele.default_sku.sale_price) : parseFloat(ele.default_sku.sale_price).toFixed(1));
-							if (ele.default_prop.price) {
-								let sss_orinals = parseFloat(ele.default_prop.price).toFixed(2);
-								console.log(sss_orinals, 999);
-								ele.default_sku.price = (sss_orinals == parseInt(sss_orinals) ? parseInt(sss_orinals) : parseFloat(sss_orinals).toFixed(1));
-							}
+							// if (ele.default_prop.price) {
+							// 	let sss_orinals = parseFloat(ele.default_prop.price).toFixed(2);
+							// 	console.log(sss_orinals, 999);
+							// 	ele.default_sku.price = (sss_orinals == parseInt(sss_orinals) ? parseInt(sss_orinals) : parseFloat(sss_orinals).toFixed(1));
+							// }
 
 						}
 					})
@@ -919,9 +921,9 @@ Page({
 			priceMap: obj
 		})
 		wx.setStorageSync('PRICE_MAP', JSON.stringify(obj))
-		if (this.data.isLoadStorageCart) {
-			this.getStorageCart()
-		}
+		// if (this.data.isLoadStorageCart) {
+		// 	this.getStorageCart()
+		// }
 	},
 	/**
 	 *  
@@ -967,7 +969,7 @@ Page({
 		let arr = this.data.cartList
 		arr = arr.concat(remainList)
 		this.mergeCart(arr)
-		this.getBestPaySolution();
+		// this.getBestPaySolution();
 	},
 	calculateHeight() {
 		let heigthArr = [];
@@ -1109,7 +1111,7 @@ Page({
 		let cart = e.detail.cartList
 		if (e.detail) {
 			this.mergeCart(cart)
-			this.getBestPaySolution();
+			// this.getBestPaySolution();
 		}
 		
 	},
@@ -1130,7 +1132,7 @@ Page({
 			cart.push(e.detail)
 		}
 		this.mergeCart(cart)
-		this.getBestPaySolution();
+		// this.getBestPaySolution();
 	},
 
 	goOrder(info) {

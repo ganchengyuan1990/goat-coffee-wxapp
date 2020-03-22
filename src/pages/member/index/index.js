@@ -191,6 +191,7 @@ Page({
       })
       this.getProfile();
       this.getAchievement()
+      this.getTodoOrderList();
     } else {
       this.setData({
         curNav: 0,
@@ -201,7 +202,7 @@ Page({
     
     
     this.setTabStatus();
-    this.getTodoOrderList();
+    
   },
   onPullDownRefresh() {
     wx.stopPullDownRefresh()

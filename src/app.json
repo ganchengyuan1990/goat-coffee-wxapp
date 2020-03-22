@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/store/store",
+    "pages/devtools/index",
     "pages/transport/transport",
     "pages/login/login",
     "pages/login/entry/index",
@@ -22,7 +23,6 @@
     "pages/order/varcode/detail",
     "pages/my/coupon/coupon",
     "pages/webview/webview",
-    "pages/devtools/index",
     "pages/devtools/switch-env/switch-env",
     "pages/devtools/clear-data/clear-data",
     "pages/devtools/scanpage/clear-data"

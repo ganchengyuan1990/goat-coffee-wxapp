@@ -169,7 +169,6 @@ Page({
     this.setData({
       userInfo: userInfo
     })
-    // this.fetchOrderList(1)
     this.refreshList()
     this.setTabStatus();
   },
@@ -192,6 +191,7 @@ Page({
       return
     }
     let page = this.data.page
+    debugger
     this.fetchOrderList(page + 1)
   },
 
@@ -304,6 +304,7 @@ Page({
       orderList: [],
       isCompleted: false
     })
+    debugger
     this.fetchOrderList(1, true)
   },
   fetchOrderList(page = 1, isResetList = false) {

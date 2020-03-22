@@ -80,7 +80,7 @@
 
 .cate-panel .hd {
   flex: none;
-  display: flex;
+  /* display: flex; */
   justify-content: space-between;
   /* padding-bottom: 30rpx; */
   position: relative;
@@ -144,9 +144,17 @@
   position: relative;
   /* bottom: 30rpx;
   left: 30rpx; */
-  top: 15rpx;
+  top: 75rpx;
   margin-left: 30rpx;
+  color: #fff;
   /* background: rgba(0,0,0,0.1) */
+}
+
+.tt2 {
+  position: absolute;
+  bottom: -60rpx;
+  left: 20rpx;
+  color: #fff;
 }
 
 .flex-item {
@@ -159,6 +167,15 @@
   color: #343434;
   font-size: 36rpx;
 }
+
+.flex-item2 {
+  color: #fff;
+}
+
+.flex-item2 .en{
+  color: #fff !important;
+}
+
 
 .cate-panel .fig {
   width: 120rpx;
@@ -179,7 +196,7 @@
 
 .opt-group .opt-tt {
   flex: none;
-  width: 118rpx;
+  /* width: 118rpx; */
   height: 60rpx;
   line-height: 60rpx;
 }

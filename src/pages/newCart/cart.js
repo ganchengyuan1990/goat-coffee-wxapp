@@ -57,7 +57,7 @@ Page({
       "rPropGoodsIds": [],
       "unitPrice": parseFloat(e.detail.default_sku.member_price).toFixed(2),
 
-      "orinalPrice": parseFloat(e.detail.default_sku.price).toFixed(2),
+      "orinalPrice": parseFloat(e.detail.default_sku.price || e.detail.default_sku.sale_price).toFixed(2),
       "rPropGoodsArray": [],
       "ifAvailable": true
     }
@@ -255,7 +255,7 @@ Page({
         //  item.ifAvailable = false;
         //  item.sku.can_distribution = 0;
          item.unitPrice = parseFloat(item.unitPrice).toFixed(1);
-         item.orinalPrice = parseFloat(item.sku.price).toFixed(1);
+         item.orinalPrice = parseFloat(item.sku.price || item.sku.sale_price).toFixed(1);
          item.memberPrice = parseFloat(item.memberUnitPrice).toFixed(1);
          item.propsStr = [];
          item.propsStr.push(item.sku.name);

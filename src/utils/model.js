@@ -14,7 +14,7 @@ export const BASE_URL = (() => {
         // dev: `http://test.goatup.net/api/v1/server/`
         prod: 'https://goatup.cn/api/v1/server/',
         test: 'https://test-mellower-main.powercoffee.cn/api/v1/server/',
-        dev: `https://heibanbao.wang/api/v1/server/`
+        dev: `https://dev-mellower-main.goatup.net/api/v1/server/`
     }
     return url[CONFIG.env]
 })()

@@ -66,8 +66,8 @@ Component({
     currentProp: [],
     priceTags: [],
     activityName: '',
-
-    toggled: false
+    toggled: false,
+    skuIndex: 0
   },
   ready() {
     let configData = wx.getStorageSync('configData');
@@ -101,11 +101,11 @@ Component({
         // let obj = this.data.info.sku_list.find(item => {
         //   return item.isdefault === 1
         // })
-        let obj = this.data.info.default_sku;
+        let obj = this.properties.info.default_sku;
         if (!obj) {
           let key = `info.sku_list[0].isdefault`
           this.setData({
-            [key]:1
+            [key]: 1
           })
           obj = this.data.info.sku_list[0]
         }
@@ -140,7 +140,7 @@ Component({
       this.setData({
         currentSku: {},
         priceTags: [],
-        toggled: false
+        toggled: false,
       });
       if (this.data.info && this.data.info.default_sku && this.data.info.default_sku.orinalPrice) {
         this.setData({
@@ -207,7 +207,20 @@ Component({
         })
         return
       }
-      let propList = info.key_list
+      
+      // let propList = info.key_list
+      // let propIds = []
+      // propList.forEach(i => {
+      //   let idObj = i.val_list.find(j => {
+      //     return parseInt(j.id) === parseInt(i.default_val_id)
+      //   })
+
+      //   if (idObj) {
+      //     propIds.push(idObj.prop_id)
+      //   }
+      // })
+
+      let propList = hasDefault[0].key_list
       let propIds = []
       propList.forEach(i => {
         let idObj = i.val_list.find(j => {
@@ -258,8 +271,11 @@ Component({
     },
     save() {
       if (!wx.getStorageSync('token')) {
-        wx.navigateTo({ url: '/pages/login/login' });
-        return ;
+        this.toggleMenu();
+        wx.navigateTo({
+          url: '/pages/login/login'
+        });
+        return;
       }
       let info = this.data.info
       let spec = this.data.customed
@@ -290,7 +306,7 @@ Component({
       // wx.navigateTo({
       //   url: `/pages/newCart/cart?isNeedFee=${this.data.isselfTaking ? 0: 1}`
       // });
-      let propList = info.key_list
+      let propList = hasDefault[0].key_list
       let propIds = []
       propList.forEach(i => {
         let idObj = i.val_list.find(j => {
@@ -328,9 +344,8 @@ Component({
         });
       }).catch(e => {
         console.log('请求失败');
-        console.log(JSON.stringify(e));
         wx.showToast({
-          title: '加入购物车失败', //提示的内容,
+          title: e, //提示的内容,
           icon: 'none', //图标,
           duration: 1500, //延迟时间,
           mask: true, //显示透明蒙层，防止触摸穿透,
@@ -350,9 +365,10 @@ Component({
       // this.getCustomed();
       let group = e.currentTarget.dataset.group
       let idx = e.currentTarget.dataset.tagidx
+      let groupoutidx = e.currentTarget.dataset.groupoutidx
       // 规格
       if (group === 'sku') {
-      // if (false) {
+        // if (false) {
         let skuKey = `info.sku_list`
         let skuList = this.data.info.sku_list
         let currentSku = skuList[idx]
@@ -364,7 +380,7 @@ Component({
         // let finalPrice = this.data.price;
         let customedKey = this.data.customedKey.split('-');
 
-        this.data.info.key_list.forEach(item => {
+        this.data.info.sku_list[idx].key_list.forEach(item => {
           item.val_list.forEach(ele => {
             if (ele.price) {
               if (customedKey.indexOf(ele.prop_id.toString()) > -1) {
@@ -376,18 +392,19 @@ Component({
         this.setData({
           [skuKey]: skuList,
           price: finalPrice,
-          currentSku: currentSku
+          currentSku: currentSku,
+          skuIndex: idx
         })
         this.setPrice()
       }
       // 其他属性
       if (group === 'opt') {
-      // if (true) {
+        // if (true) {
         let groupIdx = e.currentTarget.dataset.groupidx
-        let optKey = `info.key_list[${groupIdx}]`
+        let optKey = `info.key_list[${this.data.skuIndex}]`
         try {
           // 全部属性
-          let propList = this.data.info.key_list
+          let propList = this.data.info.sku_list[this.data.skuIndex].key_list
           // 当前属性组
           let optList = propList[groupIdx]
           // 属性id
@@ -398,49 +415,58 @@ Component({
           let currentSku = skuList.filter(item => {
             return item.isdefault === 1;
           })
-          
+
 
           let customVal = this.data.customVal.split('-');
 
           let finalPrice = this.data.price;
 
-          let priceTags = JSON.parse(JSON.stringify(this.data.priceTags));
+          // let priceTags = JSON.parse(JSON.stringify(this.data.priceTags));
+          let priceTags = [];
 
           if (customVal.indexOf(e.currentTarget.dataset.code.toString()) < 0) {
-          // if (true) {
+            // if (true) {
             let targetIndex = -1;
             let deltaPrice = 0;
 
-            this.data.info.key_list.forEach((item, index) => {
-              item.val_list.forEach(ele => {
-                if (e.currentTarget.dataset.code == ele.prop_id) {
-                  targetIndex = index;
-                  if (ele.price || true) {
-                    let flag = true;
-                    priceTags.forEach(lll => {
-                      if (lll.prop_id === ele.prop_id) {
-                        flag = false
-                      }
-                    })
-                    // flag && priceTags.push(ele);
-                    if (flag) {
-                      // priceTags.push(ele);
-                      priceTags = [ele];
-                      deltaPrice += parseFloat(ele.price)
-                    }
-                    // flag && (deltaPrice += parseFloat(ele.price));
+            // this.data.info.sku_list[this.data.skuIndex].key_list.forEach((item, index) => {
+            //   item.val_list.forEach(ele => {
+            //     if (e.currentTarget.dataset.code == ele.prop_id) {
+            //       targetIndex = index;
+            //       if (ele.price || true) {
+            //         let flag = true;
+            //         priceTags.forEach(lll => {
+            //           if (lll.prop_id === ele.prop_id) {
+            //             flag = false
+            //           }
+            //         })
+            //         if (flag) {
+            //           // priceTags.push(ele);
+            //           priceTags = [ele];
+            //           deltaPrice += parseFloat(ele.price)
+            //         }
+            //       }
+            //     }
+            //   });
+            // });
+
+            propList.forEach((item, index) => {
+              let idObj = item.val_list.find(j => {
+                return parseInt(j.id) === parseInt(item.default_val_id)
+              })
+
+              if (idObj && idObj.price) {
+                let flag = true;
+                priceTags.forEach(lll => {
+                  if (lll.prop_id === idObj.prop_id) {
+                    flag = false
                   }
+                })
+                if (flag) {
+                  priceTags.push(idObj);
+                  deltaPrice += parseFloat(idObj.price)
                 }
-                // if (ele.price) {
-                //   if (e.target.dataset.code == ele.prop_id) {
-                //     targetItem = ele;
-                //     hasFlag = true;
-                //     deltaPrice += parseFloat(ele.price);
-                //   } else {
-                //     deltaPrice -= parseFloat(ele.price);
-                //   }
-                // }
-              });
+              }
             });
 
             // if (deltaPrice !== 0) {
@@ -460,7 +486,7 @@ Component({
             //     finalPrice += parseFloat(item.price);
             //   });
             // }
-            
+
             if (targetIndex >= 0 && priceTags.length > 0) {
               let flag = false;
               let targetKid_id = priceTags[priceTags.length - 1].kid;
@@ -473,17 +499,17 @@ Component({
               //     return true;
               //   }
               // })
-                            // priceTags.forEach((ele, index) => {
-                            //   if (ele.prop_id === e.currentTarget.dataset.code) {
-                            //     // priceTags.splice(index, 1);
-                            //     priceTags = [ele]
-                            //     flag = true;
-                            //     // return false;
-                            //   }
-                            //   // if (flag) {
-                            //   //   return true;
-                            //   // }
-                            // })
+              // priceTags.forEach((ele, index) => {
+              //   if (ele.prop_id === e.currentTarget.dataset.code) {
+              //     // priceTags.splice(index, 1);
+              //     priceTags = [ele]
+              //     flag = true;
+              //     // return false;
+              //   }
+              //   // if (flag) {
+              //   //   return true;
+              //   // }
+              // })
 
               // debugger
               // this.data.info.key_list[targetIndex].val_list.some((item) => {
@@ -510,21 +536,21 @@ Component({
             // })
           }
 
-          
+
           // let _target = optList.val_list.filter(item => item.prop_id == e.target.dataset.code);
           // if (_target) {
           //   finalPrice = _target[0].price ? (parseFloat(_target[0].price) + parseFloat(finalPrice)) : parseFloat(finalPrice);
           // }
-
-          
+          console.log(this.data.info, 9999);
           this.setData({
             priceTags: priceTags,
             price: finalPrice,
             [optKey]: optList,
+            info: this.data.info,
             currentProp: propList
           })
           this.setPrice()
-        } catch(e) {
+        } catch (e) {
           console.log(e)
         }
       }
@@ -533,7 +559,7 @@ Component({
     },
     /**
      * 增加数量
-    */
+     */
     increase() {
       let count = this.data.count
       this.setData({
@@ -544,7 +570,7 @@ Component({
     },
     /**
      * 减少数量
-    */
+     */
     decrease() {
       let count = this.data.count
       if (count > 1) {
@@ -557,12 +583,12 @@ Component({
     },
     /**
      * 计算价格
-    */
+     */
     setPrice() {
       let count = this.data.count
       let price = Number(this.data.price)
       // console.log(BN('0.98').valueOf());
-      
+
       if (!isNaN(price)) {
         this.setData({
           totalPrice: BN(price).multipliedBy(count).valueOf()
@@ -570,12 +596,16 @@ Component({
       }
     },
 
-    closeMenu () {
+    closeMenu() {
+      this.setData({
+        toggled: false,
+        skuIndex: 0
+      })
       this.toggleMenu();
     },
     /**
      * 获取默认规格
-    */
+     */
     getCustomed() {
       const query = wx.createSelectorQuery().in(this);
       query.selectAll(".J_opt_item.active").fields({
@@ -591,16 +621,13 @@ Component({
         let customed = '';
         if (this.data.currentSku.sale_price || (this.data.info && this.data.info.default_sku)) {
           let _price = parseFloat(this.data.currentSku.member_price ? this.data.currentSku.member_price : this.data.info.default_sku.orinalPrice).toFixed(1);
-          if (this.data.info.default_sku.price && this.data.info.default_sku.price != this.data.info.default_sku.orinalPrice) {
-            _price = this.data.info.default_sku.price;
-          }
           customed = `￥${_price * this.data.count}`;
 
-          // this.data.priceTags.forEach(item => {
-          //   customed += ` + ${item.val}${item.price * this.data.count}元`
-          // });
+          this.data.priceTags.forEach(item => {
+            customed += ` + ${item.val}${item.price * this.data.count}元`
+          });
         }
-        
+
         this.setData({
           customed: customed,
           customedKey: this.data.info && this.data.info.id + '-' + keys.join('-'),
