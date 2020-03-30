@@ -486,6 +486,8 @@ page {
     margin-top: 20rpx;
 }
 
+
+
 .font {
     margin-top: 30rpx;
     text-align: center;
@@ -520,4 +522,9 @@ page {
     text-align: center;
     margin-top: 5rpx;
     margin-bottom: 15rpx;
+}
+
+.state2 {
+    margin-top: 35rpx;
+    margin-bottom: 0rpx;
 }

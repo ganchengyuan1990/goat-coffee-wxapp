@@ -310,8 +310,14 @@ Page({
   },
 
   calGetTime (waitTime) {
+
     let nowTime = Date.parse(new Date());
-    waitTime = waitTime + 5 + this.data.totalNumber;
+
+    if (this.data.checkedAddress.coffeeMakerId) {
+      waitTime = 1;
+    } else {
+      waitTime = waitTime + 5 + this.data.totalNumber;
+    }
     let getTime = this.calcLeftTime(nowTime + waitTime * 60 * 1000);
     this.setData({
       getTime: getTime
@@ -1184,7 +1190,7 @@ Page({
                   if (data.data.ifComplete) {
                     wx.setStorageSync('showNoOrder', true);
                     wx.navigateTo({
-                      url: `/pages/pay/pay_success/pay_success?orderId=${data.data.order.id}&varCode=${data.data.order.varCode}&price=${this.data.actualPrice}`
+                      url: `/pages/pay/pay_success/pay_success?orderId=${data.data.order.id}&varCode=${data.data.order.verify_code}&price=${this.data.actualPrice}`
                       // url: `/pages/order/detail/detail?id=${data.data.order.id}&orderClassify=1`
                     });
                   } else {
@@ -1253,7 +1259,7 @@ Page({
   requestSubscribeAndSubmit() {
     let self = this;
     wx.requestSubscribeMessage({
-      tmplIds: ['YOVqvVUg2cXGRXbIzcOZZ5UmF0f8yr5BrmrYt30ONeA'],
+      tmplIds: ['0N2pBoJ1v4ziWzhcAFfx5WSJby5CDHIv5pgde5qFGRY'],
       success(res) {
         console.log(res, 'success')
         wx.setStorageSync('subscribe', true);

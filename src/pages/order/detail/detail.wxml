@@ -28,6 +28,9 @@
             <view class="refund_detail" wx:if="{{detail.orderState == 41}}">您的支付金额已退回到原支付账户中</view>
             <view class="refund_detail" wx:if="{{detail.orderState == 40}}">预计2至3个工作日内完成退款</view>
 
+            <view class="state2 coffee_maker" wx:if="{{detail.orderState == 01 && detail.storeCoffeeMakerId}}">当天未兑换的订单，将在凌晨1点自动退款</view>
+            <view class="state2 coffee_maker" wx:if="{{detail.orderState == 02 && detail.storeCoffeeMakerId}}">若饮品制作失败，将在5分钟后自动退款</view>
+
 
 
             <!-- <view class="refund_detail" wx:if="{{detail.orderState == 01}}">预计5分钟内接单，请耐心等待</view>
