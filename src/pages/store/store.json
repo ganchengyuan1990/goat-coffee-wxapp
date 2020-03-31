@@ -7,6 +7,8 @@
     "cart": "./components/cart",
     "modal": "../../components/modal/modal",
     "ml-navigator": "../../components/ml-navigator/index",
-    "menu-wrap": "./components/menu"
+    "menu-wrap": "./components/menu",
+    "navBar": "../../components/navBar/index",
+    "mainfield-nav": "./components/mainfield-nav/mainfield-nav"
   }
 }

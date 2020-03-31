@@ -18,6 +18,20 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
+		showPage: true,
+		pageStatus: {
+			packageAB: true,
+			packageEntryAB: true,
+			spuItemVersion: 2,
+			hasQuickChoice: false,
+			showNewHeader: true,
+			customPerformanceLevel: 1,
+			packageAllAB: 'A',
+			headABNew: true,
+			isShowNavBar: true
+		},
+		isShowNavAppBubble: false,
+		isShowNavBubble: false,
 		viewToList: "",
 		viewToNav: "",
 		scrollTop: 0,
@@ -1612,5 +1626,25 @@ Page({
 		} catch (e) {
 			console.log(e);
 		}
-	}
+	},
+
+	onClickNavExpand() {
+
+		if (this.data.isShowNavBubble) {
+			const popupDataIsShow = 'popupData.isShow';
+			this.setData({
+				isShowNavBubble: false,
+			});
+		}
+
+		if (this.data.isShowNavAppBubble) {
+			this.setData({
+				isShowNavAppBubble: false,
+			});
+		}
+
+		this.setData({
+			isShowMainfieldNav: true
+		});
+	},
 });

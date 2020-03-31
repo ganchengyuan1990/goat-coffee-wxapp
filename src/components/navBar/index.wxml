@@ -1,0 +1,38 @@
+<view class="nav" style="height:{{status + navHeight}}px;background:{{background}}" wx:if="{{isShow}}">
+  <view class="status" style="height:{{status}}px;"></view>
+  <view class="navbar" style="height:{{navHeight}}px;">
+    <!-- 经测试后发现，ios机型，left-container只要top=4就能合右侧对齐 -->
+    <view class="left-container" style="top:{{navHeight === 48 ? 8 : 4}}px" wx:if="{{mainfieldNav || (!onlyHome && !onlyBack)}}">
+      <view class="home-icon" bindtap="home" wx:if="{{onlyHome}}">
+        <image src="{{styleType==='white'?'../../img/navbar/home-white.png':'../../img/navbar/home-black.png'}}"></image>
+      </view>
+      <view class="back-icon" bindtap="back" wx:else>
+        <image src="{{styleType==='white'?'../../img/navbar/return-white.png':'../../img/navbar/return-black.png'}}"></image>
+      </view>
+      <view class="left-divide" style="background:{{styleType==='white' ? 'rgba(255,255,255,0.3)':'rgba(0,0,0,0.2)' }}"></view>
+      <view class="nav-icon" bindtap="mainfieldNavExpand" wx:if="{{mainfieldNav}}">
+        <image src="{{'../../img/navbar/mainfield-white.png'}}"></image>
+        <view class="nav-app-bubble" wx:if="{{isBubbleShown && bubbleText}}">{{bubbleText}}</view>
+        <!--<view class="nav-bubble" wx:elif="{{isShowNavBubble}}" />-->
+      </view>
+      <view class="home-icon" bindtap="home" wx:else>
+        <image src="{{styleType==='white'?'../../img/navbar/home-white.png':'../../img/navbar/home-black.png'}}"></image>
+      </view>
+      <view class="left-border" style="border-color:{{styleType==='white'?'rgba(255,255,255,0.3)':'rgba(0,0,0,0.08)'}}"></view>
+    </view>
+
+    <view class="no-border" style="top:{{navHeight===48?8:6}}px" wx:else>
+      <view class="back-icon" bindtap="back" wx:if="{{onlyBack}}">
+        <image src="{{styleType==='white'?'../../img/navbar/return-white.png':'../../img/navbar/return-black.png'}}"></image>
+      </view>
+      <view class="home-icon" bindtap="home" wx:if="{{onlyHome}}">
+        <image src="{{styleType==='white'?'../../img/navbar/home-white.png':'../../img/navbar/home-black.png'}}"></image>
+      </view>
+      <view class="home-border" wx:if="{{onlyHome}}" style="border-color:{{styleType==='white'?'rgba(255,255,255,0.3)':'rgba(0,0,0,0.08)'}}"></view>
+    </view>
+    <view wx:if="{{showTitle}}" class="nav-title">
+      <view style="color:{{styleType === 'white' ? '#fff':'#000'}}; width: {{!!titleWidth ? titleWidth+'px':'100%'}};">{{title || '美团外卖'}}</view>
+    </view>
+  </view>
+</view>
+<view style="height:{{status + navHeight}}px;" wx:if="{{isShow}}"></view>

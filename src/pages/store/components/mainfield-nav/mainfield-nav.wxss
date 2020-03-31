@@ -1,0 +1,116 @@
+.mainfield-nav {
+    display: flex;
+    flex-flow: column nowrap;
+    z-index: 10000001;
+    width: 130px;
+    position: fixed;
+    background: #FFFFFF;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.06);
+    border-radius: 4px;
+    margin-left: 10px;
+    top: 75px;
+}
+.page-covering {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0);
+    z-index: 10000000;
+}
+.mainfield-nav::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 55px;
+    width: 20px;
+    height: 10px;
+    background: linear-gradient(135deg,transparent 7px,#fff 0),linear-gradient(-135deg,transparent 7px,#fff 0) 100% 0;
+    background-size: 50% 100%;
+    background-repeat: no-repeat;
+    z-index: 10000000;
+}
+.bottom-line {
+    height: 1px;
+    margin: 0 12px;
+    border-bottom: 0.5px solid #F2F2F2;
+    z-index: 10000020;
+}
+.nav-btn {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 0;
+}
+.nav-item {
+    width: 100%;
+    z-index: 10000002;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    border-radius: 4px;
+}
+.nav-icon {
+    height: 18px;
+    width: 18px;
+    margin-left: 12px;
+}
+.nav-txt {
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #333333;
+    margin-left: 8px;
+}
+.pindan-container .authorize-btn,
+.pindan-container .transparent-layer {
+  height:45px;
+  background-color:transparent;
+  width:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius: 4px;
+}
+.authorize-btn {
+    z-index: 10000007;
+}
+.transparent-layer {
+    z-index: 10000006;
+}
+
+.pindan-container {
+    position: relative;
+}
+/* .nav-child {
+    border-radius: 4px;
+} */
+/* .nav-child:not(:first-of-type):before {
+    position: absolute;
+    top: 0%;
+    left: 12px;
+    content: '';
+    width: 106px;
+    height: 1rpx;
+    margin: 0 12px;
+    z-index: 20000008;
+    border-bottom: 1px black solid;
+} */
+.bubble-txt {
+    position: relative;
+}
+
+.bubble-txt::after {
+    content: '';
+    position: absolute;
+    background-color: #FB4E44;
+    width: 8rpx;
+    height: 8rpx;
+    border-radius: 4rpx;
+    z-index: 20000000;
+    right: -5px;
+    top: 13px;
+}
+

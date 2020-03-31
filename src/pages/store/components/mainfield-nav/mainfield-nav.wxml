@@ -1,0 +1,66 @@
+<!-- 回首页 -->
+<template name="index_item">
+  <view class="homepage-nav nav-item" bindtap="onClickHomePageNav">
+    <image class="nav-icon" src="{{item.buttonPic}}"></image>
+    <view class="nav-txt {{item.showSwitch && item.isRedPointShown ? 'bubble-txt' : ''}}">{{item.buttonText}}</view>
+  </view>
+</template>
+
+<!-- 拼单button -->
+<template name="pindan_item">
+  <view class="pindan-container">
+    <block wx:if="{{!item.alreadyShared && item.hasPopUpImg}}">
+      <view class="nav-item" bindtap="onClickGetShareWindow">
+        <image class="nav-icon" src="{{item.buttonPic}}"></image>
+        <view class="nav-txt {{item.showSwitch && item.isRedPointShown ? 'bubble-txt' : ''}}">{{item.buttonText}}</view>
+      </view>
+    </block>
+    <!-- 处理认证和登录 -->
+    <block wx:else="">
+      <button wx:if="{{!item.isUserAuthorized}}" class="authorize-btn nav-btn" open-type="getUserInfo" bindgetuserinfo="onClickToAuthroize"></button>
+      <button class="nav-item nav-btn" bindtap="onClickBuyTogetherShare" open-type="share" id="buytogether">
+        <image class="nav-icon" src="{{item.buttonPic}}"></image>
+        <view class="nav-txt {{item.showSwitch && item.isRedPointShown ? 'bubble-txt' : ''}}">{{item.buttonText}}</view>
+      </button>
+      <view wx:if="{{item.showLoginLayer}}" bindtap="toLogin" class="transparent-layer"></view>
+    </block>
+  </view>
+</template>
+
+<!-- 请客入口 -->
+<!-- <template name="invite_item">
+  <invite-entry pageName="shop" bindtap="onClickNotShow">
+    <view slot="entry">
+      <view class="nav-item">
+        <image class="nav-icon" src="{{item.buttonPic}}"></image>
+        <view class="nav-txt {{item.showSwitch && item.isRedPointShown ? 'bubble-txt' : ''}}">{{item.buttonText}}</view>
+      </view>
+    </view>
+  </invite-entry>
+</template> -->
+
+<!-- 去 App button -->
+<template name="goapp_item">
+  <button class="nav-item nav-btn" bindtap="onItemTap" open-type="launchApp" app-parameter="{{item.appUrl}}" catchtap="launchAppTap" binderror="launchAppError">
+    <image class="nav-icon" src="{{item.buttonPic}}"></image>
+    <view class="nav-txt {{item.showSwitch && item.isRedPointShown ? 'bubble-txt' : ''}}">{{item.buttonText}}</view>
+  </button>
+</template>
+
+<!-- 分享button -->
+<template name="share_item">
+  <button class="reset-btn-to-view nav-item nav-btn" open-type="share" id="nav-share-btn" bindtap="onClickShareNav">
+    <image class="nav-icon" src="{{item.buttonPic}}"></image>
+    <view class="nav-txt {{item.showSwitch && item.isRedPointShown ? 'bubble-txt' : ''}}">{{item.buttonText}}</view>
+  </button>
+</template>
+
+<view class="mainfield-nav" wx:if="{{isShow}}" style="{{'top: ' + (11 + navHeight + status) + 'px'}}">
+  <block wx:for="{{buttonList}}" wx:key="{{index}}">
+    <view bindtap="onItemTap" data-name="{{item.templateName}}">
+      <template is="{{item.templateName}}" data="{{ item }}"></template>
+    </view>
+    <view class="bottom-line" wx:if="{{index < buttonList.length - 1}}"></view>
+  </block>
+</view>
+<view class="page-covering" wx:if="{{isShow}}" bind:tap="onClickNotShow" catchtouchmove="touchmoveHandler"></view>

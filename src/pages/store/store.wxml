@@ -29,6 +29,11 @@
     judgeSoldout: judgeSoldout
   }
 </wxs>
+
+<mainfield-nav wx:if="{{showPage}}" isShow="{{isShowMainfieldNav}}" params="{{quickNavParams}}" isInSharing="{{isInSharing}}" shareParams="{{buyTogetherShareBtn}}" hasPopUpImg="{{poiData.shopping_cart_entrance && poiData.shopping_cart_entrance.explain_popup_url}}" alreadyShared="{{alreadyShared}}" hasShareBtn="{{true}}" bindapp="lxNavLaunchApp" bindhome="lxBackHome" bindShowGoAppToast="goappToastOpened" bindonClickBuyTogetherShare="onClickBuyTogetherShare" bindonClickGetShareWindow="onClickGetShareWindow" bindtoLogin="toLogin" bindonClickToAuthroize="onClickToAuthroize" bindcancelMainfieldNav="onCancelNavExpand" capture-bind:tap="onPageTap"></mainfield-nav>
+
+<navBar styleType="white" title="{{headerTitle}}" background="#333333" show-title="{{!pageStatus.showNewHeader || (pageStatus.showNewHeader && isInSharing)}}" mainfieldNav="{{true}}" isShowNavBubble="{{isShowNavBubble}}" isShowNavAppBubble="{{isShowNavAppBubble}}" bindmainfieldNavExpand="onClickNavExpand" capture-bind:tap="onPageTap"></navBar>
+
 <view class="store-container">
 
   
