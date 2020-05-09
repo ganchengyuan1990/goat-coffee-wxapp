@@ -343,6 +343,19 @@
 					"pathName": "pages/devtools/index",
 					"query": "fromCoffeeMaker=1&from=store",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/my/coupon/coupon",
+					"pathName": "pages/my/coupon/coupon",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/member/index/index",
+					"pathName": "pages/member/index/index",
+					"scene": null
 				}
 			]
 		}

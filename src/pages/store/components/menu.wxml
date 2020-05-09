@@ -89,7 +89,9 @@
             </view>
             <view class='button_wrapper'>
                 <!-- <view class="btn-confirm" bindtap="goPocket">{{activityName || '买五送七'}}</view> -->
-                <view class="btn-confirm cart" bind:tap="save">立即购买</view>
+                <view class="btn-confirm cart" bind:tap="buyDirect">立即购买</view>
+                <view class="btn-confirm cart lighter_button" bind:tap="save">加入购物车</view>
+                
             </view>
         </view>
     </view>
@@ -141,7 +143,7 @@
                 </view> -->
 
                 <view wx:if="{{toggled}}" wx:for="{{info.sku_list}}" wx:key="idxOut" wx:for-index="idxOut" wx:for-item="skuItem">              
-                  <view class="opt-group" wx:for="{{skuItem.key_list}}" wx:key="index" wx:for-index="idx" wx:for-item="item">
+                  <view class="opt-group" wx:if="{{skuIndex === idxOut}}" wx:for="{{skuItem.key_list}}" wx:key="index" wx:for-index="idx" wx:for-item="item">
                       <view class="opt-tt">{{item.name}}</view>
                       <view class="opt-bd">
                           <view 

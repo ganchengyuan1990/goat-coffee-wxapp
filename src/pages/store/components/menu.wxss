@@ -332,10 +332,11 @@
 
 .cart {
   /* background: #F50000; */
-  position: absolute;
+  /* position: absolute;
   bottom: 0rpx;
-  right: 80rpx;
-  width: 82%;
+  right: 80rpx; */
+  width: 44%;
+  margin-right: 30rpx;
   border-radius: 6rpx;
 }
 
@@ -425,4 +426,10 @@
 
 .downer {
   top: 12rpx;
+}
+
+.lighter_button {
+  background:rgba(222, 65, 50, 1);
+  opacity:0.64;
+  border-radius:6rpx;
 }

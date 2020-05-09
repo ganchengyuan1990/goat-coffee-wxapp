@@ -107,6 +107,7 @@ Page({
     let configData = wx.getStorageSync('configData');
     let sum = wx.getStorageSync('cartSum')
     this.setData({
+      checkedAllStatus: true,
       sum: sum
     })
     // if (!token) {
@@ -884,7 +885,11 @@ Page({
       wx.removeStorageSync('deliverMention');
     }
 
-    const url = `/pages/pay/checkout/checkout?fromTransportId=${this.data.fromTransport && this.data.fromTransport.id}&fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${isNeedFee?'delivery':'selfTaking'}`
+    const goDirect = !this.data.checkedAllStatus
+
+    console.log(goDirect, 777);
+
+    const url = `/pages/pay/checkout/checkout?fromTransportId=${this.data.fromTransport && this.data.fromTransport.id}&fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${isNeedFee?'delivery':'selfTaking'}&goDirect=${Number(goDirect)}`
     // this.setData({
     //   isCartPanelShow: false
     // })

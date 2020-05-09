@@ -353,6 +353,69 @@ Component({
         });
       });
     },
+
+    buyDirect() {
+      if (!wx.getStorageSync('token')) {
+        this.toggleMenu();
+        wx.navigateTo({
+          url: '/pages/login/login'
+        });
+        return;
+      }
+      let info = this.data.info
+      let spec = this.data.customed
+      let skuList = info.sku_list
+      let hasDefault = skuList.filter(item => item.isdefault === 1)
+      if (!hasDefault) {
+        wx.showToast({
+          title: '请选择规格',
+          icon: 'none'
+        })
+        return
+      }
+
+      // let propList = info.key_list
+      // let propIds = []
+      // propList.forEach(i => {
+      //   let idObj = i.val_list.find(j => {
+      //     return parseInt(j.id) === parseInt(i.default_val_id)
+      //   })
+
+      //   if (idObj) {
+      //     propIds.push(idObj.prop_id)
+      //   }
+      // })
+
+      let propList = hasDefault[0].key_list
+      let propIds = []
+      propList.forEach(i => {
+        let idObj = i.val_list.find(j => {
+          return parseInt(j.id) === parseInt(i.default_val_id)
+        })
+
+        if (idObj) {
+          propIds.push(idObj.prop_id)
+        }
+      })
+
+      // let specPrice = Number(spec.match(/[\d\.]+/g))
+      let specPrice = Number(this.data.totalPrice || spec.match(/[\d\.]+/g));
+      if (this.data.count > 1) {
+        specPrice = specPrice / this.data.count
+      }
+
+      this.triggerEvent('godirect', {
+        skuId: hasDefault[0].id,
+        rPropGoodsIds: propIds.join(','),
+        number: this.data.count,
+        num: this.data.count,
+        banner: info.banner,
+        productName: info.productName,
+        memberPrice: Number(specPrice),
+        price: Number(hasDefault[0].price || specPrice)
+      })
+      this.toggleMenu()
+    },
     /**
      * 选择规格
      */
@@ -394,6 +457,8 @@ Component({
           price: finalPrice,
           currentSku: currentSku,
           skuIndex: idx
+        },() => {
+          console.log(this.data.skuIndex, 777);
         })
         this.setPrice()
       }

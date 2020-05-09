@@ -1196,7 +1196,7 @@ Page({
 				product: products
 			}
 
-			const url = `/pages/pay/checkout/checkout?isCoffeeMaker=1&fromTransportId=${this.data.fromTransport && this.data.fromTransport.id}&fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=selfTaking`
+			const url = `/pages/pay/checkout/checkout?isCoffeeMaker=1&fromTransportId=${this.data.fromTransport && this.data.fromTransport.id}&fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=selfTaking&goDirect=${Number(info.goDirect)}`
 			wx.navigateTo({
 				url: url,
 				success() {}
@@ -1209,6 +1209,30 @@ Page({
 				loading: false
 			});
 			console.log(e);
+		});
+	},
+
+	goDirect(info) {
+		wx.showLoading({
+			title: '跳转提单页', //提示的内容,
+			mask: true, //显示透明蒙层，防止触摸穿透,
+			success: res => {}
+		});
+		let products = [info.detail];
+
+
+
+		let obj = {
+			storeId: this.data.storeInfo.id,
+			payAmount: 0,
+			orderType: 1,
+			product: products
+		}
+
+		const url = `/pages/pay/checkout/checkout?goDirect=1&isCoffeeMaker=1&fromTransportId=${this.data.fromTransport && this.data.fromTransport.id}&fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=selfTaking`
+		wx.navigateTo({
+			url: url,
+			success() {}
 		});
 	},
 	toggleCart() {

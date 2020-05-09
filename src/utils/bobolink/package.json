@@ -1,0 +1,70 @@
+{
+  "_from": "bobolink",
+  "_id": "bobolink@3.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-YE0+2Q/5a/+Pj4HRbBe2xVp3HG6S1OnTSfb7up9L6gYL2le/FEFSnLTJna31J+Z8ctVvHlyRgEvfpyUfk6OpaA==",
+  "_location": "/bobolink",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "bobolink",
+    "name": "bobolink",
+    "escapedName": "bobolink",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/bobolink/-/bobolink-3.0.0.tgz",
+  "_shasum": "815296e9a384c8b8c40b545de23919888fa28cf5",
+  "_spec": "bobolink",
+  "_where": "/Users/ganchengyuan/wxapp/wechat-gasup-coffee",
+  "author": {
+    "name": "blurooo",
+    "email": "me@blurooo.com",
+    "url": "https://github.com/blurooo/"
+  },
+  "bugs": {
+    "url": "https://github.com/blurooo/bobolink/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "an intelligently scheduled task pool",
+  "devDependencies": {
+    "coveralls": "^3.0.5",
+    "mocha": "^5.2.0",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^14.1.1"
+  },
+  "homepage": "https://github.com/blurooo/bobolink#readme",
+  "keywords": [
+    "queue",
+    "task",
+    "schedule",
+    "concurrency",
+    "job",
+    "async",
+    "pool",
+    "partaker",
+    "bobolink",
+    "js-queue"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "bobolink",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blurooo/bobolink.git"
+  },
+  "scripts": {
+    "cov:local": "nyc npm test",
+    "cov:nyc": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "test": "mocha"
+  },
+  "version": "3.0.0"
+}

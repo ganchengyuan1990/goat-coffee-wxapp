@@ -26,7 +26,7 @@
                         <view class="item {{item.ifAvailable && !item.sku.can_distribution && isNeedFee ? 'not_delever' : ''}}" wx:for="{{cartGoods}}" wx:key="{{item.id}}" style="position:relative;">
                             <view class="wrap_item {{item.x < 0 ? 'turned' : ''}}" data-index="{{index}}">
                                 <!-- <view class="checkbox {{item.checked === false || !item.ifAvailable || (item.ifAvailable && !item.sku.can_distribution && isNeedFee) ? '' : 'checked'}}" data-item-index="{{index}}"></view> -->
-                                <!-- <view class="checkbox {{item.checked === false || !item.ifAvailable || (item.ifAvailable && !item.sku.can_distribution && isNeedFee) ? '' : 'checked'}}" bindtap="checkedItem" data-item-index="{{index}}"></view> -->
+                                <view class="checkbox {{item.checked === false || !item.ifAvailable || (item.ifAvailable && !item.sku.can_distribution && isNeedFee) ? '' : 'checked'}}" bindtap="checkedItem" data-item-index="{{index}}"></view>
                                 <view class="cart-goods">
                                     <view class="info first {{!item.ifAvailable ? '' : ''}}">
                                         <view class="good_img">

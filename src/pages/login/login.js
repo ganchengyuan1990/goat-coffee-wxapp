@@ -186,7 +186,7 @@ Page({
             wx.setStorageSync('token', data.data);
 
             if (this.judgeNewUser()) {
-                wx.switchTab({ url: '/pages/store/store' });
+                // wx.switchTab({ url: '/pages/store/store' });
             } else {
                 if (!data.data.ifNew) {
                     wx.switchTab({

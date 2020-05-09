@@ -50,6 +50,16 @@ Page({
     })
 
   },
+
+  getVeryMoney(money) {
+    let result;
+    if (money == parseInt(money)) {
+      result = parseInt(money)
+    } else {
+      result = parseFloat(money).toFixed(1)
+    }
+    return result;
+  },
   fetchCouponList() {
     model('my/coupon/list', {
       userId: wx.getStorageSync('token').user.id

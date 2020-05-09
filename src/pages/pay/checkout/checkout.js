@@ -215,6 +215,7 @@ Page({
     }
   },
   onLoad: function (options) {
+    console.log(options, 999);
     model('base/site/user-config-list').then(res => {
       wx.setStorageSync('userConfigList', res.data)
     }) 
@@ -282,9 +283,24 @@ Page({
     }
   },
 
+  parseProductsParam() {
+    let result = JSON.parse(JSON.stringify(this.data.options.product))
+    result.forEach(item => {
+      if (item.productPropIds) {
+        item.rGoodsPropIds = item.productPropIds.split(',');
+      }
+      if (item.rPropGoodsIds) {
+        item.rGoodsPropIds = item.rPropGoodsIds.split(',');
+      }
+    });
+    return result;
+  },
+
   getAddPriceGoods() {
     
     model('order/detail/add-price-goods', {
+      useCart: Number(!this.data.goDirect),
+      mockCarts: this.parseProductsParam(),
       storeId: this.data.options.storeId
       // openid: wx.getStorageSync('openid')
     }).then(res => {
@@ -312,7 +328,6 @@ Page({
   calGetTime (waitTime) {
 
     let nowTime = Date.parse(new Date());
-
     if (this.data.checkedAddress.coffeeMakerId) {
       waitTime = 1;
     } else {
@@ -367,8 +382,9 @@ Page({
 
   getAvailableCoupon () {
     model(`home/coupon/get-available-ded-coupon`, {
+      useCart: Number(!this.data.goDirect),
+      mockCarts: this.parseProductsParam(),
       uid: wx.getStorageSync('token').user.id,
-
       // storeId: 23
       storeId: this.data.options.storeId
       // list: [{
@@ -379,46 +395,28 @@ Page({
     }).then(data => {
       let a = new BigNumber(2048.8);
       let b = a.times(100);
-      console.log(parseInt(b));
-      console.log(2048.8 * 100);
+      console.log(data.data, '锐');
       if (data.data) {
         let result = data.data.coupons;
         // let couponList = result.filter(item => {
         //   return item.coupon.coupon_type !== 5 && item.coupon.coupon_type !== 2;
         // });
         let voucherList = result;
-        // let redPackList = result.filter(item => {
-        //   return item.coupon.coupon_type === 2;
-        // });
-        // if (this.data.bestCouponArr.length > 0) {
-        //   let couponArr = this.data.bestCouponArr;
-        //   couponArr.forEach(item => {
-        //     if (item.couponType == 2) {
-        //       redPackList.forEach((ele, index) => {
-        //         if (ele.id == item.id) {
-        //           var target = redPackList.splice(index, 1);
-        //           redPackList.unshift(target[0]);
-        //         }
-        //       });
-        //     } else if (item.couponType == 5) {
-        //       voucherList.forEach((ele, index) => {
-        //         if (ele.id == item.id) {
-        //           var target = voucherList.splice(index, 1);
-        //           voucherList.unshift(target[0]);
-        //         }
-        //       });
-        //     } else {
-        //       couponList.forEach((ele, index) => {
-        //         if (ele.id == item.id) {
-        //           var target = couponList.splice(index, 1);
-        //           couponList.unshift(target[0]);
-        //         }
-        //       });
-        //     }
-        //   });
-        // }
+
+        const _chosenInfo = voucherList && voucherList.length > 0 ? {
+          content: [{
+            id: voucherList[0].couCode,
+            relationId: voucherList[0].couCode,
+            type: 3
+          }],
+          type: 3
+        } : {
+          content: []
+        }
+        console.log(_chosenInfo, '锐3');
         this.setData({
-          voucherList
+          voucherList,
+          chosenInfo: _chosenInfo
         })
         
         
@@ -437,8 +435,10 @@ Page({
   getBestCouponByProduct () {
     
     model(`home/coupon/get-available-ded-coupon`, {
+      useCart: Number(!this.data.goDirect),
+      mockCarts: this.parseProductsParam(),
       uid: wx.getStorageSync('token').user.id,
-      // uid: 1,
+      // storeId: 23
       storeId: this.data.options.storeId
     }).then(data => {
       if (data.data) {
@@ -464,42 +464,6 @@ Page({
           redPackList
         } = this.data;
         
-        // couponArr.forEach(item => {
-        //   couponUserRelation.push(item.userRelation);
-        // });
-        // setTimeout(() => {
-        //   couponArr.forEach(item => {
-        //     if (item.couponType == 2) {
-        //       redPackList.forEach((ele, index) => {
-        //         if (ele.id == item.id) {
-        //           var target = redPackList.splice(index, 1);
-        //           redPackList.unshift(target);
-        //         }
-        //       });
-        //     } else if (item.couponType == 5) {
-        //       voucherList.forEach((ele, index) => {
-        //         if (ele.id == item.id) {
-        //           var target = voucherList.splice(index, 1);
-        //           voucherList.unshift(target);
-        //         }
-        //       });
-        //     } else {
-        //       couponList.forEach((ele, index) => {
-        //         if (ele.id == item.id) {
-        //           var target = couponList.splice(index, 1);
-        //           couponList.unshift(target);
-        //         }
-        //       });
-        //     }
-        //   });
-        //   if (voucherList.length > 0 || couponList.length > 0 || redPackList.length > 0) {
-        //     this.setData({
-        //       couponList: couponList,
-        //       voucherList: voucherList,
-        //       redPackList: redPackList
-        //     })
-        //   }
-        // }, 1000);
         couponUserRelation = couponUserRelation.join(',');
         if (data.data.type === 2) {
           this.setData({
@@ -570,7 +534,6 @@ Page({
           levelMoney: levelMoney && levelMoney !== 'NaN' ? levelMoney : 0,
           couponMoney: result && result !== 'NaN' ? result : 0,
           hasGetBestSolution: true,
-          // actualPrice: parseFloat(actualPrice).toFixed(2),
           actualPrice: actualPrice,
           discountType: data.data.type,
           couponUserRelation: couponUserRelation,
@@ -599,7 +562,6 @@ Page({
           actualPrice = 0
         }
          this.setData({
-           // actualPrice: parseFloat(actualPrice),
           actualPrice: actualPrice,
           discountType: 0
          }, () => {
@@ -681,6 +643,7 @@ Page({
       });
       options.product = JSON.parse(JSON.stringify(product));
       this.setData({
+        goDirect: parseInt(items.goDirect || 0),
         actualPriceGap: parseFloat(payAmount - memberPayAmount).toFixed(1),
         options: options,
         product: product,
@@ -935,9 +898,11 @@ Page({
     let param = {
       // couponList: this.data.chosenInfo.type ? this.data.chosenInfo.content : [],
       // couCodes: this.data.chosenInfo.type ? this.data.chosenInfo.content[0].id : '',
-      productList: this.data.product,
+      // productList: this.data.product,
       storeId: this.data.options.storeId,
-      uid: wx.getStorageSync('token').user.id
+      uid: wx.getStorageSync('token').user.id,
+      useCart: Number(!this.data.goDirect),
+      mockCarts: this.parseProductsParam()
     }
     if (userCouponIds.length > 0) {
       param.couCodes = this.data.chosenInfo.type ? this.data.chosenInfo.content[0].id : ''
@@ -1134,6 +1099,7 @@ Page({
           }
           if (this.data.chosenInfo && this.data.chosenInfo.content && this.data.chosenInfo.content[0] && this.data.chosenInfo.content[0].id) {
             param.couCodes = this.data.chosenInfo.content[0].id;
+            console.log(param.couCodes, '锐');
           }
           if (this.data.chooseItemXiguan) {
             param.remark += ' 需要吸管';
@@ -1174,6 +1140,10 @@ Page({
 
           if (this.data.guaerItems.length > 0) {
             param.guaerUserCouponId = this.data.guaerItems[0].guaerUserCoupon.id
+          }
+          if (this.data.goDirect) {
+            param.useCart = Number(!this.data.goDirect);
+            param.mockCarts = JSON.stringify(this.parseProductsParam());
           }
 
           // param.list = JSON.stringify(products);
