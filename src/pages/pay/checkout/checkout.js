@@ -812,10 +812,10 @@ Page({
   // },
 
   goAddressList () {
-    let type = this.data.isCoffeeMaker ? 'delivery' : 'selfTaking'
-    wx.navigateTo({
-      url: `/pages/transport/transport?from=store&tab=${type}`,
-    })
+    // let type = this.data.isCoffeeMaker ? 'delivery' : 'selfTaking'
+    // wx.navigateTo({
+    //   url: `/pages/transport/transport?from=store&tab=${type}`,
+    // })
   },
 
   goRemark () {

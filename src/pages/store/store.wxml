@@ -71,7 +71,8 @@
         </block>
         <block wx:else>
           <view class="tt tt_high" data-delivery="selfTaking">
-            <view class="addr">{{storeInfo.storeName}}<text wx:if="{{storeInfo.coffeeMakerId}}">（编号{{storeInfo.coffeeMakerId}}）</text></view>
+            <view class="addr">{{storeInfo.storeName}}</view>
+            <!-- <view class="addr">{{storeInfo.storeName}}<text wx:if="{{storeInfo.coffeeMakerId}}">（编号{{storeInfo.coffeeMakerId}}）</text></view> -->
             <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
           </view>
           <!-- <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view> -->
