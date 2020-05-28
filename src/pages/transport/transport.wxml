@@ -85,6 +85,10 @@
                         </view>
                     </view>
                 </view>
+                <view class="no_zizhuji" wx:if="{{!searchSuggest || searchSuggest.length === 0}}">
+                    <image src="../../images/no_zizhuji.png" />
+                    <view>附近暂时没有店铺哦～</view>
+                </view>
             </scroll-view>
         </view>
 

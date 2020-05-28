@@ -225,11 +225,14 @@ Page({
         this.setData({
           cities: list,
           initShopList: shopList,
-          zizhuList: zizhuList
+          // zizhuList: zizhuList
         })
         this.setAllShopList(shopList, zizhuList);
       }
       
+    }).catch(e => {
+      console.log(e, 'home/lbs/get-store-list-with-city');
+      wx.hideLoading();
     })
   },
 
@@ -282,10 +285,20 @@ Page({
     let index = parseInt(e.target.dataset.index);
     this.setData({
       thirdCitySelected: index,
-      searchSuggest: this.data.thirdCities[index].value,
+      // searchSuggest: this.data.thirdCities[index].value,
+
       showCities: false,
       city3: this.data.thirdCities[index].key
     });
+    if (this.data.showExpress) {
+      this.setData({
+        zizhuList: this.data.thirdCities[index].value.filter(item => item.scene == 2)
+      })
+    } else {
+      this.setData({
+        searchSuggest: this.data.thirdCities[index].value.filter(item => item.scene == 1)
+      })
+    }
   },
 
   showExpressList () {
@@ -502,21 +515,27 @@ Page({
       item.distance = item.distance >= 3000 ? '>3' : item.distance;
       return item;
     });
-
-    shopList = initShopList.filter(item => {
-      return item.prov == initShopList[minIndex].prov && item.city == initShopList[minIndex].city && item.area == initShopList[minIndex].area;
-    })
+    if (this.data.showExpress) {
+      shopList = zizhuList.filter(item => {
+        return item.prov == zizhuList[minIndex].prov && item.city == zizhuList[minIndex].city && item.area == zizhuList[minIndex].area;
+      })
+    } else {
+      shopList = initShopList.filter(item => {
+        return item.prov == initShopList[minIndex].prov && item.city == initShopList[minIndex].city && item.area == initShopList[minIndex].area;
+      })
+    }
+    
 
     wx.hideLoading();
 
     wx.setStorageSync('shopList', initShopList);
     this.setData({
-        city1: initShopList[minIndex].prov,
-        city2: initShopList[minIndex].city,
-        city3: initShopList[minIndex].area,
+        city1: this.data.showExpress ? zizhuList[minIndex].prov : initShopList[minIndex].prov,
+        city2: this.data.showExpress ? zizhuList[minIndex].city : initShopList[minIndex].city,
+        city3: this.data.showExpress ? zizhuList[minIndex].area : initShopList[minIndex].area,
         minIndex: minIndex,
         searchSuggest: shopList,
-        zizhuList: zizhuList,
+        zizhuList: shopList,
     });
   },
 
