@@ -332,7 +332,7 @@ Page({
         })
 
         wx.setNavigationBarTitle({
-            title: parseInt(option.type) == 3 ? '可用满减券' : parseInt(option.type) == 2 ? '可用兑换券' : '可用优惠券'
+            title: parseInt(option.type) == 3 ? '可用红包券' : parseInt(option.type) == 2 ? '可用兑换券' : '可用满减券'
         })
 
         // return ;

@@ -12,7 +12,9 @@ Page({
     couponItems: [],
     voucherItems: [],
     type: 1,
-    loading: true
+    loading: true,
+
+    chosenType: 1
   },
 
   /**
@@ -25,7 +27,7 @@ Page({
     });
     if (type == 2) {
       // 优惠券
-      this.fetchCouponList()
+      this.fetchCouponList(1)
     } else {
       this.fetchVoucherList()
     }
@@ -51,6 +53,22 @@ Page({
 
   },
 
+  chooseTypeFirst(e) {
+    this.setData({
+      chosenType: 1
+    })
+    console.log(777)
+    this.fetchCouponList(1)
+  },
+
+  chooseTypeSecond(e) {
+    this.setData({
+      chosenType: 2
+    })
+    console.log(777)
+    this.fetchCouponList(2)
+  },
+
   getVeryMoney(money) {
     let result;
     if (money == parseInt(money)) {
@@ -60,9 +78,10 @@ Page({
     }
     return result;
   },
-  fetchCouponList() {
+  fetchCouponList(type) {
     model('my/coupon/list', {
-      userId: wx.getStorageSync('token').user.id
+      userId: wx.getStorageSync('token').user.id,
+      type: type
     }).then(data => {
       let result = data.data.userCoupons;
       result.map(element => {

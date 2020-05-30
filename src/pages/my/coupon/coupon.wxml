@@ -1,90 +1,63 @@
+<view class="header-tabs-container">
+    <view catchtap="chooseTypeFirst" data-index="1" class="header-tab-item {{chosenType == 1 ? 'tab-item-active' : ''}}">
+        未使用
+        <view wx:if="{{chosenType == 1}}" class="bottom_line"></view>
+    </view>
+    <view catchtap="chooseTypeSecond" data-index="2" class="header-tab-item {{chosenType == 2 ? 'tab-item-active' : ''}}">
+        已失效
+        <view wx:if="{{chosenType == 2}}" class="bottom_line"></view>
+    </view>
+</view>
+
 <view class="wrapper {{couponItems.length === 0 && voucherItems.length === 0 ? 'no_list_data' : ''}}">
     <view class="group-wrapper">
         <view class="group">
-            <view class="title-box" wx:if="{{type == 2 && couponItems.length > 0}}">
-                <!-- <view class="line"></view> -->
+            <!-- <view class="title-box" wx:if="{{type == 2 && couponItems.length > 0}}">
                 <text class="title">可用优惠券</text>
                 <text class='number'>{{couponItems.length}}张</text>
-            </view>
+            </view> -->
+
+            
             <checkbox-group class="radio-group">
                 <label wx:for="{{couponItems}}" wx:for-index="idx" wx:for-item="item" class="list-item-label" wx:key="{{idx}}">
                     <view class="list-item">
                         <view class="inner_border"> 
-                            <view class='left-part'>
-                                <view class="list-item-deal {{item.coupon.coupon_type === 2 ? 'no_margin_left' : ''}}">
-                                    <label class="deal-icon"></label>
-                                    <label class="deal-num" wx:if="{{item.coupon.coupon_type === 1}}">
-                                        <text class='bigger_text'>{{item.coupon.discount}}</text><text style="font-size: 26rpx; margin-left: 5rpx;">折</text>
-                                    </label>
-                                    <label class="deal-num" wx:if="{{item.coupon.coupon_type === 2}}">
-                                        <text class='money'>￥</text>{{item.coupon.manjian_cash}}
-                                    </label>
-                                    <label class="deal-num" wx:if="{{item.coupon.coupon_type === 3}}">
-                                        <text class='money'>￥</text>{{item.coupon.zhigou_cash}}
-                                    </label>
-                                    <label class="deal-num" style="font-size: 60rpx; margin-left:25rpx;" wx:if="{{item.coupon.coupon_type === 6 || item.coupon.coupon_type === 4}}">
-                                        赠
-                                    </label>
-                                    <label class="deal-num" style="font-size: 60rpx; margin-left:25rpx;" wx:if="{{item.coupon.coupon_type === 5}}">
-                                        兑
-                                    </label>
-                                </view>
-
-                                <view wx:if="{{item.coupon.coupon_type !== 2}}" style="color: #DE4132; font-size: 20rpx;max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center;">
-                                    仅限{{item.xianzhi}}
-                                </view>
-                                <view wx:else style="color: #DE4132; font-size: 20rpx;max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center;">
-                                    满{{item.coupon.manjian_price_available}}元可用
-                                </view>
-
-                            </view>
                             <view class='right-part'>
                                 <view class="list-item-name">
                                     <view class="promotion-description">{{item.coupon.coupon_name}}</view>
                                     <view class="promotion-limit-tip" wx:if="{{item.end_time}}">
                                         有效期至{{item.end_time}}
                                     </view>
-                                    <view style="height: 35rpx;line-height:35rpx;" data-index="{{idx}}" catchtap="showRule">
-                                        <text class="use_inter use_inter">使用规则 <text class="fast_icon"></text></text>
-                                    </view>
+                                    
                                 </view>
                             </view>
+                            <view class='left-part'>
 
+                                <view style="margin-top: 20rpx; color: #DE4132; font-size: 24rpx;max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;">
+                                    <text wx:if="{{item.coupon.coupon_type == 2}}">券类型：满减券</text>
+                                    <text wx:if="{{item.coupon.coupon_type == 3 || item.coupon.coupon_type == 4}}">券类型：兑换券</text>
+                                    <text wx:if="{{item.coupon.coupon_type == 5}}">券类型：红包券</text>
+                                </view>
+
+                                <view style="height: 35rpx;line-height:35rpx; position: absolute; right: 40rpx; bottom: 0rpx;" data-index="{{idx}}" catchtap="showRule">
+                                    <text class="use_inter use_inter">使用规则 <text class="fast_icon"></text></text>
+                                </view>
+
+                            </view>
+                            
+<!-- 
                             <view class="coupon-right lefter">
                                 <view class='use_button'>立即使用</view>
-                            </view>
+                            </view> -->
                         </view>
                     </view>
-                    <view wx:if="{{item.showRule}}" class="inner" style=" border-top: 3rpx solid #fff; position: relative; top: -1rpx; "> 
+                    <view wx:if="{{item.showRule}}" class="inner" style=" border-top: 3rpx solid #fff; position: relative; top: -11rpx; "> 
                         <view style="padding: 20rpx;color: #999; font-size: 24rpx; width: 96%; word-wrap : break-word ; padding-top: 0;">{{item.coupon.coupon_bref}}</view>
                     </view>
                 </label>
-                <label wx:for="{{voucherItems}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}" class="list-item" bindtap="goStore">
-                    <view class='cover-top'></view>
-                    <view class='cover-bottom'></view>
-                    <view class='left-part'>
-                        <!-- <checkbox value="{{idx}}" class="checkbox {{item.checked ? 'wx-checkbox-input-checked' : 'wx-checkbox-input'}}" data-id="{{idx}}" checked="{{item.checked}}" /> -->
-                        <view class="list-item-deal no_margin_left">
-                            <label class="deal-icon"></label>
-                            <label class="deal-num"><text class='money'>￥</text>{{item.voucher.voucherPrice}}</label>
-                        </view>
-                        <view>
-                            剩余3张
-                        </view>
-                    </view>
-                    <view class='right-part'>
-                        <view class="list-item-name">
-                            <view class="promotion-description {{item.voucher && item.voucher.startTime ? '' : 'higher'}}">{{item.voucher.voucherName}}</view>
-                            <view class="promotion-limit-tip" wx:if="{{item.voucher && item.voucher.startTime && item.voucher.endTime}}">
-                                {{item.voucher.startTime}} - {{item.voucher.endTime}}
-                            </view>
-                        </view>
-                    </view>
-                    <!-- <view class="coupon-right">
-                        <image src="../../../images/coffee_cup_2@2x.png" />
-                    </view> -->
-                </label>
+
             </checkbox-group>
+
             <!-- <promotion promotions="{{array}}" category="promotion" bind:myevent="onMyEvent"></promotion> -->
         </view>
         <!-- <view class="no_coupon_wrapper" wx:if="{{activedItems.length === 0}}">
