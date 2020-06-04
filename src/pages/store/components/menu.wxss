@@ -278,6 +278,7 @@
   align-items: center;
   position: relative;
   top: 0rpx;
+  z-index: 10000;
 }
 
 .counter-wrap .counter .num {

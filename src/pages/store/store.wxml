@@ -232,22 +232,24 @@
       bind:goorder="goOrder"
       bind:godirect="goDirect"></menu-wrap>
   </view>
-  <view class="act-wrap" wx:if="{{isActWrapShow}}">
+  <!-- <view class="act-wrap" wx:if="{{isActWrapShow}}">
     <view class="mask {{isActWrapShow ? 'active':''}}"></view>
     <view class="cnt">
       <view class="btn-close" bind:tap="hideActWrap"></view>
       <image src="{{actImage}}" mode="widthFix"></image>
     </view>
-  </view>
+  </view> -->
 
 
   <view class="act-wrap" wx:if="{{isActWrapShow}}" bindtap="closeToast">
     <view class="mask {{isActWrapShow ? 'active':''}}" bindtap="closeToast"></view>
     <view class="cnt">
       <view class="btn-close" catchtap="closeToast"></view>
-      <ml-navigator style="width: 100%;" redirect_url="{{actUrl}}" redirect_route="{{actRoute}}" bindcustomevent="closeToast">
-        <image src="{{actImage}}" mode="widthFix"></image>
-      </ml-navigator>
+      <view style="position: relative; z-index: 1000; width: 100%;">
+        <ml-navigator style="width: 100%;" redirect_url="{{actUrl}}" redirect_route="{{actRoute}}" bindcustomevent="closeToast">
+          <image src="{{actImage}}" mode="widthFix"></image>
+        </ml-navigator>
+      </view>
     </view>
   </view>
 

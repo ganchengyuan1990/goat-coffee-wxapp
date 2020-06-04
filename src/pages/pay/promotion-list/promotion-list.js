@@ -19,6 +19,7 @@ Page({
         chosenInfo: {},
         canUseRedPacketMeanwhile: false,
         type: 2,
+        chosenType: 1,
         products: [],
         chosenVoucher: -1,
         chosenCoupon: -1,
@@ -38,7 +39,7 @@ Page({
         })
         // https: //heibanbao.wang/api/v1/server/my/coupon/list?userId=7447
         let userId = wx.getStorageSync('token').user.id;
-        if (type == 2) {
+        if (type == 200) {
             Promise.all([model(`my/coupon/list?userId=${userId}&type=1`), model(`my/coupon/list?userId=${userId}&type=3`)]).then(resArr => {
                 let res1 = resArr[0];
                 let res2 = resArr[1];
@@ -130,9 +131,9 @@ Page({
     },
     onMyEvent: function (e) {
         // 选择一项就返回，并用setData把选中的那项以外的其他项checked设为空
-        if (this.data.couponType !== 1) {
-            return;
-        }
+        // if (this.data.couponType !== 1) {
+        //     return;
+        // }
 
         let idArray = e.detail.value;
         let newValue;
@@ -196,21 +197,47 @@ Page({
             } else if (this.data.type === 1 || this.data.type === 3 || this.data.type === 2) {
                 // 咖啡钱包逻辑不通
                 let checkBool = target + '[' + index + '].checked';
-                let target = parseInt(newValue[newValue.length - 1]);
+                let newTarget = parseInt(newValue[newValue.length - 1]);
                 // newValue.forEach((itm) => {
                 //     targetArr.push(parseInt(itm));
                 // })
-                let voucherItems = this.data.voucherItems;
-                voucherItems.forEach(item => {
-                    item.checked = false;
-                })
-                if (newValue.length > 0) {
-                    voucherItems[target].checked = true;
+
+                if (target === 'redPackItems') {
+                    let redPackItems = this.data.redPackItems;
+                    redPackItems.forEach(item => {
+                        item.checked = false;
+                    })
+                    if (newValue.length > 0) {
+                        redPackItems[newTarget].checked = true;
+                    }
+                    this.setData({
+                        redPackItems
+                    })
+                } else if (target === 'voucherItems') {
+                    let voucherItems = this.data.voucherItems;
+                    voucherItems.forEach(item => {
+                        item.checked = false;
+                    })
+                    if (newValue.length > 0) {
+                        voucherItems[newTarget].checked = true;
+                    }
+                    this.setData({
+                        voucherItems,
+                    })
+                } else {
+                    let couponItems = this.data.couponItems;
+                    couponItems.forEach(item => {
+                        item.checked = false;
+                    })
+                    if (newValue.length > 0) {
+                        couponItems[newTarget].checked = true;
+                    }
+                    this.setData({
+                        couponItems,
+                    })
                 }
                 
-                this.setData({
-                    voucherItems: voucherItems
-                })
+                
                 // if (targetArr.indexOf(index) > -1) {
                 //     this.setData({
                 //         [checkBool]: true
@@ -247,15 +274,27 @@ Page({
             });
             return;
         }
-        if (this.data.type === 2 || this.data.type === 1) {
+        if (this.data.type === 2 || this.data.type === 1 || this.data.type === 3) {
             let chosenInfoArr = [];
             if (this.data.type === 2) {
                 this.data.voucherItems.forEach(element => {
                     if (element.checked) {
                         chosenInfoArr.push({
                             type: this.data.type,
-                            id: element.couCode,
-                            relationId: element.couCode
+                            id: element.id,
+                            relationId: element.id,
+                            user_coupon_source: element.user_coupon_source
+                        })
+                    }
+                });
+            } else if (this.data.type === 3) {
+                this.data.redPackItems.forEach(element => {
+                    if (element.checked) {
+                        chosenInfoArr.push({
+                            type: this.data.type,
+                            id: element.id,
+                            relationId: element.id,
+                            user_coupon_source: element.user_coupon_source
                         })
                     }
                 });
@@ -264,8 +303,9 @@ Page({
                     if (element.checked) {
                         chosenInfoArr.push({
                             type: this.data.type,
-                            id: element.couCode,
-                            relationId: element.couCode
+                            id: element.id,
+                            relationId: element.id,
+                            user_coupon_source: element.user_coupon_source
                         })
                     }
                 });
@@ -274,6 +314,7 @@ Page({
             this.setData({
                 chosenInfo: {
                     type: this.data.type,
+                    user_coupon_source: chosenInfoArr[0].user_coupon_source,
                     content: chosenInfoArr
                 }
             });
@@ -310,10 +351,20 @@ Page({
     onLoad: function (option) {
         // let array = JSON.parse(option.array);
         let chosenId = option.chosenId;
-        let activedItems = [];
-        let unActivedItems = [];
+        let redPackList = [];
+        let couponList = [];
+        let voucherList = [];
+        if (option.type == 3) {
+            redPackList = JSON.parse(option.list);
+        } else if (option.type == 2) {
+             voucherList = JSON.parse(option.list);
+        } else {
+            couponList = JSON.parse(option.list);
+        }
+        // let activedItems = [];
+        // let unActivedItems = [];
         let guaerItems = getApp().globalData.guaerItems;
-        let voucherList = JSON.parse(JSON.stringify(wx.getStorageSync('voucherList')))
+        // let voucherList = JSON.parse(JSON.stringify(wx.getStorageSync('voucherList')))
         // guaerItems = sssss.splice(0, 1);
         // guaerItems.forEach(element => {
         //     if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
@@ -325,9 +376,12 @@ Page({
         //     }
         // });
         this.setData({
+            couponType: parseInt(option.type) || 2,
             type: parseInt(option.type) || 2,
 
-            voucherItems: voucherList,
+            // voucherItems: voucherList,
+            // couponItems: couponList,
+            // redPackItems: redPackList,
             guaerItems: guaerItems || []
         })
 
@@ -336,15 +390,15 @@ Page({
         })
 
         // return ;
-        if (this.data.type === 1) {
+        if (option.type == 1) {
             // let list = JSON.parse(option.list);
-            let list = wx.getStorageSync('couponList');
+            let list = couponList;
             let chosenInfo = {
                 type: 1,
                 contents: []
             };
             let chosenCouponArr = option.chosenCoupon.split(',');
-            list.map(element => {
+            couponList.map(element => {
                 if (element.coupon.discount || element.coupon.discount == 0) {
                     element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
                 }
@@ -412,14 +466,14 @@ Page({
             //         couponItems: data.data
             //     })
             // })
-        } else if (this.data.type === 3) {
+        } else if (option.type == 3) {
             // let list = JSON.parse(option.list);
-            let list = wx.getStorageSync('redPackList');
+            let list = redPackList;
             let chosenInfo = {
                 type: 3,
                 contents: []
             };
-            list.map(element => {
+            redPackList.map(element => {
                 if (element.coupon.discount || element.coupon.discount == 0) {
                     element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
                 }
@@ -482,9 +536,9 @@ Page({
             // })
         } else {
             // let list = JSON.parse(option.list);
-            let list = wx.getStorageSync('voucherList');
+            let list = voucherList;
             let chosenVoucherArr = option.chosenVoucher.split(',');
-            list.forEach(item => {
+            voucherList.forEach(item => {
                 if (item.discount) {
                     item.discount = parseFloat(item.discount).toFixed(1);
                 }
@@ -497,7 +551,7 @@ Page({
                 if (item.endTime) {
                     item.endTime = item.endTime.split(' ')[0]
                 }
-                let checked = (chosenVoucherArr[0] === item.couCode);
+                let checked = (chosenVoucherArr[0] == item.id);
                 // chosenVoucherArr.forEach(ele => {
                 //     debugger
                 //     if (item.couCode == ele) {

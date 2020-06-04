@@ -1,12 +1,12 @@
 <view class="header-tabs-container">
     <view catchtap="chooseTypeFirst" data-index="1" class="header-tab-item {{chosenType == 1 ? 'tab-item-active' : ''}}">
-        可用券
+        可使用
         <view wx:if="{{chosenType == 1}}" class="bottom_line"></view>
     </view>
-    <!-- <view catchtap="chooseTypeSecond" data-index="2" class="header-tab-item {{chosenType == 2 ? 'tab-item-active' : ''}}">
+    <view catchtap="chooseTypeSecond" data-index="2" class="header-tab-item {{chosenType == 2 ? 'tab-item-active' : ''}}">
         不可使用
         <view wx:if="{{chosenType == 2}}" class="bottom_line"></view>
-    </view> -->
+    </view>
 </view>
 
 <view class="wrapper {{couponItems.length === 0 && voucherItems.length === 0 && redPackItems.length === 0 ? 'no_list_data' : ''}}">
@@ -31,8 +31,8 @@
                             <view class='left-part'>
 
                                 <view style="margin-top: 20rpx; color: #DE4132; font-size: 24rpx;max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;">
-                                    <text wx:if="{{item.coupon.coupon_type == 2 || item.coupon.coupon_type == 11}}">券类型：满减券</text>
-                                    <text wx:if="{{item.coupon.coupon_type == 3 || item.coupon.coupon_type == 4 || !item.coupon.coupon_type}}">券类型：兑换券</text>
+                                    <text wx:if="{{item.coupon.coupon_type == 2}}">券类型：满减券</text>
+                                    <text wx:if="{{item.coupon.coupon_type == 3 || item.coupon.coupon_type == 4}}">券类型：兑换券</text>
                                     <text wx:if="{{item.coupon.coupon_type == 5}}">券类型：红包券</text>
                                 </view>
 
@@ -68,8 +68,8 @@
                             <view class='left-part'>
 
                                 <view style="margin-top: 20rpx; color: #DE4132; font-size: 24rpx;max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;">
-                                    <text wx:if="{{item.coupon.coupon_type == 2 || item.coupon.coupon_type == 11}}">券类型：满减券</text>
-                                    <text wx:if="{{item.coupon.coupon_type == 3 || item.coupon.coupon_type == 4 || !item.coupon.coupon_type}}">券类型：兑换券</text>
+                                    <text wx:if="{{item.coupon.coupon_type == 2}}">券类型：满减券</text>
+                                    <text wx:if="{{item.coupon.coupon_type == 3 || item.coupon.coupon_type == 4}}">券类型：兑换券</text>
                                     <text wx:if="{{item.coupon.coupon_type == 5}}">券类型：红包券</text>
                                 </view>
 
@@ -105,8 +105,8 @@
                             <view class='left-part'>
 
                                 <view style="margin-top: 20rpx; color: #DE4132; font-size: 24rpx;max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;">
-                                    <text wx:if="{{item.coupon.coupon_type == 2 || item.coupon.coupon_type == 11}}">券类型：满减券</text>
-                                    <text wx:if="{{item.coupon.coupon_type == 3 || item.coupon.coupon_type == 4 || !item.coupon.coupon_type}}">券类型：兑换券</text>
+                                    <text wx:if="{{item.coupon.coupon_type == 2}}">券类型：满减券</text>
+                                    <text wx:if="{{item.coupon.coupon_type == 3 || item.coupon.coupon_type == 4}}">券类型：兑换券</text>
                                     <text wx:if="{{item.coupon.coupon_type == 5}}">券类型：红包券</text>
                                 </view>
 
@@ -132,17 +132,17 @@
         </view>
 
 
-        <view class="no_coupon_wrapper" wx:if="{{couponItems.length === 0 && couponType === 1 && !loading}}">
+        <view class="no_coupon_wrapper" wx:if="{{couponItems.length === 0 && type === 2 && !loading}}">
             <image class='no_coupon' src="../../../images/no_redpack.png" />
             <view class="mention">暂无可用优惠券</view>
         </view>
 
-        <view class="no_coupon_wrapper" wx:if="{{voucherItems.length === 0  && couponType === 2 && !loading}}">
+        <view class="no_coupon_wrapper" wx:if="{{voucherItems.length === 0  && type === 1 && !loading}}">
             <image class='no_coupon' src="../../../images/no_voucher.png" />
             <view class="mention">暂无可用兑换券</view>
         </view>
 
-        <view class="no_coupon_wrapper" wx:if="{{redPackItems.length === 0 && couponType === 3 && !loading}}">
+        <view class="no_coupon_wrapper" wx:if="{{redPackItems.length === 0 && type === 3 && !loading}}">
             <image class='no_coupon' src="../../../images/no_redpack.png" />
             <view class="mention">暂无可用红包券</view>
         </view>

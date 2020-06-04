@@ -751,7 +751,7 @@ page::after {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 998;
+  z-index: 99998;
 }
 
 .act-wrap .mask {
@@ -764,6 +764,7 @@ page::after {
   pointer-events: none;
   opacity: 0;
   transition: all .5s;
+  z-index: 99998;
 }
 
 .act-wrap .mask.active {
@@ -780,6 +781,7 @@ page::after {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 99998;
 }
 
 .act-wrap .cnt image {

@@ -5,7 +5,8 @@ page {
 .wrapper {
     background: #f6f6f6;
     padding-bottom: 30rpx;
-    /* height: calc(100vh - 0rpx); */
+    height: calc(100vh - 90rpx);
+    overflow: scroll;
 }
 
 .promotion-tip {
@@ -404,6 +405,7 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
     margin: 0 30rpx;
     line-height: 86rpx;
     position: relative;
+    z-index: 1000;
 
 }
 
