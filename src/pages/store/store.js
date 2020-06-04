@@ -643,8 +643,8 @@ Page({
 						longitude
 					} = res
 					console.log(latitude, longitude, '定位信息');
-					latitude = 31.1949185300
-					longitude = 121.3103584400
+					// latitude = 31.1949185300
+					// longitude = 121.3103584400
 					let geo = {
 						lng: longitude,
 						lat: latitude

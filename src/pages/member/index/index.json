@@ -3,5 +3,6 @@
     "usingComponents": {
         "toast": "../../../components/toast/toast",
         "modal": "../../../components/modal/modal"
-    }
+    },
+    "disableScroll": true
 }

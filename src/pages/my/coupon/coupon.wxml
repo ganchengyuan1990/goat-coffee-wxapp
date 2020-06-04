@@ -34,9 +34,9 @@
                             <view class='left-part'>
 
                                 <view style="margin-top: 20rpx; color: #DE4132; font-size: 24rpx;max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;">
-                                    <text wx:if="{{item.coupon.coupon_type == 2}}">券类型：满减券</text>
-                                    <text wx:if="{{item.coupon.coupon_type == 3 || item.coupon.coupon_type == 4}}">券类型：兑换券</text>
-                                    <text wx:if="{{item.coupon.coupon_type == 5}}">券类型：红包券</text>
+                                    <text wx:if="{{item.coupon.coupon_type == 2 || item.coupon.coupon_type == 11}}">券类型：满减券</text>
+                                    <text wx:if="{{item.coupon.coupon_type != 2 && item.coupon.coupon_type != 5 && item.coupon.coupon_type != 11}}">券类型：买赠券</text>
+                                    <text wx:if="{{item.coupon.coupon_type == 5}}">券类型：兑换券</text>
                                 </view>
 
                                 <view style="height: 35rpx;line-height:35rpx; position: absolute; right: 40rpx; bottom: 0rpx;" data-index="{{idx}}" catchtap="showRule">
