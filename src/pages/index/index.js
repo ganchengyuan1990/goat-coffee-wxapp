@@ -17,10 +17,10 @@ var A = function () {
     return AObject.instance;
 }
 
-var a = new A();
-var b = new A();
+// var a = new A();
+// var b = new A();
 
-console.log(a === b, a, a.name)
+// console.log(a === b, a, a.name)
 
 Page({
     data: {
