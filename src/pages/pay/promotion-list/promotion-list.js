@@ -311,13 +311,24 @@ Page({
                 });
             }
 
-            this.setData({
-                chosenInfo: {
-                    type: this.data.type,
-                    user_coupon_source: chosenInfoArr[0].user_coupon_source,
-                    content: chosenInfoArr
-                }
-            });
+            if (chosenInfoArr.length > 0) {
+                this.setData({
+                    chosenInfo: {
+                        type: this.data.type,
+                        user_coupon_source: chosenInfoArr[0].user_coupon_source,
+                        content: chosenInfoArr
+                    }
+                });
+            } else {
+                this.setData({
+                    chosenInfo: {
+                        type: 0,
+                        user_coupon_source: '',
+                        content: []
+                    }
+                });
+            }
+            
         }
         this.backToOrderCreate();
     },

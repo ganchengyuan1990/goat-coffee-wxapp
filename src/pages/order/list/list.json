@@ -2,7 +2,7 @@
     "navigationBarTitleText": "订单列表",
     "enablePullDownRefresh": true,
     "usingComponents": {
-        "address-item": "../../components/address-item/address-item",
+        "address-item": "../../../components/address-item/address-item",
         "toast": "../../../components/toast/toast"
     }
 }
