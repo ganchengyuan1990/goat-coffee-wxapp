@@ -425,6 +425,10 @@ Page({
             return item.coupon.coupon_type === 2 || item.coupon.coupon_type === 11;
           });
 
+          if (!result[0]) {
+            return ;
+          }
+
           const _type = result[0].coupon.coupon_type;
           // let voucherList = result;
 
@@ -629,6 +633,12 @@ Page({
         let redPackList = result.filter(item => {
           return item.coupon.coupon_type === 2 || item.coupon.coupon_type === 11;
         });
+
+        if (!result[0]) {
+          this.dealChildPageInfo();
+          wx.hideLoading();
+          return ;
+        }
 
         const _type = result[0].coupon.coupon_type;
         // let voucherList = result;

@@ -7,6 +7,8 @@ const path = require('path');
 const eslint = require('gulp-eslint');
 const uglyfly = require('gulp-uglifyes');
 var minifyCss = require('gulp-minify-css');
+const sourcemaps = require('gulp-sourcemaps');
+const watch = require('gulp-watch');
 
 
 const srcPath = './src/**';
@@ -19,8 +21,7 @@ const jsonFiles = [`${srcPath}/*.json`, `!${srcPath}/_template/*.json`];
 const jsFiles = [`${srcPath}/*.js`, `!${srcPath}/_template/*.js`, `!${srcPath}/env/*.js`];
 const imgFiles = [
   `${srcPath}/images/*.{png,jpg,gif,ico}`,
-  `${srcPath}/icons/*.{png,jpg,gif,ico}`,
-  `${srcPath}/images/**/*.{png,jpg,gif,ico}`
+  `${srcPath}/icons/*.{png,jpg,gif,ico}`
 ];
 
 /* 清除dist目录 */
@@ -32,7 +33,9 @@ gulp.task('clean', done => {
 /* 编译wxml文件 */
 const wxml = () => {
   return gulp
-    .src(wxmlFiles, { since: gulp.lastRun(wxml) })
+    .src(wxmlFiles, {
+      since: gulp.lastRun(wxml)
+    })
     .pipe(gulp.dest(distPath));
 };
 gulp.task(wxml);
@@ -40,7 +43,10 @@ gulp.task(wxml);
 /* 编译JS文件 */
 const js = () => {
   return gulp
-    .src(jsFiles, { since: gulp.lastRun(js) })
+    .src(jsFiles, {
+      since: gulp.lastRun(js)
+    })
+    .pipe(sourcemaps.init())
     .pipe(uglyfly({
       mangle: false,
       ie8: true, //压缩后的代码支持ie8
@@ -48,8 +54,8 @@ const js = () => {
       compress: {
         drop_debugger: false
       }, //压缩的级别
-      // debug: true
     }))
+    .pipe(sourcemaps.write('.'))
     // .pipe(eslint())
     // .pipe(eslint.format())
     .pipe(gulp.dest(distPath));
@@ -74,7 +80,9 @@ gulp.task('prodEnv', envJs('production'));
 /* 编译json文件 */
 const json = () => {
   return gulp
-    .src(jsonFiles, { since: gulp.lastRun(json) })
+    .src(jsonFiles, {
+      since: gulp.lastRun(json)
+    })
     .pipe(gulp.dest(distPath));
 };
 gulp.task(json);
@@ -85,7 +93,9 @@ const wxss = () => {
     .src(lessFiles)
     // .pipe(minifyCss())
     // .pipe(less())
-    .pipe(rename({ extname: '.wxss' }))
+    .pipe(rename({
+      extname: '.wxss'
+    }))
     .pipe(gulp.dest(distPath));
 };
 gulp.task(wxss);
@@ -93,7 +103,9 @@ gulp.task(wxss);
 /* 编译压缩图片 */
 const img = () => {
   return gulp
-    .src(imgFiles, { since: gulp.lastRun(img)})
+    .src(imgFiles, {
+      since: gulp.lastRun(img)
+    })
     .pipe(imagemin())
     .pipe(gulp.dest(distPath));
 };
@@ -105,7 +117,18 @@ gulp.task('watch', () => {
   // watchLessFiles.pop();
   gulp.watch(watchLessFiles, wxss);
   gulp.watch(jsFiles, js);
-  gulp.watch(imgFiles, img);
+  watch(imgFiles,  function (e) {
+      if (e.event == 'unlink') {
+        if (e.history[0]) {
+          console.log(e.history[0], 999);
+          del(e.history[0].replace('src', 'dist'));
+        }
+        
+      } else {
+        gulp.src(imgFiles)
+          .pipe(gulp.dest(distPath));
+      }
+  });
   gulp.watch(jsonFiles, json);
   gulp.watch(wxmlFiles, wxml);
 });
@@ -114,14 +137,14 @@ gulp.task('watch', () => {
 /* build */
 gulp.task(
   'build',
-  gulp.series('clean', gulp.parallel( 'wxml', 'js', 'json', 'wxss', 'img', 'prodEnv'))
+  gulp.series('clean', gulp.parallel('wxml', 'js', 'json', 'wxss', 'img', 'prodEnv'))
 );
 
 /* dev */
-gulp.task('dev', gulp.series('clean', gulp.parallel( 'wxml', 'js', 'json', 'wxss', 'img', 'devEnv'), 'watch'));
+gulp.task('dev', gulp.series('clean', gulp.parallel('wxml', 'js', 'json', 'wxss', 'img', 'devEnv'), 'watch'));
 
 /* test */
-gulp.task('test', gulp.series('clean', gulp.parallel( 'wxml', 'js', 'json', 'wxss', 'img', 'testEnv')));
+gulp.task('test', gulp.series('clean', gulp.parallel('wxml', 'js', 'json', 'wxss', 'img', 'testEnv')));
 
 /**
  * auto 自动创建page or template or component
@@ -165,8 +188,12 @@ const auto = done => {
         describe: '生成的component名称',
         type: 'string'
       },
-      version: { hidden: true },
-      help: { hidden: true }
+      version: {
+        hidden: true
+      },
+      help: {
+        hidden: true
+      }
     })
     .fail(msg => {
       done();

@@ -27,9 +27,7 @@
     "pump": "^1.0.2"
   },
   "dependencies": {
-    "assert": "^2.0.0",
-    "bobolink": "^3.0.0",
     "gulp-minify-css": "^1.2.4",
-    "miniprogram-recycle-view": "^0.1.5"
+    "gulp-watch": "^5.0.1"
   }
 }

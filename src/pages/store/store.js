@@ -99,6 +99,8 @@ Page({
 			fromPaySuccess: options.from == 'pay_success'
 		})
 
+		globalData.systemInfo = systemInfo;
+
 
 	},
 
@@ -657,7 +659,7 @@ Page({
 					console.log(8989);
 					self.fetchStore(geo, self.data.isCoffeeMaker)
 				},
-				fail() {
+				fail(res) {
 					self.setData({
 						gettingLocation: false
 					})
@@ -665,10 +667,13 @@ Page({
 					app.globalData.isGeoAuth = false
 					wx.hideLoading()
 					wx.showToast({
-						title: '加载失败,请检查是否打开微信及小程序定位权限',
+						title: res.errMsg,
 						icon: 'none',
-						duration: 3500
+						duration: 3000
 					})
+					app.aldstat.sendEvent('获取定位失败', {
+						msg: res.errMsg
+					});
 				}
 			})
 		}
