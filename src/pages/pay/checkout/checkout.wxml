@@ -159,10 +159,22 @@
             </view>
         </view>
 
+        <view class="transport-item shorter top_gap" bindtap="goCoupon">
+            <view class="l">
+                <!-- <text class="name">优惠券</text><text class='coupon_mention'>优惠不同享</text> -->
+                <text class="name">优惠券</text>
+            </view>
+            <view class="r">
+                <text class="txt hasGood" wx:if="{{couponList.length > 0 && !chooseNoCoupon  && chosenInfo.type == 1}}"> - ￥{{couponMoney}}</text>
+                <text class="txt hasGood" wx:if="{{couponList.length > 0 && chooseNoCoupon}}">有{{couponList.length}}张可用</text>
+                <text class="txt" wx:if="{{couponList.length === 0}}">无可用</text>
+                <image class="arrow arrow_small" src="../../../images/arrow.png"/>
+            </view>
+        </view>
 
         <view class="transport-item shorter top_gap" bindtap="goRedPack">
             <view class="l">
-                <text class="name">优惠券</text>
+                <text class="name">满减券</text>
             </view>
             <view class="r">
                 <text class="txt hasGood" wx:if="{{redPackList.length > 0 && !chooseNoRedPack  && chosenInfo.type == 3}}"> - ￥{{couponMoney}}</text>
@@ -172,18 +184,7 @@
             </view>
         </view>
 
-        <view class="transport-item shorter top_gap" bindtap="goCoupon">
-            <view class="l">
-                <!-- <text class="name">优惠券</text><text class='coupon_mention'>优惠不同享</text> -->
-                <text class="name">满减券</text>
-            </view>
-            <view class="r">
-                <text class="txt hasGood" wx:if="{{couponList.length > 0 && !chooseNoCoupon  && chosenInfo.type == 1}}"> - ￥{{couponMoney}}</text>
-                <text class="txt hasGood" wx:if="{{couponList.length > 0 && chooseNoCoupon}}">有{{couponList.length}}张可用</text>
-                <text class="txt" wx:if="{{couponList.length === 0}}">无可用</text>
-                <image class="arrow arrow_small" src="../../../images/arrow.png"/>
-            </view>
-        </view>
+
 
         <view class="transport-item shorter top_gap" bindtap="goVoucher">
             <view class="l">

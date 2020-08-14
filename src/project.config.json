@@ -22,7 +22,7 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
-		"useCompilerModule": true,
+		"useCompilerModule": false,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
@@ -372,7 +372,43 @@
 					"id": -1,
 					"name": "pages/newCart/cart",
 					"pathName": "pages/newCart/cart",
+					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "package/wheel/pages/index/index",
+					"pathName": "package/wheel/pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 49,
+					"name": "pages/getCoupon/index",
+					"pathName": "pages/getCoupon/index",
+					"query": "",
+					"scene": 1011
+				},
+				{
+					"id": -1,
+					"name": "pages/my/address/index",
+					"pathName": "pages/my/address/index",
+					"query": "scene=a=120&t=1597127624",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/webview/webview",
+					"pathName": "pages/webview/webview",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/store/store",
+					"pathName": "pages/store/store",
+					"query": "",
+					"scene": 1045
 				}
 			]
 		}

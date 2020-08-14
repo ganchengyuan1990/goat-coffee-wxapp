@@ -86,6 +86,11 @@
                         <text style="margin-left: 60rpx;">客户服务</text>
                         <image class="arrow" src="../../../images/arrow.png"/>
                     </view>
+                    <!-- <view class="chi_item" bindtap="goGetCoupon">
+                        <image class="my_icon" src="../../../images/my_service.png"/>
+                        <text style="margin-left: 60rpx;">加油好礼</text>
+                        <image class="arrow" src="../../../images/arrow.png"/>
+                    </view> -->
                 </view>
 
             </view>

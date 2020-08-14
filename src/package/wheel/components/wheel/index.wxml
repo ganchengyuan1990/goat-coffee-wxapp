@@ -1,0 +1,20 @@
+<view>
+  <view class="wheel_wp sol-class">
+    <block wx:if="{{mode == 1}}">
+      <image src="{{backgroundImg}}" />
+      <view class="wheel_pointer" bindtap="start" style="-webkit-transform:rotate({{deg}}deg) translateZ(0);transform:rotate({{deg}}deg) translateZ(0)">
+        <image src="./images/btn.png" />
+      </view>
+    </block>
+    <block wx:if="{{mode == 2}}">
+      <image src="{{backgroundImg}}" style="-webkit-transform:rotate({{deg}}deg) translateZ(0);transform:rotate({{ deg}}deg) translateZ(0)" />
+      <view class="wheel_pointer" bindtap="start">
+        <image class="btn" src="./images/btn.png" />
+        <view class="btn_name">
+          抽奖
+        </view>
+        <view class="left_times">{{times}}次</view>
+      </view>
+    </block>
+  </view>
+</view>

@@ -52,10 +52,12 @@ t1.then(() => {
   queue.destory();
 });
 
+
+
 App({
   onLaunch: function () {
     // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
+    var logs = wx.getStorageSync('logs') || [];
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs);
     wx.setStorageSync('fromTransport', 'selfTaking');
@@ -96,4 +98,4 @@ App({
     lastStoreTime: null,
     windowHeight:null
   }
-})
+});

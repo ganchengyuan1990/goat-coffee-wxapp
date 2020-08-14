@@ -1,0 +1,51 @@
+<view class="picker-container picker-arrival-time" wx:if="{{show}}">
+	<view class="picker-mask" bindtap="hideArrivalTime" />
+	<view class="picker-content">
+		<view class="picker-body">
+			<scroll-view class="arrival-time-left" scroll-y="1" scroll-into-view="arrival-time-day">
+				<view
+				 class="arrival-time-day ellipsis {{index === dayIndex ? 'selected' : ''}}"
+				 wx:for="{{days}}"
+				 wx:key="index"
+				 data-index="{{index}}"
+				 id="{{index === dayIndex ? 'arrival-time-day' : ''}}"
+				 bindtap="onClickArrivalTimeDay"
+				>
+					{{item}}
+				</view>
+			</scroll-view>
+			<scroll-view
+			 class="arrival-time-right"
+			 scroll-y="1"
+			 scroll-into-view="{{dayIndex === selectedDayIndex ? 'arrival-time-active' : ''}}"
+			 scroll-top="{{scrollTop}}"
+			 data-test="{{arrival_timelist}}"
+			 data-r="{{arrival_timelist && arrival_timelist.length > 0}}"
+			>
+				<block wx:if="{{arrival_timelist && arrival_timelist.length > 0}}">
+					<view
+					 class="arrival-time-item {{unixtime === item.unixtime ? 'selected' : ''}}"
+					 id="{{unixtime === item.unixtime ? 'arrival-time-active' : ''}}"
+					 wx:for="{{arrival_timelist}}"
+					 wx:key="index"
+					 bindtap="onClickArrivalTimeItem"
+					 data-unixtime="{{item.unixtime}}"
+					>
+						{{item.view_time}}
+						<view class="ui-inline arrival-time-fee">
+							{{item.view_shipping_fee}}
+						</view>
+						<image class="arrival-time-check" src="https://img.meituan.net/kangaroox/9cff69ce39ed21334b2f3844ac306115226.png?t=1544072562796" wx:if="{{unixtime === item.unixtime}}" />
+					</view>
+				</block>
+				<view class="arrival-time-invalid" wx:else="1">
+					{{info || '该门店当天不营业'}}
+				</view>
+			</scroll-view>
+		</view>
+		<!-- <view class="flex-center picker-footer" bindtap="hideArrivalTime">
+			取消
+		</view> -->
+	</view>
+</view>
+

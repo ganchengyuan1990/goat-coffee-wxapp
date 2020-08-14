@@ -1,0 +1,122 @@
+.task-carousel {
+  padding: 0 26rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+}
+.task-carousel-index {
+  padding: 0;
+  margin-right: 4rpx;
+}
+.task-carousel-content {
+  position: relative;
+  z-index: 0;
+}
+
+.task-carousel-content:after {
+  content: '';
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid  rgba(255, 154, 0, 0.15);
+  border-radius: 13px;
+  transform-origin: 0 0;
+  transform: scale(0.5);
+  background-color: #FFF8E1;
+  z-index: -1;
+ }
+
+.task-carousel-content-index:after {
+  content: '';
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid rgba(255, 154, 0, 0.15);
+  border-radius: 24px;
+  transform-origin: 0 0;
+  transform: scale(0.5);
+  background-color: #FFF8E1;
+  z-index: -1;
+}
+.task-carousel-icon {
+  position: absolute;
+  width: 75rpx;
+  height: 88rpx;
+  left: 13rpx;
+  top: 13rpx;
+}
+.task-carousel-swiper {
+  position: relative;
+}
+.task-carousel-texts {
+  height: 114rpx;
+  left: 106rpx;
+  height: 78rpx;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);  
+}
+.task-carousel-title {
+  display: flex;
+}
+.task-carousel-title-main {
+  font-family: PingFangSC-Regular;
+  font-size: 28rpx;
+  color: #222426;
+  line-height: 42rpx;
+  margin-right: 12rpx;
+  max-width: 270rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 42rpx;
+}
+.task-carousel-title-coin {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 11.5rpx;
+  margin-top: 3rpx;
+}
+.task-carousel-title-award {
+  font-family: PingFangSC-Regular;
+  font-size: 24rpx;
+  color: #ff4a26;
+  line-height: 36rpx;
+  margin-top: 5rpx;
+}
+.task-carousel-title-sub {
+  font-family: PingFangSC-Regular;
+  font-size: 24rpx;
+  color: #858687;
+  line-height: 36rpx;
+  width: 400rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 36rpx;
+  margin-top: 5rpx;
+}
+.task-carousel-btn {
+  position: absolute;
+  top: 29rpx;
+  right: 24rpx;
+  background-image: linear-gradient(45deg, #ffc34d 0%, #ffe14d 100%);
+  background: #ff4a26;
+  border-radius: 12rpx;
+  font-family: PingFangSC-Medium;
+  font-size: 24rpx;
+  color: #ffffff;
+  text-align: center;
+  padding: 11rpx 28rpx;
+  text-shadow: 0 0 9px rgba(255, 189, 189, 0.5);
+}
+.task-swiper {
+  height: 112rpx;
+}
+.swiper-item {
+  height: 112rpx;
+  position: relative;
+}

@@ -66,9 +66,10 @@ Page({
 
   commitRemark() {
     let content = '';
-    content += `${this.data.zhi ? '' : '不'}需要纸巾；`;
+    content += `${this.data.zhi ? '需要纸巾；' : ''}`;
     // content += `${this.data.nai ? '' : '不'}需要奶包；`;
-    content += `${this.data.tang ? '' : '不'}需要糖包；`;
+    content += `${this.data.tang ? '需要糖包；' : ''}`;
+    
     content += `其他备注：${this.data.content}`;
     wx.setStorageSync('remark', content);
     let pages = getCurrentPages();

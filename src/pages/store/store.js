@@ -89,6 +89,8 @@ Page({
 		// this.fetchLoaction()  
 		this.checkSaveUser()
 
+		console.log(options, 'options')
+
 
 		var globalData = app.globalData;
 
@@ -1024,6 +1026,26 @@ Page({
 			chosenTaglength: this.data.menuList[e.currentTarget.dataset.index].product_list.length,
 			menuList: menulist
 		});
+	},
+
+	openDevByMultyClick () {
+		this.clickNum = this.clickNum || 0;
+		++this.clickNum;
+		console.log(this.clickNum);
+
+		if (!this.setTimeoutNum) {
+			this.setTimeoutNum = setTimeout(() => {
+			this.clickNum = 0;
+			clearTimeout(this.setTimeoutNum);
+			this.setTimeoutNum = 0;
+			}, 1000);
+		}
+
+		if (this.clickNum > 5) {
+			wx.navigateTo({
+			url: '/pages/devtools/index',
+			});
+		}
 	},
 
 	// 手机端有延迟 节流函数效果不好 用防抖函数凑合

@@ -272,7 +272,7 @@ Page({
             if (item.order.orderState == '100' && item.order.isComment) {
               item.order.orderState = '101'
             }
-            item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(1))
+            item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(2))
             return item;
           })
           arr = data
@@ -334,7 +334,7 @@ Page({
         let arr = []
 
         data = data.map(item => {
-          item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(1))
+          item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(2))
           return item;
         })
 

@@ -111,6 +111,50 @@
         </view>
     </view>
 
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 11}}">
+        <view class="dialog4 dialog8" style="padding: 0; border-radius: 21rpx;" wx:if="{{shown}}">
+            <view class="header" style="position: relative; height: 98rpx; line-height: 98rpx; font-size: {{showSmall ? 24 : 30}}rpx; color: #fff; font-family:PingFangSC-Semibold,PingFang SC; font-weight:600; background:rgba(236,15,16,1);" wx:if="{{title}}">
+                {{title}}
+                <image src="https://img.goatup.cn/guanbi%402x.png" style="position: absolute; right: 30rpx; top: 37rpx; height: 29rpx; width: 29rpx;" />
+            </view>
+            <view class="content_8" wx:if="{{actImage}}">
+                <image class="header_img2" style="margin-top: 20rpx; margin-bottom: -10rpx;" src="{{actImage}}" mode="widthFix" ></image>
+            </view>
+            <view class="content_8" wx:if="{{failImage}}">
+                <image class="header_img3" style="margin-top: 28rpx" src="{{failImage}}" mode="widthFix" ></image>
+            </view>
+            <view class="button" wx:if="{{content}}">
+                <view class="sss" bindtap="goBuy">{{content}}</view>
+            </view>
+            <view class="button" style="margin-top: 50rpx; margin-bottom: 30rpx;">
+                <view class="lijilingqu-btn" bindtap="goRecharge">{{okText}}</view>
+            </view>
+
+        </view>
+    </view>
+
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 12}}">
+        <view class="dialog4 dialog8" style="padding: 0; border-radius: 21rpx;" wx:if="{{shown}}">
+            <view class="header header-title-upper" wx:if="{{title}}">
+                {{title}}
+                <image src="https://img.goatup.cn/guanbi%402x.png" style="position: absolute; right: 30rpx; top: 37rpx; height: 29rpx; width: 29rpx;" />
+            </view>
+            <view class="content_8" wx:if="{{actImage}}">
+                <image class="header_img2" src="{{actImage}}" mode="widthFix" ></image>
+            </view>
+            <view class="content_8" wx:if="{{failImage}}">
+                <image class="header_img3" style="margin-top: 28rpx" src="{{failImage}}" mode="widthFix" ></image>
+            </view>
+            <view class="button" wx:if="{{content}}">
+                <view class="sss" bindtap="goBuy">{{content}}</view>
+            </view>
+            <view class="button" style="margin-top: 50rpx; margin-bottom: 30rpx;">
+                <view class="lijilingqu-btn" bindtap="goRecharge">{{okText}}</view>
+            </view>
+
+        </view>
+    </view>
+
     <view class="dp-dialog-content-wrapper wrapper2 {{shown ? 'airdrop-animate-show' : 'airdrop-animate-hide'}}" wx:if="{{type == 10}}">
         <!-- <view class="dialog4 dialog10 dp-dialog-dialog" wx:if="{{shown}}">
             <view class="header" wx:if="{{title}}">

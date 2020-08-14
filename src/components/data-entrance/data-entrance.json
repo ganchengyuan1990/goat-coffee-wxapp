@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "midas-simple": "../midas-simple/index"
+  }
+}

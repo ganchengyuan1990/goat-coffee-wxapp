@@ -1,0 +1,10 @@
+<view class="edit-wrap">
+    <view class="ipt-wrap">
+        <view class="tt">昵称</view>
+        <input class="ipt" type="text" bindinput="bindKeyInput" placeholder="{{inputValue}}" />
+        <view class="icon-del"></view>
+    </view>
+    <view class="btn-wrap">
+        <view class="btn-save" bind:tap="saveName">完成</view>
+    </view>
+</view>

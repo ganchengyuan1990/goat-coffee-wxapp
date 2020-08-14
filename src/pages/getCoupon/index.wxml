@@ -1,0 +1,53 @@
+<view class="upper-part">
+  <view wx:if="{{activity.weight == 1}}">
+    <view class='title-line'></view>
+    <image class='title-image' src="https://img.goatup.cn/hotel_logo%402x.png" />
+  </view>
+  <!-- <image mode="widthFix" style="width: 100%;" src="https://img.goatup.cn/%E7%9F%A9%E5%BD%A2%402x.png" /> -->
+  <view class="dp-dialog-content-wrapper">
+      <view class="dialog4 dialog8" style="padding: 0; ">
+          <view class="header" style="border-radius:32rpx 32rpx 0rpx 0rpx; text-align: center; position: relative; height: 98rpx; line-height: 98rpx; font-size:30rpx; color: #DB1D1F; font-family:PingFangSC-Semibold,PingFang SC; font-weight:600; background:linear-gradient(97deg,rgba(255,245,241,1) 0%,rgba(255,199,182,1) 100%);">
+            <image src="https://img.goatup.cn/xiaoyuandian%402x.png" style="position: absolute; left: 170rpx; top: 42rpx; height: 16rpx; width: 28rpx;"/>
+            加油咖啡专享福利
+            <image src="https://img.goatup.cn/xiaoyuandian%402x.png" style="position: absolute; right: 170rpx; top: 42rpx; height: 16rpx; width: 28rpx;"/>
+
+              <!-- <image src="https://img.goatup.cn/guanbi%402x.png" style="position: absolute; right: 30rpx; top: 35rpx; height: 29rpx; width: 29rpx;" /> -->
+          </view>
+          <view class="content_8" style="margin-top: 40rpx;">
+              <image wx:if="{{!actImage}}" class="header_img2" src="{{activity.coupon_modal_pic}}" ></image>
+              <image wx:else class="header_img2" src="{{actImage}}" ></image>
+              
+          </view>
+          <view class="button" bindtap="getCoupon" style="margin-top: 10rpx; margin-bottom: 25rpx; border-radius:0px 0px 32rpx 32rpx;">
+            <image wx:if="{{!getSuccess && !getFail}}" class="button-image" src="https://img.goatup.cn/dianjilingqu.gif" ></image>
+            <view wx:else class="button-view">已领取</view>
+          </view>
+
+      </view>
+  </view>
+
+
+  <view class="dp-dialog-content-wrapper" style="margin: 70rpx 0;">
+    <view class="dialog4 dialog8" style="padding: 0; ">
+        <view class="header" style="border-radius:32rpx 32rpx 0rpx 0rpx; text-align: center; position: relative; height: 98rpx; line-height: 98rpx; font-size:30rpx; color: #DB1D1F; font-family:PingFangSC-Semibold,PingFang SC; font-weight:600; background:linear-gradient(97deg,rgba(255,245,241,1) 0%,rgba(255,199,182,1) 100%);">
+          <image src="https://img.goatup.cn/xiaoyuandian%402x.png" style="position: absolute; left: 230rpx; top: 42rpx; height: 16rpx; width: 28rpx;"/>
+          活动规则
+          <image src="https://img.goatup.cn/xiaoyuandian%402x.png" style="position: absolute; right: 230rpx; top: 42rpx; height: 16rpx; width: 28rpx;"/>
+        </view>
+        <view class="content_8" style="padding: 30rpx; font-size:28rpx;color:rgba(106,106,106,1);line-height:40rpx;">
+            <!-- <view>1.活动时间：即日起至2018年5月30日。 2.活动说明：客户在活动期间每天都可获得一次大转盘抽奖机会，抽奖机会限当天使用。奖品数量有限，先到先得。</view> -->
+            <rich-text style="width: 100%; line-height: 65rpx;" nodes="{{activity.description}}">
+              
+            </rich-text>
+        </view>
+
+    </view>
+</view>
+</view>
+
+
+<!-- <view class="downer-part">
+  <image mode="widthFix" style="width: 100%;" src="https://img.goatup.cn/%E7%9F%A9%E5%BD%A2.png" />
+</view> -->
+
+<modal bindcustomevent="dealModalFunction" title="{{modalTitle}}" content="{{content}}" shown="{{showModal}}" actImage="{{actImage}}" okText="{{buttonContent}}" failImage="{{failImage}}" left-button-function-type="{{modalLeftFunctionType}}" type="11" showSmall="{{showSmall}}"></modal>

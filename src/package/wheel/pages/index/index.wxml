@@ -1,0 +1,114 @@
+<!-- pages/big-wheel/index.wxml -->
+<view class="page-wheel">
+
+  <view class='title_img' style="visibility: hidden;"><image src="http://img.goatup.cn/img/config/组-12@2x.png"/></view>
+
+  <view class="time" style="visibility: hidden;">{{activity.begin_time}} - {{activity.end_time}}</view>
+
+  <view class="left_score" bindtap="goMyCoupon"><image src="https://img.goatup.cn/liwu%402x.png" style="width: 27rpx; height: 27rpx;"/>我的礼品</view>
+
+  <!-- <sol-wheel id="sol-wheel" award-numer="{{award}}"  mode="{{mode}}" bind:start="wheelStart" bind:success="wheelSuccess" times="{{drawNumber}}" background-img="{{activity.roll_pic}}"></sol-wheel> -->
+
+
+  <view class="progress">
+    <view class='title'>
+        <view style="font-size:24rpx; color:rgba(219,29,31,1); margin-right: 30rpx;">中奖名单</view>
+        <view>128****4567</view>
+        <view style="font-size:24rpx; color:rgba(219,29,31,1); position: absolute; right: 20rpx;">抽中 iPad平板电脑1台</view>
+
+    </view>
+    <!-- <progress class="progress_line" percent="{{activityUser.luck_number}}" stroke-width="4" color="#B14846"/>
+     <image wx:if="{{activityUser.luck_number != 100}}" data-value="100" class="gift gift_final" src="../../images/gift_final.png" />
+     <image wx:if="{{activityUser.luck_number == 100}}" catchtap="getLihe" data-value="100" class="gift _done" src="../../images/gift_final.png" />
+    <view class="dot"></view>
+
+    <view class='num_wrapper'>
+      <view class='num_item {{firstStyle}}' style="position: relative; top: 16rpx;">0</view>
+
+      <view class="num_item {{item.widthStyle}} {{item.name == 100 ? 'no-width': ''}}" wx:for="{{activityLuckGiftsGroup}}" wx:key="item.name">
+        <image catchtap="getLihe" data-item="{{item}}" class="gift" src="../../images/gift.png" wx:if="{{activityUser.luck_number >= item.name && item.name != 100}}"/>
+        <image class="gift" src="../../images/gift_used.png" wx:if="{{activityUser.luck_number < item.name && item.name != 100}}"/>
+        <text style="position: relative; left: -40rpx;" wx:if="{{item.name != 100}}">{{item.name}}%</text>
+        <text style="position: absolute; right: -50rpx; top: 18rpx;" wx:if="{{item.name == 100}}">{{item.name}}%</text>
+      </view>
+    </view> -->
+
+</view>
+
+  <!-- <view class="container-out"> -->
+    <!-- <view class="circle" wx:for="{{circleList}}" style="top:{{item.topCircle}}rpx;left:{{item.leftCircle}}rpx;background-color: {{(index%2==0)?colorCircleFirst:colorCircleSecond}};"></view> -->
+    <view class="container-in">
+      <view class="content-out" wx:for="{{awardList}}" style="top:{{item.topAward}}rpx;left:{{item.leftAward}}rpx;background-color: {{(index==indexSelect)?colorAwardSelect:colorAwardDefault}};">
+        <!-- <image class="award-image" src="{{item.imageAward}}"></image> -->
+        <view class="award-image"></view>
+      </view>
+      <view class="start-btn" bindtap="startGame" style="">
+          <view style="padding-top: 30rpx;">
+            <view>抽奖GO！</view>
+            <view class="btn-sub-title">（0次抽奖）</view>
+        </view>
+      </view>
+    </view>
+  <!-- </view> -->
+
+
+
+  <view class="button_wrapper" style="margin: 20rpx;">
+     <!-- <button class="button" open-type="share">
+      <view>
+        <view class='button_top'>分享幸运</view>
+        <view class="button_bottom">赠送1次抽奖、10幸运值</view>
+      </view>
+     </button> -->
+     <view class="button bigger" bindtap="goRecharge">
+       <view style="margin: 10rpx 0 -5rpx;">立即下单</view>
+        <view style="font-size: 24rpx;">（赠送1次抽奖）</view>
+     </view>
+  </view>
+
+  <!-- <view class='name_list'>
+    <view class="line"></view>
+    <text>中奖名单</text>
+    <view class="line"></view>
+  </view>
+
+  <view class="board">
+  </view>
+
+  <view class="boarddown">
+    <rich-text class='list' nodes="{{activity.winner_list}}"></rich-text>
+  </view> -->
+
+  <view class='content-wrap'>
+    <view class='name_list' >
+      <!-- <view class="line"></view> -->
+      <text>活动规则</text>
+      <!-- <view class="line"></view> -->
+    </view>
+
+
+    <view class='content'>
+      <rich-text nodes="2.活动期间，嘻嘻嘻iiiiiiiiiiiiiiii嘻嘻秀嘻嘻嘻秀嘻嘻嘻嘻嘻嘻嘻嘻嘻休息洗洗休息" class="content_line"></rich-text>
+    </view>
+  </view>
+
+
+</view>
+
+<modal bindcustomevent="dealModalFunction" title="{{modalTitle}}" content="{{content}}" shown="{{showModal}}" actImage="{{actImage}}" okText="{{buttonContent}}" failImage="{{failImage}}" left-button-function-type="{{modalLeftFunctionType}}" type="12" showSmall="{{showSmall}}"></modal>
+
+
+<!-- <modal bindcustomevent="dealModalFunction" bindopenbox="openLihe" title="{{modalTitle}}" shown="{{showModal}}" content="（温馨提示：打开礼盒后，您的幸运值将会清零）" actImage="{{actImage}}" left-button-function-type="{{modalLeftFunctionType}}" otherFunctionType="{{otherFunctionType}}" type="12"></modal> -->
+
+<!-- <modal bindcustomevent="dealModalFunction" bindopenbox="openLihe" title="{{modalTitle}}" shown="{{showModal}}" content="（温馨提示：打开礼盒后，您的幸运值将会清零）" actImage="{{actImage}}" left-button-function-type="{{modalLeftFunctionType}}" otherFunctionType="{{otherFunctionType}}" type="{{modalType}}"></modal> -->
+
+<!-- 
+  <view class="wheel-mode">
+    <view>旋转模式2：</view>
+    <view class="sol-button  {{mode=='1'?'sol-button--danger':''}}" data-type="1" bindtap="switchMode">
+      指针旋转
+    </view>
+    <view class="sol-button  {{mode=='2'?'sol-button--danger':''}}" data-type="2" bindtap="switchMode">
+      转盘旋转
+    </view>
+  </view>    -->

@@ -199,7 +199,12 @@ Page({
                     });
 
                 } else {
-                    if (!data.data.ifNew) {
+                    if (getApp().globalData.fromCoupon) {
+                        wx.navigateTo({
+                            url: '/pages/getCoupon/index'
+                        })
+                        getApp().globalData.fromCoupon = null;
+                    } else if (!data.data.ifNew) {
                         wx.switchTab({
                             url: '/pages/store/store'
                         });

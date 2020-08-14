@@ -188,7 +188,12 @@ Page({
             if (this.judgeNewUser()) {
                 // wx.switchTab({ url: '/pages/store/store' });
             } else {
-                if (!data.data.ifNew) {
+                if (getApp().globalData.fromCoupon) {
+                    wx.navigateTo({
+                        url: '/pages/getCoupon/index'
+                    })
+                    getApp().globalData.fromCoupon = null;
+                } else if (!data.data.ifNew) {
                     wx.switchTab({
                         url: '/pages/store/store'
                     });
@@ -297,7 +302,12 @@ Page({
                 if(this.judgeNewUser()) {
 
                 } else {
-                    if (this.data.fromPin) {
+                    if (getApp().globalData.fromCoupon) {
+                        wx.navigateTo({
+                            url: '/pages/getCoupon/index'
+                        })
+                        getApp().globalData.fromCoupon = null;
+                    } else if (this.data.fromPin) {
                         let pages = getCurrentPages();
                         let prevPage = pages[pages.length - 2];
                         console.log(pages)

@@ -127,7 +127,7 @@ Page({
     let newProduct = {
       banner: e.detail.banner,
       number: 1,
-      totalPrice: e.detail.addPrice.coupon.jiagou_price == parseInt(e.detail.addPrice.coupon.jiagou_price) ? parseInt(e.detail.addPrice.coupon.jiagou_price) : parseFloat(e.detail.addPrice.coupon.jiagou_price).toFixed(1),
+      totalPrice: e.detail.addPrice.coupon.jiagou_price == parseInt(e.detail.addPrice.coupon.jiagou_price) ? parseInt(e.detail.addPrice.coupon.jiagou_price) : parseFloat(e.detail.addPrice.coupon.jiagou_price).toFixed(2),
       productId: 2,
       productName: e.detail.productName,
       // productPropIds: "182,184",
@@ -144,7 +144,7 @@ Page({
     this.setData({
       product: product,
       options: newOptions,
-      actualPrice: actualPrice.toFixed(1),
+      actualPrice: actualPrice.toFixed(2),
       addPriceIds: addPriceIdsArr.join(',')
     }, () => {
       this.setData({
@@ -209,7 +209,7 @@ Page({
         let result = parseFloat(data.data.discountMoney).toFixed(2);
         let levelMoney = parseFloat(data.data.levelMoney).toFixed(2);
         this.setData({
-          actualPrice: parseFloat(data.data.resultPrice + parseFloat(this.data.deliverFee)).toFixed(1),
+          actualPrice: parseFloat(data.data.resultPrice + parseFloat(this.data.deliverFee)).toFixed(2),
           couponMoney: result,
           levelMoney: levelMoney && levelMoney !== 'NaN' ? levelMoney : 0,
           couponUserRelation: '',
@@ -529,7 +529,7 @@ Page({
 
         // this.setData({
         //   bestCouponArr: couponArr,
-        //   zidaibeiMoney: parseFloat(data.data.zidaiOrderCouponMoney).toFixed(1) || 5
+        //   zidaibeiMoney: parseFloat(data.data.zidaiOrderCouponMoney).toFixed(2) || 5
         // })
 
         // let {
@@ -592,9 +592,9 @@ Page({
         // } 
         // let deliverFee = this.data.chooseExpress ? this.data.deliverFee : 0;
         // if (!this.data.chooseCup) {
-        //   actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice) : parseFloat(data.data.resultPrice).toFixed(1)
+        //   actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice) : parseFloat(data.data.resultPrice).toFixed(2)
         // } else {
-        //   actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice - this.data.zidaibeiMoney) : parseFloat(data.data.resultPrice - this.data.zidaibeiMoney).toFixed(1)
+        //   actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice - this.data.zidaibeiMoney) : parseFloat(data.data.resultPrice - this.data.zidaibeiMoney).toFixed(2)
         // }
         // if (actualPrice < 0) {
         //   actualPrice = 0;
@@ -624,6 +624,7 @@ Page({
         //   });
         // }
         let result = data.data.userCoupons;
+
         let couponList = result.filter(item => {
           return item.coupon.coupon_type !== 5 && item.coupon.coupon_type !== 2 && item.coupon.coupon_type !== 11;
         });
@@ -647,7 +648,7 @@ Page({
           content: []
         }
 
-        if (_type === 2 || _type === 11) {
+        if ( _type === 2 || _type === 11) {
           _chosenInfo = {
             content: [{
               id: redPackList[0].id,
@@ -708,9 +709,9 @@ Page({
         let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
         let actualPrice = _a.plus(_b);
         if (!this.data.chooseCup) {
-          actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice) : parseFloat(data.data.resultPrice).toFixed(1)
+          actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice) : parseFloat(data.data.resultPrice).toFixed(2)
         } else {
-          actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice - this.data.zidaibeiMoney) : parseFloat(data.data.resultPrice - this.data.zidaibeiMoney).toFixed(1)
+          actualPrice = data.data.resultPrice == parseInt(data.data.resultPrice) ? parseInt(data.data.resultPrice - this.data.zidaibeiMoney) : parseFloat(data.data.resultPrice - this.data.zidaibeiMoney).toFixed(2)
         }
         if (actualPrice < 0) {
           actualPrice = 0
@@ -798,10 +799,10 @@ Page({
       options.product = JSON.parse(JSON.stringify(product));
       this.setData({
         goDirect: parseInt(items.goDirect || 0),
-        actualPriceGap: parseFloat(payAmount - memberPayAmount).toFixed(1),
+        actualPriceGap: parseFloat(payAmount - memberPayAmount).toFixed(2),
         options: options,
         product: product,
-        payAmount: payAmount.toFixed(1),
+        payAmount: payAmount.toFixed(2),
         tab: items.tab,
         totalNumber: totalNumber,
         fromTransportIndex: parseInt(items.fromTransportIndex),
@@ -844,8 +845,8 @@ Page({
       chooseCup: false,
       deliverFee: 0,
       timeWords: '立即下单',
-      // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
-      payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0)).toFixed(1)
+      // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(2) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(2)
+      payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(2) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0)).toFixed(2)
     })
     this.getBestCouponByProduct();
     // this.dealChildPageInfo();
@@ -861,8 +862,8 @@ Page({
       chooseCup: false,
       deliverFee: 0,
       timeWords: '立即下单',
-      // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
-      payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0)).toFixed(1)
+      // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(2) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(2)
+      payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(2) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0)).toFixed(2)
     })
     this.getBestCouponByProduct();
     this.getWaitTime();
@@ -878,8 +879,8 @@ Page({
         chooseCup: true,
         deliverFee: 0,
         timeWords: '立即下单',
-        // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
-        payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(1) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0) - parseFloat(this.data.zidaibeiMoney || 5)).toFixed(1)
+        // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(2) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(2)
+        payAmount: !notFirstLoad ? parseFloat(this.data.payAmount).toFixed(2) : (parseFloat(this.data.payAmount) - parseFloat(this.data.deliverFee || 0) - parseFloat(this.data.zidaibeiMoney || 5)).toFixed(2)
       })
       this.getBestCouponByProduct();
       this.getWaitTime();
@@ -913,8 +914,8 @@ Page({
           chooseDaodian: false,
           chooseCup: false,
           timeWords: '立即下单',
-          payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.deliverFee || 0)).toFixed(1)
-          // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(1)
+          payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.deliverFee || 0)).toFixed(2)
+          // payAmount: !notFirstLoad ? parseFloat(this.data.payAmount) : (parseFloat(this.data.payAmount) + parseInt(this.data.options.deliverFee || STORE_INFO.deliverFee || 0)).toFixed(2)
         });
         this.getBestCouponByProduct();
 
@@ -952,7 +953,7 @@ Page({
     let actualPrice = deliverFee + this.data.actualPrice;
     this.setData({
       deliverFee: deliverFee,
-      actualPrice: actualPrice == parseInt(actualPrice) ? parseInt(actualPrice) : parseFloat(actualPrice).toFixed(1)
+      actualPrice: actualPrice == parseInt(actualPrice) ? parseInt(actualPrice) : parseFloat(actualPrice).toFixed(2)
     }, () => {
       this.setData({
         actualOriginalPrice: parseFloat(this.data.actualPriceGap) + parseFloat(this.data.actualPrice)
@@ -1088,9 +1089,9 @@ Page({
       });
       let actualPrice = 0;
       if (!this.data.chooseCup) {
-        actualPrice = Number(parseFloat(parseFloat(data.data.resultPrice) + parseFloat(this.data.deliverFee)).toFixed(1))
+        actualPrice = Number(parseFloat(parseFloat(data.data.resultPrice) + parseFloat(this.data.deliverFee)).toFixed(2))
       } else {
-        actualPrice = Number(parseFloat(parseFloat(data.data.resultPrice) + parseFloat(this.data.deliverFee) - parseFloat(this.data.zidaibeiMoney)).toFixed(1))
+        actualPrice = Number(parseFloat(parseFloat(data.data.resultPrice) + parseFloat(this.data.deliverFee) - parseFloat(this.data.zidaibeiMoney)).toFixed(2))
       }
       if (actualPrice < 0) {
         actualPrice = 0;
@@ -1256,7 +1257,7 @@ Page({
             // payAmount: this.data.actualPrice,
             orderType: orderType,
             payType: payType,
-            remark: this.data.remark,
+            remark: this.data.remark ? this.data.remark.replace('其他备注：', '') : '',
             remark_json: JSON.stringify({
               xiguan: this.data.chooseItemXiguan,
               other: this.data.remark
@@ -1273,9 +1274,9 @@ Page({
             }
             console.log(param.couCodes, '锐');
           }
-          if (this.data.chooseItemXiguan) {
-            param.remark += ' 需要吸管';
-          }
+          // if (this.data.chooseItemXiguan) {
+          //   param.remark += ' 需要吸管';
+          // }
           // if (!this.data.options.userAddressId) {
           //   delete param.userAddressId;
           // }

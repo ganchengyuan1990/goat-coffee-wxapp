@@ -694,6 +694,12 @@ Page({
     })
   },
 
+  goGetCoupon() {
+    wx.navigateTo({
+      url: `/pages/getCoupon/index`
+    })
+  },
+
   openDevByMultyClick() {
     this.clickNum = this.clickNum || 0;
     ++this.clickNum;

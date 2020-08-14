@@ -13,12 +13,14 @@ const watch = require('gulp-watch');
 
 const srcPath = './src/**';
 const distPath = './dist/';
+const copyDistPath = ['../mailong-gasup-jiangsu-wechat/src/', '../mailong-gasup-beijing-wxapp/src/'];
+
 const wxmlFiles = [`${srcPath}/**.{wxml,wxs}`, `!${srcPath}/_template/*.wxml`];
 const lessFiles = [
   `${srcPath}/**.wxss`
 ];
-const jsonFiles = [`${srcPath}/*.json`, `!${srcPath}/_template/*.json`];
-const jsFiles = [`${srcPath}/*.js`, `!${srcPath}/_template/*.js`, `!${srcPath}/env/*.js`];
+const jsonFiles = [`${srcPath}/*.json`, `!${srcPath}/_template/*.json`, `!${srcPath}/project.config.json`];
+const jsFiles = [`${srcPath}/*.js`, `!${srcPath}/_template/*.js`, `!${srcPath}/env/*.js`, `!${srcPath}/utils/sdk/*.js`, `!${srcPath}/utils/model.js`, './src/package/**/utils/model.js'];
 const imgFiles = [
   `${srcPath}/images/*.{png,jpg,gif,ico}`,
   `${srcPath}/icons/*.{png,jpg,gif,ico}`
@@ -36,6 +38,8 @@ const wxml = () => {
     .src(wxmlFiles, {
       since: gulp.lastRun(wxml)
     })
+    .pipe(gulp.dest(copyDistPath[0]))
+    .pipe(gulp.dest(copyDistPath[1]))
     .pipe(gulp.dest(distPath));
 };
 gulp.task(wxml);
@@ -62,6 +66,31 @@ const js = () => {
 };
 gulp.task(js);
 
+
+/* 编译JS文件并复制 */
+const jsCopy = () => {
+  return gulp
+    .src(jsFiles, {
+      since: gulp.lastRun(js)
+    })
+    .pipe(gulp.dest(copyDistPath[0]))
+    .pipe(gulp.dest(copyDistPath[1]))
+    .pipe(sourcemaps.init())
+    .pipe(uglyfly({
+      mangle: false,
+      ie8: true, //压缩后的代码支持ie8
+      ecma: 8, //支持的javascript的最高版本(兼容es5,6,7,8)
+      compress: {
+        drop_debugger: false
+      }, //压缩的级别
+    }))
+    .pipe(sourcemaps.write('.'))
+    // .pipe(eslint())
+    // .pipe(eslint.format())
+    .pipe(gulp.dest(distPath));
+};
+gulp.task(jsCopy);
+
 /* 配置请求地址相关 */
 const envJs = (env) => {
   return () => {
@@ -83,6 +112,8 @@ const json = () => {
     .src(jsonFiles, {
       since: gulp.lastRun(json)
     })
+    .pipe(gulp.dest(copyDistPath[0]))
+    .pipe(gulp.dest(copyDistPath[1]))
     .pipe(gulp.dest(distPath));
 };
 gulp.task(json);
@@ -93,6 +124,8 @@ const wxss = () => {
     .src(lessFiles)
     // .pipe(minifyCss())
     // .pipe(less())
+    .pipe(gulp.dest(copyDistPath[0]))
+    .pipe(gulp.dest(copyDistPath[1]))
     .pipe(rename({
       extname: '.wxss'
     }))
@@ -106,7 +139,9 @@ const img = () => {
     .src(imgFiles, {
       since: gulp.lastRun(img)
     })
-    .pipe(imagemin())
+    .pipe(gulp.dest(copyDistPath[0]))
+    .pipe(gulp.dest(copyDistPath[1]))
+    // .pipe(imagemin())
     .pipe(gulp.dest(distPath));
 };
 gulp.task(img);
@@ -142,6 +177,9 @@ gulp.task(
 
 /* dev */
 gulp.task('dev', gulp.series('clean', gulp.parallel('wxml', 'js', 'json', 'wxss', 'img', 'devEnv'), 'watch'));
+
+gulp.task('dev-copy', gulp.series('clean', gulp.parallel('wxml', 'jsCopy', 'json', 'wxss', 'img', 'devEnv'), 'watch'));
+
 
 /* test */
 gulp.task('test', gulp.series('clean', gulp.parallel('wxml', 'js', 'json', 'wxss', 'img', 'testEnv')));

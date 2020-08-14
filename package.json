@@ -5,6 +5,7 @@
   "main": "",
   "scripts": {
     "dev": "gulp dev",
+    "dev-copy": "gulp dev-copy",
     "build": "gulp build",
     "test": "gulp test"
   },

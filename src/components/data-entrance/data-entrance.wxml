@@ -1,0 +1,24 @@
+<midas-simple bind:impressionend="onViewDataEntrance">
+    <view class="task-carousel {{page === 'index' ? 'task-carousel-index' : ''}}" wx:if="{{module_list && module_list.length > 0 && module_list[0].json_data}}">
+        <view class="task-carousel-content {{page === 'index' ? 'task-carousel-content-index' : ''}}" capture-catch:touchmove="" capture-catch:touchstart="catchTouchStart" capture-catch:touchend="catchTouchEnd" capture-catch:touchcancel="">
+            <swiper class="task-swiper" autoplay="{{autoplay}}" circular="{{circular}}" vertical="{{vertical}}" interval="{{styles.slide_time}}" duration="{{styles.duration + 200}}" easing-function="easeOutCubic" bindanimationfinish="onCurrentChange" current="{{swiperCurrentIndex}}">
+                <block wx:for="{{module_list}}" wx:key="item.module_id">
+                    <swiper-item>
+                        <view class="swiper-item swiper-item-{{index}}">
+                            <view class="task-carousel-texts">
+                                    <view class="task-carousel-title">
+                                        <view class="task-carousel-title-main">{{item.json_data.main_title}}</view>
+                                        <image class="task-carousel-title-coin" mode="aspectFit" src="https://p0.meituan.net/travelcube/1a59e449393702e74bf44fab124ac9952832.png"></image>
+                                        <view class="task-carousel-title-award">{{item.json_data.award}}</view>
+                                    </view>
+                                    <view class="task-carousel-title-sub">{{item.json_data.sub_text}}</view>
+                                </view>
+                        </view>
+                    </swiper-item>
+                </block>
+            </swiper>
+            <image class="task-carousel-icon" mode="aspectFit" src="{{module_list[0].json_data.icon}}"></image>
+            <view class="task-carousel-btn">{{module_list[0].json_data.button_text}}</view>
+        </view>
+    </view>
+</midas-simple>

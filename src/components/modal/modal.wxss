@@ -457,3 +457,39 @@
     transform: scale(0);
   }
 }
+
+.lijilingqu-btn {
+  width:272rpx;
+  height:80rpx;
+  background:rgba(236,15,16,1);
+  border-radius:42rpx;
+  line-height: 80rpx;
+  text-align: center;
+
+  font-size:28rpx;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:rgba(255,255,255,1);
+  margin-left: 23%;
+}
+
+.header_img2 {
+  height: 124rpx;
+  width: 386rpx;
+}
+
+.header_img3 {
+  height: 203rpx;
+  width: 210rpx;
+}
+
+.header-title-upper {
+  font-size:68rpx;
+  font-family:PangMenZhengDao;
+  color:rgba(255,255,255,1);
+  line-height:78rpx;
+  position: absolute;
+  top: -20rpx;
+  left: 100rpx;
+  text-shadow:0px 5px 12px rgba(197,104,18,0.52);
+}

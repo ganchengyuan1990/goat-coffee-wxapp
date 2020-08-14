@@ -366,11 +366,14 @@ Page({
         let couponList = [];
         let voucherList = [];
         if (option.type == 3) {
-            redPackList = JSON.parse(option.list);
+            // redPackList = JSON.parse(option.list);
+            redPackList = wx.getStorageSync('redPackList');
         } else if (option.type == 2) {
-             voucherList = JSON.parse(option.list);
+            //  voucherList = JSON.parse(option.list);
+            voucherList = wx.getStorageSync('voucherList');
         } else {
-            couponList = JSON.parse(option.list);
+            // couponList = JSON.parse(option.list);
+            couponList = wx.getStorageSync('couponList');
         }
         // let activedItems = [];
         // let unActivedItems = [];

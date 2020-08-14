@@ -73,27 +73,72 @@ function calcLeftTime (time) {
 }
 
 function throttle(fn = () => {}, delay = 0) {
-  let last = +new Date()
-  let timer = null
-  return function () {
-    let self = this
-    let args = arguments
-    let now = +new Date()
-    if (now - last > delay) {
-      clearTimeout(timer)
-      fn.apply(self, args)
-      last = now
-    } else {
-      timer = setTimeout(function () {
-        fn.apply(self, args)
-      }, delay)
+  // let last = +new Date()
+  // let timer = null
+  // return function () {
+  //   let self = this
+  //   let args = arguments
+  //   let now = +new Date()
+  //   if (now - last > delay) {
+  //     clearTimeout(timer)
+  //     fn.apply(self, args)
+  //     last = now
+  //   } else {
+  //     timer = setTimeout(function () {
+  //       fn.apply(self, args)
+  //     }, delay)
+  //   }
+  // }
+  let nowTime
+  let lastTime
+  return function (...args) {
+    nowTime = +(new Date())
+    if (!lastTime || nowTime - lastTime >= time) {
+      fn.call(this, ...args)
+      lastTime = nowTime
     }
   }
 }
+
+var throttleV2 = function(fn, delay, mustRunDelay){
+  var timer = null;
+  var t_start;
+  return function(){
+    var context = this, args = arguments, t_curr = +new Date();
+    clearTimeout(timer);
+    if(!t_start){
+      t_start = t_curr;
+    }
+    if(t_curr - t_start >= mustRunDelay){
+      fn.apply(context, args);
+      t_start = t_curr;
+    }
+    else {
+      timer = setTimeout(function(){
+        fn.apply(context, args);
+      }, delay);
+    }
+  };
+};
+
+// 防抖函数
+const debounce = (fn, time = 50) => {
+  let timer
+  return function (...args) {
+    if (timer) {
+      clearTimeout(timer)
+      timer = null
+    }
+    timer = setTimeout(fn.bind(this, ...args), time)
+  }
+}
+
 module.exports = {
   formatTime: formatTime,
   simpleFormatTime: simpleFormatTime,
   wx2promise: wx2promise,
   calcLeftTime: calcLeftTime,
-  throttle: throttle
+  throttle: throttle,
+  throttleV2: throttleV2,
+  debounce: debounce
 }

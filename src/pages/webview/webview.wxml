@@ -1,1 +1,3 @@
 <web-view src="{{src}}"></web-view>
+
+<!-- <cover-view>123</cover-view> -->

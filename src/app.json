@@ -16,6 +16,8 @@
     "pages/pay/statement/statement",
     "pages/my/profile/profile",
     "pages/my/profile/edit",
+    "pages/my/address/index",
+    "pages/my/address/edit",
     "pages/my/service/service",
     "pages/member/index/index",
     "pages/order/list/list",
@@ -25,7 +27,18 @@
     "pages/webview/webview",
     "pages/devtools/switch-env/switch-env",
     "pages/devtools/clear-data/clear-data",
-    "pages/devtools/scanpage/clear-data"
+    "pages/devtools/scanpage/clear-data",
+    "pages/getCoupon/index"
+  ],
+  "subpackages": [
+    {
+      "root": "package/wheel",
+      "name": "wheel",
+      "pages": [
+        "pages/index/index",
+        "pages/coupon/coupon"
+      ]
+    }
   ],
   "permission": {
     "scope.userLocation": {

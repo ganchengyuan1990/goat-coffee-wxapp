@@ -429,6 +429,10 @@
   top: 12rpx;
 }
 
+.higher {
+  top: 3rpx;
+}
+
 .lighter_button {
   background:rgba(222, 65, 50, 1);
   opacity:0.64;

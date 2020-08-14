@@ -1,0 +1,90 @@
+page {
+  background: rgba(208,38,40,1);
+  min-height: 100%;
+}
+
+.downer-part {
+  /* background:linear-gradient(129deg,rgba(255,0,0,1) 0%,rgba(208,38,40,1) 100%);
+  width: 100%;
+  height: 50vh; */
+  margin-bottom: -20rpx;
+}
+
+.upper-part {
+  margin-bottom: -20rpx;
+  /* min-height: 100vh; */
+  background: url(https://img.goatup.cn/coupon_back.png) no-repeat;
+  background-size: 100%;
+  padding-top: 480rpx;
+}
+
+
+.dialog4 {
+  width: 92%;
+  /* height:270rpx; */
+  background: #fff;
+  border-radius: 32rpx;
+  margin: 0 auto;
+  padding: 33rpx 0rpx 0rpx 0rpx;
+  /* overflow: hidden; */
+  z-index: 100;
+  /* margin-top: 400rpx; */
+}
+
+.content_8 {
+  /* width:231rpx; */
+  /* height:196rpx; */
+  /* background:rgba(227,37,41,1); */
+  /* box-shadow:-2px 1px 7px 0px rgba(76,9,9,0.38); */
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+
+}
+
+.header_img2 {
+  height: 222rpx;
+  width: 92%;
+  /* box-shadow:-2px 1px 7px 0px rgba(76,9,9,0.38); */
+
+}
+
+
+.button-image {
+  width: 537rpx;
+  height: 180rpx;
+  margin-left: 13%;
+}
+
+.button-view {
+  width:62.5%;
+  height:84rpx;
+  line-height:84rpx;
+  background:rgba(180,180,180,1);
+  border-radius:42rpx;
+  font-size:36rpx;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:rgba(255,255,255,1);
+  text-align: center;
+  margin: 30rpx 50%;
+  margin-top: 100rpx;
+  transform: translate(-50%, -50%);
+}
+
+.title-image {
+  width: 185rpx;
+  height: 35rpx;
+  position: absolute;
+  top: 45rpx;
+  left: 225rpx;
+}
+
+.title-line {
+  width: 4rpx;
+  height: 35rpx;
+  position: absolute;
+  background: white;
+  top: 45rpx;
+  left: 200rpx;
+}

@@ -1,0 +1,8 @@
+{
+    "usingComponents": {
+        "sol-wheel": "../../components/wheel/index",
+        "modal": "../../components/modal/modal"
+    },
+    "navigationBarTitleText": "加油好礼"
+
+}

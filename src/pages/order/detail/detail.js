@@ -384,8 +384,8 @@ Page({
         number += item.number;
         totalPrice += item.number * (item.skuPrice || item.skuSalePrice);
       })
-      detail.totalPrice = (totalPrice == parseInt(totalPrice) ? parseInt(totalPrice) : parseFloat(totalPrice).toFixed(1))
-      detail.payAmount = (detail.payAmount == parseInt(detail.payAmount) ? parseInt(detail.payAmount) : parseFloat(detail.payAmount).toFixed(1))
+      detail.totalPrice = (totalPrice == parseInt(totalPrice) ? parseInt(totalPrice) : parseFloat(totalPrice).toFixed(2))
+      detail.payAmount = (detail.payAmount == parseInt(detail.payAmount) ? parseInt(detail.payAmount) : parseFloat(detail.payAmount).toFixed(2))
       let guaerItems = detail.guaerItems || [];
       var imgData = QR.drawImg(detail.orderNo, {
         typeNumber: 4,

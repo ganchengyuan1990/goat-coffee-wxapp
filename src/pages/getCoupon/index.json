@@ -1,0 +1,8 @@
+{
+      "navigationBarTitleText": "加油咖啡",
+      "usingComponents": {
+            "toast": "../../components/toast/toast",
+            "modal": "../../components/modal/modal",
+            "ml-navigator": "../../components/ml-navigator/index"
+      }
+}
