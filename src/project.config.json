@@ -409,6 +409,40 @@
 					"pathName": "pages/store/store",
 					"query": "",
 					"scene": 1045
+				},
+				{
+					"id": 53,
+					"name": "pages/my/coupon/coupon",
+					"pathName": "pages/my/coupon/coupon",
+					"query": "type=2",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "package/wheel/pages/index/index",
+					"pathName": "package/wheel/pages/index/index",
+					"query": "type=2",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/member/index/index",
+					"pathName": "pages/member/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/pay/pay_success/pay_success",
+					"pathName": "pages/pay/pay_success/pay_success",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "package/wheel/pages/coupon/coupon",
+					"pathName": "package/wheel/pages/coupon/coupon",
+					"scene": null
 				}
 			]
 		}

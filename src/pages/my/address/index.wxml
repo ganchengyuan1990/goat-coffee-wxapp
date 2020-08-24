@@ -1,23 +1,27 @@
 <view class="profile-wrap">
     <view class="list-wrap">
-        <view class="item" bind:tap="actionSheetImg">
+        <view class="item">
             <view class="tt">
                 <text>联系人</text>
             </view>
             <view class="cnt">
                 <view class="desc">
-                    <image class="avatar" src="{{img}}"></image>
+                    <input class="ipt" wx:if="{{!initValue}}" type="text" bindinput="bindNameInput" placeholder="请输入姓名" />
+                    <input class="ipt" disabled wx:if="{{initValue}}" type="text" placeholder="{{lastPrizeAddressInfo.name}}" />
+
                 </view>
-                <view class="icon-arrow"></view>
+                <!-- <view class="icon-arrow"></view> -->
             </view>
         </view>
-        <view class="item" bind:tap="goEdit">
+        <view class="item">
             <view class="tt">
                 <text>手机号</text>
             </view>
             <view class="cnt">
-                <view class="desc">{{name}}</view>
-                <view class="icon-arrow"></view>
+                <input class="ipt" wx:if="{{!initValue}}" type="tel" bindinput="bindPhoneInput" placeholder="请输入手机号" />
+                <input class="ipt" disabled wx:if="{{initValue}}" type="tel" bindinput="bindPhoneInput" placeholder="{{lastPrizeAddressInfo.phone}}" />
+
+                <!-- <view class="icon-arrow"></view> -->
             </view>
         </view>
         <!-- <view class="item" bind:tap="showGenderList">
@@ -39,12 +43,14 @@
                     {{work}}
                     </view>
                 </picker> -->
-                <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+                <picker mode="region" wx:if="{{!initValue}}" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
                     <view class="picker">
                       当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}
                     </view>
                   </picker>
-                <view class="icon-arrow"></view>
+                <view class="picker" wx:if="{{initValue}}" type="tel" bindinput="bindPhoneInput" placeholder="{{lastPrizeAddressInfo.area}}">{{lastPrizeAddressInfo.area}}</view>
+
+                <!-- <view class="icon-arrow"></view> -->
             </view>
         </view>
         <view class="item">
@@ -52,7 +58,9 @@
                 <text>详细地址</text>
             </view>
             <view class="cnt">
-                <view class="desc">{{userInfo.tel}}</view>
+                <input class="ipt"  wx:if="{{!initValue}}" type="text" bindinput="bindAddressInput" placeholder="请输入详细地址" />
+                <input class="ipt"  disabled wx:if="{{initValue}}"type="text" bindinput="bindAddressInput" placeholder="{{lastPrizeAddressInfo.address}}" />
+
                 <!-- <view class="icon-arrow"></view> -->
             </view>
         </view>
@@ -66,7 +74,9 @@
         </view> -->
     </view>
     <view class="btn-wrap">
-        <view class="btn-save" bind:tap="goIndex">确定</view>
+        <view class="btn-save" wx:if="{{!initValue && !submitted}}" bind:tap="saveAddress">确定</view>
+        <view class="btn-save gray-btn" wx:if="{{submitted || initValue}}">已提交</view>
+
     </view>
     <!-- <view class="btn-wrap">
         <view class="btn-save" bind:tap="logout">退出登录</view>

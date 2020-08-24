@@ -18,6 +18,10 @@ Page({
         colorAwardSelect: '#FDF0C8',
         indexSelect: 0,//被选中的奖品index
         isRunning: false,//是否正在抽奖
+        ifGetPrize: 0,
+        shownIndex: 0,
+        prizeType: 0,
+        noMoreChance: false,
         imageAward: [
         '../../images/1.jpg',
         '../../images/2.jpg',
@@ -61,45 +65,102 @@ Page({
         ] // 顺时针对应每个奖项
     },
 
-    initGame() {
+    initGame(activity_prizes) {
         const self = this
-        return initGame.apply(self);
+        return initGame.call(self, activity_prizes);
     },
 
     startGame() {
-        const self = this
-        return startGame.apply(self);
+        if (this.data.noMoreChance) {
+            this.setData({
+                modalTitle: 'SORRY',
+                showModal: true,
+                ifGetPrize: 0,
+              })
+            return ;
+        }
+        if (!this.data.hasLogin) {
+            wx.navigateTo({
+                url: '/pages/login/login?from=wheel'
+            })
+            getApp().globalData.fromWheel = true;
+            return ;
+        }
+
+        model(`activity/luck-activity/prize-draw`, {
+            id: this.data.activity.id
+        }, 'POST').then(res1 => {
+            // let activityUser = this.data.activityUser;
+            const {
+                data: prizeData
+            } = res1;
+            // activityUser.luck_number = activityUser.luck_number + add_number;
+            this.setData({
+                prize_count: prizeData.prize_count,
+                prizeData: prizeData,
+            }, () => {
+                // 触发组件开始方法
+                const self = this
+                return startGame.apply(self);
+            });
+        }).catch(e => {
+            if (e == '抽奖机会用完了') {
+                this.setData({
+                    modalTitle: 'SORRY',
+                    showModal: true,
+                    ifGetPrize: 0,
+                })
+            } else {
+                wx.showToast({
+                    title: e,
+                    icon: 'none',
+                    duration: 3000,
+                    mask: false,
+                });    
+            }
+        });
+
+        // const self = this
+
+        // return startGame.apply(self);
+
+        
     },
 
     onLoad: function(options) {
-        this.initGame();
-        wx.showLoading({
-          title: '加载中...', //提示的内容,
-          mask: true, //显示透明蒙层，防止触摸穿透,
-          success: res => {}
-        });
-        const token = wx.getStorageInfoSync('token');
+        const token = wx.getStorageSync('token') || null;
         this.setData({
             hasLogin: Boolean(token)
         })
-        model('my/achievement/info', {}, 'POST').then(res => {
-            const {
-                data: {
-                    user_info
-                }
-            } = res;
-            this.setData({
-                user_info: user_info
-            });
-            wx.hideLoading();
+        this.getInfo();
+
+    },
+
+    onUnload() {
+        clearInterval(this._clock);
+    },
+
+    setZoumadeng(obj, i) {
+        this.setData({
+            zoumadengObj: obj,
+            shownIndex: i
+        })
+    },
+
+    getInfo() {
+        wx.showLoading({
+            title: '加载中...', //提示的内容,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
         });
-        model('activity/luck-activity/get').then((res) => {
+        model('activity/luck-activity/index').then((res) => {
             let {
                 data: {
                     activity,
-                    activityGifts,
-                    activityLuckGiftsGroup,
-                    activityUser
+                    activity_prizes,
+                    prize_count,
+                    prize_records,
+                    // activityUser
                 }
             } = res;
             if (activity.begin_time) {
@@ -108,28 +169,31 @@ Page({
             if (activity.end_time) {
                 activity.end_time = activity.end_time.replace(/\-/g, '.').split(' ')[0]
             }
-            let _group = []
-            for (let key of Object.keys(activityLuckGiftsGroup)) {
-                _group.push({
-                    name: key,
-                    contents: activityLuckGiftsGroup[key]
-                });
-            }
-            for (let i = 0; i < _group.length - 1; i++) {
-                _group[i].width = _group[i + 1].name - _group[i].name;
-                _group[i].widthStyle = `flex${_group[i].width}`;
-            }
-            let firstStyle = `flex${_group[0].name}`;
+            this.initGame(activity_prizes);
+
             this.setData({
                 activity,
-                activityGifts,
-                activityLuckGiftsGroup: _group,
-                activityUser,
-                firstStyle,
-                drawNumber: activityUser.draw_number
+                prize_count,
+                noMoreChance: prize_count <= 0,
+                prize_records,
+                // awardList: activity_prizes,
+            }, () => {
+                let i = this.data.shownIndex;
+                this.setZoumadeng(this.data.prize_records[i], i)
+                this._clock = setInterval(() => {
+                    i += 1;
+                    i = i % this.data.prize_records.length;
+                    this.setZoumadeng(this.data.prize_records[i], i)
+                }, 3000);
             })
+
+
+            model(`activity/luck-activity/stat?id=${activity.id}&source=me`)
+            
+
+            wx.hideLoading();
         }).catch(e => {
-            //  wx.hideLoading();
+            wx.hideLoading();
         });
     },
 
@@ -157,7 +221,7 @@ Page({
                     confirmColor: '#DAA37F', //确定按钮的文字颜色,
                     success: res => {
                         if (res.confirm) {
-                            model(`activity/luck-activity/draw`, {
+                            model(`activity/luck-activity/prize-draw`, {
                                 activityId: this.data.activity.id
                             }, 'POST').then(res1 => {
                                 // let activityUser = this.data.activityUser;
@@ -188,7 +252,7 @@ Page({
                     }
                 });
             } else {
-                model(`activity/luck-activity/draw`, {
+                model(`activity/luck-activity/prize-draw`, {
                     activityId: this.data.activity.id
                 }, 'POST').then(res1 => {
                     // let activityUser = this.data.activityUser;
@@ -211,13 +275,17 @@ Page({
                         // 触发组件开始方法
                         this.selectComponent('#sol-wheel').begin()
                     });
+                }).catch(e => {
+                    if (e == '抽奖机会用完了') {
+
+                    }
                 });
             }
             
         } else {
-            model(`activity/luck-activity/draw`, {
-                    activityId: this.data.activity.id
-                }, 'POST').then(res1 => {
+            model(`activity/luck-activity/prize-draw`, {
+                activityId: this.data.activity.id
+            }, 'POST').then(res1 => {
                 // let activityUser = this.data.activityUser;
                 const {
                     data: {
@@ -308,41 +376,41 @@ Page({
         });
     },
     /* 转发*/
-    onShareAppMessage() {
-        if (!this.data.hasLogin) {
-            wx.showModal({
-                content: '您还没有登录，请登录后再邀请',
-                showCancel: true, //是否显示取消按钮,
-                cancelColor: '#000000', //取消按钮的文字颜色,
-                confirmText: '登录', //确定按钮的文字，默认为取消，最多 4 个字符,
-                confirmColor: '#DAA37F', //确定按钮的文字颜色,
-                success: res => {
-                    if (res.confirm) {
-                        wx.navigateTo({
-                            url: '/pages/login/login?from=goBack'
-                        });
-                    } else if (res.cancel) {
-                        console.log('查看发票记录')
-                    }
-                }
-            })
-            return;
-        } else {
-            let userid = wx.getStorageSync('token').user.id;
-            return {
-                title: '麦隆幸运杯，邀您免费喝咖啡！',
-                path: `/package/invite/pages/invite/invite?userid=${userid}&inviterUserType=luck`,
-                imageUrl: this.data.activity.avatar,
-                success: function (res) {
+    // onShareAppMessage() {
+    //     if (!this.data.hasLogin) {
+    //         wx.showModal({
+    //             content: '您还没有登录，请登录后再邀请',
+    //             showCancel: true, //是否显示取消按钮,
+    //             cancelColor: '#000000', //取消按钮的文字颜色,
+    //             confirmText: '登录', //确定按钮的文字，默认为取消，最多 4 个字符,
+    //             confirmColor: '#DAA37F', //确定按钮的文字颜色,
+    //             success: res => {
+    //                 if (res.confirm) {
+    //                     wx.navigateTo({
+    //                         url: '/pages/login/login?from=goBack'
+    //                     });
+    //                 } else if (res.cancel) {
+    //                     console.log('查看发票记录')
+    //                 }
+    //             }
+    //         })
+    //         return;
+    //     } else {
+    //         let userid = wx.getStorageSync('token').user.id;
+    //         return {
+    //             title: '麦隆幸运杯，邀您免费喝咖啡！',
+    //             path: `/package/invite/pages/invite/invite?userid=${userid}&inviterUserType=luck`,
+    //             imageUrl: this.data.activity.avatar,
+    //             success: function (res) {
 
-                },
-                fail: function (res) {
-                    // 转发失败
-                }
-            }
-        }
+    //             },
+    //             fail: function (res) {
+    //                 // 转发失败
+    //             }
+    //         }
+    //     }
 
-    },
+    // },
 
     goMyCoupon() {
         wx.navigateTo({
@@ -351,21 +419,24 @@ Page({
     },
 
     goRecharge () {
-        wx.showModal({
-            content: '确定要去充值中心吗？',
-            showCancel: true, //是否显示取消按钮,
-            cancelColor: '#000000', //取消按钮的文字颜色,
-            confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-            confirmColor: '#DAA37F', //确定按钮的文字颜色,
-            success: res => {
-                if (res.confirm) {
-                    wx.navigateTo({
-                        url: '/pages/recharge/index'
-                    });
-                } else if (res.cancel) {
-                    console.log('查看发票记录')
-                }
-            }
+        // wx.showModal({
+        //     content: '确定要去充值中心吗？',
+        //     showCancel: true, //是否显示取消按钮,
+        //     cancelColor: '#000000', //取消按钮的文字颜色,
+        //     confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+        //     confirmColor: '#DAA37F', //确定按钮的文字颜色,
+        //     success: res => {
+        //         if (res.confirm) {
+        //             wx.navigateTo({
+        //                 url: '/pages/recharge/index'
+        //             });
+        //         } else if (res.cancel) {
+        //             console.log('查看发票记录')
+        //         }
+        //     }
+        // })
+        wx.switchTab({
+            url: '/pages/store/store'
         })
         
     }

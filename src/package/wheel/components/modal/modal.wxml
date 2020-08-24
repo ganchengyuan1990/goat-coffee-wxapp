@@ -137,23 +137,49 @@
         <view class="dialog4 dialog8" style="padding: 0; padding-bottom: 10rpx; border-radius: 21rpx; position: relative; overflow: visible;" wx:if="{{shown}}">
             <view class="header" wx:if="{{title}}" style="border-radius: 21rpx 21rpx 0 0;position: relative; height: 126rpx; line-height: 126rpx; font-size: {{showSmall ? 24 : 30}}rpx; color: #fff; font-family:PingFangSC-Semibold,PingFang SC; font-weight:600; background:rgba(236,15,16,1);">
                 <view class="header-title-upper">{{title}}</view>
-                <view style="text-align: center; font-weight: 300;">实物奖品名称</view>
+                <view style="text-align: center; font-weight: 300; font-size: 34rpx; position: relative; top: 15rpx;" wx:if="{{getPrize === 1}}">{{prizeTitle}}</view>
+                <view style="text-align: center; font-weight: 300; font-size: 34rpx; position: relative; top: 15rpx;" wx:if="{{getPrize === 0 && !noMoreChance}}">这次什么也没有抽到～</view>
+                <view style="text-align: center; font-weight: 300; font-size: 34rpx; position: relative; top: 15rpx;" wx:if="{{getPrize === 0 && noMoreChance}}">抽奖次数已用完！</view>
                 <image src="https://img.goatup.cn/guanbi%402x.png" style="position: absolute; right: 30rpx; top: 37rpx; height: 29rpx; width: 29rpx;" />
             </view>
-            <view class="content_8" wx:if="{{actImage}}">
+            <view class="content_8" wx:if="{{getPrize === 1}}">
                 <view class="nihao123">恭喜您获得奖励</view>
                 <view class="nihao456">请至“我的奖品”查看</view>
                 <image class="header_img2" src="{{actImage}}"></image>
             </view>
-            <view class="content_8" wx:if="{{failImage}}">
-                <image class="header_img3" style="margin-top: 28rpx" src="{{failImage}}" mode="widthFix" ></image>
+            <view class="content_8" wx:if="{{getPrize === 0}}">
+                <image class="header_img3" style="margin-top: 28rpx" src="https://img.goatup.cn/sorry%402x.png" mode="widthFix" ></image>
             </view>
             <view class="button" wx:if="{{content}}">
                 <view class="sss" bindtap="goBuy">{{content}}</view>
             </view>
-            <view class="button" style="margin-top: 50rpx; margin-bottom: 10rpx;">
-                <view class="lijilingqu-btn" bindtap="goRecharge">填写地址</view>
+            <view class="button" style="margin-top: 50rpx; margin-bottom: 25rpx; display: flex; justify-content: center; align-items: center;">
+                <view class="lijilingqu-btn" bindtap="goAddress" wx:if="{{getPrize === 1 && realGift}}">填写地址</view>
+                <view class="lijilingqu-btn-half" bindtap="goBuy" wx:if="{{getPrize === 1 && !realGift && prizeType != 2}}">立即使用</view>
+                <view class="lijilingqu-btn-half" bindtap="goGetCoupon" wx:if="{{getPrize === 1 && !realGift && prizeType == 2}}">立即领取</view>
+
+                <view class="lijilingqu-btn-half half-white" bindtap="prizeAgain" wx:if="{{getPrize === 1 && !realGift}}">再抽一次</view>
+                <view class="lijilingqu-btn" bindtap="goBuy" wx:if="{{getPrize === 0}}">去喝一杯</view>
             </view>
+
+        </view>
+    </view>
+
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 13}}">
+        <view class="dialog4 dialog8 dialog18" style="padding: 0; padding-bottom: 10rpx; border-radius: 21rpx; position: relative; overflow: visible;" wx:if="{{shown}}">
+            <view class="header" style="border-radius: 21rpx 21rpx 0 0;position: relative; height: 126rpx; line-height: 126rpx; font-size: {{showSmall ? 24 : 30}}rpx; color: #fff; font-family:PingFangSC-Semibold,PingFang SC; font-weight:600; background: #fff;">
+                <!-- <view class="header-title-upper">{{title}}</view>
+                <view style="text-align: center; font-weight: 300;">实物奖品名称</view> -->
+                <image src="https://img.goatup.cn/guanbi_gray.png" style="position: absolute; right: 30rpx; top: 37rpx; height: 29rpx; width: 29rpx;" />
+            </view>
+            
+            <view style="display: flex; justify-content: center;">
+                <image style="width: 400rpx; height: 480rpx;" src="{{actImage}}" data-src="{{actImage}}" bindtap="goGetCoupon" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="" />
+
+                <view style="font-size:32rpx; font-weight:500; color:rgba(35,35,35,1); text-align: center; position: absolute; bottom: 50rpx; left: 50%; transform: translate(-50%, 0); z-index: 10000;">请点击图片跳转</view>
+
+            </view>
+
 
         </view>
     </view>

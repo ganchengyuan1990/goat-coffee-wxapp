@@ -1,11 +1,11 @@
 page {
-    background: #fff !important;
+    background: #f6f6f6 !important;
 }
 
 .wrapper {
     background: #f6f6f6;
     padding-bottom: 30rpx;
-    height: calc(100vh - 90rpx);
+    /* height: calc(100vh - 90rpx); */
     overflow: scroll;
 }
 
@@ -432,4 +432,38 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
     height: 84rpx;
     margin-right: 15rpx;
 
+}
+
+.have-a-look {
+    font-size:24rpx;
+    font-family:PingFangSC-Regular,PingFang SC;
+    font-weight:400;
+    color:rgba(241,42,35,1);
+    position: absolute;
+    right: 40rpx;
+    top: 60rpx;
+}
+
+.prize-button {
+    width:400rpx;
+    height:80rpx;
+    line-height:80rpx;
+    background:rgba(236,15,16,1);
+    border-radius:42rpx;
+    border:1px solid rgba(236,15,16,1);
+    font-size:28rpx;
+    font-family:PingFangSC-Semibold,PingFang SC;
+    font-weight:600;
+    color:rgba(255,255,255,1);
+    text-align: center;
+    margin-top: 10rpx;
+}
+
+.prize-mention {
+    font-size:28rpx;
+    font-family:PingFangSC-Regular,PingFang SC;
+    font-weight:400;
+    color:rgba(61,61,61,1);
+    line-height:40px;
+    margin: 20rpx auto;
 }

@@ -67,6 +67,10 @@ Page({
         let activityId; 
         if (options.activityId) {
             activityId = options.activityId
+        } else if (wx.getStorageSync('couponActivityId')) {
+            debugger
+            activityId = wx.getStorageSync('couponActivityId');
+            wx.removeStorageSync('couponActivityId');
         }
 
 
@@ -76,7 +80,7 @@ Page({
 
             const ttt = ggg.split('&');
             console.log(ttt, 'ddddd');
-            let time, activityId;
+            let time;
             ttt.map(item => {
                 if (item.indexOf('a') >= 0) {
                     const dddd = item.split('=')
@@ -91,7 +95,9 @@ Page({
 
             const nowDate = new Date().getTime();
 
-            if (nowDate - parseInt(time * 1000) > 10 * 60 * 1000) {
+            console.log(nowDate - parseInt(time * 1000), '@@@@')
+
+            if (nowDate - parseInt(time * 1000) > 2 * 60 * 1000) {
                 wx.showToast({
                     title: '二维码失效，请重新扫码',
                     icon: 'none',
@@ -104,6 +110,10 @@ Page({
                     fail: () => {},
                     complete: () => {}
                 });
+                this.setData({
+                    getSuccess: true
+                })
+                app.globalData.InitCouponTime = nowDate;
                 return;
             }
             // const time = new Date().getTime();
@@ -146,12 +156,33 @@ Page({
     },
 
     getCoupon () {
+        const nowDate = new Date().getTime();
+
+        let _time = app.globalData.InitCouponTime;
+
+        if (_time && (nowDate - _time > 10 * 60 * 1000)) {
+            wx.showToast({
+                title: '二维码失效，请重新扫码',
+                icon: 'none',
+                image: '',
+                duration: 2500,
+                mask: false,
+                success: (result) => {
+                    
+                },
+                fail: () => {},
+                complete: () => {}
+            });
+            app.globalData.InitCouponTime = null;
+            return;
+        }
         (util.throttleV2(() => {
             if (getApp().globalData.gettingAjax) {
                 return;
             }
             let token = wx.getStorageSync('token');
             if (!token) {
+                wx.setStorageSync('couponActivityId', this.data.id);
                 wx.navigateTo({
                     url: '/pages/login/login?from=getCoupon'
                 })

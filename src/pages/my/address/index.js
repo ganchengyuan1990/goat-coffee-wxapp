@@ -14,7 +14,9 @@ Page({
     arrivalTime: mockData33,
     region: ['广东省', '广州市', '海珠区'],
     name: '',
+    phone: '',
     gender: '',
+    address: '',
     img: '',
     imgKey: '',
     userInfo: {},
@@ -23,6 +25,8 @@ Page({
     birthday: '完善生日信息, 年年有惊喜',
     work: '请选择',
     index: 0,
+    initValue: false,
+    submitted: false,
     range: ['互联网-软件', '通信-硬件', '房地产-建筑', '文化传媒', '金融类', '消费品', '教育', '贸易', '生物-医疗', '能源-化工', '政府机构', '服务业', '其他行业'],
   },
 
@@ -30,6 +34,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    const lastPrizeAddressInfo = getApp().globalData.lastPrizeAddressInfo;
+    if (lastPrizeAddressInfo) {
+      lastPrizeAddressInfo.area = lastPrizeAddressInfo.area.join('')
+      this.setData({
+        lastPrizeAddressInfo: lastPrizeAddressInfo,
+        initValue: true
+      })
+    }
     let info = wx.getStorageSync('token')
     let userInfo = info.user
     // let userInfoWechat = app.globalData.userInfo
@@ -50,6 +62,7 @@ Page({
     }
 
     this.setData({
+      id: options.id,
       name: userInfo.userName || userInfoWechat.nickName || '',
       gender: userInfo.sex || userInfoWechat.gender || '',
       img: userInfo.avatar || userInfoWechat.avatarUrl || '',
@@ -163,47 +176,24 @@ Page({
     })
   },
 
-  chooseImage() {
-    let self = this
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success(res) {
-        // tempFilePath可以作为img标签的src属性显示图片
-        const tempFiles = res.tempFiles[0]
-            wx.getImageInfo({
-              src: res.tempFilePaths[0],
-              success(res) {
-                console.log(res, 'img info')
-              }
-            })
-        let path = tempFiles.path
-        let size = tempFiles.size
-        if (size > 1024 * 1024 * 10) {
-          wx.showModal({
-            title: '提示',
-            content: '图片太大了',
-            showCancel: false,
-            confirmText: '知道了',
-            success(res) {
-              if (res.confirm) {
-                console.log('用户点击确定')
-              }
-            }
-          })
-        } else {
-          // show loading
-          wx.showLoading({
-            title: '上传中',
-            mask: true
-          })
-          self.uploadFile(path)
-          // const imgData = wx.getFileSystemManager().readFileSync(path, "base64")
-        }
-      }
+  bindNameInput(e) {
+    this.setData({
+      name: e.detail.value
     })
   },
+
+  bindPhoneInput(e) {
+    this.setData({
+      phone: e.detail.value
+    })
+  },
+
+  bindAddressInput(e) {
+    this.setData({
+      address: e.detail.value
+    })
+  },
+
   uploadFile(path) {
     let self = this
     // console.log(path, 'path');
@@ -274,40 +264,58 @@ Page({
     });
   },
 
-  saveProfile() {
+  saveAddress() {
     let self = this
     let obj = {}
     let data = this.data
+    let message = ''
     if (data.name) {
-      obj.userName = data.name
+      obj.name = data.name
+    } else {
+      message = '请输入联系人姓名'
     }
-    if (data.imgKey) {
-      obj.avatar = data.imgKey
+    if (data.phone) {
+      obj.phone = data.phone
+    } else {
+      message = '请输入手机号'
     }
-    if (data.gender) {
-      obj.sex = data.gender
+    if (data.address) {
+      obj.address = data.address
+    } else {
+      message = '请选择所在地区'
     }
-    obj.id = this.data.userInfo.id
-    obj.work = this.data.work;
-    if (this.data.birthday !== '完善生日信息, 年年有惊喜') {
-      obj.birthday = this.data.birthday;
+    if (data.region) {
+      obj.area = data.region
+    } else {
+      message = '请输入详细地址'
+    }
+
+    if (message) {
+      wx.showToast({
+        title: message,
+        icon: 'none',
+        duration: 3000
+      })
+      return ;
     }
     
 
-    model('my/user/update-user', obj, 'POST').then(res => {
-      wx.showToast({
-        title: '修改成功',
-        icon: 'success',
-        duration: 1500,
-        success() {
-          // 更新global data里面的信息
-          // 更新localstorage 信息
-          self.updateCurrentInfo(obj)
-          // setTimeout(() => {
-          //   wx.navigateBack({
-          //     delta: 1
-          //   })
-          // }, 1500)
+    model('activity/luck-activity/edit-address', {
+      user_prize_record_id: this.data.id,
+      address_json: JSON.stringify(obj)
+    }, 'POST').then(res => {
+      this.setData({
+        submitted: true,
+      })
+      wx.showModal({
+        title: '提示',
+        content: '我们已收到您的收货地址，预计将在1-3个工作日内发货，请留意物流信息。',
+        showCancel: false,
+        confirmText: '确定',
+        confirmColor: '#EC0F10',
+        success(res) {
+          if (res.confirm) {
+          } 
         }
       })
     }).catch(e => {
@@ -322,8 +330,8 @@ Page({
   logout () {
     wx.showModal({
       title: '提示',
-      content: '确定退出吗？',
-      showCancel: true,
+      content: '我们已收到您的收货地址，预计将在1-3个工作日内发货，请留意物流信息。',
+      showCancel: false,
       confirmText: '确定',
       success(res) {
         if (res.confirm) {

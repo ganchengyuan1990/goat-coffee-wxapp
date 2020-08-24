@@ -8,7 +8,15 @@
 </view>
 
 
-<image wx:if="{{hasLogin}}" class='back-img' src="https://aoimg.goatup.net/img/config/%E8%83%8C%E6%99%AF@2x.png" />
+<view class="center" bind:tap="onClickAvatar" wx:if="{{!hasLogin}}">
+    <image src="https://img.goatup.cn/%E7%9F%A2%E9%87%8F%E6%99%BA%E8%83%BD%E5%AF%B9%E8%B1%A1%402x.png"></image>
+    <view class='personal'>
+        <view class="nick">点击登录</view>
+    </view>
+</view>
+
+
+<image class='back-img' src="https://aoimg.goatup.net/img/config/%E8%83%8C%E6%99%AF@2x.png" />
 
 <view class="user-container" wx:if="{{hasLogin}}">
 
@@ -85,10 +93,16 @@
                         <image class="my_icon" src="../../../images/my_service.png"/>
                         <text style="margin-left: 60rpx;">客户服务</text>
                         <image class="arrow" src="../../../images/arrow.png"/>
+                        <view class="arrow-line"></view>
                     </view>
+                    <!-- <view class="chi_item" bindtap="goWheel">
+                        <image class="my_icon" src="https://img.goatup.cn/%E7%A4%BC%E7%89%A9%20%E6%8B%B7%E8%B4%9D%402x.png"/>
+                        <text style="margin-left: 60rpx;">加油好礼</text>
+                        <image class="arrow" src="../../../images/arrow.png"/>
+                    </view> -->
                     <!-- <view class="chi_item" bindtap="goGetCoupon">
                         <image class="my_icon" src="../../../images/my_service.png"/>
-                        <text style="margin-left: 60rpx;">加油好礼</text>
+                        <text style="margin-left: 60rpx;">喝咖啡100%中奖</text>
                         <image class="arrow" src="../../../images/arrow.png"/>
                     </view> -->
                 </view>
@@ -133,8 +147,78 @@
     </view> -->
 </view>
 
+<view class="user-container" wx:if="{{!hasLogin}}">
 
-<view class="search-empty" wx:if="{{!hasLogin}}">
+    
+
+
+    <view class="head-wrap">
+
+
+
+
+            <view style="max-height: 45vh; margin-top: 24rpx; width: 100%; ">
+                <view class='progress_wrap'>
+                    <view class="chi_item" bindtap="goMyOrder">
+                        <image class="my_icon" src="../../../images/my_order.png"/>
+                        <text style="margin-left: 60rpx;">我的订单</text>
+                        <image class="arrow" src="../../../images/arrow.png"/>
+                        <view class="arrow-line"></view>
+                    </view>
+                    <view class="chi_item" bindtap="goMyCoupon">
+                        <image class="my_icon" src="../../../images/youhuiquan.png"/>
+                        <text style="margin-left: 60rpx;">我的优惠券</text>
+                        <image class="arrow" src="../../../images/arrow.png"/>
+                        <view class="arrow-line"></view>
+                    </view>
+                    <view class="chi_item" bindtap="goMyService">
+                        <image class="my_icon" src="../../../images/my_service.png"/>
+                        <text style="margin-left: 60rpx;">客户服务</text>
+                        <image class="arrow" src="../../../images/arrow.png"/>
+                    </view>
+                </view>
+
+            </view>
+
+            <!-- <view style="height: 200rpx;position: fixed;bottom:0; width: 100%;" bindtap="openDevByMultyClick">
+
+            </view> -->
+        <!-- </view> -->
+    </view>
+    
+    <view class="mask" catchtap="hideMask" wx:if="{{showMaskSheng}}">
+        <view class="fixed_middle">
+            <view>
+                <image src="{{activityCupYesImg}}" />
+            </view>
+            <view class="mention">
+                <view>领取成功</view> 
+                <view style="margin-top: 5rpx;">兑换券*{{couponNum}}已发送到您的卡包，请查收！</view>
+            </view>
+            <view class="gogo">
+                兑换券有效期：7天
+            </view>
+        </view>
+    </view>
+
+    <view class="mask" catchtap="hideMask" wx:if="{{showMask}}">
+        <view class="fixed_middle">
+            <view>
+                <image src="../../../images/sbark.png" />
+            </view>
+            <view class="mention">
+            领取成功 兑换券已发送到您的卡包，请查收！
+            </view>
+        </view>
+    </view>
+    
+
+    <!-- <view style="height: 100px; position: fixed; bottom: 100rpx; left: 45rpx; width: 88%;">
+        <image mode="widthFix" style="width: 100%; height: 100%;" src="{{banner}}"  catchtap="goInvite"/>
+    </view> -->
+</view>
+
+<!-- <view class="search-empty" wx:if="{{!hasLogin}}">
     <view>
         <image style="margin: 346rpx 0 30rpx;width: 127rpx; height: 127rpx;" src="../../../images/no_member.png" />
     </view>    您还没有登录，请登录后查看个人信息
@@ -142,7 +226,7 @@
         bindgetuserinfo="getUserInfo">
         登录
     </button>
-</view>
+</view> -->
 
 <toast wx:if="{{errorToastShown}}" is-show="{{errorToastShown}}" title="{{errorInfo}}" disappear-sec="3"></toast>
 

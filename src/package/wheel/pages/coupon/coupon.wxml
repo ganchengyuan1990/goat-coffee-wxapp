@@ -9,7 +9,7 @@
     </view>
 </view> -->
 
-<view class="wrapper {{couponItems.length === 0 && voucherItems.length === 0 ? 'no_list_data' : ''}}">
+<view class="wrapper" wx:if="{{couponItems.length > 0}}">
     <view class="group-wrapper">
         <view class="group">
             <!-- <view class="title-box" wx:if="{{type == 2 && couponItems.length > 0}}">
@@ -22,10 +22,12 @@
                 <label wx:for="{{couponItems}}" wx:for-index="idx" wx:for-item="item" class="list-item-label" wx:key="{{idx}}">
                     <view class="list-item">
                         <view class="inner_border"> 
-                            <view class='right-part'>
+                            <view class='right-part' data-type="{{item.prize.type}}" data-item="{{item}}" bindtap="goNextPage">
                                 <view class="list-item-name">
-                                    <image class="item-image" src="{{item.coupon.coupon_name}}" />
-                                    <view class="promotion-description">{{item.coupon.coupon_name}}</view>
+                                    <image class="item-image" src="{{item.prize.icon}}" />
+                                    <view class="promotion-description">{{item.prize.title}}</view>
+
+                                    <view class="have-a-look">查看</view>
                                     <!-- <view class="promotion-limit-tip" wx:if="{{item.end_time}}">
                                         有效期至{{item.end_time}}
                                     </view> -->
@@ -35,7 +37,7 @@
                             <view class='left-part'>
 
                                 <view style="color: #B2B2B2; margin-top: 24rpx; font-size: 24rpx;max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;">
-                                    <text>中奖日期：2020.11.28</text>
+                                    <text>中奖日期：{{item.prize_time}}</text>
                                 </view>
 
                                 <view style="height: 35rpx;line-height:35rpx; position: absolute; right: 40rpx; bottom: 5rpx;" data-index="{{idx}}" catchtap="showRule">
@@ -51,7 +53,7 @@
                         </view>
                     </view>
                     <view wx:if="{{item.showRule}}" class="inner" style=" border-top: 3rpx solid #fff; position: relative; top: -11rpx; "> 
-                        <view style="padding: 20rpx;color: #999; font-size: 24rpx; width: 96%; word-wrap : break-word ; padding-top: 0;">{{item.coupon.coupon_bref}}</view>
+                        <view style="padding: 20rpx;color: #999; font-size: 24rpx; width: 96%; word-wrap : break-word ; padding-top: 0;">{{item.prize.desc}}</view>
                     </view>
                 </label>
 
@@ -87,3 +89,18 @@
     </view> -->
     </view>
 </view>
+
+
+<view class="wrapper" wx:else style="display: flex; align-items: center; justify-content: center; flex-direction: column; margin-top: 20vh;">
+    <image src="https://img.goatup.cn/sorry%402x.png" style="width: 289rpx; height: 281rpx;;"/>
+    <view class='prize-mention'>还没有获得奖品哦～</view>
+    <view class='prize-button' bindtap="goPrize">立即去抽奖</view>
+
+</view>
+
+
+
+
+
+
+<modal bindcustomevent="dealModalFunction" title="{{modalTitle}}" content="{{content}}" shown="{{showModal}}" actImage="{{actImage}}" okText="{{buttonContent}}" failImage="{{failImage}}" left-button-function-type="{{modalLeftFunctionType}}" type="13" showSmall="{{showSmall}}" meituanStoreId="{{meituanStoreId}}"></modal>

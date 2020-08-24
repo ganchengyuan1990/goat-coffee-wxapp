@@ -57,10 +57,10 @@
   padding: 10rpx 20rpx;
   margin-top: 220rpx;
 
-  height:63rpx;
+  height: 50rpx;
   background:linear-gradient(180deg,rgba(255,243,239,1) 0%,rgba(255,202,185,1) 100%);
   border-radius:31rpx;
-  line-height:63rpx;
+  line-height: 50rpx;
 
 }
 
@@ -341,7 +341,7 @@
   background-color: #b136b9;
   margin: 100rpx auto;
   border-radius: 40rpx;
-  box-shadow: 0 10px 0 #871a8e;
+  /* box-shadow: 0 10px 0 #871a8e; */
   position: relative;
 }
 
@@ -352,7 +352,7 @@
   border-radius: 40rpx;
   position: relative;
   margin: 100rpx auto;
-  left: 0;
+  left: -5rpx;
   right: 0;
   top: 0;
   bottom: 0;
@@ -376,7 +376,7 @@ box-shadow: inset 3px 3px 3px #fff2af;*/
   width: 222rpx;
   background-color: #f5f0fc;
   border-radius: 8rpx;
-  box-shadow: 0 5px 0 #d87fde;
+  /* box-shadow: 0 5px 0 #d87fde; */
 }
 
 /**居中 加粗*/
@@ -387,12 +387,12 @@ box-shadow: inset 3px 3px 3px #fff2af;*/
   top: 0;
   left: 0;
   bottom: 0;
-  right: 0;
+  right: 8rpx;
   border-radius: 8rpx;
   height: 130rpx;
-  width: 222rpx;
+  width: 220rpx;
   background:linear-gradient(137deg,rgba(255,208,38,1) 0%,rgba(255,201,103,1) 100%);
-  box-shadow:-6rpx -6rpx 5rpx 0rpx rgba(243,190,37,1);
+  /* box-shadow:-6rpx -6rpx 5rpx 0rpx rgba(243,190,37,1); */
   color: #fff;
   text-align: center;
   font-size: 35rpx;
@@ -405,12 +405,34 @@ box-shadow: inset 3px 3px 3px #fff2af;*/
 .award-image {
   position: absolute;
   margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  height: 130rpx;
-  width: 222rpx;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 70rpx;
+  width: 110rpx;
+}
+
+.award-title {
+  position: absolute;
+  margin: auto;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size:20rpx;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(150,124,31,1);
+}
+
+.animation_title {
+  animation: 3s rowup linear infinite normal;
+  overflow: hidden;
+}
+
+@keyframes rowup {
+  0%   {opacity: 1;}
+  80%  {opacity: 1;}
+  100% {opacity: 0;}
 }
 
 .btn-sub-title {
@@ -427,5 +449,7 @@ box-shadow: inset 3px 3px 3px #fff2af;*/
   background:rgba(186,23,24,1);
   border-radius:16rpx;
   padding-top: 10rpx;
+  margin: 20rpx;
   margin-top: 80rpx;
+  /* margin-bottom: 0; */
 }

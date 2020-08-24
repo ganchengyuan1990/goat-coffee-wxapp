@@ -38,3 +38,12 @@ page {
     background:rgba(255,255,255,1);
     border-radius: 10rpx;
 }
+
+.list-wrap .item .cnt, .list-wrap .item .desc {
+    text-align: right !important;
+}
+
+.gray-btn {
+    background:rgba(193,193,193,1) !important;
+    color: #fff;
+}

@@ -23,6 +23,7 @@ Page({
   onLoad: function (options) {
     let type = options.type
     this.setData({
+      page:  1,
       type: parseInt(options.type)
     });
     if (type == 2) {
@@ -33,6 +34,69 @@ Page({
     }
 
     
+  },
+
+  onReachBottom() {
+    if (this.data.page * 10 < this.data.total) {
+      wx.showLoading({
+        title: '加载下一页数据中', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      this.setData({
+        page: this.data.page + 1
+      }, () => {
+        model('my/coupon/list', {
+          userId: wx.getStorageSync('token').user.id,
+          type: this.data.couponType || 1,
+          page: this.data.page,
+        }).then(data => {
+          let result = data.data.userCoupons;
+          result.map(element => {
+            if (element.coupon.discount || element.coupon.discount == 0) {
+              element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
+            }
+            if (element.coupon.manjian_cash) {
+              element.coupon.manjian_cash = this.getVeryMoney(element.coupon.manjian_cash)
+            }
+            if (element.coupon.zhigou_cash) {
+              element.coupon.zhigou_cash = this.getVeryMoney(element.coupon.zhigou_cash)
+            }
+    
+            if (element.coupon.manjian_price_available) {
+              element.coupon.manjian_price_available = this.getVeryMoney(element.coupon.manjian_price_available)
+            }
+            // element.couponBref = '21123123123';
+            if (element.coupon.availabileStartTime) {
+              element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0]
+            }
+            if (element.end_time) {
+              element.end_time = element.end_time.split(' ')[0]
+            }
+    
+            if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
+              element.xianzhi = element.coupon.classifyNames[0]
+            }
+    
+            if (element.coupon.goodsNames && element.coupon.goodsNames.length > 0) {
+              element.xianzhi = element.coupon.goodsNames[0]
+            }
+            return element;
+          });
+          setTimeout(() => {
+            wx.hideLoading();
+          }, 500)
+          this.setData({
+            couponItems: this.data.couponItems.concat(result),
+            // totalItems: result,
+            loading: false,
+            total: data.data.total
+          })
+        }).catch(e => {
+          wx.hideLoading();
+        })
+      })
+    }
   },
 
   /**
@@ -117,7 +181,8 @@ Page({
       });
       this.setData({
         couponItems: result,
-        loading: false
+        loading: false,
+        total: data.data.total
       })
     })
   },

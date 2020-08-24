@@ -679,6 +679,12 @@ Page({
   },
 
   goMyOrder () {
+    if (!wx.getStorageSync('token')) {
+      wx.navigateTo({
+        url: '/pages/login/login',
+      });    
+      return ;
+    }
     wx.navigateTo({ url: '/pages/order/list/list' });
   },
 
@@ -689,15 +695,21 @@ Page({
   },
 
   goMyCoupon () {
+    if (!wx.getStorageSync('token')) {
+      wx.navigateTo({
+        url: '/pages/login/login',
+      });    
+      return ;
+    }
     wx.navigateTo({
       url: `/pages/my/coupon/coupon?type=2`
     })
   },
 
-  goGetCoupon() {
+  goWheel() {
     wx.navigateTo({
-      url: `/pages/getCoupon/index`
-    })
+      url: '/package/wheel/pages/index/index'
+    });
   },
 
   openDevByMultyClick() {
