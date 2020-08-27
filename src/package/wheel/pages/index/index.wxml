@@ -14,7 +14,7 @@
     <view class='title'>
         <view style="font-size:24rpx; color:rgba(219,29,31,1); margin-right: 30rpx;">中奖名单</view>
         <view class="animation_title">{{zoumadengObj.tel}}</view>
-        <view class="animation_title" style="font-size:24rpx; color:rgba(219,29,31,1); position: absolute; right: 20rpx;">抽中 {{zoumadengObj.prize}}</view>
+        <view class="animation_title" style="font-size:24rpx; color:rgba(219,29,31,1); position: absolute; right: 20rpx; max-width: 250rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">抽中 {{zoumadengObj.prize}}</view>
 
     </view>
     <!-- <progress class="progress_line" percent="{{activityUser.luck_number}}" stroke-width="4" color="#B14846"/>
@@ -42,7 +42,7 @@
         <image class="award-image" src="{{item.imageAward}}"></image>
         <view class="award-title">{{item.title}}</view>
       </view>
-      <view class="start-btn" bindtap="startGame" style="">
+      <view class="start-btn {{isRunning ? 'start-disabled' : ''}}" bindtap="startGame" style="">
           <view style="padding-top: 30rpx;">
             <view style="font-size: 40rpx; margin-left: 10rpx; margin-bottom: 6rpx;">抽奖GO！</view>
             <view class="btn-sub-title">（{{prize_count}}次抽奖）</view>

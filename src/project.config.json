@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"preloadBackgroundData": false,
@@ -22,7 +22,7 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
-		"useCompilerModule": false,
+		"useCompilerModule": true,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
@@ -432,16 +432,31 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 56,
 					"name": "pages/pay/pay_success/pay_success",
 					"pathName": "pages/pay/pay_success/pay_success",
-					"query": "",
+					"query": "coffeeMaker=true&orderId=38207&price=15&varCode=104",
 					"scene": null
 				},
 				{
 					"id": -1,
 					"name": "package/wheel/pages/coupon/coupon",
 					"pathName": "package/wheel/pages/coupon/coupon",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 58,
+					"name": "pages/store/store",
+					"pathName": "pages/store/store",
+					"query": "scene=a%3D163%26t%3D1597643761%26s%3D0B01FBE9B5",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/member/index/index",
+					"pathName": "pages/member/index/index",
+					"query": "scene=a%3D163%26t%3D1597643761%26s%3D0B01FBE9B5",
 					"scene": null
 				}
 			]

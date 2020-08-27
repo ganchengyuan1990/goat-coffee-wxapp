@@ -292,6 +292,7 @@ Page({
     if (STORE_INFO) {
       STORE_INFO = JSON.parse(STORE_INFO)
       this.setData({
+        machine_type: STORE_INFO.machine_type,
         distance: STORE_INFO.distance,
         lineNumber: STORE_INFO['line_number'],
       })
@@ -1330,6 +1331,13 @@ Page({
                   wx.removeStorageSync('CART_LIST');
                   wx.removeStorageSync('remark');
 
+                  // 更酷咖啡机增加全局变量
+                  if (this.data.machine_type == 3) {
+                    getApp().globalData.submitForMachineTypeThird = true;
+                  } else {
+                    getApp().globalData.submitForMachineTypeThird = null;
+                  }
+
                   if (data.data.ifComplete) {
                     wx.setStorageSync('showNoOrder', true);
                     wx.navigateTo({
@@ -1439,11 +1447,33 @@ Page({
     })
   },
 
+  doRightNow() {
+
+      wx.showModal({
+          content: `我在「${this.data.checkedAddress.storeName}」自助咖啡机前面等待制作。`, //提示的内容,
+          showCancel: true, //是否显示取消按钮,
+          cancelColor: '#9A9A9A', //取消按钮的文字颜色,
+          cancelText: '否',
+          confirmText: '是', //确定按钮的文字，默认为取消，最多 4 个字符,
+          confirmColor: '#F12B23', //确定按钮的文字颜色
+          success: res => {
+              if (res.confirm) {
+                this.submit();
+              }
+          }
+      })
+  },
+
   submitOrder: function () {
     if (!this.data.zunshou) {
       return ;
     }
     if (this.data.chooseSelf || this.data.chooseDaodian || this.data.chooseCup) {
+      // 如果是更酷咖啡机，就走这个逻辑
+      if (this.data.machine_type == 3) {
+        this.doRightNow();
+        return ;
+      }
       let content = `是否确认前往【${this.data.checkedAddress.storeName}】自提？订单确认后将无法更改`;
       if (this.data.checkedAddress.coffeeMakerId) {
         content = `是否确认前往【${this.data.checkedAddress.storeName}（编号${this.data.checkedAddress.coffeeMakerId}）】自提？订单确认后将无法更改`;

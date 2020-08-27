@@ -47,3 +47,12 @@ page {
     background:rgba(193,193,193,1) !important;
     color: #fff;
 }
+
+.already-word {
+    font-size:24rpx;
+    font-family:PingFangSC-Regular,PingFang SC;
+    font-weight:400;
+    color:rgba(241,42,35,1);
+    text-align: center;
+    margin: 20rpx auto;
+}

@@ -15,13 +15,17 @@
     }
     return arr.join('/')
   }
-  var judgeSoldout = function(sku_list) {
+  var judgeSoldout = function(product) {
+    var sku_list = product.sku_list
     var soldout = true
     sku_list.forEach(function(item) {
       if (item.state === 1) {
         soldout = false
       }
     })
+    if (product.isSoldOut) {
+      soldout = true
+    }
     return soldout
   }
   module.exports = {
@@ -139,12 +143,13 @@
               bindtap="orderProduct" 
               wx:for-item="product" 
               wx:key="product.id" 
-              class="list-detail {{filter.judgeSoldout(product.sku_list) ? '' : ''}}" 
+              class="list-detail {{filter.judgeSoldout(product) ? '' : ''}}" 
               wx:for-index="index"
               data-groupidx="{{idx}}" 
+              data-product="{{product}}"
               data-skulist="{{product.sku_list}}"
               data-productidx="{{index}}">
-              <view class="img {{filter.judgeSoldout(product.sku_list) ? 'mask_opacity' : ''}}">
+              <view class="img {{filter.judgeSoldout(product) ? 'mask_opacity' : ''}}">
                 <image src="{{product.icon}}"></image>
                 <image src="../../images/tip_back.png" class='discount sss' wx:if="{{product.tips}}">
                   <view class="tips_word {{product.tips.length > 2 ? 'lower_txt' : ''}}">{{product.tips}}</view>
@@ -152,7 +157,7 @@
                 <!-- <view class="pic_word" wx:if="{{product.tips}}">{{product.tips}}</view> -->
                 <!-- <image class="tag tag_pic" wx:if="{{product.tips}}" src="../../images/tag.png"><view class="pic_word">{{product.tips}}</view></image> -->
                 <!-- <image class="tag tag_pic lefter_top" wx:if="{{product.sku_list && product.sku_list[0] && !product.sku_list[0].can_distribution}}" src="../../images/tag.png"><view class="pic_word">仅自取</view></image> -->
-                <view class='sold_up' wx:if="{{product.state !== 1}}">
+                <view class='sold_up' wx:if="{{product.state !== 1 || product.isSoldOut}}">
                   售罄
                 </view>
                 <!-- <view class='sold_up' wx:if="{{filter.judgeSoldout(product.sku_list)}}">
@@ -161,13 +166,13 @@
               </view>
               <view class="info">
                 <view style="margin-top: 5rpx;">
-                  <view class="name {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}">{{product.productName}}</view>
-                  <view class="note {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}" wx:if="{{product.brief}}">{{product.productEnName}}</view>
-                  <view class="note {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}">{{filter.getSpecific(product)}}</view>
+                  <view class="name {{filter.judgeSoldout(product) ? 'gray_txt' : ''}}">{{product.productName}}</view>
+                  <view class="note {{filter.judgeSoldout(product) ? 'gray_txt' : ''}}" wx:if="{{product.brief}}">{{product.productEnName}}</view>
+                  <view class="note {{filter.judgeSoldout(product) ? 'gray_txt' : ''}}">{{filter.getSpecific(product)}}</view>
                 </view>
                 <view class="price-count">
                   <!-- <view class="price">{{product.default_sku.sale_price > 0 ? '￥'+product.default_sku.sale_price:'暂无价格'}} -->
-                  <view class="price {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}" wx:if="{{false}}">
+                  <view class="price {{filter.judgeSoldout(product) ? 'gray_txt' : ''}}" wx:if="{{false}}">
                     <text class="price-del" wx:if="{{product.default_sku.price && !isLogin}}">￥{{product.default_sku.price == parseInt(product.default_sku.price) ? parseInt(product.default_sku.price) : product.default_sku.price}}</text>
                     <view class="price-member" style="background: {{memberTagColor}}" wx:if="{{product.default_sku.member_price && isLogin && product.default_sku.member_price != product.default_sku.sale_price}}">
                       {{memberName}}价<text wx:if="{{product.default_sku.orinalPrice > 0}}">￥<text style="font-size: 24rpx;">{{product.default_sku.orinalPrice}}</text></text>
@@ -178,7 +183,7 @@
                     <text class="" wx:if="{{isLogin && !(product.default_sku.member_price && product.default_sku.member_price != product.default_sku.sale_price)}}" style="marign-right: 20rpx;">{{!product.default_sku.orinalPrice  ? '暂无价格' : ('￥'+product.default_sku.orinalPrice)}}</text>
                   </view>
 
-                  <view class="price {{filter.judgeSoldout(product.sku_list) ? 'gray_txt' : ''}}" wx:else>
+                  <view class="price {{filter.judgeSoldout(product) ? 'gray_txt' : ''}}" wx:else>
                   <!-- <text class="price-del" wx:if="{{product.default_sku.price}}">￥{{parseInt(product.default_sku.price)}}</text> -->
                     <view class="price-member" style="background: {{memberTagColor}}" wx:if="{{product.default_sku.member_price && isLogin && product.default_sku.member_price < product.default_sku.sale_price}}">
                       {{memberName}}价<text wx:if="{{product.default_sku.orinalPrice > 0}}">￥<text style="font-size: 24rpx;position: relative; top: 2rpx;right: 2rpx;">{{product.default_sku.orinalPrice}}</text></text>
@@ -196,7 +201,7 @@
                     <view class="add btn" data-item="{{item}}">
                       <view class="">
                         <!-- <image style="height: 40rpx; width: 40rpx; position: relative; top: 1rpx;" src="../../images/gray_add.png" wx:if="{{filter.judgeSoldout(product.sku_list)}}"/> -->
-                        <image class="{{filter.judgeSoldout(product.sku_list) ? 'mask_opacity' : ''}}" style="height: 40rpx; width: 40rpx; position: relative; top: 1rpx;" src="../../images/add.png"/>
+                        <image class="{{filter.judgeSoldout(product) ? 'mask_opacity' : ''}}" style="height: 40rpx; width: 40rpx; position: relative; top: 1rpx;" src="../../images/add.png"/>
                       </view>
                     </view>
                   <!-- </view> -->

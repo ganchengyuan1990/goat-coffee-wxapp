@@ -14,10 +14,14 @@ Page({
     type: 1,
     loading: true,
     showModal: false,
+    page: 1,
     chosenType: 1
   },
 
   goNextPage(e) {
+    // this.setData({
+    //   page: 1
+    // })
     const type = (e.currentTarget.dataset.type)
     const item = (e.currentTarget.dataset.item)
     if (type == 1) {
@@ -38,6 +42,10 @@ Page({
         showModal: true,
         actImage: item.prize.img
       })
+      // wx.navigateToMiniProgram({
+      //     appId: 'wx2c348cf579062e56',
+      //     path: `/packages/restaurant_bak/restaurant/restaurant?poi_id=${this.data.meituanStoreId}&utm=7001`
+      // })
     }
   },
 
@@ -50,7 +58,8 @@ Page({
     let type = options.type
     this.setData({
       page:  1,
-      type: parseInt(options.type)
+      type: parseInt(options.type),
+      id: options.id
     });
 
     
@@ -100,7 +109,11 @@ Page({
       // couponItems: mockData,
       loading: false
     })
+    if (this.data.total && (this.data.page * 10 >= this.data.total)) {
+      return ;
+    }
     this.fetchCouponList(1)
+    
 
   },
 
@@ -130,7 +143,7 @@ Page({
     return result;
   },
   fetchCouponList(type, pageId) {
-    model(`activity/luck-activity/my-prize?id=118&page=${pageId || 1}`, {
+    model(`activity/luck-activity/my-prize?id=${this.data.id}&page=${pageId || 1}`, {
       userId: wx.getStorageSync('token').user.id,
       type: type
     }).then(data => {

@@ -76,6 +76,7 @@ Page({
                 modalTitle: 'SORRY',
                 showModal: true,
                 ifGetPrize: 0,
+                noMoreChance: true,
               })
             return ;
         }
@@ -87,6 +88,10 @@ Page({
             return ;
         }
 
+        if (this.data.isRunning) {
+            return ;
+        }
+
         model(`activity/luck-activity/prize-draw`, {
             id: this.data.activity.id
         }, 'POST').then(res1 => {
@@ -94,6 +99,8 @@ Page({
             const {
                 data: prizeData
             } = res1;
+            // prizeData.weight = 1;
+            // debugger
             // activityUser.luck_number = activityUser.luck_number + add_number;
             this.setData({
                 prize_count: prizeData.prize_count,
@@ -414,7 +421,7 @@ Page({
 
     goMyCoupon() {
         wx.navigateTo({
-            url: '../coupon/coupon'
+            url: `../coupon/coupon?id=${this.data.activity.id}`
         })
     },
 

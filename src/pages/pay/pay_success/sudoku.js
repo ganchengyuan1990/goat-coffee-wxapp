@@ -228,7 +228,7 @@ function initGame(activity_prizes) {
       leftAward = leftAward;
       topAward = topAward - 130 - 8;
     }
-    var imageAward = activity_prizes[j].prize.img;
+    var imageAward = activity_prizes[j].prize.icon;
     var _title = activity_prizes[j].prize.title;
     awardList.push({ topAward: topAward, leftAward: leftAward, imageAward: imageAward, title: _title });
   }
@@ -253,7 +253,7 @@ function startGame () {
     //这里我只是简单粗暴用y=30*x+200函数做的处理.可根据自己的需求改变转盘速度
     i += 30;
     console.log(i, '@@@i');
-    if (i > 500 && indexSelect == (_this.data.prizeData.weight - 1)) {
+    if (i > 500 && (indexSelect % 8 == (_this.data.prizeData.weight - 1))) {
       //去除循环
       clearInterval(timer)
       //获奖提示
@@ -262,26 +262,31 @@ function startGame () {
       const ifGetPrize = _this.data.prizeData.prize.if_true_prize;
       const prizeType = _this.data.prizeData.prize.type;
 
-      let modalTitle = 'LUCKY'
+      let modalTitle = 'https://img.goatup.cn/LUCKY.png'
 
       if (!ifGetPrize) {
-        modalTitle = 'SORRY'
+        modalTitle = 'https://img.goatup.cn/SORRY.png'
       }
 
 
-      _this.setData({
-        tempI: 0,
-        modalTitle,
-        showModal: true,
-        ifGetPrize,
-        prizeTitle: _this.data.prizeData.prize.title,
-        user_prize_record_id: _this.data.prizeData.user_prize_record_id,
-        actImage: _this.data.prizeData.prize.img,
-        realGift: _this.data.prizeData.prize.type == 2,
-        indexSelect: indexSelect,
-        isRunning: false,
-        prizeType
-      })
+      setTimeout(() => {
+        _this.setData({
+          tempI: 0,
+          modalTitle,
+          showModal: true,
+          ifGetPrize,
+          prizeTitle: _this.data.prizeData.prize.title,
+          user_prize_record_id: _this.data.prizeData.user_prize_record_id,
+          actImage: _this.data.prizeData.prize.icon,
+          realGift: _this.data.prizeData.prize.type == 2,
+          noMoreChance: false,
+          indexSelect: indexSelect,
+          isRunning: false,
+          prizeType
+        })
+      }, 500)
+
+
 
       // wx.showModal({
       //   title: '恭喜您',
@@ -296,13 +301,13 @@ function startGame () {
       //   }
       // })
     }
-    indexSelect = indexSelect % 8;
+    // indexSelect = indexSelect % 8;
 
-    _this.setData({
-      indexSelect: indexSelect
-    })
+    // _this.setData({
+    //   indexSelect: indexSelect
+    // })
 
-  }, (200 + i))
+  }, (150 + i))
 }
 
 export {

@@ -8,15 +8,16 @@
 
             <view class="tt" wx:if="{{detail.orderState == '31' && overtime}}">已取消</view>
 
-            <view class="tt" wx:else>{{filter.getOrderState(detail.orderState)}}</view>
+            <view class="tt" wx:else>{{filter.getOrderState(detail.orderState, detail.machine_type == 3)}}</view>
 
 
             <view class="order_no" wx:if="{{detail.orderState == '01' || detail.orderState == '02' || detail.orderState == '03'}}" style="display: flex; justify-content: center; flex-direction: column;">
-                取货码 {{detail.varCode}}
+                <text wx:if="{{detail.machine_type == 3}}">排队码 {{detail.varCode}}</text>
+                <text wx:else>取货码 {{detail.varCode}}</text>
                 <view style="display: flex; justify-content: center;" wx:if="{{!detail.storeCoffeeMakerId}}">
                     <image style="width: 200px; height: 200px; margin-top: 30rpx;" src="{{qrcodeURL}}" />
                 </view>
-                <view class="coffee_maker" wx:if="{{detail.storeCoffeeMakerId}}">请通过自助咖啡机兑换饮品</view>
+                <view class="coffee_maker" wx:if="{{detail.storeCoffeeMakerId && detail.machine_type != 3}}">请通过自助咖啡机兑换饮品</view>
 
             </view>
 
@@ -29,7 +30,14 @@
             <view class="refund_detail" wx:if="{{detail.orderState == 40}}">预计2至3个工作日内完成退款</view>
 
             <!-- <view class="state2 coffee_maker" wx:if="{{detail.orderState == 01 && detail.storeCoffeeMakerId}}">当天未兑换的订单，将在凌晨1点自动退款</view> -->
-            <view class="state2 coffee_maker" wx:if="{{detail.orderState == 02 && detail.storeCoffeeMakerId}}">若饮品制作失败，将在5分钟后自动退款</view>
+            <view class="state2 coffee_maker" wx:if="{{detail.orderState == 02 && detail.storeCoffeeMakerId && detail.machine_type != 3}}">若饮品制作失败，将在5分钟后自动退款</view>
+
+            <view class="state3" wx:if="{{detail.orderState == 02 && detail.machine_type == 3}}">我已经在机器前等待取餐</view>
+
+            <block wx:if="{{detail.orderState == 01 && detail.machine_type == 3}}">
+                <view class="do-right-now-mention">您如果在咖啡机前面，就赶紧点击“制作饮品”吧</view>
+                <view class="do-right-now-button" catchtap="doRightNow">制作饮品</view>
+            </block>
 
 
 

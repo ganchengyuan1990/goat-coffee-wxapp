@@ -77,6 +77,8 @@
         <view class="btn-save" wx:if="{{!initValue && !submitted}}" bind:tap="saveAddress">确定</view>
         <view class="btn-save gray-btn" wx:if="{{submitted || initValue}}">已提交</view>
 
+        <view wx:if="{{submitted || initValue}}" class="already-word">温馨提示：实物奖品请正确填写收货地址，才能派奖。</view>
+
     </view>
     <!-- <view class="btn-wrap">
         <view class="btn-save" bind:tap="logout">退出登录</view>

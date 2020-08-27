@@ -528,3 +528,35 @@ page {
     margin-top: 35rpx;
     margin-bottom: 0rpx;
 }
+
+.state3 {
+    margin-top: 10rpx;
+    margin-bottom: 0rpx;
+    color:rgba(103,103,103,1);
+    text-align: center;
+    font-size:24rpx;
+}
+
+.do-right-now-button {
+    width:226rpx;
+    height:65rpx;
+    line-height:65rpx;
+    background:rgba(222,65,50,1);
+    border-radius:10rpx;
+    color: #fff;
+    text-align: center;
+    font-size:30rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    margin: 30rpx auto;
+}
+
+.do-right-now-mention {
+    font-size:24rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    text-align: center;
+    color:rgba(103,103,103,1);
+    margin: 30rpx auto;
+    margin-top: 10rpx;
+}

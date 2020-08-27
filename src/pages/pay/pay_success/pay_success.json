@@ -4,6 +4,7 @@
   "usingComponents": {
     "toast": "../../../components/toast/toast",
     "modal": "../../../components/modal/modal",
+    "modal-new": "./components/modal/modal",
     "welcome": "../../../components/welcome/welcome",
     "ml-navigator": "../../../components/ml-navigator/index"
   }

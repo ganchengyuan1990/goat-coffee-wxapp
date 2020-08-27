@@ -1,8 +1,8 @@
     var filters = {
-        getOrderState: function (code) {
+        getOrderState: function (code, isMachine) {
             var map = {
                 '00': '待付款',
-                '01': '待接单',
+                '01': isMachine ? '待制作' : '待接单',
                 '02': '制作中',
                 '03': '制作完成',
                 '04': '配送中',

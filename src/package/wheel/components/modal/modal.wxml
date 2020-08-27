@@ -136,7 +136,7 @@
     <view class="dp-dialog-content-wrapper" wx:if="{{type == 12}}">
         <view class="dialog4 dialog8" style="padding: 0; padding-bottom: 10rpx; border-radius: 21rpx; position: relative; overflow: visible;" wx:if="{{shown}}">
             <view class="header" wx:if="{{title}}" style="border-radius: 21rpx 21rpx 0 0;position: relative; height: 126rpx; line-height: 126rpx; font-size: {{showSmall ? 24 : 30}}rpx; color: #fff; font-family:PingFangSC-Semibold,PingFang SC; font-weight:600; background:rgba(236,15,16,1);">
-                <view class="header-title-upper">{{title}}</view>
+                <view class="header-title-upper"><image style="width: 263rpx; height: 82rpx;" src="{{title}}" /></view>
                 <view style="text-align: center; font-weight: 300; font-size: 34rpx; position: relative; top: 15rpx;" wx:if="{{getPrize === 1}}">{{prizeTitle}}</view>
                 <view style="text-align: center; font-weight: 300; font-size: 34rpx; position: relative; top: 15rpx;" wx:if="{{getPrize === 0 && !noMoreChance}}">这次什么也没有抽到～</view>
                 <view style="text-align: center; font-weight: 300; font-size: 34rpx; position: relative; top: 15rpx;" wx:if="{{getPrize === 0 && noMoreChance}}">抽奖次数已用完！</view>
@@ -172,15 +172,10 @@
                 <view style="text-align: center; font-weight: 300;">实物奖品名称</view> -->
                 <image src="https://img.goatup.cn/guanbi_gray.png" style="position: absolute; right: 30rpx; top: 37rpx; height: 29rpx; width: 29rpx;" />
             </view>
-            
             <view style="display: flex; justify-content: center;">
-                <image style="width: 400rpx; height: 480rpx;" src="{{actImage}}" data-src="{{actImage}}" bindtap="goGetCoupon" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="" />
-
-                <view style="font-size:32rpx; font-weight:500; color:rgba(35,35,35,1); text-align: center; position: absolute; bottom: 50rpx; left: 50%; transform: translate(-50%, 0); z-index: 10000;">请点击图片跳转</view>
-
+                <image style="width: 400rpx; height: 480rpx;" src="{{actImage}}" data-src="{{actImage}}" show-menu-by-longpress mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="goGetCoupon" />
+                <view style="font-size:32rpx; font-weight:500; color:rgba(35,35,35,1); text-align: center; position: absolute; bottom: 50rpx; left: 50%; transform: translate(-50%, 0); z-index: 10000;">请长按图片跳转</view>
             </view>
-
-
         </view>
     </view>
 

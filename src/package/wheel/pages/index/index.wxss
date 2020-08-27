@@ -1,7 +1,7 @@
 /* pages/wheel/index.wxss */
 .page-wheel {
   padding: 20rpx;
-  background: url('https://img.goatup.cn/get_coupon_beijing.png') no-repeat;
+  background: url('https://img.goatup.cn/beijing_short.png') no-repeat;
   background-size: 100%;
 }
 
@@ -52,10 +52,10 @@
   /* height:136rpx; */
   /* background:linear-gradient(0deg, rgba(217, 183, 146, 1) 0%, rgba(227, 199, 169, 1) 100%); */
   /* border-radius:10rpx; */
-  margin: 30rpx auto;
+  margin: 20rpx auto;
   position: relative;
   padding: 10rpx 20rpx;
-  margin-top: 220rpx;
+  margin-top: 240rpx;
 
   height: 50rpx;
   background:linear-gradient(180deg,rgba(255,243,239,1) 0%,rgba(255,202,185,1) 100%);
@@ -419,8 +419,10 @@ box-shadow: inset 3px 3px 3px #fff2af;*/
   left: 50%;
   transform: translate(-50%, 0);
   font-size:20rpx;
+  width: 160rpx;
   font-family:PingFangSC-Regular,PingFang SC;
   font-weight:400;
+  text-align: center;
   color:rgba(150,124,31,1);
 }
 
@@ -430,8 +432,9 @@ box-shadow: inset 3px 3px 3px #fff2af;*/
 }
 
 @keyframes rowup {
-  0%   {opacity: 1;}
-  80%  {opacity: 1;}
+  0%   {opacity: 0;}
+  20%   {opacity: 1;}
+  85%  {opacity: 1;}
   100% {opacity: 0;}
 }
 
@@ -452,4 +455,10 @@ box-shadow: inset 3px 3px 3px #fff2af;*/
   margin: 20rpx;
   margin-top: 80rpx;
   /* margin-bottom: 0; */
+}
+
+.start-disabled {
+  background: #D3D3D3	;
+  color: #fff;
+  opacity: 1;
 }

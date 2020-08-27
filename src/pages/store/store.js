@@ -103,7 +103,60 @@ Page({
 
 		globalData.systemInfo = systemInfo;
 
+		this.setScene(options);
 
+
+	},
+
+
+	// 二维码参数读取
+	setScene(options) {
+		let activityId;
+		if (options.scene) {
+            const ggg = decodeURIComponent(options.scene);
+            console.log(ggg, 'ggg');
+
+            const ttt = ggg.split('&');
+            console.log(ttt, 'ddddd');
+            let time;
+            ttt.map(item => {
+                if (item.indexOf('a') >= 0) {
+                    const dddd = item.split('=')
+                    activityId = dddd[dddd.length - 1];
+                } else if (item.indexOf('t') >= 0) {
+                    const dddt = item.split('=')
+                    time = dddt[dddt.length - 1];
+                }
+            })
+
+            console.log(options.scene, time, activityId, '@@@1');
+
+            const nowDate = new Date().getTime();
+
+			console.log(nowDate - parseInt(time * 1000), '@@@@')
+			
+			return ;
+
+            if (nowDate - parseInt(time * 1000) > 2 * 60 * 1000) {
+                wx.showToast({
+                    title: '二维码失效，请重新扫码',
+                    icon: 'none',
+                    image: '',
+                    duration: 2500,
+                    mask: false,
+                    success: (result) => {
+                        
+                    },
+                    fail: () => {},
+                    complete: () => {}
+                });
+                this.setData({
+                    getSuccess: true
+                })
+                app.globalData.InitCouponTime = nowDate;
+                return;
+            }
+        }
 	},
 
 
@@ -581,7 +634,7 @@ Page({
 				isselfTaking: true
 			})
 			this.setTabStatus(info.id)
-			this.formatStoreInfo(info)
+			this.formatStoreInfo(info, null, true)
 		} else {
 			this.fetchLoaction(null, true)
 		}
@@ -695,6 +748,8 @@ Page({
 			lat: geo.lat,
 			// lng: 121.3105785000,
 			// lat: 31.1947329100,
+			// lat: 31.196626,
+			// lng: 121.307997,
 			page: 1
 		}).then(res => {
 			const {
@@ -747,7 +802,7 @@ Page({
 			})
 		})
 	},
-	formatStoreInfo(storeInfo, noToast) {
+	formatStoreInfo(storeInfo, noToast, fromAddress) {
 		if (!storeInfo) {
 			return
 		}
@@ -771,7 +826,7 @@ Page({
 		} catch (e) {
 			console.log(e);
 		}
-		if (parseFloat(storeInfo.distance) > 3000 && !noToast) {
+		if (parseFloat(storeInfo.distanceReal || storeInfo.distance) > 3000 && !noToast) {
 			let fromTransport = wx.getStorageSync('fromTransport');
 			let place = this.data.isCoffeeMaker ? '咖啡机' : '店铺';
 			let content = `您与${place}的距离超过3公里，请确认${place}是${storeInfo.storeName}`
@@ -792,6 +847,21 @@ Page({
 					showCancel: false,
 					content: content,
 					confirmText: '我知道了'
+				})
+			}
+		} else if (parseFloat(storeInfo.distanceReal || storeInfo.distance) <= 3000) {
+			if (!this.data.isActWrapShow && storeInfo.machine_state != 200) {
+				wx.showModal({
+					title: '啊哦',
+					content: `机器人被人类玩坏啦 正在恢复中，请稍等～`, //提示的内容,
+					showCancel: false, //是否显示取消按钮,
+					confirmText: '我知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
+					confirmColor: '#F12B23', //确定按钮的文字颜色
+					success: res => {
+						if (res.confirm) {
+							
+						}
+					}
 				})
 			}
 		}
@@ -818,6 +888,7 @@ Page({
 			const {
 				data
 			} = res
+		
 
 			const list = data.classify_list;
 			// 计算单品价格
@@ -1090,12 +1161,16 @@ Page({
 		let groupIdx = e.currentTarget.dataset.groupidx
 		let productIdx = e.currentTarget.dataset.productidx
 		let skulist = e.currentTarget.dataset.skulist;
+		let product = e.currentTarget.dataset.product;
 		var soldout = true
 		skulist.forEach(function (item) {
 			if (item.state === 1) {
 				soldout = false
 			}
 		})
+		if (product.isSoldOut) {
+			soldout = true
+		}
 		if (soldout) {
 			wx.showModal({
 				title: '提示', //提示的标题,

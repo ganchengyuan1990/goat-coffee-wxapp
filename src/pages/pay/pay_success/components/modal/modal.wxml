@@ -1,11 +1,142 @@
 <view class="dp-dialog-backdrop" wx:if="{{shown}}" transition="expand" catchtap="close">
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 1 || !type}}">
+        <view class="dp-dialog-dialog" wx:if="{{shown}}">
+            <view class="dp-dialog-header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="dp-dialog-content">
+            </view>
+            <view class="dp-dialog-footer">
+                <view class="dp-dialog-footer-btn left {{otherFunctionType ? 'double' : 'single'}} {{okText === '去登录' ? 'highlight' : ''}}" bindtap="leftButtonFunction" wx:if="{{okText}}">{{okText}}</view>
+                <view class="dp-dialog-footer-btn" bindtap="close" wx:else>知道了</view>
+                <view wx:if="{{otherFunctionType}}" class="dp-dialog-footer-btn double" bindtap="otherFunction" >{{otherText}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 2}}">
+        <view class="dp-dialog-dialog" wx:if="{{shown}}">
+            <view class="dp-dialog-header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="dp-dialog-content">
+            </view>
+            <view class="dp-dialog-footer">
+                <view class="dp-dialog-footer-btn left {{otherFunctionType ? 'double' : 'single'}} {{okText === '去登录' ? 'highlight' : ''}}" bindtap="leftButtonFunction" wx:if="{{okText}}">{{okText}}</view>
+                <view class="dp-dialog-footer-btn" bindtap="close" wx:else>知道了</view>
+                <view wx:if="{{otherFunctionType}}" class="dp-dialog-footer-btn double" bindtap="otherFunction" >{{otherText}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 3}}">
+        <view class="dialog4" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="content">
+                {{content}}
+            </view>
+            <view class="button">
+                <view class="jinmai-btn" bindtap="goJinmai">赠送金麦</view>
+            </view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 4}}">
+        <view class="dialog4" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="content">
+                {{content}}
+            </view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 5}}">
+        <view class="dialog4 dialog5" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="content_middle">
+                <image src="../../images/jqqd.png" />
+            </view>
+        </view>
+    </view>
+    <view class="act-wrap" wx:if="{{type == 6}}">
+        <view class="mask {{isActWrapShow ? 'active':''}}"></view>
+        <view class="cnt">
+            <image src="{{actImage}}" mode="widthFix" ></image>
+            <view class="btn-close" bind:tap="hideActWrap"></view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 7}}">
+       <view class="dialog4 dialog8" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content store-title">{{title}}</p>
+            </view>
+            <view class="content store-content" data-item="{{item}}" wx:if="{{contentArr.length > 0}}" wx:for="{{contentArr}}" wx:for-item="item" wx:key="index" bindtap="goStore">
+                <view class="store-item">
+                    <image class='store-pic' src="{{item.storePic}}" />
+                    <view class="store-name"> {{item.storeName}} </view>
+                    <view class="store-distance"> 距您{{item.distance}}米 </view>
+                </view>
+            </view>
+            <view class="button">
+                <view class="store-button" data-item="{{item}}" bindtap="goTransport" wx:if="{{!isCoffeeMaker}}">更多门店&咖啡机 ></view>
+                <view class="store-button" bindtap="goTransportSecond" wx:else>更多门店&咖啡机 ></view>
+            </view>
+        </view>
+    </view>
 
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 8}}">
+        <view class="dialog4 dialog8" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <image class="header_img" src="{{title}}" mode="widthFix" ></image>
+            </view>
+            <view class="content_8">
+                {{content}}
+            </view>
+            <view class="button">
+                <view class="jinmai-btn" bindtap="goRecharge">一键升级</view>
+            </view>
+            <view class="button">
+                <view class="sss" bindtap="goBuy">再来一杯</view>
+            </view>
+        </view>
+    </view>
 
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 9}}">
+        <view class="dialog4 dialog8 dialog9" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <image class="header_img" src="{{title}}" mode="widthFix" ></image>
+            </view>
+        </view>
+    </view>
+
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 11}}">
+        <view class="dialog4 dialog8" style="padding: 0; border-radius: 21rpx;" wx:if="{{shown}}">
+            <view class="header" style="position: relative; height: 98rpx; line-height: 98rpx; font-size: {{showSmall ? 24 : 30}}rpx; color: #fff; font-family:PingFangSC-Semibold,PingFang SC; font-weight:600; background:rgba(236,15,16,1);" wx:if="{{title}}">
+                {{title}}
+                <image src="https://img.goatup.cn/guanbi%402x.png" style="position: absolute; right: 30rpx; top: 37rpx; height: 29rpx; width: 29rpx;" />
+            </view>
+            <view class="content_8" wx:if="{{actImage}}">
+                <image class="header_img2" src="{{actImage}}" mode="widthFix" ></image>
+            </view>
+            <view class="content_8" wx:if="{{failImage}}">
+                <image class="header_img3" style="margin-top: 28rpx" src="{{failImage}}" mode="widthFix" ></image>
+            </view>
+            <view class="button" wx:if="{{content}}">
+                <view class="sss" bindtap="goBuy">{{content}}</view>
+            </view>
+            <view class="button" style="margin-top: 50rpx; margin-bottom: 30rpx;">
+                <view class="lijilingqu-btn" bindtap="goRecharge">{{okText}}</view>
+            </view>
+
+        </view>
+    </view>
 
     <view class="dp-dialog-content-wrapper" wx:if="{{type == 12}}">
         <view class="dialog4 dialog8" style="padding: 0; padding-bottom: 10rpx; border-radius: 21rpx; position: relative; overflow: visible;" wx:if="{{shown}}">
             <view class="header" wx:if="{{title}}" style="border-radius: 21rpx 21rpx 0 0;position: relative; height: 126rpx; line-height: 126rpx; font-size: {{showSmall ? 24 : 30}}rpx; color: #fff; font-family:PingFangSC-Semibold,PingFang SC; font-weight:600; background:rgba(236,15,16,1);">
-                <view class="header-title-upper">{{title}}</view>
+                <view class="header-title-upper"><image style="width: 263rpx; height: 82rpx;" src="{{title}}" /></view>
                 <view style="text-align: center; font-weight: 300; font-size: 34rpx; position: relative; top: 15rpx;" wx:if="{{getPrize === 1}}">{{prizeTitle}}</view>
                 <view style="text-align: center; font-weight: 300; font-size: 34rpx; position: relative; top: 15rpx;" wx:if="{{getPrize === 0 && !noMoreChance}}">这次什么也没有抽到～</view>
                 <view style="text-align: center; font-weight: 300; font-size: 34rpx; position: relative; top: 15rpx;" wx:if="{{getPrize === 0 && noMoreChance}}">抽奖次数已用完！</view>
@@ -41,16 +172,43 @@
                 <view style="text-align: center; font-weight: 300;">实物奖品名称</view> -->
                 <image src="https://img.goatup.cn/guanbi_gray.png" style="position: absolute; right: 30rpx; top: 37rpx; height: 29rpx; width: 29rpx;" />
             </view>
-            
             <view style="display: flex; justify-content: center;">
-                <image style="width: 400rpx; height: 480rpx;" src="{{actImage}}" data-src="{{actImage}}" bindtap="goGetCoupon" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="" />
-
+                <image style="width: 400rpx; height: 480rpx;" src="{{actImage}}" data-src="{{actImage}}" show-menu-by-longpress mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="goGetCoupon" />
                 <view style="font-size:32rpx; font-weight:500; color:rgba(35,35,35,1); text-align: center; position: absolute; bottom: 50rpx; left: 50%; transform: translate(-50%, 0); z-index: 10000;">请点击图片跳转</view>
-
             </view>
-
-
         </view>
     </view>
 
+    <view class="dp-dialog-content-wrapper wrapper2 {{shown ? 'airdrop-animate-show' : 'airdrop-animate-hide'}}" wx:if="{{type == 10}}">
+        <!-- <view class="dialog4 dialog10 dp-dialog-dialog" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <rich-text class="dp-dialog-header-content" nodes="{{title}}"></rich-text>
+            </view>
+            <view class="dp-dialog-footer">
+                <view class="dp-dialog-footer-btn double" bindtap="close" >取消</view>
+                <view class="dp-dialog-footer-btn double" bindtap="goRecharge" >更多积分</view>
+            </view>
+        </view> -->
+        <image class="back_image_10" src="https://img.goatup.cn/img/config/modal_back.png" />
+        <view class='dp-inner-wrapper'>
+            <view class="dialog10 dp-dialog-dialog" wx:if="{{shown}}">
+                <view class="dialog10_content">
+                    <view class="cloud_wrapper">
+                        <view class="cloud_txt">恭喜获得奖励</view>
+                    </view>
+                    <view class="header" wx:if="{{title}}">
+                        <rich-text class="dp-dialog-header-content" nodes="{{title}}"></rich-text>
+                    </view>
+                    <view class="dp-dialog-content-image" wx:if="{{actImage}}">
+                        <image class='content-image' src="{{actImage}}" />
+                    </view>
+                    <view class="dp-dialog-footer">
+                        
+                        <view class="dp-dialog-footer-btn double" bindtap="close" >取消</view>
+                        <view class="dp-dialog-footer-btn double black_item" bindtap="goBuy" >立即使用</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
 </view>

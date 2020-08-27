@@ -22,10 +22,9 @@ export const BASE_URL = (() => {
 wx.setStorageSync('config', {
     env: CONFIG.env,
     baseUrl: {
-        prod: 'https://goatup.net/',
-        test: 'http://127.0.0.1:8000/',
-        dev: `http://test.goatup.net/`
-
+        prod: 'https://goatup.cn/',
+        test: 'https://test-mellower-main.powercoffee.cn/',
+        dev: `https://dev-mellower-main.goatup.net/`
     }
 });
 
