@@ -56,15 +56,19 @@
             <view class="panel" wx:for="{{orderList}}" wx:key="{{item.order.orderNo}}" bind:tap="showDetail" data-item="{{item.order}}" data-list="{{item.order_detail}}" data-dtype="order">
                 <view class="panel-hd">
                     <view class="tt">{{item.order.storeName}}<text wx:if="{{item.order.storeCoffeeMakerId}}">（编号{{item.order.storeCoffeeMakerId}}）</text><text wx:if="{{item.order.orderType === 1}}">(NO.{{item.order.varCode}})</text></view>
-                    <view class="active">待领取</view>
+                    <view class="active" wx:if="{{item.order.machine_type == 3 && item.order.orderState == '01'}}">待制作</view>
+                    <view class="active" wx:else>待领取</view>
                 </view>
+
+                <view class="right-now-button" data-item="{{item}}" catchtap="doRightNow" wx:if="{{item.order.machine_type == 3 && item.order.orderState == '01'}}">立即制作</view>
                 <view class="panel-bd">
                     <view class="pro_icon">
                         <image src="{{item.order_detail[0].productIcon}}" />
                     </view>
                     <view class="order_numer">
                         <view class="qucan" wx:if="item.order.orderState == '01' || item.order.orderState == '02' || item.order.orderState == '03'}}" data-item="{{item}}" data-type="group">
-                            取货码: {{item.order.varCode}}
+                            <text wx:if="{{item.order.machine_type == 3}}">排队码: {{item.order.varCode}}</text>
+                            <text wx:else>取货码: {{item.order.varCode}}</text>
                         </view>
                         <view>
                             <view style="max-width: 68%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap; position: relative;  top: -1rpx;font-size: 28rpx; color: #232323;"><text>{{item.order_detail[0].productName}}</text><text style="color: rgba(35, 24, 21, 0.5); font-size: 24rpx; margin-left: 15rpx"></text></view>
@@ -75,7 +79,7 @@
             </view>
 
 
-            <view style="max-height: 45vh; margin-top: 24rpx; width: 100%; ">
+            <view style="max-height: 45vh; margin-top: 24rpx; width: 100%; margin-bottom: 30rpx;">
                 <view class='progress_wrap'>
                     <view class="chi_item" bindtap="goMyOrder">
                         <image class="my_icon" src="../../../images/my_order.png"/>
@@ -100,11 +104,11 @@
                         <text style="margin-left: 60rpx;">加油好礼</text>
                         <image class="arrow" src="../../../images/arrow.png"/>
                     </view> -->
-                    <!-- <view class="chi_item" bindtap="goGetCoupon">
-                        <image class="my_icon" src="../../../images/my_service.png"/>
+                    <view class="chi_item" bindtap="goWheel">
+                        <image class="my_icon" src="https://img.goatup.cn/%E7%A4%BC%E7%89%A9%20%E6%8B%B7%E8%B4%9D%402x.png"/>
                         <text style="margin-left: 60rpx;">喝咖啡100%中奖</text>
                         <image class="arrow" src="../../../images/arrow.png"/>
-                    </view> -->
+                    </view>
                 </view>
 
             </view>
@@ -153,8 +157,6 @@
 
 
     <view class="head-wrap">
-
-
 
 
             <view style="max-height: 45vh; margin-top: 24rpx; width: 100%; ">
