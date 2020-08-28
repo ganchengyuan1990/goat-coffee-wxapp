@@ -435,7 +435,7 @@
 					"id": 56,
 					"name": "pages/pay/pay_success/pay_success",
 					"pathName": "pages/pay/pay_success/pay_success",
-					"query": "coffeeMaker=true&orderId=38207&price=15&varCode=104",
+					"query": "coffeeMaker=true&orderId=1029&price=10&varCode=101",
 					"scene": null
 				},
 				{

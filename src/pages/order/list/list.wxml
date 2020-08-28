@@ -96,7 +96,7 @@
                 </view> -->
                 <view class="panel-hd">
                     <view class="tt">{{item.order.storeName}}<text wx:if="{{item.order.storeCoffeeMakerId}}">（编号{{item.order.storeCoffeeMakerId}}）</text><text wx:if="{{item.order.orderType === 1}}">(NO.{{item.order.varCode}})</text></view>
-                    <view class="active">{{filter.getOrderState(item.order.orderState, item.order.machine_type == 3)}}</view>
+                    <view class="active">{{filter.getOrderState(item.order.orderState, item.order.storeCoffeeMakerId)}}</view>
                 </view>
                 <view class="panel-bd">
                     <!-- <view class="tt">{{filter.getAddr(item.order)}}</view> -->
@@ -127,7 +127,7 @@
                     <view class="right-now-button" data-item="{{item}}" catchtap="doRightNow" wx:if="{{item.order.machine_type == 3 && item.order.orderState == '01'}}">立即制作</view>
 
                     <view class="qucan" wx:if="{{filter.getOrderTypeState(item.order.orderType)!= 1 && (item.order.orderState == '01' || item.order.orderState == '02' || item.order.orderState == '03')}}" data-item="{{item}}" data-type="group">
-                        <view wx:if="{{item.order.machine_type == 3 && item.order.orderState != '01'}}">排队码: <text style="font-size: 35rpx;margin-left: 10rpx;font-weight: 500;">{{item.order.varCode}}</text></view>
+                        <view wx:if="{{item.order.machine_type == 3 && item.order.orderState != '01'}}">排队号: <text style="font-size: 35rpx;margin-left: 10rpx;font-weight: 500;">{{item.order.varCode}}</text></view>
                         <view wx:if="{{item.order.machine_type != 3}}">取货码: <text style="font-size: 35rpx;margin-left: 10rpx;font-weight: 500;">{{item.order.varCode}}</text></view>
                     </view>
 
@@ -141,7 +141,7 @@
                 <view class="panel-hd">
                     <view>团购订单：{{item.groupOrderNo}}</view>
                     <view class="{{item.payState === '00' ? 'active':''}}">
-                        {{filter.getOrderState(item.payState, item.order.machine_type == 3)}}
+                        {{filter.getOrderState(item.payState, item.order.storeCoffeeMakerId)}}
                     </view>
                 </view>
                 <view class="panel-bd">

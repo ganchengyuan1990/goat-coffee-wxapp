@@ -849,21 +849,19 @@ Page({
 					confirmText: '我知道了'
 				})
 			}
-		} else if (parseFloat(storeInfo.distanceReal || storeInfo.distance) <= 3000) {
-			if (!this.data.isActWrapShow && storeInfo.machine_state != 200) {
-				wx.showModal({
-					title: '啊哦',
-					content: `机器人被人类玩坏啦 正在恢复中，请稍等～`, //提示的内容,
-					showCancel: false, //是否显示取消按钮,
-					confirmText: '我知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
-					confirmColor: '#F12B23', //确定按钮的文字颜色
-					success: res => {
-						if (res.confirm) {
-							
-						}
+		} else if (!this.data.isActWrapShow && storeInfo.machine_state != 200 && storeInfo.machine_type == 3) {
+			wx.showModal({
+				title: '啊哦',
+				content: `机器人被人类玩坏啦 正在恢复中，请稍等～`, //提示的内容,
+				showCancel: false, //是否显示取消按钮,
+				confirmText: '我知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
+				confirmColor: '#F12B23', //确定按钮的文字颜色
+				success: res => {
+					if (res.confirm) {
+						
 					}
-				})
-			}
+				}
+			})
 		}
 		storeInfo.distance = formatDistance
 		this.setData({

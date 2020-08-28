@@ -718,7 +718,7 @@ Page({
     } = e;
     console.log(order ,'@@@order');
     wx.showModal({
-      content: `您是否在${order.storeName}自助咖啡机前面？ 如果不在，咖啡可能会被别人取走哟`, //提示的内容,
+      content: `您是否在「${order.storeName}」自助咖啡机前面？ 如果不在，咖啡可能会被别人取走哟`, //提示的内容,
       showCancel: true, //是否显示取消按钮,
       cancelColor: '#9A9A9A', //取消按钮的文字颜色,
       cancelText: '暂不制作',
@@ -742,13 +742,13 @@ Page({
               }, 1500);
             }
           }).catch(e => {
-            console.log(e)
-            wx.showToast({
-              title: e, //提示的内容,
-              icon: 'none', //图标,
-              duration: 2000, //延迟时间,
-              mask: true, //显示透明蒙层，防止触摸穿透,
-              success: res => {}
+            console.log(e, '@@@更酷咖啡机报错')
+            wx.showModal({
+              title: '提示',
+              content: '机器人被人类玩坏 无法制作饮品，请联系客服', //提示的内容,
+              showCancel: false, //图标,
+              confirmText: '确定', //延迟时间,
+              confirmColor: '#F12B23'
             });
           })
         }

@@ -8,11 +8,11 @@
 
             <view class="tt" wx:if="{{detail.orderState == '31' && overtime}}">已取消</view>
 
-            <view class="tt" wx:else>{{filter.getOrderState(detail.orderState, detail.machine_type == 3)}}</view>
+            <view class="tt" wx:else>{{filter.getOrderState(detail.orderState, detail.storeCoffeeMakerId)}}</view>
 
 
             <view class="order_no" wx:if="{{detail.orderState == '01' || detail.orderState == '02' || detail.orderState == '03'}}" style="display: flex; justify-content: center; flex-direction: column;">
-                <text wx:if="{{detail.machine_type == 3}}">排队码 {{detail.varCode}}</text>
+                <text wx:if="{{detail.machine_type == 3}}">排队号 {{detail.varCode}}</text>
                 <text wx:else>取货码 {{detail.varCode}}</text>
                 <view style="display: flex; justify-content: center;" wx:if="{{!detail.storeCoffeeMakerId}}">
                     <image style="width: 200px; height: 200px; margin-top: 30rpx;" src="{{qrcodeURL}}" />

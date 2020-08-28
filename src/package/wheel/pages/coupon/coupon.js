@@ -15,7 +15,8 @@ Page({
     loading: true,
     showModal: false,
     page: 1,
-    chosenType: 1
+    chosenType: 1,
+    initLoading: true,
   },
 
   goNextPage(e) {
@@ -155,10 +156,14 @@ Page({
       this.setData({
         couponItems: this.data.couponItems.concat(result),
         total: data.data.total,
-        loading: false
+        loading: false,
+        initLoading: false,
       })
       wx.hideLoading();
     }).catch(e => {
+      this.setData({
+        initLoading: false,
+      })
       wx.showToast({
         title: e,
         icon: 'none',
