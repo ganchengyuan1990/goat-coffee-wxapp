@@ -1,0 +1,16 @@
+<view class="hfe-vue-dialog-backdrop" wx:if="{{isShow}}" bindtouchstart="closeToast" data-eventid="{{'0'}}" data-comkey="{{$k}}">
+    <view class="_div hfe-vue-dialog-toast-wrapper">
+        <view class="_div hfe-vue-dialog-toast-content-backdrop">
+            <label wx:if="{{title}}" class="_span wc">{{title}}</label>
+        </view>
+        <view class="bottom-position">
+            <view>积分抵扣(可用1569积分）</view>
+            <view class="protocol" catchtap="chooseXieyi">
+                <image src="../../../../../images/checkbox.png" wx:if="{{zunshou}}"/>
+                <image src="../../../../../images/check_not.png" wx:if="{{!zunshou}}"/>
+                <view class="name" style="color: #999; display: inline-block;">我已同意<text style="color: #D32D25;" catchtap="goState">《咖啡支付协议》</text></view>
+            </view> 
+            <view class="sure-button">确定</view>
+        </view>
+    </view>
+</view>

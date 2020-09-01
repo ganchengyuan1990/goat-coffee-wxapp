@@ -53,12 +53,12 @@
                 <!-- <view class="icon-arrow"></view> -->
             </view>
         </view>
-        <view class="item">
+        <view class="item {{initValue ? '' : 'high-item'}}">
             <view class="tt">
                 <text>详细地址</text>
             </view>
             <view class="cnt">
-                <input class="ipt"  wx:if="{{!initValue}}" type="text" bindinput="bindAddressInput" placeholder="请输入详细地址" maxlength="{{100}}"/>
+                <textarea style="width: 500rpx; height: 140rpx; line-height: 50rpx;" placeholder-class="ipt-textarea" class="ipt"  wx:if="{{!initValue}}" type="text" bindinput="bindAddressInput" placeholder="请输入详细地址" maxlength="{{100}}"/>
                 <input class="ipt"  disabled wx:if="{{initValue}}"type="text" bindinput="bindAddressInput" placeholder="{{lastPrizeAddressInfo.address}}" />
 
                 <!-- <view class="icon-arrow"></view> -->

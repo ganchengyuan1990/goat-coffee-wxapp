@@ -56,3 +56,11 @@ page {
     text-align: center;
     margin: 20rpx auto;
 }
+
+.high-item {
+    height: 155rpx !important;
+}
+
+.ipt-textarea {
+    width: 60%;
+}

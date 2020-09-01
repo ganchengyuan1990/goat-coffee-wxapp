@@ -1,3 +1,4 @@
+<wxs  src="./checkout.wxs" module="checkout"></wxs>
 <view class='outter' id="container">
     <scroll-view scroll-y scroll-into-view="{{viewToNav}}" class="container {{member_recharge > 0 ? 'shorter_container' : ''}}" wx:if="{{!showNoOrder}}">
         <view class="order-box">
@@ -200,6 +201,19 @@
             </view>
         </view>
 
+        <view class="transport-item shorter top_gap" wx:if="{{false}}" bindtap="showScore">
+            <view class="l">
+                <text class="name">积分抵扣</text>
+                <!-- <text class='coupon_mention'>门店活动不能与优惠券同享</text> -->
+            </view>
+            <view class="r">
+                <text class="txt">使用10积分抵扣¥10</text>
+                <!-- <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && chooseNoVoucher}}">有{{voucherList.length}}张可用</text>
+                <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher && chosenInfo.type == 2}}"> - ￥{{couponMoney}}</text> -->
+                <image class="arrow arrow_small" src="../../../images/arrow.png"/>
+            </view>
+        </view>
+
 
 
         <!-- <view class="transport-item shorter" bindtap="goRedPack">
@@ -339,3 +353,6 @@
         随便逛逛
     </view>
 </view>
+
+
+<score-toast title="123123" isShow="{{false}}"></score-toast>
