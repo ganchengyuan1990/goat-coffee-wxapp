@@ -273,14 +273,14 @@ function startGame () {
         _this.setData({
           tempI: 0,
           modalTitle,
-          showModal: true,
+          showNewModal: true,
           ifGetPrize,
           prizeTitle: _this.data.prizeData.prize.title,
           user_prize_record_id: _this.data.prizeData.user_prize_record_id,
           actImage: _this.data.prizeData.prize.icon,
           realGift: _this.data.prizeData.prize.type == 2,
           noMoreChance: false,
-          indexSelect: indexSelect,
+          indexSelect: indexSelect % 8,
           isRunning: false,
           prizeType
         })
@@ -306,6 +306,9 @@ function startGame () {
     // _this.setData({
     //   indexSelect: indexSelect
     // })
+    _this.setData({
+      indexSelect: indexSelect % 8
+    })
 
   }, (150 + i))
 }

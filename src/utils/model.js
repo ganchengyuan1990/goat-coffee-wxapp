@@ -63,7 +63,7 @@ const model = (name = '', data = {}, method = 'GET', header, ip) => {
                 } else {
                     console.log(`[interface]: ${name}\n` + errMsg)
                     console.log(`[interface]: ${name}\n` + data.msg)
-                    reject(data.msg)
+                    reject(data.msg, data.data)
                 }
             },
             fail(err) {

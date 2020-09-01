@@ -108,7 +108,7 @@ Page({
     startGame() {
         if (this.data.noMoreChance) {
             this.setData({
-                modalTitle: 'SORRY',
+                modalTitle: 'https://img.goatup.cn/SORRY.png',
                 showNewModal: true,
                 ifGetPrize: 0,
                 noMoreChance: true,
@@ -147,7 +147,7 @@ Page({
         }).catch(e => {
             if (e == '抽奖机会用完了') {
                 this.setData({
-                    modalTitle: 'SORRY',
+                    modalTitle: 'https://img.goatup.cn/SORRY.png',
                     showNewModal: true,
                     ifGetPrize: 0,
                 })
@@ -421,7 +421,7 @@ Page({
                 success: res => {
                     if (res.confirm) {
                         model(`order/detail/make-drinks`, {
-                            id: orderId
+                            id: this.data.orderId
                           }, 'POST').then(res => {
                             if (res.code == 'suc') {
                               wx.showToast({
@@ -439,7 +439,7 @@ Page({
                             console.log(e, '@@@更酷咖啡机报错')
                             wx.showModal({
                                 title: '提示',
-                                content: '机器人被人类玩坏 无法制作饮品，请联系客服', //提示的内容,
+                                content: `机器人被人类玩坏啦\r\n无法制作饮品，请联系客服`, //提示的内容,
                                 showCancel: false, //图标,
                                 confirmText: '确定', //延迟时间,
                                 confirmColor: '#F12B23'

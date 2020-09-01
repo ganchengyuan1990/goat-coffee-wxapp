@@ -492,7 +492,7 @@ Page({
 
   setAllShopList(shopList, zizhuList) {
     let min = 100000000;
-    let minIndex = 0;
+    let minIndex = -1;
     // console.log(result, 33333);
     let initShopList = shopList.map((item, index) => {
       if (parseInt(item.distance) === item.distance && parseInt(item.distance) < min) {

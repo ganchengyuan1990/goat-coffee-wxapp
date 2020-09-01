@@ -97,18 +97,18 @@
                         <image class="my_icon" src="../../../images/my_service.png"/>
                         <text style="margin-left: 60rpx;">客户服务</text>
                         <image class="arrow" src="../../../images/arrow.png"/>
-                        <view class="arrow-line"></view>
+                        <view class="arrow-line" wx:if="{{showPrizeIntro}}"></view>
                     </view>
                     <!-- <view class="chi_item" bindtap="goWheel">
                         <image class="my_icon" src="https://img.goatup.cn/%E7%A4%BC%E7%89%A9%20%E6%8B%B7%E8%B4%9D%402x.png"/>
                         <text style="margin-left: 60rpx;">加油好礼</text>
                         <image class="arrow" src="../../../images/arrow.png"/>
                     </view> -->
-                    <!-- <view class="chi_item" bindtap="goWheel">
+                    <view class="chi_item" bindtap="goWheel" wx:if="{{showPrizeIntro}}">
                         <image class="my_icon" src="https://img.goatup.cn/%E7%A4%BC%E7%89%A9%20%E6%8B%B7%E8%B4%9D%402x.png"/>
                         <text style="margin-left: 60rpx;">喝咖啡100%中奖</text>
                         <image class="arrow" src="../../../images/arrow.png"/>
-                    </view> -->
+                    </view>
                 </view>
 
             </view>

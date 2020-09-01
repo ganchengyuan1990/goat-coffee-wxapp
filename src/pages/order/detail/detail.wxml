@@ -35,7 +35,7 @@
             <view class="state3" wx:if="{{detail.orderState == 02 && detail.machine_type == 3}}">我已经在机器前等待取餐</view>
 
             <block wx:if="{{detail.orderState == 01 && detail.machine_type == 3}}">
-                <view class="do-right-now-mention">您如果在咖啡机前面，就赶紧点击“制作饮品”吧</view>
+                <view class="do-right-now-mention">我已经在机器前等待取餐</view>
                 <view class="do-right-now-button" catchtap="doRightNow">制作饮品</view>
             </block>
 

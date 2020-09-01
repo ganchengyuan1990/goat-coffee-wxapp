@@ -254,7 +254,6 @@ function startGame () {
     i += 30;
     console.log(i, indexSelect, '@@@i');
     if (i > 500 && (indexSelect % 8 == (_this.data.prizeData.weight - 1))) {
-      debugger
       //去除循环
       clearInterval(timer)
       //获奖提示
@@ -281,7 +280,7 @@ function startGame () {
           actImage: _this.data.prizeData.prize.icon,
           realGift: _this.data.prizeData.prize.type == 2,
           noMoreChance: false,
-          indexSelect: indexSelect,
+          indexSelect: indexSelect % 8,
           isRunning: false,
           prizeType
         })
@@ -306,9 +305,9 @@ function startGame () {
     // console.log(indexSelect, 'indexSelect');
     // indexSelect = indexSelect % 8;
 
-    // _this.setData({
-    //   indexSelect: indexSelect
-    // })
+    _this.setData({
+      indexSelect: indexSelect % 8
+    })
 
   }, (150 + i))
 }

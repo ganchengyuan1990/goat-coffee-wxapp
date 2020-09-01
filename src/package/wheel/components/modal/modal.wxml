@@ -155,7 +155,8 @@
             </view>
             <view class="button" style="margin-top: 50rpx; margin-bottom: 25rpx; display: flex; justify-content: center; align-items: center;">
                 <view class="lijilingqu-btn" bindtap="goAddress" wx:if="{{getPrize === 1 && realGift}}">填写地址</view>
-                <view class="lijilingqu-btn-half" bindtap="goBuy" wx:if="{{getPrize === 1 && !realGift && prizeType != 2}}">立即使用</view>
+                <view class="lijilingqu-btn-half" bindtap="goMyCoupon" wx:if="{{getPrize === 1 && !realGift && prizeType != 2}}">查看奖品</view>
+                <!-- <view class="lijilingqu-btn-half" bindtap="goBuy" wx:if="{{getPrize === 1 && !realGift && prizeType != 2}}">立即使用</view> -->
                 <view class="lijilingqu-btn-half" bindtap="goGetCoupon" wx:if="{{getPrize === 1 && !realGift && prizeType == 2}}">立即领取</view>
 
                 <view class="lijilingqu-btn-half half-white" bindtap="prizeAgain" wx:if="{{getPrize === 1 && !realGift}}">再抽一次</view>

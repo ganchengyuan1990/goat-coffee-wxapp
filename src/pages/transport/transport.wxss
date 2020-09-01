@@ -148,6 +148,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
 }
 
 .direct-item .text-overflow {
@@ -452,13 +454,15 @@
     color: #fff;
     text-align: center;
     font-size: 22rpx;
-    padding: 2rpx 9rpx;
+    padding: 0rpx 9rpx;
     position: relative;
     top: -1rpx;
     /* width:69rpx; */
     height:32rpx;
+    line-height:32rpx;
     background:rgba(222, 65, 50, 1);
     border-radius:4rpx;
+    margin-left: 15rpx;
 }
 
 .arrow {

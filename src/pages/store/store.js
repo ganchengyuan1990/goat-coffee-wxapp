@@ -5,6 +5,11 @@ import util from '../../utils/util.js'
 import {
 	BigNumber
 } from '../../utils/bignumber.min';
+import {setConfigParam} from '../../utils/commonApis.js'
+
+// setConfigParam().then(res => {
+// 	console.log(res, '@@@')
+// })
 
 function BN(...args) {
 	return new BigNumber(...args)
@@ -383,7 +388,7 @@ Page({
 				wx.hideLoading();
 			});
 		} else {
-			model('base/site/config-list').then(res => {
+			setConfigParam().then(res => {
 				let configSet = res.data['config-set'];
 				wx.setStorageSync('configData', res.data['config-set']);
 				if (res.data.homeBanners && res.data.homeBanners[0] && res.data.homeBanners[0].pic) {
@@ -852,7 +857,7 @@ Page({
 		} else if (!this.data.isActWrapShow && storeInfo.machine_state != 200 && storeInfo.machine_type == 3) {
 			wx.showModal({
 				title: '啊哦',
-				content: `机器人被人类玩坏啦 正在恢复中，请稍等～`, //提示的内容,
+				content: `机器人被人类玩坏啦\r\n正在恢复中，请稍等～`, //提示的内容,
 				showCancel: false, //是否显示取消按钮,
 				confirmText: '我知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
 				confirmColor: '#F12B23', //确定按钮的文字颜色

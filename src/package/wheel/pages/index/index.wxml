@@ -108,6 +108,7 @@
   getPrize="{{ifGetPrize}}" 
   realGift="{{realGift}}" 
   noMoreChance="{{noMoreChance}}" 
+  bindgomycoupon="goMyCoupon"
   userPrizeRecordId="{{user_prize_record_id}}"
   prizeTitle="{{prizeTitle}}"
   prizeType="{{prizeType}}">

@@ -32,6 +32,7 @@ Page({
     showDot: false,
     leftDays: 0,
     couponNum: 0,
+    showPrizeIntro: false,
     activityCupYesImg: '',
     isActWrapShow: false,
     actImage: '',
@@ -202,6 +203,35 @@ Page({
     
     
     this.setTabStatus();
+
+    model('activity/luck-activity/index').then((res) => {
+      let {
+          data: {
+              activity,
+              activity_prizes,
+              prize_count,
+              prize_records,
+              // activityUser
+          },
+          code,
+      } = res;
+      if (code == 'suc') {
+        this.setData({
+          showPrizeIntro: true
+        })
+      } else {
+        this.setData({
+          showPrizeIntro: false
+        })
+      }
+
+
+      
+
+      wx.hideLoading();
+  }).catch(e => {
+      wx.hideLoading();
+  });
     
   },
   onPullDownRefresh() {
@@ -745,7 +775,7 @@ Page({
             console.log(e, '@@@更酷咖啡机报错')
             wx.showModal({
               title: '提示',
-              content: '机器人被人类玩坏 无法制作饮品，请联系客服', //提示的内容,
+              content: `机器人被人类玩坏啦\r\n无法制作饮品，请联系客服`, //提示的内容,
               showCancel: false, //图标,
               confirmText: '确定', //延迟时间,
               confirmColor: '#F12B23'

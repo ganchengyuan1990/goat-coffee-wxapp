@@ -93,6 +93,10 @@ Component({
             // })
         },
 
+        goMyCoupon() {
+            this.triggerEvent('gomycoupon');
+        },
+
         close() {
             // if (this.properties.type == 7) {
             //     return ;

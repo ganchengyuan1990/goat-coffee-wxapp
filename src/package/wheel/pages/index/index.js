@@ -73,7 +73,7 @@ Page({
     startGame() {
         if (this.data.noMoreChance) {
             this.setData({
-                modalTitle: 'SORRY',
+                modalTitle: 'https://img.goatup.cn/SORRY.png',
                 showModal: true,
                 ifGetPrize: 0,
                 noMoreChance: true,
@@ -113,7 +113,7 @@ Page({
         }).catch(e => {
             if (e == '抽奖机会用完了') {
                 this.setData({
-                    modalTitle: 'SORRY',
+                    modalTitle: 'https://img.goatup.cn/SORRY.png',
                     showModal: true,
                     ifGetPrize: 0,
                 })

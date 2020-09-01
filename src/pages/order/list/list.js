@@ -684,7 +684,7 @@ Page({
             console.log(e, '@@@更酷咖啡机报错')
             wx.showModal({
               title: '提示',
-              content: '机器人被人类玩坏 无法制作饮品，请联系客服', //提示的内容,
+              content: `机器人被人类玩坏啦\r\n无法制作饮品，请联系客服`, //提示的内容,
               showCancel: false, //图标,
               confirmText: '确定', //延迟时间,
               confirmColor: '#F12B23'

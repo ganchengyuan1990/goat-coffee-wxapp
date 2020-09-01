@@ -82,15 +82,19 @@ Component({
 
         goGetCoupon: function (e) {
             var current = e.target.dataset.src;
-            debugger
-            wx.previewImage({
-                current: current,
-                urls: [current]
-            })
+            // debugger
+            // wx.previewImage({
+            //     current: current,
+            //     urls: [current]
+            // })
             // wx.navigateToMiniProgram({
             //     appId: 'wx2c348cf579062e56',
             //     path: `/packages/restaurant_bak/restaurant/restaurant?poi_id=${this.properties.meituanStoreId}&aas=1003&cat_id=0`
             // })
+        },
+
+        goMyCoupon() {
+            this.triggerEvent('gomycoupon');
         },
 
         close() {

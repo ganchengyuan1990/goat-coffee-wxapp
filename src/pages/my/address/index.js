@@ -12,7 +12,7 @@ Page({
    */
   data: {
     arrivalTime: mockData33,
-    region: ['广东省', '广州市', '海珠区'],
+    region: ['上海市', '上海', '黄浦区'],
     name: '',
     phone: '',
     gender: '',

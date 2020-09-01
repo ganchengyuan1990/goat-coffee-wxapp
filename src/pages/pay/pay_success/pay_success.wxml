@@ -13,7 +13,7 @@
 
         <view class="coffee_maker" style="color: {{enablePrizeActivity ? '#fff' : '#707070'}}; margin-bottom: 30rpx;" wx:if="{{coffeeMaker && submitForMachineTypeThird}}">我已经在机器前等待取餐</view>
 
-        <view class="coffee_maker" wx:if="{{coffeeMaker && !submitForMachineTypeThird}}">请通过自助咖啡机兑换饮品</view>
+        <view class="coffee_maker" style="color: {{enablePrizeActivity ? '#fff' : '#707070'}};" wx:if="{{coffeeMaker && !submitForMachineTypeThird}}">请通过自助咖啡机兑换饮品</view>
 
         <!-- <view class="">支付成功</view>  -->
 
@@ -73,7 +73,7 @@
           开发票
       </view> -->
 
-      <view>
+      <view wx:if="{{newUserFirstPayActivity.coupon_modal_pic}}">
         <!-- <view style="font-size: 26rpx;text-align: center; margin-bottom: 30rpx;">
           <text>恭喜您获得首单赠礼</text>
         </view> -->
@@ -83,7 +83,7 @@
         </view>
       </view>
 
-      <view style="position: fixed; bottom: 80rpx; left: 6%; height: 190rpx; width: 88%">
+      <view style="position: relative; margin-top: 50rpx; margin-bottom: 50rpx; left: 6%; height: 190rpx; width: 88%">
           <swiper 
             wx:if="{{banner && banner.length > 0}}"
             mode="widthFix" 
@@ -117,5 +117,24 @@
 
 
 <modal bindcustomevent="dealModalFunction" title="{{modalTitle}}" shown="{{showModal}}" actImage="{{actImage}}" left-button-function-type="{{modalLeftFunctionType}}" type="6"></modal>
+
+<modal-new bindcustomevent="startGame" 
+  title="{{modalTitle}}" 
+  content="{{content}}" 
+  shown="{{showNewModal}}" 
+  actImage="{{actImage}}" 
+  okText="{{buttonContent}}" 
+  failImage="{{failImage}}" 
+  left-button-function-type="{{modalLeftFunctionType}}" 
+  type="12" 
+  showSmall="{{showSmall}}" 
+  getPrize="{{ifGetPrize}}" 
+  realGift="{{realGift}}" 
+  noMoreChance="{{noMoreChance}}" 
+  userPrizeRecordId="{{user_prize_record_id}}"
+  prizeTitle="{{prizeTitle}}"
+  prizeType="{{prizeType}}">
+</modal-new>
+
 
 <toast wx:if="{{errorToastShown}}" is-show="{{errorToastShown}}" title="{{errorInfo}}" disappear-sec="30" type="{{toastType}}"></toast>
