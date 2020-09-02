@@ -174,7 +174,7 @@
                 <image src="https://img.goatup.cn/guanbi_gray.png" style="position: absolute; right: 30rpx; top: 37rpx; height: 29rpx; width: 29rpx;" />
             </view>
             <view style="display: flex; justify-content: center;">
-                <image style="width: 400rpx; height: 480rpx;" src="{{actImage}}" data-src="{{actImage}}" show-menu-by-longpress mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="goGetCoupon" />
+                <image style="width: 400rpx; height: 480rpx;" src="{{actImage}}" data-src="{{actImage}}" show-menu-by-longpress mode="aspectFit|aspectFill|widthFix" lazy-load="false" />
                 <view style="font-size:32rpx; font-weight:500; color:rgba(35,35,35,1); text-align: center; position: absolute; bottom: 50rpx; left: 50%; transform: translate(-50%, 0); z-index: 10000;">请长按图片跳转</view>
             </view>
         </view>

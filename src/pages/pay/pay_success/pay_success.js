@@ -9,6 +9,9 @@ import {
 
 var app = getApp();
 
+import util from '../../../utils/util.js'
+
+
 Page({
     data: {
         circleList: [],//圆点数组
@@ -17,6 +20,7 @@ Page({
         colorCircleSecond: '#FE4D32',//圆点颜色2
         colorAwardDefault: '#FFF8DF',//奖品默认颜色
         colorAwardSelect: '#FFEDAB',
+        alreadyDraw: false,
         indexSelect: 0,//被选中的奖品index
         isRunning: false,//是否正在抽奖
         imageAward: [
@@ -106,64 +110,77 @@ Page({
     },
 
     startGame() {
-        if (this.data.noMoreChance) {
-            this.setData({
-                modalTitle: 'https://img.goatup.cn/SORRY.png',
-                showNewModal: true,
-                ifGetPrize: 0,
-                noMoreChance: true,
-              })
-            return ;
-        }
-        if (!this.data.hasLogin) {
-            wx.navigateTo({
-                url: '/pages/login/login?from=wheel'
-            })
-            getApp().globalData.fromWheel = true;
-            return ;
-        }
-
-        if (this.data.isRunning) {
-            return ;
-        }
-
-        model(`activity/luck-activity/prize-draw`, {
-            id: this.data.activity.id,
-            order_id: this.data.orderId,
-        }, 'POST').then(res1 => {
-            // let activityUser = this.data.activityUser;
-            const {
-                data: prizeData
-            } = res1;
-            // activityUser.luck_number = activityUser.luck_number + add_number;
-            this.setData({
-                prize_count: prizeData.prize_count,
-                prizeData: prizeData,
-            }, () => {
-                // 触发组件开始方法
-                const self = this
-                return startGame.apply(self);
-            });
-        }).catch(e => {
-            if (e == '抽奖机会用完了') {
+        (util.throttleV2(() => {
+            if (this.data.noMoreChance) {
                 this.setData({
                     modalTitle: 'https://img.goatup.cn/SORRY.png',
                     showNewModal: true,
                     ifGetPrize: 0,
+                    noMoreChance: true,
                 })
-            } else {
-                wx.showToast({
-                    title: e,
-                    icon: 'none',
-                    duration: 3000,
-                    mask: false,
-                });    
+                return ;
             }
-        });
+            if (!this.data.hasLogin) {
+                wx.navigateTo({
+                    url: '/pages/login/login?from=wheel'
+                })
+                getApp().globalData.fromWheel = true;
+                return ;
+            }
 
-        // const self = this
+            if (this.data.isRunning) {
+                return ;
+            }
 
-        // return startGame.apply(self);
+            if (getApp().globalData.gettingAjax) {
+                return;
+            }
+
+            getApp().globalData.gettingAjax = true;
+
+            let param = {
+                id: this.data.activity.id,
+            }
+
+            if (!this.data.alreadyDraw) {
+                param.order_id = this.data.orderId
+            }
+
+            model(`activity/luck-activity/prize-draw`, param, 'POST').then(res1 => {
+                // let activityUser = this.data.activityUser;
+                const {
+                    data: prizeData
+                } = res1;
+                // activityUser.luck_number = activityUser.luck_number + add_number;
+                this.setData({
+                    prize_count: prizeData.prize_count,
+                    prizeData: prizeData,
+                    alreadyDraw: true,
+                }, () => {
+                    // 触发组件开始方法
+                    const self = this
+                    return startGame.apply(self);
+                });
+                getApp().globalData.gettingAjax = false;
+            }).catch(e => {
+                getApp().globalData.gettingAjax = false;
+                if (e == '抽奖机会用完了') {
+                    this.setData({
+                        modalTitle: 'https://img.goatup.cn/SORRY.png',
+                        showNewModal: true,
+                        ifGetPrize: 0,
+                        noMoreChance: true,
+                    })
+                } else {
+                    wx.showToast({
+                        title: e,
+                        icon: 'none',
+                        duration: 3000,
+                        mask: false,
+                    });    
+                }
+            });
+        }, 300, 1500))()
     },
 
     onLoad: function (options) {

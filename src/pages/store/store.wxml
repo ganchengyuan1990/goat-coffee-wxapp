@@ -33,11 +33,6 @@
     judgeSoldout: judgeSoldout
   }
 </wxs>
-
-<!-- <mainfield-nav wx:if="{{showPage}}" isShow="{{isShowMainfieldNav}}" params="{{quickNavParams}}" isInSharing="{{isInSharing}}" shareParams="{{buyTogetherShareBtn}}" hasPopUpImg="{{poiData.shopping_cart_entrance && poiData.shopping_cart_entrance.explain_popup_url}}" alreadyShared="{{alreadyShared}}" hasShareBtn="{{true}}" bindapp="lxNavLaunchApp" bindhome="lxBackHome" bindShowGoAppToast="goappToastOpened" bindonClickBuyTogetherShare="onClickBuyTogetherShare" bindonClickGetShareWindow="onClickGetShareWindow" bindtoLogin="toLogin" bindonClickToAuthroize="onClickToAuthroize" bindcancelMainfieldNav="onCancelNavExpand" capture-bind:tap="onPageTap"></mainfield-nav>
-
-<navBar styleType="white" title="{{headerTitle}}" background="#333333" show-title="{{!pageStatus.showNewHeader || (pageStatus.showNewHeader && isInSharing)}}" mainfieldNav="{{true}}" isShowNavBubble="{{isShowNavBubble}}" isShowNavAppBubble="{{isShowNavAppBubble}}" bindmainfieldNavExpand="onClickNavExpand" capture-bind:tap="onPageTap"></navBar> -->
-
 <view class="store-container">
 
   
@@ -52,7 +47,6 @@
         </swiper-item>
       </block>
     </swiper>
-    <!-- <view class="info-wrap">公告：全场任意饮品购买2杯或消费金额满36元免配送费</view> -->
   </view>
 
   <view class="hd-wrapper">
@@ -64,7 +58,6 @@
               <view class="addr">{{userAddressInfo.city}}{{userAddressInfo.area}}{{userAddressInfo.address}}</view>
             </view>
             <view class="distance">{{userAddressInfo.contact}} {{userAddressInfo.tel}}</view>
-            <!-- <view class="distance" bindtap="showManbipei"><text style="color: #f50000">面价满￥65免配送费 </text> <text style="color: #999">| 慢必赔</text>        <image style='width: 24rpx; height: 24rpx; position: relative; top: 7rpx; margin-left: 5rpx;' src='../../images/flag.png'/></view> -->
           </view>
           <view wx:else>
             <view class="tt" data-delivery="delivery">
@@ -76,21 +69,14 @@
         <block wx:else>
           <view class="tt tt_high" data-delivery="selfTaking">
             <view class="addr">{{storeInfo.storeName}}</view>
-            <!-- <view class="addr">{{storeInfo.storeName}}<text wx:if="{{storeInfo.coffeeMakerId}}">（编号{{storeInfo.coffeeMakerId}}）</text></view> -->
             <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view>
           </view>
-          <!-- <view class="distance" wx:if="{{storeInfo.distance}}">距您{{storeInfo.distance}}</view> -->
         </block>
 
       </view>
       <view class="delivery">
         <view class="btn-delivery">
           <view class="item" data-delivery="selfTaking">自提</view>
-          <!-- <view class="item {{!isselfTaking ? 'active':''}}  gray" bind:tap="selectAddress" data-delivery="delivery">
-            <view>外送</view>
-            <view style="font-size: 16rpx; position: relative; top: 4rpx;">(敬请期待)</view>
-          </view> -->
-
         </view>
       </view>
     </view>
@@ -103,15 +89,11 @@
         <view class="list-nav-item {{activeIndex==index?'active':''}}" wx:for="{{menuList}}" wx:key="item.id" bindtap="selectNav" data-index="{{index}}" data-navid="{{'list'+item.id}}" id="{{'nav'+item.id}}">
           <view class='nav-dot' wx:if="{{activeIndex==index}}"></view>
           <view class="tt">
-            <!-- <view class="icon-crown"></view> -->
             <image src="../../images/top.png" style="width: 26rpx;height: 26rpx;margin-right: 8rpx; position: relative; top: 2rpx;" wx:if="{{item.name.indexOf('人气') >= 0}}"/>{{item.name}}
             <image src="../../images/tip_back.png" class="discount" wx:if="{{item.tips}}">
               <view class="tips_word">{{item.tips}}</view>
-              <!-- <view style="font-size: 10rpx; display: block; position: absolute; top: 18rpx; left: 4rpx; width: 38rpx; height: 10rpx;text-align: center; display: inline-block;">折</view> -->
               <view></view>
-              <!-- style="font-size: 18rpx; position: absolute; top: 5rpx; left: 5rpx;width: 38rpx; height: 13rpx; text-align: center; display: inline-block;" -->
             </image>
-            <!-- <text class='mentionText' wx:if="{{item.name === '新人专享'}}">AM8-11,PM3-5</text> -->
           </view>
         </view>
       </scroll-view>
@@ -120,7 +102,6 @@
       <view class="list-cover"> 
       </view> 
       <view class="title first_title {{futitle ? 'lowersss' : ''}} {{menuList.length > 0 ? '' : 'no_visibale'}}">
-        <!-- <view style="flex: 1;height:2rpx;background: rgba(230,230,230,1);margin-right: 15rpx;"></view> -->
         <view>{{tagViewName}}<text wx:if="{{chosenTaglength > 0}}">({{chosenTaglength}})</text></view>
         <view style="flex: 1;height:2rpx;background: rgba(230,230,230,1);margin-left: 15rpx;"></view>
       </view>
@@ -128,16 +109,9 @@
         <view style="padding-bottom: 50rpx; padding-top: 20rpx">
           <view wx:for="{{menuList}}" wx:key="item.id" class="title-group J_group" wx:for-index="idx" id="{{'list'+item.id}}">
             <view class="title {{futitle ? 'lowersss' : ''}}" wx:if="{{item.isHeader}}">
-              <!-- <view style="flex: 1;height:2rpx;background: rgba(230,230,230,1);margin-right: 15rpx;"></view> -->
               <view>{{item.name}}({{item.product_list.length}})</view>
               <view style="flex: 1;height:2rpx;background: rgba(230,230,230,1);margin-left: 15rpx;"></view>
             </view>
-            <!-- <view  class="fix-header" id="fixed-header">
-              {{item.name}}({{item.product_list.length}})
-            </view> -->
-            <!-- <view class='futitle' wx:if="{{item.description}}">
-              {{item.description}}
-            </view> -->
             <view 
               wx:for="{{item.product_list}}" 
               bindtap="orderProduct" 

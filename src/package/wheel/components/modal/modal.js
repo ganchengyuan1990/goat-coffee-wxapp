@@ -108,6 +108,7 @@ Component({
 
         goAddress() {
             this.close();
+            getApp().globalData.lastUserPrizeRecordId = this.properties.userPrizeRecordId;
             wx.navigateTo({
                 url: `/pages/my/address/index?id=${this.properties.userPrizeRecordId}`
             });

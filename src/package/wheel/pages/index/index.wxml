@@ -87,9 +87,9 @@
     </view>
 
 
-    <view class='content'>
+    <scroll-view scroll-y scroll-with-animation class='content' style="height: 291rpx;">
       <rich-text nodes="{{activity.description}}" class="content_line"></rich-text>
-    </view>
+    </scroll-view>
   </view>
 
 

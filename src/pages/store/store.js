@@ -7,10 +7,6 @@ import {
 } from '../../utils/bignumber.min';
 import {setConfigParam} from '../../utils/commonApis.js'
 
-// setConfigParam().then(res => {
-// 	console.log(res, '@@@')
-// })
-
 function BN(...args) {
 	return new BigNumber(...args)
 }
@@ -18,6 +14,7 @@ let touchTimer = null
 let touchObj = {}
 let touchDy = 0
 let isOpening = false
+
 Page({
 	/**
 	 * 页面的初始数据
@@ -85,18 +82,11 @@ Page({
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
+
 	onLoad(options) {
-
 		const systemInfo = wx.getSystemInfoSync();
-
-
-		// 感觉跟onShow里的fetchLoaction重合了
-		// this.fetchLoaction()  
 		this.checkSaveUser()
-
 		console.log(options, 'options')
-
-
 		var globalData = app.globalData;
 
 		this.setData({
@@ -107,10 +97,7 @@ Page({
 		})
 
 		globalData.systemInfo = systemInfo;
-
 		this.setScene(options);
-
-
 	},
 
 
@@ -119,8 +106,6 @@ Page({
 		let activityId;
 		if (options.scene) {
             const ggg = decodeURIComponent(options.scene);
-            console.log(ggg, 'ggg');
-
             const ttt = ggg.split('&');
             console.log(ttt, 'ddddd');
             let time;
@@ -133,15 +118,10 @@ Page({
                     time = dddt[dddt.length - 1];
                 }
             })
-
             console.log(options.scene, time, activityId, '@@@1');
-
             const nowDate = new Date().getTime();
-
 			console.log(nowDate - parseInt(time * 1000), '@@@@')
-			
 			return ;
-
             if (nowDate - parseInt(time * 1000) > 2 * 60 * 1000) {
                 wx.showToast({
                     title: '二维码失效，请重新扫码',
@@ -163,32 +143,6 @@ Page({
             }
         }
 	},
-
-
-	// setTabStatus() {
-	// 	if (wx.getStorageSync('token') && wx.getStorageSync('STORE_INFO')) {
-	// 		let STORE_INFO = JSON.parse(wx.getStorageSync('STORE_INFO'));
-	// 		model(`home/cart/list?storeId=${STORE_INFO.id}`).then(res => {
-	// 			let sum = 0;
-	// 			res.data.carts && res.data.carts.forEach(item => {
-	// 				sum += item.num;
-	// 			})
-	// 			wx.setStorageSync('cartSum', sum);
-	// 			if (sum) {
-	// 				wx.setTabBarBadge({
-	// 					index: 1,
-	// 					text: sum.toString()
-	// 				});
-	// 			} else {
-	// 				wx.removeTabBarBadge({
-	// 					index: 1,
-	// 				});
-	// 			}
-	// 		}).catch(e => {
-
-	// 		});
-	// 	}
-	// },
 
 	setFirstAlert(activityId) {
 		let indexToastArr = wx.getStorageSync('indexToastArr') || {};
@@ -312,9 +266,7 @@ Page({
 			});
 		}
 	},
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
+
 	onReady() {
 		let height1, height2;
 		let res = wx.getSystemInfoSync();
@@ -459,10 +411,7 @@ Page({
 			} else {
 				this.fetchLoaction(null, false);
 			}
-			
-			// if (!isGeoAuth) {
-			// 	this.checkAuth()
-			// }
+
 			let storeInfo = wx.getStorageSync('STORE_INFO')
 			let isGeoAuth = app.globalData.isGeoAuth
 			let addressList = wx.getStorageSync('addressList');
@@ -471,20 +420,10 @@ Page({
 					userAddressInfo: null
 				});
 			}
-			// if (storeInfo) {
-			// 	this.setData({
-			// 		storeInfo: JSON.parse(storeInfo)
-			// 	})
-			// }
 			console.log(isGeoAuth, 'isGeoAuth');
 			if (!isGeoAuth && !this.data.gettingLocation) {
 				this.fetchLoaction(null, false)
 			}
-
-			// if (this.data.isLoadStorageCart) {
-			// 	this.getStorageCart()
-			// }
-			// this.toggleTabBar(true);
 		}
 		if (!isLogin) {
 			return
@@ -1197,23 +1136,12 @@ Page({
 		}
 		isOpening = true
 		let isShow = this.data.isCatePanelShow
-		// this.setData({
-		// 	isCatePanelShow: !isShow
-		// })
 		if (isShow) {
-			// this.toggleTabBar(true, () => {
-			// 	isOpening = false
-			// })
 			isOpening = false;
 			this.setData({
 				isCatePanelShow: !isShow
 			})
 		} else {
-			// this.toggleTabBar(false, () => {
-			// 	this.setData({
-			// 		isCatePanelShow: !isShow
-			// 	})
-			// })
 			this.setData({
 				isCatePanelShow: !isShow
 			})
@@ -1230,7 +1158,6 @@ Page({
 		let cart = e.detail.cartList
 		if (e.detail) {
 			this.mergeCart(cart)
-			// this.getBestPaySolution();
 		}
 		
 	},
@@ -1251,7 +1178,6 @@ Page({
 			cart.push(e.detail)
 		}
 		this.mergeCart(cart)
-		// this.getBestPaySolution();
 	},
 
 	goOrder(info) {
@@ -1266,8 +1192,6 @@ Page({
 			} = data.data;
 			let sum = 0;
 			let products = carts.map(item => {
-				//  item.ifAvailable = false;
-				//  item.sku.can_distribution = 0;
 				item.unitPrice = parseFloat(item.unitPrice).toFixed(1);
 				item.memberPrice = parseFloat(item.memberUnitPrice).toFixed(1);
 				item.propsStr = [];

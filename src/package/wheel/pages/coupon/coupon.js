@@ -12,7 +12,6 @@ Page({
     couponItems: [],
     voucherItems: [],
     type: 1,
-    loading: true,
     showModal: false,
     page: 1,
     chosenType: 1,
@@ -33,10 +32,12 @@ Page({
       // wx.setStorageSync('lastPrizeAddressInfo', item.address_json);
       if (item.address_json) {
         getApp().globalData.lastPrizeAddressInfo = JSON.parse(item.address_json);
+      } else {
+        getApp().globalData.lastPrizeAddressInfo = null;
       }
-      
+      getApp().globalData.lastUserPrizeRecordId = item.id;
       wx.navigateTo({
-        url: `/pages/my/address/index?id=${item.id}`,
+        url: `/pages/my/address/index?id=${item.id}&noCache=1`,
       });
     } else {
       this.setData({
@@ -108,12 +109,17 @@ Page({
   onShow: function () {
     this.setData({
       // couponItems: mockData,
-      loading: false
     })
     if (this.data.total && (this.data.page * 10 >= this.data.total)) {
-      return ;
+      this.setData({
+        couponItems: [],
+        page: 1,
+      }, () => {
+        this.fetchCouponList(1)
+      })
+    } else {
+      this.fetchCouponList(1)
     }
-    this.fetchCouponList(1)
     
 
   },
@@ -153,10 +159,10 @@ Page({
         element.prize_json = JSON.parse(element.prize_json || '{}');
         return element;
       });
+      console.log(this.data.couponItems.concat(result), '@@@couponItems');
       this.setData({
         couponItems: this.data.couponItems.concat(result),
         total: data.data.total,
-        loading: false,
         initLoading: false,
       })
       wx.hideLoading();

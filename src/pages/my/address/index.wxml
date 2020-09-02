@@ -59,7 +59,8 @@
             </view>
             <view class="cnt">
                 <textarea style="width: 500rpx; height: 140rpx; line-height: 50rpx;" placeholder-class="ipt-textarea" class="ipt"  wx:if="{{!initValue}}" type="text" bindinput="bindAddressInput" placeholder="请输入详细地址" maxlength="{{100}}"/>
-                <input class="ipt"  disabled wx:if="{{initValue}}"type="text" bindinput="bindAddressInput" placeholder="{{lastPrizeAddressInfo.address}}" />
+                <input class="ipt"  disabled wx:if="{{initValue}}"type="text" wx:if="{{initValue && lastPrizeAddressInfo.address.length <= 20}}" bindinput="bindAddressInput" placeholder="{{lastPrizeAddressInfo.address}}" />
+                <textarea style="width: 500rpx; height: 140rpx; line-height: 50rpx;" placeholder-class="ipt-textarea" class="ipt"  disabled wx:if="{{initValue && lastPrizeAddressInfo.address.length > 20}}" type="text" bindinput="bindAddressInput" placeholder="{{lastPrizeAddressInfo.address}}" maxlength="{{100}}" />
 
                 <!-- <view class="icon-arrow"></view> -->
             </view>

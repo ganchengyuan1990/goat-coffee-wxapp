@@ -27,6 +27,7 @@ Page({
     index: 0,
     initValue: false,
     submitted: false,
+    noCache: false,
     range: ['互联网-软件', '通信-硬件', '房地产-建筑', '文化传媒', '金融类', '消费品', '教育', '贸易', '生物-医疗', '能源-化工', '政府机构', '服务业', '其他行业'],
   },
 
@@ -34,41 +35,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const lastPrizeAddressInfo = getApp().globalData.lastPrizeAddressInfo;
-    if (lastPrizeAddressInfo) {
-      lastPrizeAddressInfo.area = lastPrizeAddressInfo.area.join('')
+    if (options.noCache) {
       this.setData({
-        lastPrizeAddressInfo: lastPrizeAddressInfo,
-        initValue: true
+        noCache: true,
       })
     }
-    let info = wx.getStorageSync('token')
-    let userInfo = info.user
-    // let userInfoWechat = app.globalData.userInfo
-    let userInfoWechat = wx.getStorageSync('personal_info') || {}
-    if (info.token) {
-      console.log(userInfo, 'userinfo');
-      console.log(userInfoWechat, 'wechat');
-
-      this.setData({
-        userInfo: userInfo,
-        userInfoWechat: userInfoWechat
-      })
-    } else {
-      wx.redirectTo({
-        url: '/pages/login/login'
-      })
-      return
-    }
-
-    this.setData({
-      id: options.id,
-      name: userInfo.userName || userInfoWechat.nickName || '',
-      gender: userInfo.sex || userInfoWechat.gender || '',
-      img: userInfo.avatar || userInfoWechat.avatarUrl || '',
-      birthday: userInfo.birthday || userInfoWechat.birthday || '完善生日信息, 年年有惊喜',
-      work: userInfo.work || userInfoWechat.work || '请选择'
-    })
   },
 
   bindPickerChange: function (e) {
@@ -111,9 +82,51 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (this.data.goBackFromName) {
-      this.saveProfile();
+    const lastPrizeAddressInfo = getApp().globalData.lastPrizeAddressInfo;
+    if (lastPrizeAddressInfo) {
+      if (Array.isArray(lastPrizeAddressInfo.area)) {
+        lastPrizeAddressInfo.area = lastPrizeAddressInfo.area.join('')
+      }
+      this.setData({
+        lastPrizeAddressInfo: lastPrizeAddressInfo,
+        initValue: true
+      })
+      getApp().globalData.lastPrizeAddressInfo = null;
     }
+    let info = wx.getStorageSync('token')
+    let userInfo = info.user
+    // let userInfoWechat = app.globalData.userInfo
+    let userInfoWechat = wx.getStorageSync('personal_info') || {}
+    if (info.token) {
+      console.log(userInfo, 'userinfo');
+      console.log(userInfoWechat, 'wechat');
+
+      this.setData({
+        userInfo: userInfo,
+        userInfoWechat: userInfoWechat
+      })
+    } else {
+      wx.redirectTo({
+        url: '/pages/login/login'
+      })
+      return
+    }
+
+    console.log(getApp().globalData.lastUserPrizeRecordId, '@@@lastUserPrizeRecordId');
+
+    const lastUserPrizeRecordId = getApp().globalData.lastUserPrizeRecordId;
+    if (lastUserPrizeRecordId) {
+      getApp().globalData.lastUserPrizeRecordId = null;
+    }
+
+    this.setData({
+      id: lastUserPrizeRecordId,
+      name: userInfo.userName || userInfoWechat.nickName || '',
+      gender: userInfo.sex || userInfoWechat.gender || '',
+      img: userInfo.avatar || userInfoWechat.avatarUrl || '',
+      birthday: userInfo.birthday || userInfoWechat.birthday || '完善生日信息, 年年有惊喜',
+      work: userInfo.work || userInfoWechat.work || '请选择'
+    })
   },
 
   bindRegionChange: function (e) {
@@ -320,7 +333,7 @@ Page({
       })
     }).catch(e => {
       wx.showToast({
-        title: '修改失败',
+        title: e,
         icon: 'none',
         duration: 1500
       })

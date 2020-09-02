@@ -5,6 +5,9 @@ import {
     startGame,
 } from './sudoku.js';
 
+import util from '../../utils/util.js'
+
+
 Page({
     /**
      * 页面的初始数据
@@ -71,66 +74,71 @@ Page({
     },
 
     startGame() {
-        if (this.data.noMoreChance) {
-            this.setData({
-                modalTitle: 'https://img.goatup.cn/SORRY.png',
-                showModal: true,
-                ifGetPrize: 0,
-                noMoreChance: true,
-              })
-            return ;
-        }
-        if (!this.data.hasLogin) {
-            wx.navigateTo({
-                url: '/pages/login/login?from=wheel'
-            })
-            getApp().globalData.fromWheel = true;
-            return ;
-        }
-
-        if (this.data.isRunning) {
-            return ;
-        }
-
-        model(`activity/luck-activity/prize-draw`, {
-            id: this.data.activity.id
-        }, 'POST').then(res1 => {
-            // let activityUser = this.data.activityUser;
-            const {
-                data: prizeData
-            } = res1;
-            // prizeData.weight = 1;
-            // debugger
-            // activityUser.luck_number = activityUser.luck_number + add_number;
-            this.setData({
-                prize_count: prizeData.prize_count,
-                prizeData: prizeData,
-            }, () => {
-                // 触发组件开始方法
-                const self = this
-                return startGame.apply(self);
-            });
-        }).catch(e => {
-            if (e == '抽奖机会用完了') {
+        (util.throttleV2(() => {
+            if (this.data.noMoreChance) {
                 this.setData({
                     modalTitle: 'https://img.goatup.cn/SORRY.png',
                     showModal: true,
                     ifGetPrize: 0,
-                })
-            } else {
-                wx.showToast({
-                    title: e,
-                    icon: 'none',
-                    duration: 3000,
-                    mask: false,
-                });    
+                    noMoreChance: true,
+                  })
+                return ;
             }
-        });
+            if (!this.data.hasLogin) {
+                wx.navigateTo({
+                    url: '/pages/login/login?from=wheel'
+                })
+                getApp().globalData.fromWheel = true;
+                return ;
+            }
+    
+            if (this.data.isRunning) {
+                return ;
+            }
 
-        // const self = this
+            if (getApp().globalData.gettingAjax) {
+                return;
+            }
 
-        // return startGame.apply(self);
-
+            getApp().globalData.gettingAjax = true
+            model(`activity/luck-activity/prize-draw`, {
+                id: this.data.activity.id
+            }, 'POST').then(res1 => {
+                // let activityUser = this.data.activityUser;
+                const {
+                    data: prizeData
+                } = res1;
+                // prizeData.weight = 1;
+                // debugger
+                // activityUser.luck_number = activityUser.luck_number + add_number;
+                this.setData({
+                    prize_count: prizeData.prize_count,
+                    prizeData: prizeData,
+                }, () => {
+                    // 触发组件开始方法
+                    const self = this
+                    return startGame.apply(self);
+                });
+                getApp().globalData.gettingAjax = false;
+            }).catch(e => {
+                getApp().globalData.gettingAjax = false;
+                if (e == '抽奖机会用完了') {
+                    this.setData({
+                        modalTitle: 'https://img.goatup.cn/SORRY.png',
+                        showModal: true,
+                        ifGetPrize: 0,
+                        noMoreChance: true,
+                    })
+                } else {
+                    wx.showToast({
+                        title: e,
+                        icon: 'none',
+                        duration: 3000,
+                        mask: false,
+                    });    
+                }
+            });
+		}, 300, 1500))()
         
     },
 
