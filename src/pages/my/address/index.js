@@ -129,6 +129,16 @@ Page({
     })
   },
 
+  validate() {
+    let result = true;
+    let errorInfo = '';
+    if (this.data.phone.length !== 11) {
+      result = false;
+      errorInfo = '请正确填写手机号'
+    } 
+    return errorInfo;
+  },
+
   bindRegionChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
@@ -303,6 +313,8 @@ Page({
       message = '请输入详细地址'
     }
 
+
+
     if (message) {
       wx.showToast({
         title: message,
@@ -310,6 +322,13 @@ Page({
         duration: 3000
       })
       return ;
+    } else if (this.errorInfo()) {
+      wx.showToast({
+        title: this.errorInfo(),
+        icon: 'none',
+        duration: 3000
+      })
+      return;
     }
     
 
