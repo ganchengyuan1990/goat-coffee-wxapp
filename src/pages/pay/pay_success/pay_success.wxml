@@ -1,30 +1,30 @@
 <view class="container">
-  <view class="success-container">
-    <view class="success-form">
-      <view class="{{enablePrizeActivity ? 'success-form-new' : ''}}">
-        <view class="coupon-sn">
-          <image wx:if="{{enablePrizeActivity}}" src="https://img.goatup.cn/chenggong33%402x.png" />
-          <image wx:if="{{!enablePrizeActivity}}" src="../../../images/chenggong_2@2x.png" />
+    <view class="success-container">
+        <view class="success-form">
+            <view class="{{enablePrizeActivity ? 'success-form-new' : ''}}">
+                <view class="coupon-sn">
+                    <image wx:if="{{enablePrizeActivity}}" src="https://img.goatup.cn/chenggong33%402x.png" />
+                    <image wx:if="{{!enablePrizeActivity}}" src="../../../images/chenggong_2@2x.png" />
 
-        </view>
-        <!-- <view class="coupon-sn">￥{{price}}</view> -->
-        
-        <view class="coupon-sn" style="color: {{enablePrizeActivity ? '#fff' : ''}};">支付成功</view> 
+                </view>
+                <!-- <view class="coupon-sn">￥{{price}}</view> -->
 
-        <view class="coffee_maker" style="color: {{enablePrizeActivity ? '#fff' : '#707070'}}; margin-bottom: 30rpx;" wx:if="{{coffeeMaker && submitForMachineTypeThird}}">我已经在机器前等待取餐</view>
+                <view class="coupon-sn" style="color: {{enablePrizeActivity ? '#fff' : ''}}; font-size: 36rpx;">支付成功</view>
 
-        <view class="coffee_maker" style="color: {{enablePrizeActivity ? '#fff' : '#707070'}};" wx:if="{{coffeeMaker && !submitForMachineTypeThird}}">请通过自助咖啡机兑换饮品</view>
+                <view class="coffee_maker" style="color: {{enablePrizeActivity ? '#fff' : '#707070'}}; margin-bottom: 30rpx;" wx:if="{{coffeeMaker && submitForMachineTypeThird}}">我已经在机器前等待取餐</view>
 
-        <!-- <view class="">支付成功</view>  -->
+                <view class="coffee_maker" style="color: {{enablePrizeActivity ? '#fff' : '#707070'}};" wx:if="{{coffeeMaker && !submitForMachineTypeThird}}">请通过自助咖啡机兑换饮品</view>
+
+                <!-- <view class="">支付成功</view>  -->
 
 
-        <view class="score_state" style="color: {{enablePrizeActivity ? '#fff' : ''}};">
-          <text wx:if="{{!submitForMachineTypeThird}}">取货码{{varCode}}</text>
-          <text wx:else>排队号{{varCode}}</text>
-        </view>
-      </view>
-    
-      <!-- <view style="display: flex;" wx:if="{{existLuckActivity}}">
+                <view class="score_state" style="color: {{enablePrizeActivity ? '#fff' : ''}};">
+                    <text wx:if="{{!submitForMachineTypeThird}}">取货码{{varCode}}</text>
+                    <text wx:else>排队号{{varCode}}</text>
+                </view>
+            </view>
+
+            <!-- <view style="display: flex;" wx:if="{{existLuckActivity}}">
         <view class="free line_button" bindtap="goZhuanpan">
             免费喝咖啡
         </view>
@@ -34,81 +34,80 @@
         </view>
       </view> -->
 
-      <view class="pay_again" bindtap="goIndex" wx:if="{{!submitForMachineTypeThird}}">
-          完成
-      </view>
 
 
-      <view class="container-in-wrap" wx:if="{{enablePrizeActivity}}">
 
-    
-        <view class="container-in">
-          <view class="content-out" wx:for="{{awardList}}" style="top:{{item.topAward}}rpx;left:{{item.leftAward}}rpx;background-color: {{(index==indexSelect)?colorAwardSelect:colorAwardDefault}};">
-            <image class="award-image" src="{{item.imageAward}}"></image>
-            <view class="award-title">{{item.title}}</view>
-          </view>
-          <view class="start-btn {{isRunning ? 'start-disabled' : ''}}">
-              <view style="padding-top: 30rpx;" catchtap="startGame">
-                <view style="font-size: 40rpx; margin-left: 25rpx; margin-bottom: 6rpx;">抽奖GO！</view>
-                <view class="btn-sub-title">（{{prize_count}}次抽奖）</view>
+            <view class="container-in-wrap" wx:if="{{enablePrizeActivity}}">
+
+
+                <view class="container-in">
+                    <view class="content-out" wx:for="{{awardList}}" style="top:{{item.topAward}}rpx;left:{{item.leftAward}}rpx;background-color: {{(index==indexSelect)?colorAwardSelect:colorAwardDefault}};">
+                        <image class="award-image" src="{{item.imageAward}}"></image>
+                        <view class="award-title">{{item.title}}</view>
+                    </view>
+                    <view class="start-btn {{isRunning ? 'start-disabled' : ''}}">
+                        <view style="padding-top: 30rpx;" catchtap="startGame">
+                            <view style="font-size: 40rpx; margin-left: 25rpx; margin-bottom: 6rpx;">抽奖GO！</view>
+                            <view class="btn-sub-title" style="opacity: 0.65;">（{{prize_count}}次抽奖）</view>
+                        </view>
+                    </view>
+                </view>
+
             </view>
-          </view>
-        </view>
-  
-      </view>
-  
 
-      <view style="display: flex; justify-content: center;" wx:if="{{submitForMachineTypeThird}}">
-        <view class="line_button2" style="margin: 0rpx 10rpx;" bindtap="goIndex" >
-            查看订单
-        </view>
+            <view class="pay_again_wrap">
 
-        <view class="line_button2 button-red" style="margin: 0rpx 10rpx;" bindtap="doRightNow">
-            立即制作
-        </view>
-      </view>
+                <view class="pay_again" bindtap="goIndex" wx:if="{{!submitForMachineTypeThird}}">
+                    查看订单
+                </view>
+            </view>
 
 
-      <!-- <view class="pay_again blank" style="opacity: 0;" bindtap="goInvice">
+            <view style="display: flex; justify-content: center;" wx:if="{{submitForMachineTypeThird}}">
+                <view class="line_button2" style="margin: 0rpx 10rpx;" bindtap="goIndex">
+                    查看订单
+                </view>
+
+                <view class="line_button2 button-red" style="margin: 0rpx 10rpx;" bindtap="doRightNow">
+                    立即制作
+                </view>
+            </view>
+
+
+            <!-- <view class="pay_again blank" style="opacity: 0;" bindtap="goInvice">
           开发票
       </view> -->
 
-      <view wx:if="{{newUserFirstPayActivity.coupon_modal_pic}}">
-        <!-- <view style="font-size: 26rpx;text-align: center; margin-bottom: 30rpx;">
+            <view wx:if="{{newUserFirstPayActivity.coupon_modal_pic}}">
+                <!-- <view style="font-size: 26rpx;text-align: center; margin-bottom: 30rpx;">
           <text>恭喜您获得首单赠礼</text>
         </view> -->
-        <view class="coupon_image_wrapper">
-          <image class="coupon_image" src="{{newUserFirstPayActivity.coupon_modal_pic}}" />
-          <!-- <text class="text">有效期:自发券日起30天</text> -->
+                <view class="coupon_image_wrapper">
+                    <image class="coupon_image" src="{{newUserFirstPayActivity.coupon_modal_pic}}" />
+                    <!-- <text class="text">有效期:自发券日起30天</text> -->
+                </view>
+            </view>
+
+            <view style="position: relative; margin-top: 50rpx; margin-bottom: 50rpx; left: 6%; height: 190rpx; width: 88%">
+                <swiper wx:if="{{banner && banner.length > 0}}" mode="widthFix" autoplay="{{true}}" interval="{{4000}}" duration="{{600}}" style="width: 100%; height: 190rpx">
+                    <block wx:for="{{banner}}" wx:key="{{index}}" class="img-caption">
+                        <swiper-item>
+                            <ml-navigator redirect_url="{{item.redirect_url}}" redirect_route="{{item.redirect_route}}">
+                                <image mode="widthFix" src="{{item.pic}}" style="width: 100%; height: 324rpx" />
+                            </ml-navigator>
+                        </swiper-item>
+                    </block>
+                </swiper>
+                <!-- <image src="{{banner}}" style="width: 100%; height: 324rpx" /> -->
+            </view>
+
         </view>
-      </view>
 
-      <view style="position: relative; margin-top: 50rpx; margin-bottom: 50rpx; left: 6%; height: 190rpx; width: 88%">
-          <swiper 
-            wx:if="{{banner && banner.length > 0}}"
-            mode="widthFix" 
-            autoplay="{{true}}" 
-            interval="{{4000}}" 
-            duration="{{600}}"
-            style="width: 100%; height: 190rpx">
-                <block wx:for="{{banner}}" wx:key="{{index}}" class="img-caption">
-                    <swiper-item>
-                      <ml-navigator redirect_url="{{item.redirect_url}}" redirect_route="{{item.redirect_route}}">
-                        <image mode="widthFix" src="{{item.pic}}"  style="width: 100%; height: 324rpx"/>
-                      </ml-navigator>
-                    </swiper-item>
-                </block>
-            </swiper>
-          <!-- <image src="{{banner}}" style="width: 100%; height: 324rpx" /> -->
-      </view>
-
+        <!-- <button class="add-btn disabled">兑换</button> -->
     </view>
-
-    <!-- <button class="add-btn disabled">兑换</button> -->
-  </view>
 </view>
 
-<welcome from="0" to='10' wx:if="{{showWelcome}}"/>
+<welcome from="0" to='10' wx:if="{{showWelcome}}" />
 
 
 <!-- <view class="gif" bindtap='showModalCups' wx:if="{{level > 1 && targetAchievementDesign}}">
@@ -118,23 +117,12 @@
 
 <modal bindcustomevent="dealModalFunction" title="{{modalTitle}}" shown="{{showModal}}" actImage="{{actImage}}" left-button-function-type="{{modalLeftFunctionType}}" type="6"></modal>
 
-<modal-new bindcustomevent="startGame" 
-  title="{{modalTitle}}" 
-  content="{{content}}" 
-  shown="{{showNewModal}}" 
-  actImage="{{actImage}}" 
-  okText="{{buttonContent}}" 
-  failImage="{{failImage}}" 
-  left-button-function-type="{{modalLeftFunctionType}}" 
-  type="12" 
-  showSmall="{{showSmall}}" 
-  getPrize="{{ifGetPrize}}" 
-  realGift="{{realGift}}" 
-  noMoreChance="{{noMoreChance}}" 
-  userPrizeRecordId="{{user_prize_record_id}}"
-  prizeTitle="{{prizeTitle}}"
-  prizeType="{{prizeType}}">
+<modal-new bindcustomevent="startGame" title="{{modalTitle}}" content="{{content}}" shown="{{showNewModal}}" actImage="{{actImage}}" okText="{{buttonContent}}" failImage="{{failImage}}" left-button-function-type="{{modalLeftFunctionType}}" type="12" bindgomycoupon="goMyCoupon"
+    showSmall="{{showSmall}}" getPrize="{{ifGetPrize}}" realGift="{{realGift}}" noMoreChance="{{noMoreChance}}" userPrizeRecordId="{{user_prize_record_id}}" prizeTitle="{{prizeTitle}}" prizeType="{{prizeType}}">
 </modal-new>
 
 
 <toast wx:if="{{errorToastShown}}" is-show="{{errorToastShown}}" title="{{errorInfo}}" disappear-sec="30" type="{{toastType}}"></toast>
+
+<new-modal bindcustomevent="dealNewModalFunction" title="物料不足，制作失败，10分钟内自动退款" shown="{{showNewNewModal}}" content="{{modalNewContent}}" left-button-function-type="{{modalLeftFunctionType}}" type="1">
+</new-modal>

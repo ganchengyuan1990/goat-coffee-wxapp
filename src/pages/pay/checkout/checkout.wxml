@@ -1,14 +1,14 @@
-<wxs  src="./checkout.wxs" module="checkout"></wxs>
+<wxs src="./checkout.wxs" module="checkout"></wxs>
 <view class='outter' id="container">
     <scroll-view scroll-y scroll-into-view="{{viewToNav}}" class="container {{member_recharge > 0 ? 'shorter_container' : ''}}" wx:if="{{!showNoOrder}}">
         <view class="order-box">
             <view class="address-box" bindtap="goAddressList">
 
                 <view class="right_arrow">
-                    <image wx:if="{{chooseExpress && !checkedExpress.id}}" class="arrow arrow_small" src="../../../images/arrow.png"/>
-                    <image wx:else class="arrow" src="../../../images/order_loc.png"/>
+                    <image wx:if="{{chooseExpress && !checkedExpress.id}}" class="arrow arrow_small" src="../../../images/arrow.png" />
+                    <image wx:else class="arrow" src="../../../images/order_loc.png" />
                 </view>
-                
+
                 <view class="address-item" bindtap="selectAddress" wx:if="{{chooseSelf || chooseCup || chooseDaodian}}">
                     <!-- <view class="address">
                         自提门店
@@ -153,10 +153,10 @@
                 <view style='height: 1rpx; background: #e6e6e6; width: 92%;margin-left: 4%; margin-top: 20rpx;margin-bottom: 20rpx;'></view> -->
 
 
-                
 
 
-                
+
+
             </view>
         </view>
 
@@ -166,10 +166,10 @@
                 <text class="name">优惠券</text>
             </view>
             <view class="r">
-                <text class="txt hasGood" wx:if="{{couponList.length > 0 && !chooseNoCoupon  && chosenInfo.type == 1}}"> - ￥{{couponMoney}}</text>
-                <text class="txt hasGood" wx:if="{{couponList.length > 0 && chooseNoCoupon}}">有{{couponList.length}}张可用</text>
+                <text class="txt hasGood" wx:if="{{couponList.length > 0 && !chooseNoCoupon  && chosenInfo.type == 1 && !(useScoreFlag && pointDiscountMoney > 0)}}"> - ￥{{couponMoney}}</text>
+                <text class="txt hasGood" wx:if="{{couponList.length > 0 && (chooseNoCoupon || (useScoreFlag && pointDiscountMoney > 0))}}">有{{couponList.length}}张可用</text>
                 <text class="txt" wx:if="{{couponList.length === 0}}">无可用</text>
-                <image class="arrow arrow_small" src="../../../images/arrow.png"/>
+                <image class="arrow arrow_small" src="../../../images/arrow.png" />
             </view>
         </view>
 
@@ -178,10 +178,10 @@
                 <text class="name">满减券</text>
             </view>
             <view class="r">
-                <text class="txt hasGood" wx:if="{{redPackList.length > 0 && !chooseNoRedPack  && chosenInfo.type == 3}}"> - ￥{{couponMoney}}</text>
-                <text class="txt hasGood" wx:if="{{redPackList.length > 0 && chooseNoRedPack}}">有{{redPackList.length}}张可用</text>
+                <text class="txt hasGood" wx:if="{{redPackList.length > 0 && !chooseNoRedPack  && chosenInfo.type == 3 && !(useScoreFlag && pointDiscountMoney > 0)}}"> - ￥{{couponMoney}}</text>
+                <text class="txt hasGood" wx:if="{{redPackList.length > 0 && (chooseNoRedPack || (useScoreFlag && pointDiscountMoney > 0))}}">有{{redPackList.length}}张可用</text>
                 <text class="txt" wx:if="{{redPackList.length === 0}}">无可用</text>
-                <image class="arrow arrow_small" src="../../../images/arrow.png"/>
+                <image class="arrow arrow_small" src="../../../images/arrow.png" />
             </view>
         </view>
 
@@ -194,23 +194,36 @@
             </view>
             <view class="r">
                 <text class="txt" wx:if="{{voucherList.length === 0}}">无可用</text>
-                <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && chooseNoVoucher}}">有{{voucherList.length}}张可用</text>
-                <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher && chosenInfo.type == 2}}"> - ￥{{couponMoney}}</text>
+                <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && (chooseNoVoucher || (useScoreFlag && pointDiscountMoney > 0))}}">有{{voucherList.length}}张可用</text>
+                <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher && chosenInfo.type == 2 && !(useScoreFlag && pointDiscountMoney > 0)}}"> - ￥{{couponMoney}}</text>
                 <!-- <view class="arrow"></view> -->
-                <image class="arrow arrow_small" src="../../../images/arrow.png"/>
+                <image class="arrow arrow_small" src="../../../images/arrow.png" />
             </view>
         </view>
 
-        <view class="transport-item shorter top_gap" wx:if="{{false}}" bindtap="showScore">
+        <view class="transport-item shorter top_gap" wx:if="{{pointDiscountMoney > 0}}" catchtap="showScore">
             <view class="l">
-                <text class="name">积分抵扣</text>
+                <text class="name">{{scoreTitle}}积分抵扣</text>
                 <!-- <text class='coupon_mention'>门店活动不能与优惠券同享</text> -->
             </view>
             <view class="r">
-                <text class="txt">使用10积分抵扣¥10</text>
+                <text class="txt">{{scoreMention}}</text>
                 <!-- <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && chooseNoVoucher}}">有{{voucherList.length}}张可用</text>
                 <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher && chosenInfo.type == 2}}"> - ￥{{couponMoney}}</text> -->
-                <image class="arrow arrow_small" src="../../../images/arrow.png"/>
+                <image class="arrow arrow_small" src="../../../images/arrow.png" />
+            </view>
+        </view>
+
+        <view class="transport-item shorter top_gap" wx:if="{{pointDiscountMoney == 0}}">
+            <view class="l">
+                <text class="name">{{scoreTitle}}积分抵扣</text>
+                <!-- <text class='coupon_mention'>门店活动不能与优惠券同享</text> -->
+            </view>
+            <view class="r">
+                <text class="txt" style="color: #B2B2B2; font-size: 22rpx; margin-right: 0rpx;">{{noUsePointsWord}}</text>
+                <!-- <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && chooseNoVoucher}}">有{{voucherList.length}}张可用</text>
+                <text class="txt hasGood" wx:if="{{voucherList.length !== 0 && !chooseNoVoucher && chosenInfo.type == 2}}"> - ￥{{couponMoney}}</text> -->
+                <!-- <image class="arrow arrow_small" src="../../../images/arrow.png"/> -->
             </view>
         </view>
 
@@ -241,15 +254,17 @@
         </view> -->
 
         <view class='heji'>
-            <text class="float_left_hey">优惠合计</text>
-            <text class="price-red txt-bolder">-￥{{couponMoney}}</text>
+            <text class="float_left_hey" style="color: #888888; font-size: 30rpx;">合计</text>
+            <text class="price-red txt-bolder" wx:if="{{pointDiscountMoney && useScoreFlag}}">-￥{{pointDiscountMoney}}</text>
+            <text class="price-red txt-bolder" wx:else>-￥{{couponMoney}}</text>
+
 
             <!-- <text style="font-size: 36rpx; font-weight: 500;">￥{{actualPrice}}</text> -->
         </view>
 
         <!-- <guess-you-like wx:if="{{addPriceGoods.length > 0}}" title="加价购" cartGoods="{{addPriceGoods}}" bindtogglemenu="addPriceBuy"></guess-you-like> -->
 
-        
+
 
         <view class='third_part'>
 
@@ -283,7 +298,7 @@
                     <text class="name">备注特殊要求</text>
                 </view>
                 <view class="r">
-                    <image class="arrow arrow_small" src="../../../images/arrow.png"/>
+                    <image class="arrow arrow_small" src="../../../images/arrow.png" />
                 </view>
             </view>
 
@@ -302,12 +317,12 @@
 
 
         <view class="protocol {{member_recharge > 0 ? '' : ''}}" catchtap="chooseXieyi">
-            <image src="../../../images/checkbox.png" wx:if="{{zunshou}}"/>
-            <image src="../../../images/check_not.png" wx:if="{{!zunshou}}"/>
+            <image src="../../../images/checkbox.png" wx:if="{{zunshou}}" />
+            <image src="../../../images/check_not.png" wx:if="{{!zunshou}}" />
             <view class="name" style="color: #999; display: inline-block;">我已同意<text style="color: #D32D25;" catchtap="goState">《咖啡支付协议》</text></view>
-        </view> 
+        </view>
 
-        
+
 
         <toast wx:if="{{errorToast}}" is-show="{{errorToast}}" title="{{toastInfo}}" disappear-sec="{{toastTime}}"></toast>
 
@@ -328,17 +343,19 @@
     <view class="order-total">
         <view class="l">
             <text style="position: relative; top: -1rpx;">应付合计</text>
-            
+
             <text class='price' wx:if="{{member_recharge > 0 && useMemberReharge}}"><text class='mark'>￥</text>{{actualAfterMemberPrice}}</text>
 
-            <text class='price' wx:else><text class='mark'>￥</text>{{actualPrice}}</text>
+            <text class='price' style="font-size: 48rpx;" wx:else><text class='mark'>￥</text>{{actualPrice}}</text>
 
-            <text class='price-del' style="margin-left: 20rpx; font-size: 28rpx;" wx:if="{{payAmount != actualPrice}}">{{payAmount}}</text>
+            <text class='price-del' style="margin-left: 20rpx; font-size: 28rpx;" wx:if="{{couponMoney != 0}}">{{payAmount}}</text>
+            <!-- <text style="color: #242424; margin-left: 5rpx; font-size: {{checkout.getStringLength(pointDiscountMoney) > 3 ? '36' : '48'}}rpx; font-weight: 500;" wx:if="{{couponMoney == 0 && pointDiscountMoney && useScoreFlag}}">+{{pointDiscountMoney}}积分</text> -->
+
         </view>
         <view class="r {{zunshou ? '' : 'no_use'}}" bindtap="submitOrder">支付</view>
     </view>
 
-    
+
 
 </view>
 
@@ -355,4 +372,4 @@
 </view>
 
 
-<score-toast title="123123" isShow="{{false}}"></score-toast>
+<score-toast title="123123" isShow="{{showScoreToast}}" bindcustomevent="useScore" pointBalance="{{pointBalance}}" pointDiscountMoney="{{pointDiscountMoney}}" chosenStatus="{{useScoreFlag}}" scoreTitle="{{scoreTitle}}"></score-toast>

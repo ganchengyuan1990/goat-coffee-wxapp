@@ -17,8 +17,8 @@
 
 .dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog {
     margin: 0 auto;
-    width: 460rpx;
-    padding: 50rpx 0rpx 0rpx 0rpx;
+    width: 550rpx;
+    padding: 20rpx 0rpx 0rpx 0rpx;
     background-color: #fff;
     border-radius: 20rpx;
     overflow: hidden;
@@ -32,17 +32,18 @@
 }
 
 .dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-header .dp-dialog-header-content {
-    font-size: 30rpx;
+    font-size: 36rpx;
     margin: 0;
-    color: #999;
+    color: #333;
     text-align: center;
 }
 
 .dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-content {
-    padding: 20rpx 0 26.7rpx 0;
+    margin: 20rpx 24%;
     font-size: 30rpx;
     line-height: 44rpx;
     color: #888888;
+    text-align: center;
 }
 
 .dp-dialog-backdrop .dp-dialog-content-wrapper .dp-dialog-dialog .dp-dialog-footer {
@@ -62,7 +63,7 @@
     box-sizing: border-box;
     overflow: hidden;
     font-size: 32rpx;
-    color: #333;
+    color: #f50000;
     flex: 1;
 }
 

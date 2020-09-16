@@ -63,7 +63,12 @@ Component({
             type: Number
         },
         userPrizeRecordId: {
-            type: Number
+            type: Number,
+            observer(newId) {
+                this.setData({
+                    userPrizeRecordId: newId,
+                });
+            },
         },
         prizeTitle: {
             type: String
@@ -74,7 +79,8 @@ Component({
     },
 
     data: {
-       innerShown: true
+       innerShown: true,
+       userPrizeRecordId: 0,
     },
 
 
@@ -108,9 +114,10 @@ Component({
 
         goAddress() {
             this.close();
-            getApp().globalData.lastUserPrizeRecordId = this.properties.userPrizeRecordId;
+            getApp().globalData.lastUserPrizeRecordId = this.data.userPrizeRecordId;
+            debugger
             wx.navigateTo({
-                url: `/pages/my/address/index?id=${this.properties.userPrizeRecordId}`
+                url: `/pages/my/address/index?id=${this.data.userPrizeRecordId}`
             });
         },
 

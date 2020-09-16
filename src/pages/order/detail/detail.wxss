@@ -560,3 +560,14 @@ page {
     margin: 30rpx auto;
     margin-top: 10rpx;
 }
+
+.price-del-bottom {
+    /* position: absolute;
+    bottom: -10rpx;
+    right: 0rpx; */
+}
+
+.higher-list {
+    height: 120rpx;
+    line-height: 120rpx;
+}

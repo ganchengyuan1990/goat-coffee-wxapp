@@ -322,9 +322,9 @@ Page({
         duration: 3000
       })
       return ;
-    } else if (this.errorInfo()) {
+    } else if (this.validate()) {
       wx.showToast({
-        title: this.errorInfo(),
+        title: this.validate(),
         icon: 'none',
         duration: 3000
       })

@@ -98,7 +98,7 @@ Page({
       this.setData({
         page: this.data.page + 1
       }, () => {
-        this.fetchCouponList(2, this.data.page)
+        this.fetchCouponList(2, this.data.page, true)
       })
     }
   },
@@ -109,36 +109,23 @@ Page({
   onShow: function () {
     this.setData({
       // couponItems: mockData,
+      initLoading: true,
     })
     if (this.data.total && (this.data.page * 10 >= this.data.total)) {
       this.setData({
-        couponItems: [],
+        initLoading: false,
+        // couponItems: [],
         page: 1,
       }, () => {
-        this.fetchCouponList(1)
+        this.fetchCouponList(1, 1, false)
       })
-    } else {
-      this.fetchCouponList(1)
+    } else if (!this.data.total) {
+      this.fetchCouponList(1, 1, false)
     }
     
 
   },
 
-  chooseTypeFirst(e) {
-    this.setData({
-      chosenType: 1
-    })
-    console.log(777)
-    this.fetchCouponList(1)
-  },
-
-  chooseTypeSecond(e) {
-    this.setData({
-      chosenType: 2
-    })
-    console.log(777)
-    this.fetchCouponList(2)
-  },
 
   getVeryMoney(money) {
     let result;
@@ -149,7 +136,7 @@ Page({
     }
     return result;
   },
-  fetchCouponList(type, pageId) {
+  fetchCouponList(type, pageId, ifConcat) {
     model(`activity/luck-activity/my-prize?id=${this.data.id}&page=${pageId || 1}`, {
       userId: wx.getStorageSync('token').user.id,
       type: type
@@ -161,7 +148,7 @@ Page({
       });
       console.log(this.data.couponItems.concat(result), '@@@couponItems');
       this.setData({
-        couponItems: this.data.couponItems.concat(result),
+        couponItems: ifConcat ? this.data.couponItems.concat(result) : result,
         total: data.data.total,
         initLoading: false,
       })

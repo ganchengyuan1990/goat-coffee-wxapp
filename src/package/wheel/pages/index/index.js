@@ -17,7 +17,7 @@ Page({
         // awardList: [],//奖品数组
         colorCircleFirst: '#FFDF2F',//圆点颜色1
         colorCircleSecond: '#FE4D32',//圆点颜色2
-        colorAwardDefault: '#F5F0FC',//奖品默认颜色
+        colorAwardDefault: '#fff',//奖品默认颜色
         colorAwardSelect: '#FDF0C8',
         indexSelect: 0,//被选中的奖品index
         isRunning: false,//是否正在抽奖

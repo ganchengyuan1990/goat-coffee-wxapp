@@ -44,7 +44,7 @@
             <!-- <view class="refund_detail" wx:if="{{detail.orderState == 01}}">预计5分钟内接单，请耐心等待</view>
             <view class="refund_detail" wx:if="{{detail.orderState == 02}}">预计{{lineNumber}}取餐，请耐心等待。</view>
             <view class="refund_detail" wx:if="{{detail.orderState == 03}}">请在{{lineNumber}}前取餐。</view> -->
-            
+
             <!-- <view wx:if="{{detail.orderState == '02' || detail.orderState == '03'}}" style="display: flex; justify-content: center;">
                 <image style="width: 200px; height: 200px; margin-top: 40rpx;" src="{{qrcodeURL}}" />
             </view> -->
@@ -52,7 +52,7 @@
             <!-- <view class="font" wx:if="{{detail.orderState == '02' || detail.orderState == '03'}}">请出示二维码给店员</view> -->
 
 
-            
+
             <!-- <view class="desc">感谢您光临麦隆咖啡YOUNG</view> -->
             <!-- <view class="time_delivery" wx:if="{{detail.orderState == '01' || detail.orderState == '02' || detail.orderState == '03'}}">预计将在<text style="color: rgba(218, 163, 127, 1);">{{waitTime}}</text>前可取餐</view> -->
             <!-- <view class="order_numer">NO.{{detail.varCode}}</view> -->
@@ -122,7 +122,7 @@
                             <text class="product_name">{{item.productName}}<view class="zengpin">赠品</view></text>
                             <text class="price">
                                 <text style="color: #99918D; margin-right: 40rpx;">x{{item.number}}</text>
-                                <text>￥{{item.skuPrice}}</text>
+                            <text>￥{{item.skuPrice}}</text>
                             </text>
                         </view>
                         <view class="time">
@@ -160,7 +160,7 @@
                     <!-- <image class="txt" src="../../../images/arrow.png"/> -->
                 </view>
             </view>
-            
+
             <view class="transport-item llll" wx:for="{{otherLalaName}}" wx:for-item="item" wx:key="{{item.name}}">
                 <view class="l">
                     <text class="name">{{item.name}}</text>
@@ -172,14 +172,30 @@
                     <!-- <image class="txt" src="../../../images/arrow.png"/> -->
                 </view>
             </view>
+
+            <view class="transport-item llll" wx:if="{{detail.point_subsidy}}">
+                <view class="l">
+                    <text class="name">{{scoreTitle}}积分抵扣</text>
+                </view>
+                <view class="r">
+                    <text class="txt">使用{{detail.point_subsidy}}积分抵扣¥{{detail.point_subsidy}}</text>
+                    <!-- <image class="arrow" src="../../../images/arrow.png" /> -->
+                    <!-- <image class="txt" src="../../../images/arrow.png"/> -->
+                </view>
+            </view>
+
+
             <view style="height:1rpx; background: rgba(0,0,0,.1)"></view>
-            <view class="special-item">
+            <view class="special-item {{detail.totalPrice !== detail.payAmount ? 'higher-list' : ''}}">
                 <view class="l">
                     <!-- <text class="name">共{{filter.getSum(detail.detailList)}}件商品</text> -->
                     <text class="name">合计</text>
-                    
+
                 </view>
-                <view class="r">实付<text class="price-del" wx:if="{{detail.totalPrice !== detail.payAmount}}">￥{{detail.totalPrice}}</text>￥{{detail.payAmount}}</view>
+                <view class="r" style="display: flex; align-items: center; justify-content: center; flex-direction: column; line-height: 35rpx;">
+                    <view style="font-weight: 500;">￥{{detail.payAmount}}</view>
+                    <view class="price-del price-del-bottom" wx:if="{{detail.totalPrice !== detail.payAmount}}">￥{{detail.totalPrice}}</view>
+                </view>
             </view>
         </view>
         <view class="panel">
@@ -282,6 +298,9 @@
     <toast wx:if="{{errorToastShown}}" is-show="{{errorToastShown}}" title="{{errorInfo}}" disappear-sec="3"></toast>
 
 </view>
+
+<new-modal bindcustomevent="dealNewModalFunction" title="物料不足，制作失败，10分钟内自动退款" shown="{{showNewModal}}" content="{{modalNewContent}}" left-button-function-type="{{modalLeftFunctionType}}" type="1">
+</new-modal>
 
 
 <!-- <custom-tab-bar /> -->

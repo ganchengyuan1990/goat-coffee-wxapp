@@ -4,6 +4,7 @@
     "usingComponents": {
         "address-item": "../../../components/address-item/address-item",
         "toast": "../../../components/toast/toast",
-        "custom-tab-bar": "../../../custom-tab-bar/index"
+        "custom-tab-bar": "../../../custom-tab-bar/index",
+        "new-modal": "../../../components/new-modal/modal"
     }
 }

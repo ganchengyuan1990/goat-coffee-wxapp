@@ -5,7 +5,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
   transition: opacity 0.3s ease;
 }
 .hfe-vue-dialog-toast-content-backdrop .wc {
@@ -20,7 +20,7 @@
   display: flex;
   max-width: 95%;
   margin: auto;
-  height: 100%;
+  height: calc(100vh - 320rpx);
   align-items: center;
   justify-content: center;
 }
@@ -34,7 +34,7 @@
   color: #fff;
   font-size: 32rpx;
   z-index: 9999;
-  background: red;
+  background: #DE4132;
 }
 
 .protocol {
@@ -42,8 +42,9 @@
   bottom: 100rpx; */
   z-index: 9999;
   font-size: 32rpx;
-  height: 150rpx;
-  line-height: 150rpx;
+  height: 130rpx;
+  line-height: 110rpx;
+  margin-left: 30rpx;
   background: white;
   width: 100%;
 }
@@ -52,17 +53,35 @@
   width: 32rpx;
   height: 32rpx;
   position: relative;
-  top: 8rpx;
-  left: 5rpx;
-  margin-right: 10rpx;
+  top: 5rpx;
+  left: 3rpx;
+  margin-right: 8rpx;
 }
 
 .bottom-position {
   position: fixed;
   bottom: 0;
   width: 100%;
+  height: 310rpx;
   display: flex;
   flex-direction: column;
   background: #fff;
   border-radius: 20rpx 20rpx 0rpx 0rpx;
+}
+
+.bottom-title {
+  margin: 30rpx;
+  font-size: 30rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #232323;
+  margin-bottom: 10rpx;
+}
+
+.bottom-sub-title {
+  font-size: 30rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #B2B2B2;
+  margin-left: 10rpx;
 }

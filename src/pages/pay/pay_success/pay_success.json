@@ -1,11 +1,13 @@
 {
-  "enablePullDownRefresh": false,
-  "navigationBarTitleText": "支付成功",
-  "usingComponents": {
-    "toast": "../../../components/toast/toast",
-    "modal": "../../../components/modal/modal",
-    "modal-new": "./components/modal/modal",
-    "welcome": "../../../components/welcome/welcome",
-    "ml-navigator": "../../../components/ml-navigator/index"
-  }
+    "enablePullDownRefresh": false,
+    "navigationBarTitleText": "支付成功",
+    "usingComponents": {
+        "toast": "../../../components/toast/toast",
+        "modal": "../../../components/modal/modal",
+        "modal-new": "./components/modal/modal",
+        "welcome": "../../../components/welcome/welcome",
+        "ml-navigator": "../../../components/ml-navigator/index",
+        "new-modal": "../../../components/new-modal/modal"
+
+    }
 }

@@ -435,7 +435,7 @@
 					"id": 56,
 					"name": "pages/pay/pay_success/pay_success",
 					"pathName": "pages/pay/pay_success/pay_success",
-					"query": "coffeeMaker=true&orderId=1111&price=12&varCode=2903702",
+					"query": "coffeeMaker=true&orderId=1170&price=21&varCode=4627533",
 					"scene": null
 				},
 				{
@@ -457,6 +457,13 @@
 					"name": "pages/member/index/index",
 					"pathName": "pages/member/index/index",
 					"query": "scene=a%3D163%26t%3D1597643761%26s%3D0B01FBE9B5",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/order/list/list",
+					"pathName": "pages/order/list/list",
+					"query": "",
 					"scene": null
 				}
 			]

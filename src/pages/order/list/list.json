@@ -3,6 +3,7 @@
     "enablePullDownRefresh": true,
     "usingComponents": {
         "address-item": "../../../components/address-item/address-item",
-        "toast": "../../../components/toast/toast"
+        "toast": "../../../components/toast/toast",
+        "new-modal": "../../../components/new-modal/modal"
     }
 }

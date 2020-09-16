@@ -524,7 +524,7 @@
 }
 
 .nihao456 {
-  font-size:2r2px;
+  font-size:22rpx;
   font-family:PingFangSC-Regular,PingFang SC;
   font-weight:400;
   color:rgba(61,61,61,1);
@@ -535,4 +535,10 @@
   width: 630rpx;
   height: 826rpx;
   border-radius: 10rpx !important;
+}
+
+.whiteback {
+  background: #fff;
+  border: 1rpx solid #EC0F10;
+  color: #EC0F10;
 }

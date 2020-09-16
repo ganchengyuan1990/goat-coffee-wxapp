@@ -17,6 +17,13 @@
             } else {
                 return parseFloat(stringValue).toFixed(2);
             }
+        },
+        getStringLength: function (value) {
+            if (typeof(str) == string) {
+                return stringValue.length;
+            }
+            var stringValue = value.toString();
+            return stringValue.length;
         }
     }
     module.exports = checkout

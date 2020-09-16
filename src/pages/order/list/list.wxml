@@ -1,5 +1,5 @@
-
-<wxs  src="../filter.wxs" module="filter"></wxs>
+<wxs src="../filter.wxs" module="filter">
+</wxs>
 <import src="./templates/invoice-list.wxml" />
 <import src="./templates/address-list.wxml" />
 <view class="order-wrap" wx:if="{{hasLogin}}">
@@ -46,22 +46,8 @@
 
         <view class="cnt-wrap" wx:if="{{isFilterShow}}">
             <view class="cnt">
-                <view 
-                    wx:for="{{filterList}}"
-                    wx:key="{{item.tab}}"
-                    wx:for-index="index"
-                    wx:if="{{currentPanel === item.tab}}"
-                    class="{{item.cls}}">
-                    <view 
-                        wx:for="{{item.list}}" 
-                        wx:for-index="idx"
-                        wx:key="{{idx}}"
-                        wx:for-item="list"
-                        class="item {{list.active ? 'active': ''}}" 
-                        bind:tap="chooseFilterItem"
-                        data-code="{{list.code}}"
-                        data-idx="{{idx}}"
-                        data-title="{{list.tt}}">{{list.tt}}</view>
+                <view wx:for="{{filterList}}" wx:key="{{item.tab}}" wx:for-index="index" wx:if="{{currentPanel === item.tab}}" class="{{item.cls}}">
+                    <view wx:for="{{item.list}}" wx:for-index="idx" wx:key="{{idx}}" wx:for-item="list" class="item {{list.active ? 'active': ''}}" bind:tap="chooseFilterItem" data-code="{{list.code}}" data-idx="{{idx}}" data-title="{{list.tt}}">{{list.tt}}</view>
                 </view>
             </view>
             <view class="btn-group">
@@ -74,11 +60,11 @@
 
 
     <view>
-        <template is="address-list" data="{{loading: false, addressList: addressList}}" wx:if="{{curNav == 1}}"/>
+        <template is="address-list" data="{{loading: false, addressList: addressList}}" wx:if="{{curNav == 1}}" />
     </view>
 
     <view style="overflow: hidden;">
-        <template is="invoice-list" data="{{labelInfo}}" wx:if="{{curNav == 2}}"/>
+        <template is="invoice-list" data="{{labelInfo}}" wx:if="{{curNav == 2}}" />
     </view>
 
     <view class="list-wrap" wx:if="{{curNav == 0}}">
@@ -123,7 +109,7 @@
                     <!-- <view class="btn-buy to-pay invoice_button" wx:if="{{item.order.orderState === '100' && !item.order.billOrderID}}" data-item="{{item.order}}" data-type="normal" catchtap="goInvice">开发票</view> -->
 
                     <!-- <view class="btn-cancel to-pay" wx:if="{{item.order.orderState === '100' && !item.order.isComment}}" data-item="{{item.order}}" data-type="normal" catchtap="goComment">评论</view> -->
-                    
+
                     <view class="right-now-button" data-item="{{item}}" catchtap="doRightNow" wx:if="{{item.order.machine_type == 3 && item.order.orderState == '01'}}">立即制作</view>
 
                     <view class="qucan" wx:if="{{filter.getOrderTypeState(item.order.orderType)!= 1 && (item.order.orderState == '01' || item.order.orderState == '02' || item.order.orderState == '03')}}" data-item="{{item}}" data-type="group">
@@ -168,7 +154,7 @@
         </block>
         <view class="loading" wx:if="{{!isCompleted}}">{{isCompleted?'没有更多了':'加载中...'}}</view>
         <view class="loading" wx:if="{{isCompleted && orderList.length == 0}}">
-            
+
             <image style="width: 135rpx; height: 135rpx; margin-top: 200rpx; margin-bottom: 30rpx;" src="../../../images/no_orders.png" />
             <view style="color: rgba(184, 184, 184, 1); font-size: 28rpx; margin-top:-10rpx;">没有更多订单信息了，去喝一杯吧～</view>
             <view class="go_buy_one" bindtap="goIndex">去喝一杯</view>
@@ -195,7 +181,7 @@
     <toast wx:if="{{errorToastShown}}" is-show="{{errorToastShown}}" title="{{errorInfo}}" disappear-sec="3"></toast>
 
 
-    
+
 </view>
 
 <view class="search-empty" wx:if="{{!hasLogin}}">
@@ -204,12 +190,14 @@
     </view>
     <!-- <view class="search-empty-icon ui-error ui-error-order-no-login" /> -->
     您还没有登录，请登录后再查看订单！
-    <button class="btn-login flex-center"  open-type="getUserInfo"
-        bindgetuserinfo="getUserInfo">
+    <button class="btn-login flex-center" open-type="getUserInfo" bindgetuserinfo="getUserInfo">
         登录
     </button>
 </view>
 
 <view class="dibu">
-    
+
 </view>
+
+<new-modal bindcustomevent="dealNewModalFunction" title="物料不足，制作失败，10分钟内自动退款" shown="{{showNewModal}}" content="{{modalNewContent}}" left-button-function-type="{{modalLeftFunctionType}}" type="1">
+</new-modal>

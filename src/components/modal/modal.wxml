@@ -9,7 +9,7 @@
             <view class="dp-dialog-footer">
                 <view class="dp-dialog-footer-btn left {{otherFunctionType ? 'double' : 'single'}} {{okText === '去登录' ? 'highlight' : ''}}" bindtap="leftButtonFunction" wx:if="{{okText}}">{{okText}}</view>
                 <view class="dp-dialog-footer-btn" bindtap="close" wx:else>知道了</view>
-                <view wx:if="{{otherFunctionType}}" class="dp-dialog-footer-btn double" bindtap="otherFunction" >{{otherText}}</view>
+                <view wx:if="{{otherFunctionType}}" class="dp-dialog-footer-btn double" bindtap="otherFunction">{{otherText}}</view>
             </view>
         </view>
     </view>
@@ -23,7 +23,7 @@
             <view class="dp-dialog-footer">
                 <view class="dp-dialog-footer-btn left {{otherFunctionType ? 'double' : 'single'}} {{okText === '去登录' ? 'highlight' : ''}}" bindtap="leftButtonFunction" wx:if="{{okText}}">{{okText}}</view>
                 <view class="dp-dialog-footer-btn" bindtap="close" wx:else>知道了</view>
-                <view wx:if="{{otherFunctionType}}" class="dp-dialog-footer-btn double" bindtap="otherFunction" >{{otherText}}</view>
+                <view wx:if="{{otherFunctionType}}" class="dp-dialog-footer-btn double" bindtap="otherFunction">{{otherText}}</view>
             </view>
         </view>
     </view>
@@ -63,12 +63,12 @@
     <view class="act-wrap" wx:if="{{type == 6}}">
         <view class="mask {{isActWrapShow ? 'active':''}}"></view>
         <view class="cnt">
-            <image src="{{actImage}}" mode="widthFix" ></image>
+            <image src="{{actImage}}" mode="widthFix"></image>
             <view class="btn-close" bind:tap="hideActWrap"></view>
         </view>
     </view>
     <view class="dp-dialog-content-wrapper" wx:if="{{type == 7}}">
-       <view class="dialog4 dialog8" wx:if="{{shown}}">
+        <view class="dialog4 dialog8" wx:if="{{shown}}">
             <view class="header" wx:if="{{title}}">
                 <p class="dp-dialog-header-content store-title">{{title}}</p>
             </view>
@@ -89,7 +89,7 @@
     <view class="dp-dialog-content-wrapper" wx:if="{{type == 8}}">
         <view class="dialog4 dialog8" wx:if="{{shown}}">
             <view class="header" wx:if="{{title}}">
-                <image class="header_img" src="{{title}}" mode="widthFix" ></image>
+                <image class="header_img" src="{{title}}" mode="widthFix"></image>
             </view>
             <view class="content_8">
                 {{content}}
@@ -106,7 +106,7 @@
     <view class="dp-dialog-content-wrapper" wx:if="{{type == 9}}">
         <view class="dialog4 dialog8 dialog9" wx:if="{{shown}}">
             <view class="header" wx:if="{{title}}">
-                <image class="header_img" src="{{title}}" mode="widthFix" ></image>
+                <image class="header_img" src="{{title}}" mode="widthFix"></image>
             </view>
         </view>
     </view>
@@ -118,10 +118,10 @@
                 <image src="https://img.goatup.cn/guanbi%402x.png" style="position: absolute; right: 30rpx; top: 37rpx; height: 29rpx; width: 29rpx;" />
             </view>
             <view class="content_8" wx:if="{{actImage}}">
-                <image class="header_img2" style="margin-top: 20rpx; margin-bottom: -10rpx;" src="{{actImage}}" mode="widthFix" ></image>
+                <image class="header_img2" style="margin-top: 20rpx; margin-bottom: -10rpx;" src="{{actImage}}" mode="widthFix"></image>
             </view>
             <view class="content_8" wx:if="{{failImage}}">
-                <image class="header_img3" style="margin-top: 28rpx" src="{{failImage}}" mode="widthFix" ></image>
+                <image class="header_img3" style="margin-top: 28rpx" src="{{failImage}}" mode="widthFix"></image>
             </view>
             <view class="button" wx:if="{{content}}">
                 <view class="sss" bindtap="goBuy">{{content}}</view>
@@ -140,10 +140,10 @@
                 <image src="https://img.goatup.cn/guanbi%402x.png" style="position: absolute; right: 30rpx; top: 37rpx; height: 29rpx; width: 29rpx;" />
             </view>
             <view class="content_8" wx:if="{{actImage}}">
-                <image class="header_img2" src="{{actImage}}" mode="widthFix" ></image>
+                <image class="header_img2" src="{{actImage}}" mode="widthFix"></image>
             </view>
             <view class="content_8" wx:if="{{failImage}}">
-                <image class="header_img3" style="margin-top: 28rpx" src="{{failImage}}" mode="widthFix" ></image>
+                <image class="header_img3" style="margin-top: 28rpx" src="{{failImage}}" mode="widthFix"></image>
             </view>
             <view class="button" wx:if="{{content}}">
                 <view class="sss" bindtap="goBuy">{{content}}</view>
@@ -179,9 +179,9 @@
                         <image class='content-image' src="{{actImage}}" />
                     </view>
                     <view class="dp-dialog-footer">
-                        
-                        <view class="dp-dialog-footer-btn double" bindtap="close" >取消</view>
-                        <view class="dp-dialog-footer-btn double black_item" bindtap="goBuy" >立即使用</view>
+
+                        <view class="dp-dialog-footer-btn double" bindtap="close">取消</view>
+                        <view class="dp-dialog-footer-btn double black_item" bindtap="goBuy">立即使用</view>
                     </view>
                 </view>
             </view>

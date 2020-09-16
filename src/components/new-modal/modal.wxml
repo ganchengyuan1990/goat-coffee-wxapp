@@ -1,0 +1,41 @@
+<view class="dp-dialog-backdrop" wx:if="{{shown}}" transition="expand" catchtap="close">
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 1 || !type}}">
+        <view class="dp-dialog-dialog" wx:if="{{shown}}">
+            <view class="dp-dialog-header">
+                <p class="dp-dialog-header-content">提示</p>
+            </view>
+            <view class="dp-dialog-content">
+                <rich-text nodes="{{nodesText}}"></rich-text>
+            </view>
+            <view class="dp-dialog-content" style="font-size: 25rpx; margin-bottom: 30rpx;">
+                {{content}}
+            </view>
+            <view class="dp-dialog-footer">
+                <view class="dp-dialog-footer-btn" bindtap="otherFunction">确定</view>
+            </view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 3}}">
+        <view class="dialog4" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="content">
+                {{content}}
+            </view>
+            <view class="dp-dialog-footer">
+                <view class="dp-dialog-footer-btn" bindtap="otherFunction">确定</view>
+            </view>
+        </view>
+    </view>
+    <view class="dp-dialog-content-wrapper" wx:if="{{type == 4}}">
+        <view class="dialog4" wx:if="{{shown}}">
+            <view class="header" wx:if="{{title}}">
+                <p class="dp-dialog-header-content">{{title}}</p>
+            </view>
+            <view class="content">
+                {{content}}
+            </view>
+        </view>
+    </view>
+</view>

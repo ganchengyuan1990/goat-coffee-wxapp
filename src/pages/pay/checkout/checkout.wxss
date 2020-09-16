@@ -655,7 +655,7 @@ checkbox {
 .order-total .l .price {
     color: #333;
     font-weight: 600;
-    font-size: 46rpx;
+    font-size: 48rpx;
     margin-left: 15rpx;
 }
 

@@ -340,6 +340,7 @@ Page({
         let prevPage = pages[pages.length - 2]; //上一个页面
         prevPage.setData({
             chosenInfo: this.data.chosenInfo,
+            hasChosenOne: this.data.chosenInfo && this.data.chosenInfo.content && this.data.chosenInfo.content[0],
             chooseType: this.data.type,
             // canUseDiscountAndRedPacket: this.data.canUseRedPacketMeanwhile,
             goBackFromChildPage: true

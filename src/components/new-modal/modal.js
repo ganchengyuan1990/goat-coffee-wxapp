@@ -1,5 +1,6 @@
 "use strict";
 
+// const lx = require('../../utils/npm/lx-analytics')
 // const lxBid = {
 //     shopInfoMCBid: 'b_7pipq1og'
 // }
@@ -49,54 +50,15 @@ Component({
         },
         isCoffeeMaker: {
             type: Boolean
-        },
-        getPrize: {
-            type: Number
-        },
-        prizeType: {
-            type: Number
-        },
-        realGift: {
-            type: Number
-        },
-        noMoreChance: {
-            type: Number
-        },
-        userPrizeRecordId: {
-            type: Number
-        },
-        prizeTitle: {
-            type: String
-        },
-        meituanStoreId: {
-            type: String
         }
     },
 
     data: {
-       innerShown: true
+        innerShown: true,
+        nodesText: '<p>物料不足，制作失败\r\n 10分钟内自动退款</p>'
     },
 
-
     methods: {
-
-        goGetCoupon: function (e) {
-            var current = e.target.dataset.src;
-            // debugger
-            // wx.previewImage({
-            //     current: current,
-            //     urls: [current]
-            // })
-            // wx.navigateToMiniProgram({
-            //     appId: 'wx2c348cf579062e56',
-            //     path: `/packages/restaurant_bak/restaurant/restaurant?poi_id=${this.properties.meituanStoreId}&aas=1003&cat_id=0`
-            // })
-        },
-
-        goMyCoupon() {
-            this.triggerEvent('gomycoupon');
-        },
-
         close() {
             // if (this.properties.type == 7) {
             //     return ;
@@ -104,19 +66,6 @@ Component({
             this.setData({
                 shown: false
             });
-        },
-
-        goAddress() {
-            this.close();
-            getApp().globalData.lastUserPrizeRecordId = this.properties.userPrizeRecordId;
-            wx.navigateTo({
-                url: `/pages/my/address/index?id=${this.properties.userPrizeRecordId}`
-            });
-        },
-
-        prizeAgain() {
-            this.close();
-            this.triggerEvent('customevent');
         },
 
         otherFunction() {
@@ -138,7 +87,7 @@ Component({
             });
         },
 
-        goTransport () {
+        goTransport() {
             // let item = e.currentTarget.dataset.item;
             // console.log(item);
             wx.navigateTo({
@@ -171,11 +120,11 @@ Component({
             wx.switchTab({ url: '/pages/store/store' });
         },
 
-        goRecharge () {
+        goRecharge() {
             if (this.data.okText === '立即使用') {
                 wx.switchTab({ url: '/pages/store/store' });
             }
-            
+
         }
     }
 
