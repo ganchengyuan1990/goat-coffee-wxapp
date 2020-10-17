@@ -1,10 +1,3 @@
-'use strict';
-
-// const lx = require('../../utils/npm/lx-analytics')
-// const lxBid = {
-//     shopInfoMCBid: 'b_7pipq1og'
-// }
-
 Component({
 
   properties: {

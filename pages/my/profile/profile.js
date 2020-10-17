@@ -1,7 +1,7 @@
-const app = getApp();
 import model, {
   BASE_URL
 } from '../../../utils/model';
+
 Page({
 
   /**

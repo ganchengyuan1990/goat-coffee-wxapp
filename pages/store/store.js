@@ -42,7 +42,6 @@ Page({
     userAddressInfo: {},
     // 是否自提
     isSelfTaking: true,
-    isLoadStorageCart: true,
     actImage: '',
     isActWrapShow: false,
     fromTransport: '',
@@ -143,9 +142,6 @@ Page({
         this.fetchLoaction();
       }
 
-      if (this.data.isLoadStorageCart) {
-        this.getStorageCart();
-      }
       this.toggleTabBar(true);
     }
   },
@@ -369,7 +365,6 @@ Page({
         scrollTop: 0,
         menuList: list
       });
-      this.generatePriceMap();
       this.calculateHeight();
       wx.hideLoading();
     }).catch(e => {
@@ -383,71 +378,6 @@ Page({
     });
   },
 
-  /*
-	 * 生成价格信息对照表 
-	 */
-  generatePriceMap() {
-    let list = this.data.menuList;
-    let obj = {};
-    // 使用 productid-skuid 对应价格map表
-    // console.log(list, 'list');
-
-    list.forEach(i => {
-      let pList = i.product_list;
-      pList.forEach(j => {
-        let sList = j.sku_list;
-        sList.forEach(k => {
-          let key = k.productId + '-' + k.propSkuId;
-          obj[key] = k.sale_price;
-        });
-      });
-    });
-    this.setData({
-      priceMap: obj
-    });
-    if (this.data.isLoadStorageCart) {
-      this.getStorageCart();
-    }
-  },
-  /**
-	 *  
-	 */
-  getStorageCart() {
-    let data = wx.getStorageSync('CART_LIST');
-    let list = JSON.parse(data || '[]');
-    let priceMap = this.data.priceMap;
-    this.setData({
-      isLoadStorageCart: false
-    });
-    let remainList = list.filter(item => {
-      let customedKey = item.customedKey;
-      let key = '';
-      let keys = customedKey.match(/\d+-\d+/);
-      if (keys) {
-        key = keys[0];
-      }
-
-      if (key && priceMap[key]) {
-        // TODOS 此处可添加重新计算价格逻辑
-        // 同时需要计算总价格
-        // item.price = priceMap[key]
-        // item.totalPrice = BN(item.price).mul...
-        return item;
-      }
-    });
-
-    if (remainList.length !== list.length) {
-      wx.showModal({
-        title: '提示',
-        content: '购物车部分商品缺货',
-        confirmText: '我知道了'
-      });
-    }
-    let arr = this.data.cartList;
-    arr = arr.concat(remainList);
-    this.mergeCart(arr);
-    this.getBestPaySolution();
-  },
   calculateHeight() {
     let heigthArr = [];
     let height = 0;
@@ -526,45 +456,6 @@ Page({
         this.setData({
           isCatePanelShow: !isShow
         });
-      });
-    }
-  },
-  /**
-	 * 添加到购物车 
-	 */
-  saveCart(e) {
-    let cart = e.detail.cartList;
-    if (e.detail) {
-      this.mergeCart(cart);
-      this.getBestPaySolution();
-    }
-  },
-  addCart(e) {
-    let isOpen = this.checkStoreState();
-    if (!isOpen) {
-      return;
-    }
-    let cart = this.data.cartList;
-    if (e.detail) {
-      cart.push(e.detail);
-    }
-    this.mergeCart(cart);
-    this.getBestPaySolution();
-  },
-  toggleCart() {
-    let isShow = this.data.isCartPanelShow;
-    let self = this;
-
-    if (!isShow) {
-      this.toggleTabBar(false, () => {
-        self.setData({
-          isCartPanelShow: !isShow
-        });
-      });
-    } else {
-      this.toggleTabBar(true);
-      self.setData({
-        isCartPanelShow: !isShow
       });
     }
   },
@@ -671,14 +562,12 @@ Page({
       isCartPanelShow: false
     });
     wx.showTabBar();
-    // this.toggleCart()
     wx.navigateTo({
       url: url,
       success() {
         self.setData({
           cartList: [],
           resultPrice: -1,
-          isLoadStorageCart: true
         });
       }
     });
@@ -688,83 +577,6 @@ Page({
     wx.navigateTo({
       url: `/pages/transport/transport?from=store&tab=${type}`
     });
-  },
-  /*
-	 * 合并相同品类
-	 */
-  mergeCart(list) {
-    if (!Array.isArray(list)) {
-      return;
-    }
-    // 验证skuid， propids, productId一致性
-    // count total price
-
-    let cartList = list;
-    let obj = {};
-    cartList.forEach(item => {
-      let key = item.customedKey;
-      let val = obj[key];
-      if (val) {
-        val.count = BN(val.count).plus(item.count).valueOf();
-        val.totalPrice = BN(val.count).multipliedBy(val.price).valueOf();
-      } else {
-        obj[key] = item;
-      }
-    });
-    // let arr = Object.values(obj)
-    let arr = [];
-    for (let i in obj) {
-      if (obj[i]) {
-        arr.push(obj[i]);
-      }
-    }
-    this.setData({
-      cartList: arr
-    });
-    wx.setStorage({
-      key: 'CART_LIST',
-      data: JSON.stringify(arr)
-    });
-  },
-
-  /**
-	 * 实时获取最优下单方案
-	 */
-  getBestPaySolution() {
-    let _cartList = Object.assign(this.data.cartList);
-    let products = _cartList.map(item => {
-      let skuList = item.sku_list;
-      let obj = skuList.find(item => item.isdefault === 1) || {};
-      let propList = item.key_list;
-      let propIds = [];
-      propList.forEach(i => {
-        let idObj = i.val_list.find(j => {
-          return parseInt(j.id) === parseInt(i.default_val_id);
-        });
-
-        if (idObj) {
-          propIds.push(idObj.prop_id);
-        }
-      });
-      return Object.assign({}, {
-        productName: item.productName,
-        productId: item.id,
-        skuId: obj.id,
-        skuName: obj.propSkuName,
-        number: item.count,
-        price: obj.sale_price,
-        productPropIds: propIds.join(','),
-        spec: item.spec,
-        num: item.count,
-        // totalPrice: item.count * obj.sale_price
-      });
-    });
-    this.setData({
-      products: products
-    });
-    if (wx.getStorageSync('token') && wx.getStorageSync('token').user) {
-      this.getBestCouponByProduct();
-    }
   },
 
   /**

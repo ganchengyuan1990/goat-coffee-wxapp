@@ -1,6 +1,5 @@
 import model from '../../../utils/model';
 
-
 Page({
   data: {
     lesson: '',

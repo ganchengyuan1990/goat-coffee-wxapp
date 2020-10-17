@@ -1,5 +1,3 @@
-// pages/aboutus/aboutus.js
-
 import model from '../../../utils/model';
 
 Page({

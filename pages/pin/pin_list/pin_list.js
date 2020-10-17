@@ -1,7 +1,4 @@
-'use strict';
-
 import model from '../../../utils/model';
-
 
 Page({
   data: {
@@ -10,13 +7,6 @@ Page({
   },
 
   goPinDetail (e) {
-    // let token = wx.getStorageSync('token').token
-    // if (!token) {
-    //     wx.redirectTo({
-    //         url: '/pages/login/login'
-    //     })
-    //     return
-    // }
     wx.hideTabBar({
       animation: true,
       success() {
@@ -42,32 +32,10 @@ Page({
     }).then(data => {
       if (data.data) {
         let result = data.data;
-        // result.forEach(item => {
-        //     if (item.groupImg) {
-        //         item.groupImg = item.groupImg.split(',')[0];
-        //     }
-        // });
         this.setData({
           pinList: data.data
         });
       }
     });
-    // array.forEach(item => {
-    //     item.discountMoney = Utils.setDataForm(parseFloat(item.discountMoney / 100), 1);
-    //     if (item.checked === undefined) {
-    //         item.checked = item.defaultCheck;
-    //     }
-    //     if (item.active) {
-    //         activedItems.push(item);
-    //     } else {
-    //         unActivedItems.push(item);
-    //     }
-    // });
-    // this.setData({
-    //     array: array,
-    //     chosenId: chosenId,
-    //     activedItems: activedItems,
-    //     unActivedItems: unActivedItems
-    // });
   }
 });

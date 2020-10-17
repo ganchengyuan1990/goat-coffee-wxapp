@@ -3,7 +3,6 @@
     "pages/store/store",
     "pages/login/login",
     "pages/cart/cart",
-    "pages/user/user",
     "pages/pay/checkout/checkout",
     "pages/pay/pay_success/pay_success",
     "pages/pay/normalPay/normalPay",

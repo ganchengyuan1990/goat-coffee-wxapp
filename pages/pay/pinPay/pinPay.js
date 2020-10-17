@@ -1,10 +1,3 @@
-// var QRCode = require('../../utils/weapp-qrcode.js')
-
-// const QRCode = require('../../utils/qrcode-logo')
-
-// import {wx2promise} from '../../utils/util';
-
-
 Page({
   data: {
     openid: '',

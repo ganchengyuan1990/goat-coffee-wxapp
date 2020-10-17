@@ -1,7 +1,4 @@
-// var util = require('../../utils/util.js');
-// var api = require('../../config/api.js');
-
-var app = getApp();
+const app = getApp();
 
 Page({
   data: {
@@ -95,23 +92,6 @@ Page({
         checkedAllStatus: that.isCheckedAll(),
         cartTotal: this.calcCartTotal(cartGoods)
       });
-
-      // that.setData({
-      //   checkedAllStatus: that.isCheckedAll()
-      // });
-      // util.request(api.CartChecked, { productIds: that.data.cartGoods[itemIndex].product_id, isChecked: that.data.cartGoods[itemIndex].checked ? 0 : 1 }, 'POST').then(function (res) {
-      //   if (res.errno === 0) {
-      //     console.log(res.data);
-      //     that.setData({
-      //       cartGoods: res.data.cartList,
-      //       cartTotal: res.data.cartTotal
-      //     });
-      //   }
-
-      //   that.setData({
-      //     checkedAllStatus: that.isCheckedAll()
-      //   });
-      // });
     } else {
       //编辑状态
       let tmpCartData = this.data.cartGoods.map(function (element, index, array) {
@@ -211,25 +191,6 @@ Page({
       checkedAllStatus: that.isCheckedAll()
     });
 
-    // util.request(api.CartUpdate, {
-    //   productId: productId,
-    //   goodsId: goodsId,
-    //   number: number,
-    //   id: id
-    // }, 'POST').then(function (res) {
-    //   if (res.errno === 0) {
-    //     console.log(res.data);
-    //     that.setData({
-    //       //cartGoods: res.data.cartList,
-    //       //cartTotal: res.data.cartTotal
-    //     });
-    //   }
-
-    //   that.setData({
-    //     checkedAllStatus: that.isCheckedAll()
-    //   });
-    // });
-
   },
   cutNumber: function (event) {
 
@@ -283,14 +244,6 @@ Page({
     //获取已选择的商品
     let that = this;
 
-    // let chosenProduct = this.data.cartGoods.filter((element, index, array) => {
-    //   return element.checked == true;
-    // });
-
-    // if (chosenProduct.length <= 0) {
-    //   return false;
-    // }
-
     let chosenProductIds = [];
     let cartList = [];
     let cartTotal = this.data.cartTotal;
@@ -315,19 +268,5 @@ Page({
       checkedAllStatus: that.isCheckedAll()
     });
 
-
-    // util.request(api.CartDelete, {
-    //   productIds: productIds.join(',')
-    // }, 'POST').then(function (res) {
-    //   if (res.errno === 0) {
-    //     console.log(res.data);
-    //     let cartList = res.data.cartList.map(v => {
-    //       console.log(v);
-    //       v.checked = false;
-    //       return v;
-    //     });
-
-        
-    // });
   }
 });

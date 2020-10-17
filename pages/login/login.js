@@ -1,9 +1,6 @@
-// pages/user/user.js
 const app = getApp();
-
 import model from '../../utils/model';
 
-import apiObject from '../../utils/api';
 Page({
 
 
