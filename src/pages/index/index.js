@@ -1,26 +1,5 @@
-// var util = require('../../../utils/util.js');
-// var api = require('../../../config/api.js');
-
 import model from '../../utils/model';
-var ald = require('../../utils/sdk/ald-stat.js');
-
-var app = getApp();
-
-
-var AObject = function () {
-  this.name = 'Jason';
-};
-var A = function () {
-  if (!AObject.instance) {
-    AObject.instance = new AObject();
-  }
-  return AObject.instance;
-};
-
-// var a = new A();
-// var b = new A();
-
-// console.log(a === b, a, a.name)
+const app = getApp();
 
 Page({
   data: {
@@ -30,7 +9,7 @@ Page({
     banner: [],
     enableWeeklyActivity: false,
     showModal: false,
-    modalTitle: 'sdsdsdsd',
+    modalTitle: '',
     memberData: {},
     errorToastShown: false,
     errorInfo: {},
@@ -522,8 +501,4 @@ Page({
       });
     }
   }
-
-  // bindGetUserInfo(e) {
-  //     console.log(e.detail.userInfo)
-  // }
 });

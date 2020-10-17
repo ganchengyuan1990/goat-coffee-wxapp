@@ -188,16 +188,6 @@
     </view>
   </view>
   <view bind:touchstart="handleTouchStart" catch:touchend="handleTouchEnd" catch:touchmove="handleTouchMove">
-    <!-- <cart 
-      salesTotalPrice="{{resultPrice}}"
-      isCartPanelShow="{{isCartPanelShow}}" 
-      info="{{cartList}}" 
-      fee="{{storeInfo.deliverFee}}" 
-      rules="{{storeInfo.deliverFees}}"
-      isselfTaking="{{isselfTaking}}"
-      bind:checkout="checkout" 
-      bind:togglecart="toggleCart"
-      bind:save="saveCart"></cart> -->
     <menu-wrap 
       type="{{isCoffeeMaker ? 2 : 1}}"
       isHigh="{{isHigh}}"
@@ -211,13 +201,6 @@
       bind:goorder="goOrder"
       bind:godirect="goDirect"></menu-wrap>
   </view>
-  <!-- <view class="act-wrap" wx:if="{{isActWrapShow}}">
-    <view class="mask {{isActWrapShow ? 'active':''}}"></view>
-    <view class="cnt">
-      <view class="btn-close" bind:tap="hideActWrap"></view>
-      <image src="{{actImage}}" mode="widthFix"></image>
-    </view>
-  </view> -->
 
 
   <view class="act-wrap" wx:if="{{isActWrapShow}}" bindtap="closeToast">
@@ -232,13 +215,6 @@
     </view>
   </view>
 
-  <!-- <view class="cartNumber">
-    <text>1</text>
-  </view> -->
 </view>
-
-<!-- <view class="dibu">
-    
-</view> -->
 
 <modal title="{{modalTitle}}" bindcustomevent="goStoreIndex" contentArr="{{storeArr}}" shown="{{showStoreModal}}" type="7" isCoffeeMaker="{{isCoffeeMaker}}"/>

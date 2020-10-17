@@ -1,8 +1,5 @@
 import model from '../../../utils/model';
 
-import {
-  mockData,
-} from './mockData.js';
 Page({
 
   /**

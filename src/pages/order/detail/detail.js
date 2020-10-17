@@ -1,12 +1,11 @@
 // pages/order/detail.js
 import model from '../../../utils/model.js';
-const QR = require('../../../utils/weapp-qrcode.js');
-
-// const requestJason = require('../../../utils/request.js');
 import {
   simpleFormatTime,
   formatTime
 } from '../../../utils/util';
+const QR = require('../../../utils/weapp-qrcode.js');
+
 
 
 Page({
@@ -557,18 +556,6 @@ Page({
               modalNewContent: e,
               showNewModal: true
             });
-            // wx.showModal({
-            //   title: '提示',
-            //   content: `物料不足，制作失败，10分钟内自动退款\r\n${e}`, //提示的内容,
-            //   showCancel: false, //图标,
-            //   confirmText: '确定', //延迟时间,
-            //   confirmColor: '#F12B23',
-            //   success: res => {
-            //     if (res.confirm) {
-            //       this.getDetailInfo()
-            //     }
-            //   }
-            // });
           });
         }
       }

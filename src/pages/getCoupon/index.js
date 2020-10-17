@@ -1,28 +1,7 @@
-// var util = require('../../../utils/util.js');
-// var api = require('../../../config/api.js');
-
 import model from '../../utils/model';
-var ald = require('../../utils/sdk/ald-stat.js');
 import util from '../../utils/util.js';
+const app = getApp();
 
-
-var app = getApp();
-
-
-var AObject = function () {
-  this.name = 'Jason';
-};
-var A = function () {
-  if (!AObject.instance) {
-    AObject.instance = new AObject();
-  }
-  return AObject.instance;
-};
-
-// var a = new A();
-// var b = new A();
-
-// console.log(a === b, a, a.name)
 
 Page({
   data: {
@@ -238,16 +217,7 @@ Page({
   },
 
   onShow: function () {
-        
-    // model(`my/coupon/get-coupon-index?id=${this.data.id}`).then(res => {
-    //     this.setData({
-    //         // existLuckActivity: false
-    //         activity: res.data.activity,
-    //     })
-    //     wx.hideLoading();
-    // }).catch(e => {
-    //     wx.hideLoading();
-    // });
+    
 
   },
 
@@ -264,9 +234,6 @@ Page({
   },
 
   goPin() {
-    // wx.navigateTo({
-    //     url: '/pages/pin/pin_list/pin_list'
-    // });
     wx.navigateTo({
       url: '/package/invite/pages/inviteOthers/invite'
     });
@@ -390,8 +357,4 @@ Page({
       });
     }
   }
-
-  // bindGetUserInfo(e) {
-  //     console.log(e.detail.userInfo)
-  // }
 });

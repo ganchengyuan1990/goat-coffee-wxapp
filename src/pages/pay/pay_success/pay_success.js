@@ -1,15 +1,11 @@
-// var util = require('../../../utils/util.js');
-// var api = require('../../../config/api.js');
-
 import model from '../../../utils/model';
 import {
   initGame,
   startGame,
 } from './sudoku.js';
-
-var app = getApp();
-
 import util from '../../../utils/util.js';
+
+const app = getApp();
 
 
 Page({

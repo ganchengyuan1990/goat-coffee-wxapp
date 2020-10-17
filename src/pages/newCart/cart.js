@@ -1,4 +1,4 @@
-var app = getApp();
+const app = getApp();
 
 import model from '../../utils/model.js';
 
@@ -689,23 +689,6 @@ Page({
         cartTotal: this.calcCartTotal(cartGoods),
         deliverMention: this.getLalaText(cartTotal),
       });
-
-      // that.setData({
-      //   checkedAllStatus: that.isCheckedAll()
-      // });
-      // util.request(api.CartChecked, { productIds: that.data.cartGoods[itemIndex].product_id, isChecked: that.data.cartGoods[itemIndex].checked ? 0 : 1 }, 'POST').then(function (res) {
-      //   if (res.errno === 0) {
-      //     console.log(res.data);
-      //     that.setData({
-      //       cartGoods: res.data.cartList,
-      //       cartTotal: res.data.cartTotal
-      //     });
-      //   }
-
-      //   that.setData({
-      //     checkedAllStatus: that.isCheckedAll()
-      //   });
-      // });
     } else {
       //编辑状态
       let tmpCartData = this.data.cartGoods.map(function (element, index, array) {
@@ -937,21 +920,6 @@ Page({
     that.setData({
       checkedAllStatus: that.isCheckedAll()
     });
-
-
-    // util.request(api.CartDelete, {
-    //   productIds: productIds.join(',')
-    // }, 'POST').then(function (res) {
-    //   if (res.errno === 0) {
-    //     console.log(res.data);
-    //     let cartList = res.data.cartList.map(v => {
-    //       console.log(v);
-    //       v.checked = false;
-    //       return v;
-    //     });
-
-        
-    // });
   },
 
   goStore () {

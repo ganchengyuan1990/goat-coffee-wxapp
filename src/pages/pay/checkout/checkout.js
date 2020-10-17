@@ -1,17 +1,7 @@
-// var util = require('../../../utils/util.js');
-// var api = require('../../../config/api.js');
-// const pay = require('../../../services/pay.js');
-import { wx2promise, showErrorToast } from '../../../utils/util';
-
 import model from '../../../utils/model';
-
 import {
   BigNumber
 } from '../../../utils/bignumber.min';
-
-
-
-var app = getApp();
 let isOpening = false;
 
 Page({
@@ -21,10 +11,10 @@ Page({
     useScoreFlag: true,
     zunshou: true,
     checkedAddress: {
-      name: 'Jason',
-      phone: 17602183915,
-      region: '是滴是滴所多',
-      address: 'sdsdsdsd'
+      name: '',
+      phone: 0,
+      region: '',
+      address: ''
     },
     showScoreToast: false,
     noUsePointsWord: '',
