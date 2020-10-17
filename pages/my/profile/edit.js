@@ -12,10 +12,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let name = options.name
+    let name = options.name;
     this.setData({
       inputValue: name
-    })
+    });
   },
 
   /**
@@ -26,18 +26,18 @@ Page({
   },
 
   saveName() {
-    let pages = getCurrentPages()
-    let prevPage = pages[pages.length - 2]
+    let pages = getCurrentPages();
+    let prevPage = pages[pages.length - 2];
     prevPage.setData({ //直接给上一个页面赋值
       name: this.data.inputValue
-    })
+    });
     wx.navigateBack({
       delta: 1
-    })
+    });
   },
   bindKeyInput(e) {
     this.setData({
       inputValue: e.detail.value
-    })
+    });
   }
-})
+});

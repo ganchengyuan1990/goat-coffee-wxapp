@@ -79,13 +79,13 @@ Component({
       }
       this.setData({
         stars: starsinfo
-      })
+      });
     },
     showActive() {
       if (this.data.storeInfo.actives.length > 2) {
         this.setData({
           showAll: !this.data.showAll
-        })
+        });
       } else {
         this.triggerEvent('select', this.data.storeInfo.storeId);
       }
@@ -94,4 +94,4 @@ Component({
       this.triggerEvent('select', this.data.storeInfo.storeId);
     }
   }
-})
+});

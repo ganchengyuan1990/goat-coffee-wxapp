@@ -6,68 +6,68 @@
 
 
 Page({
-    data: {
-        openid: '',
-        appId: '',
-        nonceStr: '',
-        paySign: '',
-        package: '',
-        prepayId: '',
-        signType: '',
-        timeStamp: '',
-        price: '',
-        type: 'normal',
-        orderId: ''
-    },
-    onLoad: function (option) {
-        let openid = wx.getStorageSync('openid');
-        this.setData({
-            orderId: option.order,
-            appId: option.appId,
-            nonceStr: option.nonceStr,
-            paySign: option.paySign,
-            prepayId: option.prepayId,
-            package: option.package,
-            signType: option.signType,
-            timeStamp: option.timeStamp,
-            price: option.price,
-            type: option.type ? option.type : 'normal'
-        });
+  data: {
+    openid: '',
+    appId: '',
+    nonceStr: '',
+    paySign: '',
+    package: '',
+    prepayId: '',
+    signType: '',
+    timeStamp: '',
+    price: '',
+    type: 'normal',
+    orderId: ''
+  },
+  onLoad: function (option) {
+    let openid = wx.getStorageSync('openid');
+    this.setData({
+      orderId: option.order,
+      appId: option.appId,
+      nonceStr: option.nonceStr,
+      paySign: option.paySign,
+      prepayId: option.prepayId,
+      package: option.package,
+      signType: option.signType,
+      timeStamp: option.timeStamp,
+      price: option.price,
+      type: option.type ? option.type : 'normal'
+    });
 
-        this.payFunc(this);
+    this.payFunc(this);
   
-    },
+  },
 
 
 
-    payFunc(self) {
-        wx.requestPayment({
-            'timeStamp': this.data.timeStamp,
-            'nonceStr': this.data.nonceStr,
-            'package': `prepay_id=${this.data.package}`,
-            'signType': this.data.signType,
-            'paySign': this.data.paySign,
-            'success': function (res) {
-                if (self.data.type === 'pin') {
-                    wx.redirectTo({
-                        url: `/pages/pin/pay_success/pay_success?price=${self.data.price}`
-                    });
-                } else {
-                    wx.redirectTo({
-                        url: `/pages/pay/pay_success/pay_success?price=${self.data.price}&orderId=${self.data.orderId}`
-                    });
-                }
-            },
-            'fail': function (res) {
-                if (res.errMsg.indexOf('cancel') > 0) {
-                    wx.navigateBack({
-                        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-                    });
-                }
-            },
-            'complete': function (res) {
+  payFunc(self) {
+    wx.requestPayment({
+      'timeStamp': this.data.timeStamp,
+      'nonceStr': this.data.nonceStr,
+      'package': `prepay_id=${this.data.package}`,
+      'signType': this.data.signType,
+      'paySign': this.data.paySign,
+      'success': function (res) {
+        if (self.data.type === 'pin') {
+          wx.redirectTo({
+            url: `/pages/pin/pay_success/pay_success?price=${self.data.price}`
+          });
+        } else {
+          wx.redirectTo({
+            url: `/pages/pay/pay_success/pay_success?price=${self.data.price}&orderId=${self.data.orderId}`
+          });
+        }
+      },
+      'fail': function (res) {
+        if (res.errMsg.indexOf('cancel') > 0) {
+          wx.navigateBack({
+            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+          });
+        }
+      },
+      'complete': function (res) {
 
-            }
-        })
-    }
-})
+      }
+    });
+  }
+});

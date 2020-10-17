@@ -1,4 +1,4 @@
-import model from '../../../utils/model'
+import model from '../../../utils/model';
 Page({
 
   /**
@@ -14,15 +14,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let type = options.type
+    let type = options.type;
     this.setData({
       type: parseInt(options.type)
     });
     if (type == 2) {
       // 优惠券
-      this.fetchCouponList()
+      this.fetchCouponList();
     } else {
-      this.fetchVoucherList()
+      this.fetchVoucherList();
     }
   },
 
@@ -47,16 +47,16 @@ Page({
       result.forEach(element => {
         // element.couponBref = '21123123123';
         if (element.coupon.availabileStartTime) {
-          element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0]
+          element.coupon.availabileStartTime = element.coupon.availabileStartTime.split('.')[0];
         }
         if (element.coupon.availabileEndTime) {
-          element.coupon.availabileEndTime = element.coupon.availabileEndTime.split('.')[0]
+          element.coupon.availabileEndTime = element.coupon.availabileEndTime.split('.')[0];
         }
       });
       this.setData({
         couponItems: data.data
-      })
-    })
+      });
+    });
   },
   fetchVoucherList() {
     // 兑换券
@@ -75,11 +75,11 @@ Page({
       });
       this.setData({
         voucherItems: data.data
-      })
-    })
+      });
+    });
   },
 
   goStore () {
     wx.switchTab({ url: '/pages/store/store' });
   }
-})
+});

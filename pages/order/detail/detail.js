@@ -1,5 +1,5 @@
 // pages/order/detail.js
-import drawQrcode from '../../../utils/qrcode.js'
+import drawQrcode from '../../../utils/qrcode.js';
 import model from '../../../utils/model.js';
 
 Page({
@@ -16,9 +16,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let data = decodeURIComponent(options.data)
+    let data = decodeURIComponent(options.data);
     if (data) {
-      this.formatData(data)
+      this.formatData(data);
     } else {
       // wx.showModal({
       //   title: '提示',
@@ -54,28 +54,28 @@ Page({
         dWidth: 60,
         dHeight: 60
       }
-    })
+    });
   },
   formatData(data) {
-    let detail = JSON.parse(data || '{}')
+    let detail = JSON.parse(data || '{}');
     // console.log(detail, 'data');
-    let dtype = detail.dtype
+    let dtype = detail.dtype;
     if (dtype === 'order') {
-      let list = detail.detailList || []
+      let list = detail.detailList || [];
       list.forEach(item => {
-        item.spec = item.skuName + (item.props && `/${item.props}`)
-      })
+        item.spec = item.skuName + (item.props && `/${item.props}`);
+      });
       this.setData({
         dtype: 'order',
         detail: detail
-      })
+      });
     }
     if (dtype === 'group') {
       
       this.setData({
         dtype: 'group',
         detail: detail
-      })
+      });
     }
 
   },
@@ -85,11 +85,11 @@ Page({
       id: 122
     }).then(res => {
       
-    })
+    });
   },
   goRedPack () {
     wx.navigateTo({
       url: `/pages/pay/share_success/share_success?orderId=${this.data.detail.id}`
     });
   }
-})
+});

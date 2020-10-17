@@ -27,14 +27,14 @@ Page({
         showExpress: options.tab === 'delivery',
         isGeoAuth: app.globalData.isGeoAuth,
         type: options.tab === 'delivery' ? 2 : 1
-      })
+      });
     } else {
       this.setData({
         goodsTotalPrice: parseInt(options.price),
         type: parseInt(options.type),
         showExpress: parseInt(options.type) === 2,
         showSelfGet: parseInt(options.type) === 1
-      })
+      });
     }
 
     // 页面初始化 options为页面跳转所带来的参数
@@ -64,7 +64,7 @@ Page({
     let cartInfo = wx.getStorageSync('chooseCartInfo');
     let total = 0;
     cartInfo.forEach(element => {
-      total += parseFloat(element.weight) * parseFloat(element.number)
+      total += parseFloat(element.weight) * parseFloat(element.number);
     });
     return Math.ceil(total);
   },
@@ -75,7 +75,7 @@ Page({
       showExpress: false,
       init: false,
       from: this.data.from === 'delivery' ? 'selfExtracting' : ''
-    })
+    });
     this.showShopList();
   },
 
@@ -85,7 +85,7 @@ Page({
       showSelfGet: false,
       init: false,
       from: this.data.from === 'selfExtracting' ? 'delivery' : ''
-    })
+    });
     this.showExpressList();
   },
 
@@ -110,7 +110,7 @@ Page({
 
   goAddAddress () {
     wx.navigateTo({
-      url: `/pages/my/address/address`
+      url: '/pages/my/address/address'
     });
   },
 
@@ -123,9 +123,9 @@ Page({
         detail: this.data.searchSuggest[parseInt(e.currentTarget.dataset.idx)]
       },
       idx: parseInt(e.currentTarget.dataset.idx)
-    }
+    };
     wx.switchTab({
-      url: `/pages/store/store`
+      url: '/pages/store/store'
     });
     
   },
@@ -167,8 +167,8 @@ Page({
       wx.setStorageSync('shopList', result);
       this.setData({
         searchSuggest: result
-      })
-    })
+      });
+    });
   },
 
   goAddressList () {
@@ -196,4 +196,4 @@ Page({
     // 页面关闭
 
   }
-})
+});

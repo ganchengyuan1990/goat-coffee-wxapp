@@ -7,10 +7,10 @@ Page({
   data: {
     cartGoods: [],
     cartTotal: {
-      "goodsCount": 0,
-      "goodsAmount": 0.00,
-      "checkedGoodsCount": 0,
-      "checkedGoodsAmount": 0.00
+      'goodsCount': 0,
+      'goodsAmount': 0.00,
+      'checkedGoodsCount': 0,
+      'checkedGoodsAmount': 0.00
     },
     isEditCart: false,
     checkedAllStatus: true,
@@ -143,7 +143,7 @@ Page({
     let that = this;
 
     if (!this.data.isEditCart) {
-      let cartGoods = this.data.cartGoods
+      let cartGoods = this.data.cartGoods;
       cartGoods.forEach(item => {
         item.checked = !item.checked;
       });
@@ -176,10 +176,10 @@ Page({
     if (this.data.isEditCart) {
       // this.getCartList();
       
-      let cartGoods = this.data.cartGoods
+      let cartGoods = this.data.cartGoods;
       cartGoods.forEach(item => {
         item.checked = true;
-      })
+      });
       this.setData({
         isEditCart: !this.data.isEditCart,
         cartGoods: cartGoods,
@@ -270,14 +270,14 @@ Page({
     }
     let chosenInfo = this.data.cartGoods.filter(item => {
       return item.checked;
-    })
+    });
 
 
     wx.setStorageSync('chooseCartInfo', chosenInfo);
 
     wx.navigateTo({
       url: `/pages/checkout/checkout?price=${this.data.cartTotal.checkedGoodsAmount}`
-    })
+    });
   },
   deleteCart: function () {
     //获取已选择的商品
@@ -330,4 +330,4 @@ Page({
         
     // });
   }
-})
+});

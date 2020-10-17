@@ -25,7 +25,7 @@ if (!Array.prototype.includes) {
   });
 }
 function BN(...args) {
-  return new BigNumber(...args)
+  return new BigNumber(...args);
 }
 // const LIMIT_FEE = 36
 Component({
@@ -38,7 +38,7 @@ Component({
       value: [],
       observer(newVal, oldVal) {
         if (Array.isArray(newVal)) {
-          this.setTotalResult()
+          this.setTotalResult();
         }
       }
     },
@@ -62,7 +62,7 @@ Component({
       type: Boolean,
       observer(newVal, oldVal) {
         if (typeof newVal !== 'undefined') {
-          this.setTotalResult()
+          this.setTotalResult();
         }
       }
     }
@@ -88,47 +88,47 @@ Component({
    */
   methods: {
     toggleCart() {
-      this.triggerEvent('togglecart')
+      this.triggerEvent('togglecart');
     },
     /**
      * TODOS, 待优化
      *
      */ 
     increase(e) {
-      let idx = e.currentTarget.dataset.idx
-      let info = this.data.info
-      let count = info[idx].count
-      let price = info[idx].sale_price || info[idx].price
-      count++
-      info[idx].count = count
-      info[idx].totalPrice = BN(price).multipliedBy(count).valueOf()
+      let idx = e.currentTarget.dataset.idx;
+      let info = this.data.info;
+      let count = info[idx].count;
+      let price = info[idx].sale_price || info[idx].price;
+      count++;
+      info[idx].count = count;
+      info[idx].totalPrice = BN(price).multipliedBy(count).valueOf();
       // this.setData({
       //   info: info
       // })
-      this.saveCart(info)
+      this.saveCart(info);
     },
     decrease(e) {
-      let idx = e.currentTarget.dataset.idx
-      let info = this.data.info
-      let count = info[idx].count
-      let price = info[idx].sale_price || info[idx].price
-      count--
+      let idx = e.currentTarget.dataset.idx;
+      let info = this.data.info;
+      let count = info[idx].count;
+      let price = info[idx].sale_price || info[idx].price;
+      count--;
       if (count > 0) {
-        info[idx].count = count
-        info[idx].totalPrice = BN(price).multipliedBy(count).valueOf()
+        info[idx].count = count;
+        info[idx].totalPrice = BN(price).multipliedBy(count).valueOf();
       } else {
-        info.splice(idx,1)
+        info.splice(idx, 1);
       }
-      this.saveCart(info)
+      this.saveCart(info);
     },
     /** 
      * 清空购物车
     */
     clearCart() {
-      this.saveCart([])
+      this.saveCart([]);
       this.setData({
         salesTotalPrice: -1
-      })
+      });
     },
     saveCart(info) {
       this.triggerEvent('save', {
@@ -136,66 +136,66 @@ Component({
       });
     },
     checkDeliverFee(totalPrice=0, idList = [], rules=[]) {
-      let isNeedFee = true
-      let moneyAmount = this.data.deliveryMoneyAmount
+      let isNeedFee = true;
+      let moneyAmount = this.data.deliveryMoneyAmount;
       for (let i = 0; i < rules.length; i++) {
         const rule = rules[i];
         if (rule.money_amount) {
-          moneyAmount = rule.money_amount
+          moneyAmount = rule.money_amount;
           if (totalPrice < BN(rule.money_amount).valueOf()) {
-            continue
+            continue;
           }
         }
         if (rule.cup_amount) {
-          let count = 0
-          let cList = rule.classifyIds
+          let count = 0;
+          let cList = rule.classifyIds;
           idList.forEach(i => {
             if (cList.includes(i.cid)) {
-              count += i.count
+              count += i.count;
             }
-          })
+          });
           if (count < rule.cup_amount) {
-            continue
+            continue;
           }
         }
-        isNeedFee = false
+        isNeedFee = false;
       }
       return {
         isNeedFee,
         moneyAmount
-      } 
+      }; 
     },
     setTotalResult() {
-      let val = this.data.info
+      let val = this.data.info;
       if (!val) {
-        return
+        return;
       }
-      let count = 0
-      let totalPrice = 0
-      let cartTotalPrice = 0
-      let remain = 0
-      let classifyIds = []
+      let count = 0;
+      let totalPrice = 0;
+      let cartTotalPrice = 0;
+      let remain = 0;
+      let classifyIds = [];
       val.forEach((item) => {
-        totalPrice = BN(totalPrice).plus(item.totalPrice).valueOf()
-        count = BN(count).plus(item.count).valueOf()
+        totalPrice = BN(totalPrice).plus(item.totalPrice).valueOf();
+        count = BN(count).plus(item.count).valueOf();
         classifyIds.push({
           cid: item.classifyId+'',
           count: item.count
-        })
-      }, 0)
-      let feeObj = this.checkDeliverFee(totalPrice, classifyIds, this.data.rules)
+        });
+      }, 0);
+      let feeObj = this.checkDeliverFee(totalPrice, classifyIds, this.data.rules);
       
       if (feeObj.isNeedFee) {
         this.setData({
           deliveryMoneyAmount: parseFloat(feeObj.moneyAmount)
-        })
-        remain = BN(feeObj.moneyAmount).minus(totalPrice).valueOf()
+        });
+        remain = BN(feeObj.moneyAmount).minus(totalPrice).valueOf();
       }
       // remain = totalPrice > LIMIT_FEE ? 0 : BN(LIMIT_FEE).minus(totalPrice).valueOf()
       if (remain > 0 && totalPrice > 0 && !this.data.isSelfTaking) {
-        cartTotalPrice = BN(totalPrice).plus(this.data.fee || 0).valueOf()
+        cartTotalPrice = BN(totalPrice).plus(this.data.fee || 0).valueOf();
       } else {
-        cartTotalPrice = totalPrice
+        cartTotalPrice = totalPrice;
       }
       this.setData({
         count: count,
@@ -203,7 +203,7 @@ Component({
         cartTotalPrice: cartTotalPrice,
         remain: remain,
         isNeedFee: feeObj.isNeedFee
-      })
+      });
     },
     /*
      * 结算
@@ -213,7 +213,7 @@ Component({
         totalPrice: this.data.totalPrice,
         cart: this.data.info,
         isNeedFee: this.data.isNeedFee
-      })
+      });
     }
   }
-})
+});

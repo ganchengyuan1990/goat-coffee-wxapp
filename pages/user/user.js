@@ -7,16 +7,16 @@ Page({
       success: function(res) {
         wx.makePhoneCall({
           phoneNumber: '101-097-77',
-        })
+        });
       }
-    })
+    });
   },
 
   /**
    * 页面的初始数据
    */
   data: {
-    title: "hbchjejh",
+    title: 'hbchjejh',
     phoneNum: 15553598117
   },
 
@@ -28,7 +28,7 @@ Page({
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
-      })
+      });
     }
   },
 
@@ -46,4 +46,4 @@ Page({
 
   },
 
-})
+});

@@ -28,7 +28,7 @@ Page({
       number: options.number,
       isOwner: options.isOwner,
       activityId: options.activityId
-    })
+    });
 
     // 页面初始化 options为页面跳转所带来的参数
 
@@ -57,7 +57,7 @@ Page({
     let cartInfo = wx.getStorageSync('chooseCartInfo');
     let total = 0;
     cartInfo.forEach(element => {
-      total += parseFloat(element.weight) * parseFloat(element.number)
+      total += parseFloat(element.weight) * parseFloat(element.number);
     });
     return Math.ceil(total);
   },
@@ -66,32 +66,32 @@ Page({
     this.setData({
       chooseSelf: true,
       chooseExpress: false
-    })
+    });
   },
 
   chooseExpress () {
     this.setData({
       chooseSelf: false,
       chooseExpress: true
-    })
+    });
   },
 
   getCheckoutInfo () {
     let pinOrderInfo = wx.getStorageSync('pinOrderInfo');
     this.setData({
       pinOrderInfo: pinOrderInfo
-    })
+    });
     wx.removeStorageSync('pinOrderInfo');
   },
   selectAddress() {
     wx.navigateTo({
       url: '/pages/address/address',
-    })
+    });
   },
   addAddress() {
     wx.navigateTo({
       url: '/pages/shopping/addressAdd/addressAdd',
-    })
+    });
   },
   onReady: function () {
     // 页面渲染完成
@@ -121,36 +121,36 @@ Page({
     let voucherParamArr = this.data.pinOrderInfo.voucherParamArr;
     param.list = JSON.stringify(voucherParamArr);
     if (this.data.isOwner == 1) {
-      model(`group/action/start`, param, 'POST').then(data => {
+      model('group/action/start', param, 'POST').then(data => {
         console.log(data);
         let order = data.data;
         let _package = order.package;
         let prepayId = _package.split('=')[1];
         wx.navigateTo({
           url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${order.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${param.list}`
-        })
+        });
       }).catch(e => {
         console.log(e);
         this.setData({
           errorToast: true,
           toastInfo: e
-        })
+        });
       });
     } else {
-      model(`group/action/join`, param, 'POST').then(data => {
+      model('group/action/join', param, 'POST').then(data => {
         let order = data.data;
         let _package = order.package;
-        let prepayId = _package.split('=')[1]
+        let prepayId = _package.split('=')[1];
         wx.navigateTo({
           url: `/pages/pay/pinPay/pinPay?type=pin&activityId=${this.data.activityId}&timeStamp=${order.timeStamp}&msg=suc&paySign=${order.paySign}&appId=wx95a4dca674b223e1&signType=MD5&prepayId=${prepayId}&nonceStr=${order.nonceStr}&price=${this.data.price}&originalPrice=${this.data.originalPrice}&number=${this.data.number}&groupName=${this.data.groupName}&list=${param.list}`
-        })
+        });
       }).catch(e => {
         this.setData({
           errorToast: true,
           toastInfo: e
-        })
+        });
       });
     }
     
-}
-})
+  }
+});

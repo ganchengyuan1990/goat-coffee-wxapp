@@ -112,7 +112,7 @@ Page({
     let getTime = this.calcLeftTime(nowTime + waitTime * 60 * 1000);
     this.setData({
       getTime: getTime
-    })
+    });
     console.log(getTime);
   },
 
@@ -137,11 +137,11 @@ Page({
           checkedExpress: list[this.data.fromTransportIndex || 0] || {}
         });
       }
-    })
+    });
   },
 
   getAvailableCoupon () {
-    model(`home/coupon/get-available-coupon`, {
+    model('home/coupon/get-available-coupon', {
       uid: wx.getStorageSync('token').user.id,
       list: this.data.product
       // list: [{
@@ -165,7 +165,7 @@ Page({
         this.setData({
           couponList: couponList,
           voucherList: voucherList
-        })
+        });
         
       } else {
         
@@ -174,12 +174,12 @@ Page({
         title: 'Loading...', //提示的内容,
         mask: true, //显示透明蒙层，防止触摸穿透,
       });
-    })
+    });
   },
 
   getBestCouponByProduct () {
     
-    model(`home/coupon/get-best-coupon-by-product`, {
+    model('home/coupon/get-best-coupon-by-product', {
       uid: wx.getStorageSync('token').user.id,
       // uid: 1,
       list: this.data.product
@@ -190,19 +190,19 @@ Page({
         let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
         let actualPrice = _a.plus(_b).minus(parseFloat(result));
         let couponArr = data.data.solutionList;
-        let couponUserRelation = ''
+        let couponUserRelation = '';
         
         couponArr.forEach(item => {
-          couponUserRelation += item.userRelation + ','
+          couponUserRelation += item.userRelation + ',';
         });
         if (data.data.type === 1) {
           this.setData({
             chosenCoupon: couponArr[0].id
-          })
+          });
         } else if (data.data.type === 2) {
           this.setData({
             chosenVoucher: couponArr[0].id
-          })
+          });
         }
         this.setData({
           couponMoney: result,
@@ -214,10 +214,10 @@ Page({
         let _a = new BigNumber(this.data.payAmount);
         let _b = new BigNumber(this.data.chooseSelf ? 0 : this.data.options.deliverFee);
         let actualPrice = _a.plus(_b);
-         this.setData({
-           actualPrice: parseFloat(actualPrice),
-           discountType: 0
-         });
+        this.setData({
+          actualPrice: parseFloat(actualPrice),
+          discountType: 0
+        });
       }
     }).catch(e => {
       let _a = new BigNumber(this.data.payAmount);
@@ -231,7 +231,7 @@ Page({
   },
 
   getWaitTime () {
-    model(`home/lbs/get-wait-time`, {
+    model('home/lbs/get-wait-time', {
       storeId: this.data.options.storeId,
     }).then(data => {
       let waitProcessTime = data.data.waitProcessTime;
@@ -239,7 +239,7 @@ Page({
         waitProcessTime: waitProcessTime
       });
       this.calGetTime(waitProcessTime);
-    })
+    });
   },
 
   dealOptions (items) {
@@ -280,7 +280,7 @@ Page({
     if (wx.getStorageSync('STORE_INFO')) {
       this.setData({
         checkedAddress: JSON.parse(wx.getStorageSync('STORE_INFO'))
-      })
+      });
     }
   },
 
@@ -288,7 +288,7 @@ Page({
     let cartInfo = wx.getStorageSync('chooseCartInfo');
     let total = 0;
     cartInfo.forEach(element => {
-      total += parseFloat(element.weight) * parseFloat(element.number)
+      total += parseFloat(element.weight) * parseFloat(element.number);
     });
     return Math.ceil(total);
   },
@@ -298,7 +298,7 @@ Page({
       chooseSelf: true,
       chooseExpress: false,
       deliverFee: 0,
-    })
+    });
     this.getBestCouponByProduct();
     this.getWaitTime();
   },
@@ -308,7 +308,7 @@ Page({
       chooseSelf: false,
       chooseExpress: true,
       deliverFee: this.data.options.deliverFee
-    })
+    });
     this.getBestCouponByProduct();
     this.getWaitTime();
   },
@@ -321,24 +321,24 @@ Page({
   goAddressList () {
     wx.navigateTo({
       url: `/pages/transport/transport?type=${this.data.chooseSelf ? 1 : 2}`,
-    })
+    });
   },
 
   goRemark () {
     wx.navigateTo({
       url: `/pages/pay/remark/remark?remark=${this.data.remark}`,
-    })
+    });
   },
 
   goVoucher () {
     if (this.data.chosenInfo.type == 2) {
       wx.navigateTo({
         url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.voucherList)}`,
-      })
+      });
     } else {
       wx.navigateTo({
         url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.relationId : this.data.chosenVoucher}&list=${JSON.stringify(this.data.voucherList)}`,
-      })
+      });
     }
     
   },
@@ -347,18 +347,18 @@ Page({
     if (this.data.chosenInfo.type == 2) {
       wx.navigateTo({
         url: `/pages/pay/promotion-list/promotion-list?type=2&chosenVoucher=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
-      })
+      });
     } else {
       wx.navigateTo({
         // url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.chosenInfo && this.data.chosenInfo.relationId}&list=${JSON.stringify(this.data.couponList)}`,
         url: `/pages/pay/promotion-list/promotion-list?type=1&chosenCoupon=${this.data.goBackFromChildPage ? this.data.chosenInfo && this.data.chosenInfo.relationId : this.data.chosenCoupon}&list=${JSON.stringify(this.data.couponList)}`,
-      })
+      });
     }
   },
   addAddress() {
     wx.navigateTo({
       url: '/pages/my/address/address',
-    })
+    });
   },
 
   dealChildPageInfo () {
@@ -376,14 +376,14 @@ Page({
         chooseNoCoupon: true,
         chooseNoVoucher: true,
         discountType: 0,
-      })
+      });
     } else {
       this.setData({
         chooseNoCoupon: false,
         chooseNoVoucher: false
-      })
+      });
     }
-    model(`home/coupon/calculate-price-with-coupon`, {
+    model('home/coupon/calculate-price-with-coupon', {
       couponList: this.data.chosenInfo.id ? [this.data.chosenInfo] : [],
       productList: this.data.product,
       uid: wx.getStorageSync('token').user.id
@@ -394,7 +394,7 @@ Page({
         couponMoney: result,
         couponUserRelation: this.data.chosenInfo.relationId + ',',
         discountType: data.data.type,
-      })
+      });
     });
   },
   onReady: function () {
@@ -440,7 +440,7 @@ Page({
     let userAddressId = this.data.options.userAddressId || this.data.fromTransportIndex;
     if (!userAddressId && this.data.chooseExpress) {
       if (wx.getStorageSync('addressList') && wx.getStorageSync('addressList')[0]  && wx.getStorageSync('addressList')[0].id) {
-        userAddressId = wx.getStorageSync('addressList')[0].id
+        userAddressId = wx.getStorageSync('addressList')[0].id;
       } else {
         // userAddressId = 3;
       }
@@ -458,7 +458,7 @@ Page({
       remark: this.data.remark,
       discountIds: this.data.couponUserRelation.substr(0, this.data.couponUserRelation.length - 1)
       // discountIds: '1,2,3'
-    }
+    };
     // if (!this.data.options.userAddressId) {
     //   delete param.userAddressId;
     // }
@@ -476,7 +476,7 @@ Page({
       } else {
         paramStr += item + '=' + param[item];
       }
-    })
+    });
 
     let products = this.data.options.product;
     products.forEach(item => {
@@ -488,14 +488,14 @@ Page({
       delete item.totalPrice;
       delete item.productName;
       delete item.price;
-    })
+    });
 
     param.list = JSON.stringify(products);
 
     
 
     // paramStr = 'storeId=29&userId=1&userAddressId=3&discountType=2&discountIds=1,2,3&deliverFee=6&payAmount=45&orderType=1&payType=1'
-    model(`order/detail/submit`, param, 'POST').then(data => {
+    model('order/detail/submit', param, 'POST').then(data => {
       if (data.code === 'suc') {
         wx.removeStorageSync('CART_LIST');
         wx.removeStorageSync('remark');
@@ -510,7 +510,7 @@ Page({
           }
           payParamStr += `${key}=${params[key]}&`;
         }
-        payParamStr += `price=${this.data.actualPrice}`
+        payParamStr += `price=${this.data.actualPrice}`;
         wx.navigateTo({
           // url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
           url: `/pages/pay/normalPay/normalPay?${payParamStr}`
@@ -528,7 +528,7 @@ Page({
       // wx.navigateTo({
       //   url: `/pages/pay/pay_success/pay_success?price=${this.data.actualPrice}`
       // });
-    })
+    });
   },
   submitOrder: function () {
     if (this.data.chooseSelf) {
@@ -544,7 +544,7 @@ Page({
           if (res.confirm) {
             this.submit();
           } else if (res.cancel) {
-            console.log('用户点击取消')
+            console.log('用户点击取消');
           }
         }
       });
@@ -553,5 +553,5 @@ Page({
         this.submit();
       }
     }
-}
-})
+  }
+});
