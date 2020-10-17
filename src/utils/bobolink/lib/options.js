@@ -51,36 +51,36 @@ optionsSchema.retry = {
   type: 'number',
   condition: v => v >= 0,
   default: 0
-}
+};
 
 optionsSchema.retryPrior = {
   type: 'boolean',
   default: false
-}
+};
 
 optionsSchema.newPrior = {
   type: 'boolean',
   default: false,
   update: false
-}
+};
 
 optionsSchema.catch = {
   type: 'function',
   default: null
-}
+};
 
 optionsSchema.max = {
   type: 'number',
   condition: v => v > 0,
   default: 2 << 15
-}
+};
 
 optionsSchema.scheduleMode = {
   type: 'string',
   condition: v => v === constants.SCHEDULE_MODE_FREQUENCY || v === constants.SCHEDULE_MODE_IMMEDIATELY,
   default: constants.SCHEDULE_MODE_IMMEDIATELY,
   final: true
-}
+};
 
 optionsSchema.countPerTimeScale = {
   type: 'number',
@@ -90,31 +90,31 @@ optionsSchema.countPerTimeScale = {
   translate: v => ~~v,
   default: 100,
   fianl: true
-}
+};
 
 optionsSchema.timeScale = {
   type: 'number',
   condition: v => v >= 1,
   translate: v => ~~v,
   default: 1
-}
+};
 
 optionsSchema.taskMode = {
   type: 'string',
   condition: v => v === constants.TASK_MODE_DATA || v === constants.TASK_MODE_FUNCTION,
   default: undefined
-}
+};
 
 optionsSchema.handler = {
   type: 'function',
   default: () => Promise.resolve()
-}
+};
 
 optionsSchema.saturationPolicy = {
   type: 'string',
   condition: v => v === constants.SATURATION_POLICY_ABORT || v === constants.SATURATION_POLICY_DISCARD_OLDEST,
   default: constants.SATURATION_POLICY_ABORT
-}
+};
 
 /**
  * @param {options} options 

@@ -1,15 +1,15 @@
 var app = getApp();
 
-import model from '../../utils/model.js'
+import model from '../../utils/model.js';
 
 Page({
   data: {
     cartGoods: [],
     cartTotal: {
-      "goodsCount": 0,
-      "goodsAmount": 0.00,
-      "checkedGoodsCount": 0,
-      "checkedGoodsAmount": 0.00
+      'goodsCount': 0,
+      'goodsAmount': 0.00,
+      'checkedGoodsCount': 0,
+      'checkedGoodsAmount': 0.00
     },
     checkedAllStatus: true,
     isNeedFee: false,
@@ -47,34 +47,34 @@ Page({
     let param = {
       checked: true,
       // "id": 32445,
-      "num": 1,
-      "goods": e.detail,
-      "sku": e.detail.default_sku,
-      "rPropGoodsIds": [],
-      "unitPrice": parseFloat(e.detail.default_sku.member_price).toFixed(2),
+      'num': 1,
+      'goods': e.detail,
+      'sku': e.detail.default_sku,
+      'rPropGoodsIds': [],
+      'unitPrice': parseFloat(e.detail.default_sku.member_price).toFixed(2),
 
-      "orinalPrice": parseFloat(e.detail.default_sku.price || e.detail.default_sku.sale_price).toFixed(2),
-      "rPropGoodsArray": [],
-      "ifAvailable": true
-    }
-    let key_list = e.detail.key_list
+      'orinalPrice': parseFloat(e.detail.default_sku.price || e.detail.default_sku.sale_price).toFixed(2),
+      'rPropGoodsArray': [],
+      'ifAvailable': true
+    };
+    let key_list = e.detail.key_list;
     let rPropGoodsIdsArr = [];
     key_list.map(item => {
       item.val_list.map(ele => {
         if (ele.isdefault) {
-          rPropGoodsIdsArr.push(ele.prop_id)
+          rPropGoodsIdsArr.push(ele.prop_id);
         }
-      })
+      });
       return item;
-    })
+    });
 
     param = {
       cartId: e.detail.id,
       // skuId: e.detail.default_sku.id,
       // rPropGoodsIds: rPropGoodsIdsArr.join(','),
       num: 1
-    }
-    model(`home/cart/change-number`, param, 'POST').then(data => {
+    };
+    model('home/cart/change-number', param, 'POST').then(data => {
       this.getCartInfo();
     }).catch(e => {
       console.log(e);
@@ -96,16 +96,16 @@ Page({
       this.getTabBar()) {
       this.getTabBar().setData({
         selected: 3
-      })
+      });
     }
     let token = wx.getStorageSync('token');
     let recommend = wx.getStorageSync('recommend');
     let configData = wx.getStorageSync('configData');
-    let sum = wx.getStorageSync('cartSum')
+    let sum = wx.getStorageSync('cartSum');
     this.setData({
       checkedAllStatus: true,
       sum: sum
-    })
+    });
     // if (!token) {
     //   wx.hideLoading();
     //   wx.redirectTo({
@@ -115,7 +115,7 @@ Page({
     if (configData) {
       this.setData({
         banners: configData.cartBanners
-      })
+      });
     }
     if (!token) {
       // wx.hideLoading();
@@ -124,8 +124,8 @@ Page({
       // });
       this.setData({
         hasLogin: false
-      })
-      return
+      });
+      return;
     } else {
       wx.showLoading({
         title: '加载中', //提示的内容,
@@ -134,7 +134,7 @@ Page({
       });
       this.setData({
         hasLogin: true
-      })
+      });
     }
     if (token) {
       this.getCartInfo();
@@ -144,16 +144,16 @@ Page({
       recommend.map(item => {
         if (item.default_sku.sale_price) {
           if (item.default_sku.sale_price == parseInt(item.default_sku.sale_price)) {
-            item.default_sku.sale_price = parseInt(item.default_sku.sale_price)
+            item.default_sku.sale_price = parseInt(item.default_sku.sale_price);
           } else {
-            item.default_sku.sale_price = parseFloat(item.default_sku.sale_price).toFixed(1)
+            item.default_sku.sale_price = parseFloat(item.default_sku.sale_price).toFixed(1);
           }
         }
         if (item.default_sku.price) {
           if (item.default_sku.price == parseInt(item.default_sku.price)) {
-            item.default_sku.price = parseInt(item.default_sku.price)
+            item.default_sku.price = parseInt(item.default_sku.price);
           } else {
-            item.default_sku.price = parseFloat(item.default_sku.price).toFixed(1)
+            item.default_sku.price = parseFloat(item.default_sku.price).toFixed(1);
           }
         }
         item.num = 0;
@@ -161,21 +161,21 @@ Page({
       });
     }    
     let fromTransport = wx.getStorageSync('fromTransport');
-     this.setData({
-       isNeedFee: fromTransport == 'deliver',
-       recommend: recommend
-       // cartGoods: cartInfo,
-       // cartTotal: this.calcCartTotal(cartInfo || [])
-     });
+    this.setData({
+      isNeedFee: fromTransport == 'deliver',
+      recommend: recommend
+      // cartGoods: cartInfo,
+      // cartTotal: this.calcCartTotal(cartInfo || [])
+    });
 
-     let shopClosed = wx.getStorageSync('key');
+    let shopClosed = wx.getStorageSync('key');
     //  wx.removeStorageSync('fromTransport');
     // 页面显示
     // this.getCartList();
   },
   onHide: function () {
     // 页面隐藏
-     wx.setStorageSync('cartSum', this.data.sum)
+    wx.setStorageSync('cartSum', this.data.sum);
   },
   onUnload: function () {
     // 页面关闭
@@ -211,10 +211,10 @@ Page({
       let user_info = result.user_info;
       if (user_info.member_recharge && user_info.member_gift_recharge) {
         total = parseFloat(user_info.member_recharge) + parseFloat(user_info.member_gift_recharge);
-        result.member_total_recharge = (total == parseInt(total) ? parseInt(total) : parseFloat(total).toFixed(1))
+        result.member_total_recharge = (total == parseInt(total) ? parseInt(total) : parseFloat(total).toFixed(1));
       } else if (user_info.member_recharge && !user_info.member_gift_recharge) {
         total = parseFloat(user_info.member_recharge);
-        result.member_total_recharge = (total == parseInt(total) ? parseInt(total) : parseFloat(total).toFixed(1))
+        result.member_total_recharge = (total == parseInt(total) ? parseInt(total) : parseFloat(total).toFixed(1));
       }
 
       if (result.targetAchievementDesign) {
@@ -233,113 +233,113 @@ Page({
       mask: true, //显示透明蒙层，防止触摸穿透,
       success: res => {}
     });
-     let storeInfo = wx.getStorageSync('STORE_INFO')
-     if (storeInfo) {
-       storeInfo = JSON.parse(storeInfo);
-     } else {
-       storeInfo = {};
-     }
-     this.setData({
-       storeInfo: storeInfo
-     })
+    let storeInfo = wx.getStorageSync('STORE_INFO');
+    if (storeInfo) {
+      storeInfo = JSON.parse(storeInfo);
+    } else {
+      storeInfo = {};
+    }
+    this.setData({
+      storeInfo: storeInfo
+    });
 
-     model(`home/cart/list?storeId=${this.data.storeInfo.id}`).then(data => {
-       let {
-         carts
-       } = data.data;
-       let sum = 0;
-       carts.map(item => {
+    model(`home/cart/list?storeId=${this.data.storeInfo.id}`).then(data => {
+      let {
+        carts
+      } = data.data;
+      let sum = 0;
+      carts.map(item => {
         //  item.ifAvailable = false;
         //  item.sku.can_distribution = 0;
-         item.unitPrice = parseFloat(item.unitPrice).toFixed(1);
-         item.orinalPrice = parseFloat(item.sku.price || item.sku.sale_price).toFixed(1);
-         item.memberPrice = parseFloat(item.memberUnitPrice).toFixed(1);
-         item.propsStr = [];
-         item.propsStr.push(item.sku.name);
-         item.rPropGoodsArray.forEach(ele => {
-           item.propsStr.push(ele.propValue.prop_value);
-           if (parseFloat(ele.propValue.price)) {
-             item.orinalPrice = parseFloat(item.orinalPrice) + parseFloat(ele.propValue.price);
-           }
-         });
-         item.propsStr = item.propsStr.join('/');
-         item.checked = true;
-         sum += item.num;
-         return item;
-       });
-        // wx.setStorageSync('cartSum', sum);
-        if (sum) {
-          wx.setTabBarBadge({
-            index: 1,
-            text: sum.toString()
-          });
-        } else {
-          wx.removeTabBarBadge({
-            index: 1,
-          });
-        }
-        let cartTotal = this.calcCartTotal(carts)
-       this.setData({
-         cartGoods: carts,
-         cartTotal: cartTotal,
-         deliverMention: this.getLalaText(cartTotal),
-         loading: false
-       });
+        item.unitPrice = parseFloat(item.unitPrice).toFixed(1);
+        item.orinalPrice = parseFloat(item.sku.price || item.sku.sale_price).toFixed(1);
+        item.memberPrice = parseFloat(item.memberUnitPrice).toFixed(1);
+        item.propsStr = [];
+        item.propsStr.push(item.sku.name);
+        item.rPropGoodsArray.forEach(ele => {
+          item.propsStr.push(ele.propValue.prop_value);
+          if (parseFloat(ele.propValue.price)) {
+            item.orinalPrice = parseFloat(item.orinalPrice) + parseFloat(ele.propValue.price);
+          }
+        });
+        item.propsStr = item.propsStr.join('/');
+        item.checked = true;
+        sum += item.num;
+        return item;
+      });
+      // wx.setStorageSync('cartSum', sum);
+      if (sum) {
+        wx.setTabBarBadge({
+          index: 1,
+          text: sum.toString()
+        });
+      } else {
+        wx.removeTabBarBadge({
+          index: 1,
+        });
+      }
+      let cartTotal = this.calcCartTotal(carts);
+      this.setData({
+        cartGoods: carts,
+        cartTotal: cartTotal,
+        deliverMention: this.getLalaText(cartTotal),
+        loading: false
+      });
 
-       wx.hideLoading();
-     }).catch(e => {
-       wx.hideLoading();
-       this.setData({
-         loading: false
-       });
-       console.log(e);
-     });
+      wx.hideLoading();
+    }).catch(e => {
+      wx.hideLoading();
+      this.setData({
+        loading: false
+      });
+      console.log(e);
+    });
   },
 
   getLalaText(cartTotal) {
-      let storeInfo = this.data.storeInfo;
-      let _result = true;
-      let _string = ''
-      if (storeInfo.deliverFees && storeInfo.deliverFees.length > 0 && wx.getStorageSync('fromTransport') == 'deliver') {
-        this.setData({
-          deliverFees: storeInfo.deliverFees
-        })
-        // storeInfo.deliverFees = [storeInfo.deliverFees[1]];
-        storeInfo.deliverFees.forEach(item => {
-          if (item.cup_amount) {
-            if (cartTotal.checkedGoodsCount >= item.cup_amount) {
-              _result = false;
-            } else {
-              // _result = true;
-              _string = `还差${parseInt(item.cup_amount) - parseInt(cartTotal.checkedGoodsCount)}杯免配送费`
-            }
-            return ;
+    let storeInfo = this.data.storeInfo;
+    let _result = true;
+    let _string = '';
+    if (storeInfo.deliverFees && storeInfo.deliverFees.length > 0 && wx.getStorageSync('fromTransport') == 'deliver') {
+      this.setData({
+        deliverFees: storeInfo.deliverFees
+      });
+      // storeInfo.deliverFees = [storeInfo.deliverFees[1]];
+      storeInfo.deliverFees.forEach(item => {
+        if (item.cup_amount) {
+          if (cartTotal.checkedGoodsCount >= item.cup_amount) {
+            _result = false;
+          } else {
+            // _result = true;
+            _string = `还差${parseInt(item.cup_amount) - parseInt(cartTotal.checkedGoodsCount)}杯免配送费`;
           }
-          if (item.money_amount) {
-            item.money_amount = (item.money_amountt == parseInt(item.money_amount) ? parseInt(item.money_amount) : parseFloat(item.money_amount).toFixed(1))
-            cartTotal.checkedGoodsAmount = (cartTotal.checkedGoodsAmount == parseInt(cartTotal.checkedGoodsAmount) ? parseInt(cartTotal.checkedGoodsAmount) : parseFloat(cartTotal.checkedGoodsAmount).toFixed(1));
-            if (cartTotal.checkedGoodsAmount >= item.money_amount) {
-              _result = false;
-            } else {
-              // _result = true;
-              let sss = parseFloat(item.money_amount) - parseFloat(cartTotal.checkedGoodsAmount);
-              _string = `还差${sss == parseInt(sss) ? parseInt(sss) : parseFloat(sss).toFixed(1)}元免配送费`
-            }
+          return ;
+        }
+        if (item.money_amount) {
+          item.money_amount = (item.money_amountt == parseInt(item.money_amount) ? parseInt(item.money_amount) : parseFloat(item.money_amount).toFixed(1));
+          cartTotal.checkedGoodsAmount = (cartTotal.checkedGoodsAmount == parseInt(cartTotal.checkedGoodsAmount) ? parseInt(cartTotal.checkedGoodsAmount) : parseFloat(cartTotal.checkedGoodsAmount).toFixed(1));
+          if (cartTotal.checkedGoodsAmount >= item.money_amount) {
+            _result = false;
+          } else {
+            // _result = true;
+            let sss = parseFloat(item.money_amount) - parseFloat(cartTotal.checkedGoodsAmount);
+            _string = `还差${sss == parseInt(sss) ? parseInt(sss) : parseFloat(sss).toFixed(1)}元免配送费`;
           }
-          // return item;
-        });
-        console.log(_result, 999);
-        console.log(_string);
+        }
+        // return item;
+      });
+      console.log(_result, 999);
+      console.log(_string);
+    }
+    let fromTransport = wx.getStorageSync('fromTransport');
+    if (fromTransport == 'selfTaking') {
+      _result = '';
+    } else {
+      if (cartTotal.checkedGoodsAmount == 0) {
+        _result = '';
       }
-       let fromTransport = wx.getStorageSync('fromTransport');
-       if (fromTransport == 'selfTaking') {
-        _result = ''
-       } else {
-         if (cartTotal.checkedGoodsAmount == 0) {
-           _result = ''
-         }
-       }
-      return _result ? _string : '';
+    }
+    return _result ? _string : '';
   },
 
   isCheckedAll: function () {
@@ -375,7 +375,7 @@ Page({
   increaseRoomCount (e) {
     let cartGoods = Object.assign(this.data.cartGoods);
     let index = parseInt(e.currentTarget.dataset.index);
-    let param = {}
+    let param = {};
     if (e.currentTarget.dataset.kind !== 'add') {
       // if (e.currentTarget.dataset.available != true ) {
       //   return;
@@ -386,12 +386,12 @@ Page({
         // skuId: cartGoods[index].sku.id,
         // rPropGoodsIds: cartGoods[index].rPropGoodsIds.join(','),
         num: cartGoods[index].num
-      }
+      };
     } else {
       let recommend = Object.assign(this.data.recommend);
       recommend[index].num = recommend[index].num + 1;
       cartGoods = cartGoods.concat(recommend[index]);
-      let cartTotal = this.calcCartTotal(cartGoods)
+      let cartTotal = this.calcCartTotal(cartGoods);
       this.setData({
         cartGoods: cartGoods,
         cartTotal: cartTotal,
@@ -402,10 +402,10 @@ Page({
         cartId: recommend[index].id,
         // rPropGoodsIds: cartGoods[index].rPropGoodsIds.join(','),
         num: recommend[index].num
-      }
+      };
     }
 
-    model(`home/cart/change-number`, param, 'POST').then(data => {
+    model('home/cart/change-number', param, 'POST').then(data => {
       let sum = this.data.sum;
       sum += 1;
       // wx.setStorageSync('cartSum', sum);
@@ -413,7 +413,7 @@ Page({
         index: 1,
         text: sum.toString()
       });
-      let cartTotal = this.calcCartTotal(cartGoods)
+      let cartTotal = this.calcCartTotal(cartGoods);
       this.setData({
         sum: sum,
         cartGoods: cartGoods,
@@ -450,7 +450,7 @@ Page({
       confirmColor: '#DE4132', //确定按钮的文字颜色,
       success: res => {
         if (res.confirm) {
-          model(`home/cart/change-number`, {
+          model('home/cart/change-number', {
             cartId: cartGoods[index].id,
             // skuId: cartGoods[index].sku.id,
             // rPropGoodsIds: cartGoods[index].rPropGoodsIds.join(','),
@@ -459,7 +459,7 @@ Page({
             let _orinum = cartGoods[index].num;
             cartGoods[index].num = 0;
             cartGoods.splice(index, 1);
-            let cartTotal = this.calcCartTotal(cartGoods)
+            let cartTotal = this.calcCartTotal(cartGoods);
 
             let sum = this.data.sum;
             // if (cartGoods && cartGoods[index]) {
@@ -501,7 +501,7 @@ Page({
                 index: 1,
               });
             }
-            let cartTotal = this.calcCartTotal(cartGoods)
+            let cartTotal = this.calcCartTotal(cartGoods);
             this.setData({
               sum: sum,
               errorToastShown: true,
@@ -519,7 +519,7 @@ Page({
 
 
         } else if (res.cancel) {
-          console.log('用户点击取消')
+          console.log('用户点击取消');
         }
       }
     });
@@ -546,7 +546,7 @@ Page({
         confirmColor: '#DE4132', //确定按钮的文字颜色,
         success: res => {
           if (res.confirm) {
-            model(`home/cart/change-number`, {
+            model('home/cart/change-number', {
               cartId: cartGoods[index].id,
               // skuId: cartGoods[index].sku.id,
               // rPropGoodsIds: cartGoods[index].rPropGoodsIds.join(','),
@@ -555,7 +555,7 @@ Page({
 
               cartGoods[index].num = cartGoods[index].num - 1;
               cartGoods.splice(index, 1);
-              let cartTotal = this.calcCartTotal(cartGoods)
+              let cartTotal = this.calcCartTotal(cartGoods);
               
               let sum = this.data.sum;
               // if (cartGoods && cartGoods[index]) {
@@ -597,7 +597,7 @@ Page({
                   index: 1,
                 });
               }
-              let cartTotal = this.calcCartTotal(cartGoods)
+              let cartTotal = this.calcCartTotal(cartGoods);
               this.setData({
                 sum: sum,
                 errorToastShown: true,
@@ -615,12 +615,12 @@ Page({
             
             
           } else if (res.cancel) {
-            console.log('用户点击取消')
+            console.log('用户点击取消');
           }
         }
       });
     } else {
-      model(`home/cart/change-number`, {
+      model('home/cart/change-number', {
         cartId: cartGoods[index].id,
         // skuId: cartGoods[index].sku.id,
         // rPropGoodsIds: cartGoods[index].rPropGoodsIds.join(','),
@@ -629,7 +629,7 @@ Page({
         let sum = this.data.sum;
         sum -= 1;
         cartGoods[index].num = cartGoods[index].num - 1;
-        let cartTotal = this.calcCartTotal(cartGoods)
+        let cartTotal = this.calcCartTotal(cartGoods);
         this.setData({
           sum: sum,
           cartGoods: cartGoods,
@@ -657,7 +657,7 @@ Page({
             index: 1,
           });
         }
-        let cartTotal = this.calcCartTotal(cartGoods)
+        let cartTotal = this.calcCartTotal(cartGoods);
         this.setData({
           sum: sum,
           errorToastShown: true,
@@ -682,7 +682,7 @@ Page({
     if (!this.data.isEditCart) {
       let cartGoods = that.data.cartGoods;
       cartGoods[itemIndex].checked = !cartGoods[itemIndex].checked;
-      let cartTotal = this.calcCartTotal(cartGoods)
+      let cartTotal = this.calcCartTotal(cartGoods);
       that.setData({
         cartGoods: cartGoods,
         checkedAllStatus: that.isCheckedAll(),
@@ -737,11 +737,11 @@ Page({
     let that = this;
 
     if (!this.data.isEditCart) {
-      let cartGoods = this.data.cartGoods
+      let cartGoods = this.data.cartGoods;
       cartGoods.forEach(item => {
         item.checked = !item.checked;
       });
-      let cartTotal = this.calcCartTotal(cartGoods)
+      let cartTotal = this.calcCartTotal(cartGoods);
       that.setData({
         checkedAllStatus: that.isCheckedAll(),
         cartGoods: cartGoods,
@@ -794,30 +794,30 @@ Page({
   },
   
   checkoutOrder(e) {
-    let self = this
-    let token = wx.getStorageSync('token').token
+    let self = this;
+    let token = wx.getStorageSync('token').token;
     if (!token) {
       wx.navigateTo({
         url: '/pages/login/login'
-      })
-      return
+      });
+      return;
     }
     // let isOpen = this.checkStoreState()
     // if (!isOpen) {
     //   return
     // }
-    let info = this.data
+    let info = this.data;
     let gogogo = true;
     let cartList = info.cartGoods.filter(item => {
-        // if (this.data.isNeedFee) {
-        //   return item.ifAvailable && item.sku.can_distribution;
-        // } else {
-        //   return item.ifAvailable;
-        // }
-        if (!item.sku.can_distribution && this.data.isNeedFee) {
-          gogogo = false;
-        }
-        return item.ifAvailable && item.checked;
+      // if (this.data.isNeedFee) {
+      //   return item.ifAvailable && item.sku.can_distribution;
+      // } else {
+      //   return item.ifAvailable;
+      // }
+      if (!item.sku.can_distribution && this.data.isNeedFee) {
+        gogogo = false;
+      }
+      return item.ifAvailable && item.checked;
     });
     if (!gogogo && !this.data.storeInfo.coffeeMakerId) {
       wx.showModal({
@@ -835,15 +835,15 @@ Page({
       return ;
     }
     let totalPrice = info.cartTotal.checkedGoodsAmount;
-    let isNeedFee = info.isNeedFee
+    let isNeedFee = info.isNeedFee;
 
     // console.log(cartList, 'cartList')
     if (cartList.length === 0) {
       wx.showToast({
         icon: 'none',
         title: '请选择商品'
-      })
-      return
+      });
+      return;
     }
     let products = cartList.map(item => {
       return Object.assign({}, {
@@ -857,9 +857,9 @@ Page({
         productPropIds: item.rPropGoodsIds.join(','),
         spec: item.propsStr,
         banner: item.goods.avatar
-      })
-    })
-    let fee = isNeedFee ? this.data.storeInfo.deliverFee : 0
+      });
+    });
+    let fee = isNeedFee ? this.data.storeInfo.deliverFee : 0;
     let obj = {
       storeId: this.data.storeInfo.id,
       userAddressId: this.data.userAddressInfo && this.data.userAddressInfo.id || info.userAddressId,
@@ -867,12 +867,12 @@ Page({
       payAmount: totalPrice,
       orderType: info.isNeedFee ? 2 : 1,
       product: products
-    }
+    };
     if (isNeedFee) {
       let chosenAddress = wx.getStorageSync('chosenAddress');
       this.setData({
         fromTransport: chosenAddress
-      })
+      });
     }
 
     if (this.data.deliverMention) {
@@ -881,11 +881,11 @@ Page({
       wx.removeStorageSync('deliverMention');
     }
 
-    const goDirect = !this.data.checkedAllStatus
+    const goDirect = !this.data.checkedAllStatus;
 
     console.log(goDirect, 777);
 
-    const url = `/pages/pay/checkout/checkout?fromTransportId=${this.data.fromTransport && this.data.fromTransport.id}&fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${isNeedFee?'delivery':'selfTaking'}&goDirect=${Number(goDirect)}`
+    const url = `/pages/pay/checkout/checkout?fromTransportId=${this.data.fromTransport && this.data.fromTransport.id}&fromTransportIndex=${this.data.fromTransport && this.data.fromTransport.idx}&data=${encodeURIComponent(JSON.stringify(obj))}&tab=${isNeedFee?'delivery':'selfTaking'}&goDirect=${Number(goDirect)}`;
     // this.setData({
     //   isCartPanelShow: false
     // })
@@ -898,9 +898,9 @@ Page({
           // cartGoods: [],
           // resultPrice: -1,
           isLoadStorageCart: true
-        })
+        });
       }
-    })
+    });
   },
   deleteCart: function () {
     //获取已选择的商品
@@ -980,7 +980,7 @@ Page({
             wx.getUserInfo({
               withCredentials: true,
               success: function (res) {
-                var userInfo = res.userInfo
+                var userInfo = res.userInfo;
                 let iv = res.iv;
                 let encryptedData = res.encryptedData;
                 console.log(session_key);
@@ -998,12 +998,12 @@ Page({
                 self.onClickAvatar();
                 self.setData({
                   auth: true
-                })
+                });
               }
-            })
-          })
+            });
+          });
         } else {
-          console.log('登录失败！' + res.errMsg)
+          console.log('登录失败！' + res.errMsg);
         }
       }
     });
@@ -1039,4 +1039,4 @@ Page({
       cartGoods: list
     });
   },
-})
+});

@@ -7,7 +7,8 @@
     "dev": "gulp dev",
     "dev-copy": "gulp dev-copy",
     "build": "gulp build",
-    "test": "gulp test"
+    "test": "gulp test",
+    "lint-fix": "eslint --fix --ext .js --ext .wxs src/ "
   },
   "author": "yangqi",
   "repository": {

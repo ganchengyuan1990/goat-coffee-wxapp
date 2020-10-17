@@ -20,13 +20,13 @@ instance.getGCD = function(a, b) {
     return a;
   }
   return instance.getGCD(b, a % b);
-}
+};
 
 
 // 生成唯一id
 instance.genId = function (digits) {
   return Date.now() + getAndIncrement(digits);
-}
+};
 
 // 一定时间后失败
 instance.delayPromise = function (ms) {
@@ -35,7 +35,7 @@ instance.delayPromise = function (ms) {
       reject(constants.TIMEOUT_FLAG);
     }, ms);
   });
-}
+};
 
 // 获取值或在检测不成立时返回默认值
 instance.getOrDefault = function (value, type, condition, defaultValue) {
@@ -43,6 +43,6 @@ instance.getOrDefault = function (value, type, condition, defaultValue) {
     return value;
   }
   return defaultValue;
-}
+};
 
 module.exports = instance;

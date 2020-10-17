@@ -164,7 +164,7 @@ function initGame(activity_prizes) {
       topCircle = 7.5;
       leftCircle = leftCircle + 102.5;
     } else if (i == 6) {
-      topCircle = 15
+      topCircle = 15;
       leftCircle = 620;
     } else if (i < 12) {
       topCircle = topCircle + 94;
@@ -182,28 +182,28 @@ function initGame(activity_prizes) {
       topCircle = topCircle - 94;
       leftCircle = 7.5;
     } else {
-      return
+      return;
     }
     circleList.push({ topCircle: topCircle, leftCircle: leftCircle });
   }
   console.log(this, 'this');
   _this.setData({
     circleList: circleList
-  })
+  });
   //圆点闪烁
   setInterval( () => {
     if (_this.data.colorCircleFirst == '#FFDF2F') {
       _this.setData({
         colorCircleFirst: '#FE4D32',
         colorCircleSecond: '#FFDF2F',
-      })
+      });
     } else {
       _this.setData({
         colorCircleFirst: '#FFDF2F',
         colorCircleSecond: '#FE4D32',
-      })
+      });
     }
-  }, 500)
+  }, 500);
   //奖品item设置
   var awardList = [];
   //间距,怎么顺眼怎么设置吧.
@@ -234,19 +234,19 @@ function initGame(activity_prizes) {
   }
   _this.setData({
     awardList: awardList
-  })
+  });
 
   console.log(awardList, '@@@');
 }
 
 function startGame () {
   var _this = this;
-  if (_this.data.isRunning) return
+  if (_this.data.isRunning) return;
   _this.setData({
     isRunning: true,
     tempI: 0
-  })
-  var indexSelect = 0
+  });
+  var indexSelect = 0;
   var i = this.data.tempI;
   var timer = setInterval(function () {
     indexSelect++;
@@ -255,17 +255,17 @@ function startGame () {
     console.log(i, '@@@i');
     if (i > 500 && (indexSelect % 8 == (_this.data.prizeData.weight - 1))) {
       //去除循环
-      clearInterval(timer)
+      clearInterval(timer);
       //获奖提示
 
       const weight = _this.data.prizeData.weight - 1;
       const ifGetPrize = _this.data.prizeData.prize.if_true_prize;
       const prizeType = _this.data.prizeData.prize.type;
 
-      let modalTitle = 'https://img.goatup.cn/LUCKY.png'
+      let modalTitle = 'https://img.goatup.cn/LUCKY.png';
 
       if (!ifGetPrize) {
-        modalTitle = 'https://img.goatup.cn/SORRY.png'
+        modalTitle = 'https://img.goatup.cn/SORRY.png';
       }
 
 
@@ -283,8 +283,8 @@ function startGame () {
           indexSelect: indexSelect % 8,
           isRunning: false,
           prizeType
-        })
-      }, 500)
+        });
+      }, 500);
 
 
 
@@ -308,9 +308,9 @@ function startGame () {
     // })
     _this.setData({
       indexSelect: indexSelect % 8
-    })
+    });
 
-  }, (150 + i))
+  }, (150 + i));
 }
 
 export {

@@ -138,7 +138,7 @@ function Bobolink(options) {
     }
     // 清理未执行任务
     discardOldest(queueTasks.length);
-  }
+  };
 
   function resolveTaskTag(task) {
     let results = taskTag[task.tag].results;
@@ -246,7 +246,7 @@ function Bobolink(options) {
       }
     });
     
-  }
+  };
 
   function initTaskMode (firstTask) {
     // 首次添加任务，如果是函数，则设置为函数模式，否则设置为数据模式
@@ -327,7 +327,7 @@ function Bobolink(options) {
       waitingTime,
       runTime,
       retry
-    }
+    };
   }
 
 }

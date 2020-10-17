@@ -55,13 +55,13 @@ Page({
   dealName(e) {
     this.setData({
       content: e.detail.value
-    })
+    });
   },
 
   dealOptions (options) {
     this.setData({
       content: options.remark
-    })
+    });
   },
 
   commitRemark() {
@@ -98,4 +98,4 @@ Page({
     // 页面关闭
 
   }
-})
+});

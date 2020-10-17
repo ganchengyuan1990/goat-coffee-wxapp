@@ -12,7 +12,7 @@ Component({
         }
 
         console.log(JSON.stringify(data), 'arrivalTime');
-        this.setData({ ...data });
+        this.setData({ data: data });
       },
     },
   },

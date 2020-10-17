@@ -46,7 +46,7 @@ function testImmediatelyMode() {
           }
         }, ms);
       });
-    }
+    };
   }
 }
 

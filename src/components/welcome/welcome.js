@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // const lx = require('../../utils/npm/lx-analytics')
 // const lxBid = {
@@ -40,10 +40,10 @@ Component({
     // this.setData({
     //   heightNum: this.properties.from
     // });
-   this.setData({
-     heightNum: this.properties.to,
-     showWord: true
-   });
+    this.setData({
+      heightNum: this.properties.to,
+      showWord: true
+    });
     
   },
 

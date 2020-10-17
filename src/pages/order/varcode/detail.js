@@ -1,6 +1,6 @@
 // pages/order/detail.js
 // import drawQrcode from '../../../utils/qrcode.js'
-const QR = require('../../../utils/weapp-qrcode.js')
+const QR = require('../../../utils/weapp-qrcode.js');
 Page({
 
   /**
@@ -20,16 +20,16 @@ Page({
     this.setData({
       orderNo: options.orderNo,
       varCode: options.varCode
-    })
+    });
     var imgData = QR.drawImg(this.data.orderNo, {
       typeNumber: 4,
       errorCorrectLevel: 'M',
       size: 500
-    })
+    });
     console.log(imgData);
     this.setData({
       qrcodeURL: imgData
-    })
+    });
     // drawQrcode({
     //   width: 200,
     //   height: 200,
@@ -52,4 +52,4 @@ Page({
    */
   onShow: function () {
   }
-})
+});

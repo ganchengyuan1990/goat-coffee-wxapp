@@ -1,29 +1,29 @@
-    var checkout = {
-        isGotType: function (pickUps, type) {
-            console.log(pickUps)
-            var flag = false;
-            var type = pickUps.map(function(item) {
-                if (item.type === type) {
-                    flag = true;
-                }
-                return item;
-            });
-            return flag;
-        },
-        getPriceSimple: function (value) {
-            var stringValue = value.toString();
-            if(stringValue.indexOf('.') < 0) {
-                return value;
-            } else {
-                return parseFloat(stringValue).toFixed(2);
-            }
-        },
-        getStringLength: function (value) {
-            if (typeof(str) == string) {
-                return stringValue.length;
-            }
-            var stringValue = value.toString();
-            return stringValue.length;
-        }
+var checkout = {
+  isGotType: function (pickUps, type) {
+    console.log(pickUps);
+    var flag = false;
+    var type = pickUps.map(function(item) {
+      if (item.type === type) {
+        flag = true;
+      }
+      return item;
+    });
+    return flag;
+  },
+  getPriceSimple: function (value) {
+    var stringValue = value.toString();
+    if(stringValue.indexOf('.') < 0) {
+      return value;
+    } else {
+      return parseFloat(stringValue).toFixed(2);
     }
-    module.exports = checkout
+  },
+  getStringLength: function (value) {
+    if (typeof(str) == string) {
+      return stringValue.length;
+    }
+    var stringValue = value.toString();
+    return stringValue.length;
+  }
+};
+module.exports = checkout;
