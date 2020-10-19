@@ -1,5 +1,5 @@
 <!-- pages/big-wheel/index.wxml -->
-<view class="page-wheel">
+<view class="page-wheel" style="{{imgBack}}">
 
   <view class='title_img' style="visibility: hidden;"><image src="http://img.goatup.cn/img/config/组-12@2x.png"/></view>
 

@@ -25,6 +25,7 @@ Page({
         shownIndex: 0,
         prizeType: 0,
         noMoreChance: false,
+        imgBack: "background: url('https://img.goatup.cn/beijing_new.png') no-repeat; background-size: 100%;",
         imageAward: [
         '../../images/1.jpg',
         '../../images/2.jpg',

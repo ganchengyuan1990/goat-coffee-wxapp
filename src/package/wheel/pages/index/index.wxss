@@ -2,8 +2,7 @@
 
 .page-wheel {
     padding: 20rpx;
-    background: url('https://img.goatup.cn/beijing_tender.png') no-repeat;
-    background-size: 100%;
+    /* background: url('https://img.goatup.cn/beijing_tender.png') no-repeat; */
 }
 
 .page-wheel .sol-button {

@@ -13,7 +13,7 @@ const watch = require('gulp-watch');
 
 const srcPath = './src/**';
 const distPath = './dist/';
-const copyDistPath = ['../mailong-gasup-jiangsu-wechat/src/', '../mailong-gasup-beijing-wxapp/src/'];
+const copyDistPath = ['../mailong-gasup-jiangsu-wechat/src/', '../mailong-gasup-beijing-wxapp/src/', '../goat-coffee-wxapp-xihui/src/'];
 
 const wxmlFiles = [`${srcPath}/**.{wxml,wxs}`, `!${srcPath}/_template/*.wxml`];
 const lessFiles = [
@@ -40,6 +40,7 @@ const wxml = () => {
     })
     .pipe(gulp.dest(copyDistPath[0]))
     .pipe(gulp.dest(copyDistPath[1]))
+    .pipe(gulp.dest(copyDistPath[2]))
     .pipe(gulp.dest(distPath));
 };
 gulp.task(wxml);
@@ -75,6 +76,7 @@ const jsCopy = () => {
     })
     .pipe(gulp.dest(copyDistPath[0]))
     .pipe(gulp.dest(copyDistPath[1]))
+    .pipe(gulp.dest(copyDistPath[2]))
     .pipe(sourcemaps.init())
     .pipe(uglyfly({
       mangle: false,
@@ -114,6 +116,7 @@ const json = () => {
     })
     .pipe(gulp.dest(copyDistPath[0]))
     .pipe(gulp.dest(copyDistPath[1]))
+    .pipe(gulp.dest(copyDistPath[2]))
     .pipe(gulp.dest(distPath));
 };
 gulp.task(json);
@@ -126,6 +129,7 @@ const wxss = () => {
     // .pipe(less())
     .pipe(gulp.dest(copyDistPath[0]))
     .pipe(gulp.dest(copyDistPath[1]))
+    .pipe(gulp.dest(copyDistPath[2]))
     .pipe(rename({
       extname: '.wxss'
     }))
@@ -141,6 +145,7 @@ const img = () => {
     })
     .pipe(gulp.dest(copyDistPath[0]))
     .pipe(gulp.dest(copyDistPath[1]))
+    .pipe(gulp.dest(copyDistPath[2]))
     // .pipe(imagemin())
     .pipe(gulp.dest(distPath));
 };
