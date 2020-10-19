@@ -1,8 +1,5 @@
-import model from '../../../utils/model'
+import model from '../../../utils/model';
 
-import {
-  mockData,
-} from './mockData.js';
 Page({
 
   /**
@@ -21,16 +18,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let type = options.type
+    let type = options.type;
     this.setData({
       page:  1,
       type: parseInt(options.type)
     });
     if (type == 2) {
       // 优惠券
-      this.fetchCouponList(1)
+      this.fetchCouponList(1);
     } else {
-      this.fetchVoucherList()
+      this.fetchVoucherList();
     }
 
     
@@ -57,45 +54,45 @@ Page({
               element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
             }
             if (element.coupon.manjian_cash) {
-              element.coupon.manjian_cash = this.getVeryMoney(element.coupon.manjian_cash)
+              element.coupon.manjian_cash = this.getVeryMoney(element.coupon.manjian_cash);
             }
             if (element.coupon.zhigou_cash) {
-              element.coupon.zhigou_cash = this.getVeryMoney(element.coupon.zhigou_cash)
+              element.coupon.zhigou_cash = this.getVeryMoney(element.coupon.zhigou_cash);
             }
     
             if (element.coupon.manjian_price_available) {
-              element.coupon.manjian_price_available = this.getVeryMoney(element.coupon.manjian_price_available)
+              element.coupon.manjian_price_available = this.getVeryMoney(element.coupon.manjian_price_available);
             }
             // element.couponBref = '21123123123';
             if (element.coupon.availabileStartTime) {
-              element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0]
+              element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0];
             }
             if (element.end_time) {
-              element.end_time = element.end_time.split(' ')[0]
+              element.end_time = element.end_time.split(' ')[0];
             }
     
             if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
-              element.xianzhi = element.coupon.classifyNames[0]
+              element.xianzhi = element.coupon.classifyNames[0];
             }
     
             if (element.coupon.goodsNames && element.coupon.goodsNames.length > 0) {
-              element.xianzhi = element.coupon.goodsNames[0]
+              element.xianzhi = element.coupon.goodsNames[0];
             }
             return element;
           });
           setTimeout(() => {
             wx.hideLoading();
-          }, 500)
+          }, 500);
           this.setData({
             couponItems: this.data.couponItems.concat(result),
             // totalItems: result,
             loading: false,
             total: data.data.total
-          })
+          });
         }).catch(e => {
           wx.hideLoading();
-        })
-      })
+        });
+      });
     }
   },
 
@@ -113,32 +110,32 @@ Page({
     this.setData({
       // couponItems: mockData,
       loading: false
-    })
+    });
 
   },
 
   chooseTypeFirst(e) {
     this.setData({
       chosenType: 1
-    })
-    console.log(777)
-    this.fetchCouponList(1)
+    });
+    console.log(777);
+    this.fetchCouponList(1);
   },
 
   chooseTypeSecond(e) {
     this.setData({
       chosenType: 2
-    })
-    console.log(777)
-    this.fetchCouponList(2)
+    });
+    console.log(777);
+    this.fetchCouponList(2);
   },
 
   getVeryMoney(money) {
     let result;
     if (money == parseInt(money)) {
-      result = parseInt(money)
+      result = parseInt(money);
     } else {
-      result = parseFloat(money).toFixed(1)
+      result = parseFloat(money).toFixed(1);
     }
     return result;
   },
@@ -153,29 +150,29 @@ Page({
           element.coupon.discount = parseFloat(element.coupon.discount).toFixed(1);
         }
         if (element.coupon.manjian_cash) {
-          element.coupon.manjian_cash = this.getVeryMoney(element.coupon.manjian_cash)
+          element.coupon.manjian_cash = this.getVeryMoney(element.coupon.manjian_cash);
         }
         if (element.coupon.zhigou_cash) {
-          element.coupon.zhigou_cash = this.getVeryMoney(element.coupon.zhigou_cash)
+          element.coupon.zhigou_cash = this.getVeryMoney(element.coupon.zhigou_cash);
         }
 
         if (element.coupon.manjian_price_available) {
-          element.coupon.manjian_price_available = this.getVeryMoney(element.coupon.manjian_price_available)
+          element.coupon.manjian_price_available = this.getVeryMoney(element.coupon.manjian_price_available);
         }
         // element.couponBref = '21123123123';
         if (element.coupon.availabileStartTime) {
-          element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0]
+          element.coupon.availabileStartTime = element.coupon.availabileStartTime.split(' ')[0];
         }
         if (element.end_time) {
-          element.end_time = element.end_time.split(' ')[0]
+          element.end_time = element.end_time.split(' ')[0];
         }
 
         if (element.coupon.classifyNames && element.coupon.classifyNames.length > 0) {
-          element.xianzhi = element.coupon.classifyNames[0]
+          element.xianzhi = element.coupon.classifyNames[0];
         }
 
         if (element.coupon.goodsNames && element.coupon.goodsNames.length > 0) {
-          element.xianzhi = element.coupon.goodsNames[0]
+          element.xianzhi = element.coupon.goodsNames[0];
         }
         return element;
       });
@@ -183,8 +180,8 @@ Page({
         couponItems: result,
         loading: false,
         total: data.data.total
-      })
-    })
+      });
+    });
   },
   fetchVoucherList() {
     // 兑换券
@@ -211,8 +208,8 @@ Page({
       this.setData({
         voucherItems: result,
         loading: false
-      })
-    })
+      });
+    });
   },
 
   goStore () {
@@ -225,6 +222,6 @@ Page({
     couponItems[index].showRule = !couponItems[index].showRule;
     this.setData({
       couponItems: couponItems
-    })
+    });
   }
-})
+});

@@ -1,24 +1,24 @@
 const formatTime = date => {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds()
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const second = date.getSeconds();
 
-  return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
-}
+  return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':');
+};
 
 const simpleFormatTime = date => {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds()
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const second = date.getSeconds();
 
-  return [hour, minute].map(formatNumber).join(':')
-}
+  return [hour, minute].map(formatNumber).join(':');
+};
 
 const calcMonday = () => {
   var nowTemp = new Date(); //当前时间
@@ -33,12 +33,12 @@ const calcMonday = () => {
   monday = new Date(`${m_year}-${m_month}-${m_date}`);
   var result = c_time - monday.getTime();
   return result <= 7 * 24 * 60 * 60 * 1000;
-}
+};
 
 const formatNumber = n => {
-  n = n.toString()
-  return n[1] ? n : '0' + n
-}
+  n = n.toString();
+  return n[1] ? n : '0' + n;
+};
 
 function wx2promise(fn, params) {
   params = params || {};
@@ -89,15 +89,15 @@ function throttle(fn = () => {}, delay = 0) {
   //     }, delay)
   //   }
   // }
-  let nowTime
-  let lastTime
+  let nowTime;
+  let lastTime;
   return function (...args) {
-    nowTime = +(new Date())
+    nowTime = +(new Date());
     if (!lastTime || nowTime - lastTime >= time) {
-      fn.call(this, ...args)
-      lastTime = nowTime
+      fn.call(this, ...args);
+      lastTime = nowTime;
     }
-  }
+  };
 }
 
 var throttleV2 = function(fn, delay, mustRunDelay){
@@ -123,15 +123,15 @@ var throttleV2 = function(fn, delay, mustRunDelay){
 
 // 防抖函数
 const debounce = (fn, time = 50) => {
-  let timer
+  let timer;
   return function (...args) {
     if (timer) {
-      clearTimeout(timer)
-      timer = null
+      clearTimeout(timer);
+      timer = null;
     }
-    timer = setTimeout(fn.bind(this, ...args), time)
-  }
-}
+    timer = setTimeout(fn.bind(this, ...args), time);
+  };
+};
 
 module.exports = {
   formatTime: formatTime,
@@ -141,4 +141,4 @@ module.exports = {
   throttle: throttle,
   throttleV2: throttleV2,
   debounce: debounce
-}
+};

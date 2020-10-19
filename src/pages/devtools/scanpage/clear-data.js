@@ -3,7 +3,7 @@ Page({
     url: ''
   },
   onLoad() {
-    this.onScanWebview()
+    this.onScanWebview();
   },
   onScanWebview() {
     const self = this;
@@ -15,7 +15,7 @@ Page({
         console.log(res.result);
         wx.redirectTo({
           url: res.result
-        })
+        });
       },
     });
   },

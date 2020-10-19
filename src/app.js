@@ -1,5 +1,5 @@
 //app.js
-const ald = require('./utils/sdk/ald-stat.js')
+const ald = require('./utils/sdk/ald-stat.js');
 
 const Bobolink = require('./utils/bobolink/index');
 // const assert = require('./utils/assert/build/assert.js');
@@ -33,7 +33,7 @@ function task() {
         resolve();
       }, 5);
     });
-  }
+  };
 }
 
 // put three tasks into the queue
@@ -44,7 +44,7 @@ queue.push([task(), task(), task(), task()]).then((ts) => {
   console.log(ts.res.length, 'bobolink');
   // the first two tasks are executed normally, but the third task is cancelled because the queue is destroyed.
   // assert.equal(ts.res[2].err, Bobolink.DISCARD);
-  console.log(ts.res[2].err, Bobolink.DISCARD , 'bobolink');
+  console.log(ts.res[2].err, Bobolink.DISCARD, 'bobolink');
 });
 
 t1.then(() => {
@@ -58,7 +58,7 @@ App({
   onLaunch: function () {
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || [];
-    logs.unshift(Date.now())
+    logs.unshift(Date.now());
     wx.setStorageSync('logs', logs);
     wx.setStorageSync('fromTransport', 'selfTaking');
 

@@ -2,11 +2,11 @@ import {
   BigNumber
 } from '../../../utils/bignumber.min';
 
-import model from '../../../utils/model.js'
+import model from '../../../utils/model.js';
 
 
 function BN(...args) {
-  return new BigNumber(...args)
+  return new BigNumber(...args);
 }
 Component({
   /**
@@ -39,7 +39,7 @@ Component({
       value: false,
       observer(newVal, oldVal) {
         if (newVal) {
-          this.setDefault()
+          this.setDefault();
         }
       }
     },
@@ -77,12 +77,12 @@ Component({
         let configData = res.data;
         this.setData({
           activityName: configData['voucher-text']
-        })
+        });
       });
     } else {
       this.setData({
         activityName: configData['voucher-text']
-      })
+      });
     }
   },
   /**
@@ -103,11 +103,11 @@ Component({
         // })
         let obj = this.properties.info.default_sku;
         if (!obj) {
-          let key = `info.sku_list[0].isdefault`
+          let key = 'info.sku_list[0].isdefault';
           this.setData({
             [key]: 1
-          })
-          obj = this.data.info.sku_list[0]
+          });
+          obj = this.data.info.sku_list[0];
         }
         let price = parseFloat(obj.orinalPrice);
         let priceTags = [];
@@ -126,15 +126,15 @@ Component({
           price: price || '暂无报价',
           priceTags: priceTags,
           count: 1
-        })
-        this.setPrice()
+        });
+        this.setPrice();
       } catch (e) {
         this.setData({
           price: '暂无报价'
-        })
+        });
       }
       // 设置默认规格
-      this.getCustomed()
+      this.getCustomed();
     },
     toggleMenu() {
       this.setData({
@@ -147,7 +147,7 @@ Component({
           totalPrice: this.data.info.default_sku.orinalPrice
         });
       }
-      this.triggerEvent('togglemenu', 'abc')
+      this.triggerEvent('togglemenu', 'abc');
     },
 
     /*
@@ -155,28 +155,28 @@ Component({
      */
     mergeCart(list) {
       if (!Array.isArray(list)) {
-        return
+        return;
       }
       // 验证skuid， propids, productId一致性
       // count total price
 
-      let cartList = list
-      let obj = {}
+      let cartList = list;
+      let obj = {};
       cartList.forEach(item => {
-        let key = item.customedKey
-        let val = obj[key]
+        let key = item.customedKey;
+        let val = obj[key];
         if (val) {
-          val.count = BN(val.count).plus(item.count).valueOf()
-          val.totalPrice = BN(val.count).multipliedBy(val.price).valueOf()
+          val.count = BN(val.count).plus(item.count).valueOf();
+          val.totalPrice = BN(val.count).multipliedBy(val.price).valueOf();
         } else {
-          obj[key] = item
+          obj[key] = item;
         }
-      })
+      });
       // let arr = Object.values(obj)
-      let arr = []
+      let arr = [];
       for (let i in obj) {
         if (obj[i]) {
-          arr.push(obj[i])
+          arr.push(obj[i]);
         }
       }
       // this.setData({
@@ -185,7 +185,7 @@ Component({
       wx.setStorage({
         key: 'CART_LIST',
         data: JSON.stringify(arr)
-      })
+      });
     },
 
     goOrder() {
@@ -196,16 +196,16 @@ Component({
         });
         return;
       }
-      let info = this.data.info
-      let spec = this.data.customed
-      let skuList = info.sku_list
-      let hasDefault = skuList.filter(item => item.isdefault === 1)
+      let info = this.data.info;
+      let spec = this.data.customed;
+      let skuList = info.sku_list;
+      let hasDefault = skuList.filter(item => item.isdefault === 1);
       if (!hasDefault) {
         wx.showToast({
           title: '请选择规格',
           icon: 'none'
-        })
-        return
+        });
+        return;
       }
       
       // let propList = info.key_list
@@ -220,19 +220,19 @@ Component({
       //   }
       // })
 
-      let propList = hasDefault[0].key_list
-      let propIds = []
+      let propList = hasDefault[0].key_list;
+      let propIds = [];
       propList.forEach(i => {
         let idObj = i.val_list.find(j => {
-          return parseInt(j.id) === parseInt(i.default_val_id)
-        })
+          return parseInt(j.id) === parseInt(i.default_val_id);
+        });
 
         if (idObj) {
-          propIds.push(idObj.prop_id)
+          propIds.push(idObj.prop_id);
         }
-      })
+      });
 
-      model(`home/cart/change-number`, {
+      model('home/cart/change-number', {
         ifClearOther: true,
         skuId: hasDefault[0].id,
         rPropGoodsIds: propIds.join(','),
@@ -253,10 +253,10 @@ Component({
         if (data.data && data.data.discountPrice > 0) {
           this.setData({
             resultPrice: resultPrice
-          })
+          });
         }
-        this.triggerEvent('goorder')
-        this.toggleMenu()
+        this.triggerEvent('goorder');
+        this.toggleMenu();
       }).catch(e => {
         console.log('请求失败');
         console.log(JSON.stringify(e));
@@ -277,25 +277,25 @@ Component({
         });
         return;
       }
-      let info = this.data.info
-      let spec = this.data.customed
-      let skuList = info.sku_list
-      let hasDefault = skuList.filter(item => item.isdefault === 1)
+      let info = this.data.info;
+      let spec = this.data.customed;
+      let skuList = info.sku_list;
+      let hasDefault = skuList.filter(item => item.isdefault === 1);
       if (!hasDefault) {
         wx.showToast({
           title: '请选择规格',
           icon: 'none'
-        })
-        return
+        });
+        return;
       }
-      console.log(spec, 'spec')
+      console.log(spec, 'spec');
       this.triggerEvent('save', Object.assign({}, info, {
         count: this.data.count,
         totalPrice: this.data.totalPrice,
         price: this.data.price,
         spec: spec,
         customedKey: this.data.customedKey
-      }))
+      }));
       
       // let cart = [];
       // if (info) {
@@ -306,25 +306,25 @@ Component({
       // wx.navigateTo({
       //   url: `/pages/newCart/cart?isNeedFee=${this.data.isselfTaking ? 0: 1}`
       // });
-      let propList = hasDefault[0].key_list
-      let propIds = []
+      let propList = hasDefault[0].key_list;
+      let propIds = [];
       propList.forEach(i => {
         let idObj = i.val_list.find(j => {
-          return parseInt(j.id) === parseInt(i.default_val_id)
-        })
+          return parseInt(j.id) === parseInt(i.default_val_id);
+        });
 
         if (idObj) {
-          propIds.push(idObj.prop_id)
+          propIds.push(idObj.prop_id);
         }
-      })
-      model(`home/cart/change-number`, {
+      });
+      model('home/cart/change-number', {
         skuId: hasDefault[0].id,
         rPropGoodsIds: propIds.join(','),
         delta: this.data.count
       }, 'POST').then(data => {
         let sum = wx.getStorageSync('cartSum');
         sum += this.data.count;
-        wx.setStorageSync('cartSum', sum)
+        wx.setStorageSync('cartSum', sum);
         wx.setTabBarBadge({
           index: 1,
           text: sum.toString()
@@ -337,7 +337,7 @@ Component({
         if (data.data && data.data.discountPrice > 0) {
           this.setData({
             resultPrice: resultPrice
-          })
+          });
         }
         wx.navigateTo({
           url: `/pages/newCart/cart?isNeedFee=${this.data.isselfTaking ? 0: 1}`
@@ -362,16 +362,16 @@ Component({
         });
         return;
       }
-      let info = this.data.info
-      let spec = this.data.customed
-      let skuList = info.sku_list
-      let hasDefault = skuList.filter(item => item.isdefault === 1)
+      let info = this.data.info;
+      let spec = this.data.customed;
+      let skuList = info.sku_list;
+      let hasDefault = skuList.filter(item => item.isdefault === 1);
       if (!hasDefault) {
         wx.showToast({
           title: '请选择规格',
           icon: 'none'
-        })
-        return
+        });
+        return;
       }
 
       // let propList = info.key_list
@@ -386,22 +386,22 @@ Component({
       //   }
       // })
 
-      let propList = hasDefault[0].key_list
-      let propIds = []
+      let propList = hasDefault[0].key_list;
+      let propIds = [];
       propList.forEach(i => {
         let idObj = i.val_list.find(j => {
-          return parseInt(j.id) === parseInt(i.default_val_id)
-        })
+          return parseInt(j.id) === parseInt(i.default_val_id);
+        });
 
         if (idObj) {
-          propIds.push(idObj.prop_id)
+          propIds.push(idObj.prop_id);
         }
-      })
+      });
 
       // let specPrice = Number(spec.match(/[\d\.]+/g))
       let specPrice = Number(this.data.totalPrice || spec.match(/[\d\.]+/g));
       if (this.data.count > 1) {
-        specPrice = specPrice / this.data.count
+        specPrice = specPrice / this.data.count;
       }
 
       this.triggerEvent('godirect', {
@@ -413,8 +413,8 @@ Component({
         productName: info.productName,
         memberPrice: Number(specPrice),
         price: Number(hasDefault[0].price || specPrice)
-      })
-      this.toggleMenu()
+      });
+      this.toggleMenu();
     },
     /**
      * 选择规格
@@ -426,18 +426,18 @@ Component({
       //   success: res => {}
       // });
       // this.getCustomed();
-      let group = e.currentTarget.dataset.group
-      let idx = e.currentTarget.dataset.tagidx
-      let groupoutidx = e.currentTarget.dataset.groupoutidx
+      let group = e.currentTarget.dataset.group;
+      let idx = e.currentTarget.dataset.tagidx;
+      let groupoutidx = e.currentTarget.dataset.groupoutidx;
       // 规格
       if (group === 'sku') {
         // if (false) {
-        let skuKey = `info.sku_list`
-        let skuList = this.data.info.sku_list
-        let currentSku = skuList[idx]
+        let skuKey = 'info.sku_list';
+        let skuList = this.data.info.sku_list;
+        let currentSku = skuList[idx];
         skuList.forEach(item => {
-          item.isdefault = item.id === currentSku.id ? 1 : 0
-        })
+          item.isdefault = item.id === currentSku.id ? 1 : 0;
+        });
 
         let finalPrice = currentSku.member_price;
         // let finalPrice = this.data.price;
@@ -457,29 +457,29 @@ Component({
           price: finalPrice,
           currentSku: currentSku,
           skuIndex: idx
-        },() => {
+        }, () => {
           console.log(this.data.skuIndex, 777);
-        })
-        this.setPrice()
+        });
+        this.setPrice();
       }
       // 其他属性
       if (group === 'opt') {
         // if (true) {
-        let groupIdx = e.currentTarget.dataset.groupidx
-        let optKey = `info.key_list[${this.data.skuIndex}]`
+        let groupIdx = e.currentTarget.dataset.groupidx;
+        let optKey = `info.key_list[${this.data.skuIndex}]`;
         try {
           // 全部属性
-          let propList = this.data.info.sku_list[this.data.skuIndex].key_list
+          let propList = this.data.info.sku_list[this.data.skuIndex].key_list;
           // 当前属性组
-          let optList = propList[groupIdx]
+          let optList = propList[groupIdx];
           // 属性id
-          let selectedIdx = optList.val_list[idx].id
+          let selectedIdx = optList.val_list[idx].id;
           optList.default_val_id = selectedIdx;
 
-          let skuList = this.data.info.sku_list
+          let skuList = this.data.info.sku_list;
           let currentSku = skuList.filter(item => {
             return item.isdefault === 1;
-          })
+          });
 
 
           let customVal = this.data.customVal.split('-');
@@ -517,19 +517,19 @@ Component({
 
             propList.forEach((item, index) => {
               let idObj = item.val_list.find(j => {
-                return parseInt(j.id) === parseInt(item.default_val_id)
-              })
+                return parseInt(j.id) === parseInt(item.default_val_id);
+              });
 
               if (idObj && idObj.price) {
                 let flag = true;
                 priceTags.forEach(lll => {
                   if (lll.prop_id === idObj.prop_id) {
-                    flag = false
+                    flag = false;
                   }
-                })
+                });
                 if (flag) {
                   priceTags.push(idObj);
-                  deltaPrice += parseFloat(idObj.price)
+                  deltaPrice += parseFloat(idObj.price);
                 }
               }
             });
@@ -613,51 +613,51 @@ Component({
             [optKey]: optList,
             info: this.data.info,
             currentProp: propList
-          })
-          this.setPrice()
+          });
+          this.setPrice();
         } catch (e) {
-          console.log(e)
+          console.log(e);
         }
       }
-      this.getCustomed()
+      this.getCustomed();
       wx.hideLoading();
     },
     /**
      * 增加数量
      */
     increase() {
-      let count = this.data.count
+      let count = this.data.count;
       this.setData({
         count: count + 1,
-      })
-      this.setPrice()
-      this.getCustomed()
+      });
+      this.setPrice();
+      this.getCustomed();
     },
     /**
      * 减少数量
      */
     decrease() {
-      let count = this.data.count
+      let count = this.data.count;
       if (count > 1) {
         this.setData({
           count: count - 1,
-        })
-        this.setPrice()
-        this.getCustomed()
+        });
+        this.setPrice();
+        this.getCustomed();
       }
     },
     /**
      * 计算价格
      */
     setPrice() {
-      let count = this.data.count
-      let price = Number(this.data.price)
+      let count = this.data.count;
+      let price = Number(this.data.price);
       // console.log(BN('0.98').valueOf());
 
       if (!isNaN(price)) {
         this.setData({
           totalPrice: BN(price).multipliedBy(count).valueOf()
-        })
+        });
       }
     },
 
@@ -665,7 +665,7 @@ Component({
       this.setData({
         toggled: false,
         skuIndex: 0
-      })
+      });
       this.toggleMenu();
     },
     /**
@@ -673,15 +673,15 @@ Component({
      */
     getCustomed() {
       const query = wx.createSelectorQuery().in(this);
-      query.selectAll(".J_opt_item.active").fields({
+      query.selectAll('.J_opt_item.active').fields({
         dataset: true
       }, res => {
-        let list = res
-        let tags = []
-        let keys = []
+        let list = res;
+        let tags = [];
+        let keys = [];
         list.forEach(item => {
-          tags.push(item.dataset.val)
-          keys.push(item.dataset.code)
+          tags.push(item.dataset.val);
+          keys.push(item.dataset.code);
         });
         let customed = '';
         if (this.data.currentSku.sale_price || (this.data.info && this.data.info.default_sku)) {
@@ -689,7 +689,7 @@ Component({
           customed = `￥${_price * this.data.count}`;
 
           this.data.priceTags.forEach(item => {
-            customed += ` + ${item.val}${item.price * this.data.count}元`
+            customed += ` + ${item.val}${item.price * this.data.count}元`;
           });
         }
 
@@ -697,7 +697,7 @@ Component({
           customed: customed,
           customedKey: this.data.info && this.data.info.id + '-' + keys.join('-'),
           customVal: keys.slice(1).join('-'),
-        })
+        });
       }).exec();
     },
 
@@ -712,7 +712,7 @@ Component({
       wx.previewImage({
         current: current,
         urls: [current]
-      })
+      });
     },
   }
-})
+});

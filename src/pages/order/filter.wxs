@@ -1,104 +1,104 @@
-    var filters = {
-        getOrderState: function (code, isMachine) {
-            var map = {
-                '00': '待付款',
-                '01': isMachine ? '待制作' : '待接单',
-                '02': '制作中',
-                '03': '制作完成',
-                '04': '配送中',
-                '100': '订单完成',
-                '101': '订单完成',
-                '30': '慢必赔',
-                '31': '已取消',
-                '40': '退款中',
-                '41': '退款成功',
-                '42': '退款失败'
-            }
-            return map[code] ? map[code] : ''
-        },
-        getGroupState: function (code) {
-            var map = {
-                '00': '待支付',
-                '01': '拼团开始',
-                '100': '拼团成功',
-                '40': '退款中',
-                '41': '退款完成'
-            }
-            return map[code] ? map[code] : ''
-        },
-        getOrderTypeState: function (orderType) {
-            switch (orderType) {
-                case 1:
-                    return '外卖'
-                case 2:
-                    return '堂食'
-                case 3:
-                    return '自取'
-                default:
-                    return '外带'
-            }
-        },
-        getAddr: function (item) {
-            var type = item.orderType
-            switch (type) {
-                case 1:
-                    return item.contactAddress
-                case 2:
-                case 3:
-                    return item.storeName
-                default:
-                    return item.storeName
-            }
-        },
-        getBriefGoods: function (items) {
-            var num = 0;
-            items.forEach(function(item) {
-                num += item.number;
-            })
-            if (items.length > 0) {
-                return items[0].productName + '等 共' + num + '件商品';
-            }
-        },
-        getOrderBrief: function (item) {
-            var orders = item.order_detail
-            if (!orders) {
-                return ''
-            }
-            var len = orders.length
-            if (len > 0) {
-                var firstName = orders[0].productName
-                return firstName + (len > 1 ? '等' : '') + ' 共' + len + '件商品'
-            }
-            return ''
-        },
-        getDiscountType: function (item) {
-            var val = item.discountAmount === 0 ? '未使用' : '-￥' + item.discountAmount
-            switch (item.discountType) {
-                case 1:
-                    return {
-                        discount: '未使用',
-                        coupon: val,
-                    }
-                case 2:
-                    return {
-                        discount: val,
-                        coupon: '不能与钱包同时使用'
-                    }
-                default:
-                    return {
-                        discount: '未使用',
-                        coupon: '未使用'
-                    }
-            }
-        },
-        getSum: function (list) {
-            return list ? list.length : 0
-        },
-        getProductBref: function  (products) {
-            return {
-                name: products[0].productName,
-                num: products.length
-            }
-        }
+var filters = {
+  getOrderState: function (code, isMachine) {
+    var map = {
+      '00': '待付款',
+      '01': isMachine ? '待制作' : '待接单',
+      '02': '制作中',
+      '03': '制作完成',
+      '04': '配送中',
+      '100': '订单完成',
+      '101': '订单完成',
+      '30': '慢必赔',
+      '31': '已取消',
+      '40': '退款中',
+      '41': '退款成功',
+      '42': '退款失败'
+    };
+    return map[code] ? map[code] : '';
+  },
+  getGroupState: function (code) {
+    var map = {
+      '00': '待支付',
+      '01': '拼团开始',
+      '100': '拼团成功',
+      '40': '退款中',
+      '41': '退款完成'
+    };
+    return map[code] ? map[code] : '';
+  },
+  getOrderTypeState: function (orderType) {
+    switch (orderType) {
+    case 1:
+      return '外卖';
+    case 2:
+      return '堂食';
+    case 3:
+      return '自取';
+    default:
+      return '外带';
     }
-    module.exports = filters
+  },
+  getAddr: function (item) {
+    var type = item.orderType;
+    switch (type) {
+    case 1:
+      return item.contactAddress;
+    case 2:
+    case 3:
+      return item.storeName;
+    default:
+      return item.storeName;
+    }
+  },
+  getBriefGoods: function (items) {
+    var num = 0;
+    items.forEach(function(item) {
+      num += item.number;
+    });
+    if (items.length > 0) {
+      return items[0].productName + '等 共' + num + '件商品';
+    }
+  },
+  getOrderBrief: function (item) {
+    var orders = item.order_detail;
+    if (!orders) {
+      return '';
+    }
+    var len = orders.length;
+    if (len > 0) {
+      var firstName = orders[0].productName;
+      return firstName + (len > 1 ? '等' : '') + ' 共' + len + '件商品';
+    }
+    return '';
+  },
+  getDiscountType: function (item) {
+    var val = item.discountAmount === 0 ? '未使用' : '-￥' + item.discountAmount;
+    switch (item.discountType) {
+    case 1:
+      return {
+        discount: '未使用',
+        coupon: val,
+      };
+    case 2:
+      return {
+        discount: val,
+        coupon: '不能与钱包同时使用'
+      };
+    default:
+      return {
+        discount: '未使用',
+        coupon: '未使用'
+      };
+    }
+  },
+  getSum: function (list) {
+    return list ? list.length : 0;
+  },
+  getProductBref: function  (products) {
+    return {
+      name: products[0].productName,
+      num: products.length
+    };
+  }
+};
+module.exports = filters;

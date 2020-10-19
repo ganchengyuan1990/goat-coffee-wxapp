@@ -12,10 +12,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let name = options.name
+    let name = options.name;
     this.setData({
       inputValue: name
-    })
+    });
   },
 
   /**
@@ -26,27 +26,27 @@ Page({
   },
 
   saveName() {
-    let iptVal = this.data.inputValue.trim()
+    let iptVal = this.data.inputValue.trim();
     if (!iptVal.trim()) {
       wx.showToast({
         title: '姓名不能为空',
         icon: 'none'
-      })
-      return
+      });
+      return;
     }
-    let pages = getCurrentPages()
-    let prevPage = pages[pages.length - 2]
+    let pages = getCurrentPages();
+    let prevPage = pages[pages.length - 2];
     prevPage.setData({ //直接给上一个页面赋值
       name: iptVal,
       goBackFromName: true
-    })
+    });
     wx.navigateBack({
       delta: 1
-    })
+    });
   },
   bindKeyInput(e) {
     this.setData({
       inputValue: e.detail.value
-    })
+    });
   }
-})
+});

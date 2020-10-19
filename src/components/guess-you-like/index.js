@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // const lx = require('../../utils/npm/lx-analytics')
 // const lxBid = {
@@ -7,42 +7,42 @@
 
 Component({
 
-    properties: {
-        cartGoods: {
-            type: Array
-        },
-        title: {
-            type: String
-        }
+  properties: {
+    cartGoods: {
+      type: Array
     },
-
-    data: {
-        isCatePanelShow: false
-    },
-
-    methods: {
-        close() {
-            this.setData({
-                shown: false
-            });
-        },
-
-        otherFunction() {
-            this.close();
-            this.triggerEvent('customevent', this.data.otherFunctionType);
-            // if (this.data.otherFunctionType === -1) {
-            //     this.fetchOrderInfo()
-            // }
-        },
-
-        addCart(e) {
-            let index = parseInt(e.currentTarget.dataset.index)
-            this.triggerEvent('togglemenu', this.data.cartGoods[index]);
-        }
+    title: {
+      type: String
     }
+  },
 
-    // attached () {
+  data: {
+    isCatePanelShow: false
+  },
 
-    // }
+  methods: {
+    close() {
+      this.setData({
+        shown: false
+      });
+    },
+
+    otherFunction() {
+      this.close();
+      this.triggerEvent('customevent', this.data.otherFunctionType);
+      // if (this.data.otherFunctionType === -1) {
+      //     this.fetchOrderInfo()
+      // }
+    },
+
+    addCart(e) {
+      let index = parseInt(e.currentTarget.dataset.index);
+      this.triggerEvent('togglemenu', this.data.cartGoods[index]);
+    }
+  }
+
+  // attached () {
+
+  // }
 
 });

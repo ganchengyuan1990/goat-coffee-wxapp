@@ -1,7 +1,7 @@
-const app = getApp()
+const app = getApp();
 import model, {
   BASE_URL
-} from '../../../utils/model'
+} from '../../../utils/model';
 
 import mockData33  from '../../../components/arrival-time/mock.js';
 
@@ -38,7 +38,7 @@ Page({
     if (options.noCache) {
       this.setData({
         noCache: true,
-      })
+      });
     }
   },
 
@@ -48,7 +48,7 @@ Page({
         birthday: e.detail.value
       }, () => {
         this.saveProfile();
-      })
+      });
     } else {
       wx.showToast({
         title: '生日仅限修改一次，如有疑问请联系客服', //提示的内容,
@@ -68,7 +68,7 @@ Page({
       work: this.data.range[parseInt(e.detail.value)]
     }, () => {
       this.saveProfile();
-    })
+    });
   },
 
   /**
@@ -85,18 +85,18 @@ Page({
     const lastPrizeAddressInfo = getApp().globalData.lastPrizeAddressInfo;
     if (lastPrizeAddressInfo) {
       if (Array.isArray(lastPrizeAddressInfo.area)) {
-        lastPrizeAddressInfo.area = lastPrizeAddressInfo.area.join('')
+        lastPrizeAddressInfo.area = lastPrizeAddressInfo.area.join('');
       }
       this.setData({
         lastPrizeAddressInfo: lastPrizeAddressInfo,
         initValue: true
-      })
+      });
       getApp().globalData.lastPrizeAddressInfo = null;
     }
-    let info = wx.getStorageSync('token')
-    let userInfo = info.user
+    let info = wx.getStorageSync('token');
+    let userInfo = info.user;
     // let userInfoWechat = app.globalData.userInfo
-    let userInfoWechat = wx.getStorageSync('personal_info') || {}
+    let userInfoWechat = wx.getStorageSync('personal_info') || {};
     if (info.token) {
       console.log(userInfo, 'userinfo');
       console.log(userInfoWechat, 'wechat');
@@ -104,12 +104,12 @@ Page({
       this.setData({
         userInfo: userInfo,
         userInfoWechat: userInfoWechat
-      })
+      });
     } else {
       wx.redirectTo({
         url: '/pages/login/login'
-      })
-      return
+      });
+      return;
     }
 
     console.log(getApp().globalData.lastUserPrizeRecordId, '@@@lastUserPrizeRecordId');
@@ -126,7 +126,7 @@ Page({
       img: userInfo.avatar || userInfoWechat.avatarUrl || '',
       birthday: userInfo.birthday || userInfoWechat.birthday || '完善生日信息, 年年有惊喜',
       work: userInfo.work || userInfoWechat.work || '请选择'
-    })
+    });
   },
 
   validate() {
@@ -134,39 +134,39 @@ Page({
     let errorInfo = '';
     if (this.data.phone.length !== 11) {
       result = false;
-      errorInfo = '请正确填写手机号'
+      errorInfo = '请正确填写手机号';
     } 
     return errorInfo;
   },
 
   bindRegionChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
+    console.log('picker发送选择改变，携带值为', e.detail.value);
     this.setData({
       region: e.detail.value
-    })
+    });
   },
 
   showGenderList() {
-    let self = this
+    let self = this;
     wx.showActionSheet({
       itemList: ['男', '女'],
       success(res) {
-        console.log(res.tapIndex)
+        console.log(res.tapIndex);
         self.setData({
           gender: res.tapIndex === 0 ? 1 : 2
         });
         self.saveProfile();
       },
       fail(res) {
-        console.log(res.errMsg)
+        console.log(res.errMsg);
       }
-    })
+    });
   },
   goEdit() {
-    let name = this.data.userInfo.userName || this.data.userInfoWechat.nickName || ''
+    let name = this.data.userInfo.userName || this.data.userInfoWechat.nickName || '';
     wx.navigateTo({
       url: `/pages/my/profile/edit?name=${name}`
-    })
+    });
   },
 
   actionSheetImg () {
@@ -181,47 +181,47 @@ Page({
         }
       },
       fail(res) {
-        console.log(res.errMsg)
+        console.log(res.errMsg);
       }
-    })
+    });
 
   },
 
   takePhoto() {
-    const ctx = wx.createCameraContext()
+    const ctx = wx.createCameraContext();
     ctx.takePhoto({
       quality: 'high',
       success: (res) => {
         this.setData({
           src: res.tempImagePath
-        })
+        });
       }
-    })
+    });
   },
 
   bindNameInput(e) {
     this.setData({
       name: e.detail.value
-    })
+    });
   },
 
   bindPhoneInput(e) {
     this.setData({
       phone: e.detail.value
-    })
+    });
   },
 
   bindAddressInput(e) {
     this.setData({
       address: e.detail.value
-    })
+    });
   },
 
   uploadFile(path) {
-    let self = this
+    let self = this;
     // console.log(path, 'path');
     
-    let _token = wx.getStorageSync('token')
+    let _token = wx.getStorageSync('token');
     wx.uploadFile({
       url: `${BASE_URL}my/user/file-upload`,
       filePath: path,
@@ -236,45 +236,45 @@ Page({
         'user': 'avatar'
       },
       success(res) {
-        const data = res.data
-        wx.hideLoading()
+        const data = res.data;
+        wx.hideLoading();
         // console.log(res, 'load data');
-        let detail = JSON.parse(data || '{}')
+        let detail = JSON.parse(data || '{}');
         if (detail.code === 'suc') {
-          const { key, url } = detail.data
+          const { key, url } = detail.data;
           self.setData({
             img: url,
             imgKey: key
-          })
-          self.saveProfile()
+          });
+          self.saveProfile();
         } else {
           wx.showModal({
             title: '提示',
             showCancel: false,
             content: '上传失败'
-          })
+          });
         }
       },
       fail(e) {
         console.log('[exception]: upload fail', e);
-        wx.hideLoading()
+        wx.hideLoading();
         wx.showModal({
           title: '提示',
           showCancel: false,
           content: '上传失败'
-        })
+        });
       }
-    })
+    });
   },
   updateCurrentInfo(obj) {
     if (obj.avatar) {
-      obj.avatar = this.data.img
+      obj.avatar = this.data.img;
     }
     try {
-      let token = wx.getStorageSync('token')
-      let userInfo = token.user
-      token.user = Object.assign(userInfo, obj)
-      wx.setStorageSync('token', token)
+      let token = wx.getStorageSync('token');
+      let userInfo = token.user;
+      token.user = Object.assign(userInfo, obj);
+      wx.setStorageSync('token', token);
     } catch (e) {
       console.log(e);
     }
@@ -288,29 +288,29 @@ Page({
   },
 
   saveAddress() {
-    let self = this
-    let obj = {}
-    let data = this.data
-    let message = ''
+    let self = this;
+    let obj = {};
+    let data = this.data;
+    let message = '';
     if (data.name) {
-      obj.name = data.name
+      obj.name = data.name;
     } else {
-      message = '请输入联系人姓名'
+      message = '请输入联系人姓名';
     }
     if (data.phone) {
-      obj.phone = data.phone
+      obj.phone = data.phone;
     } else {
-      message = '请输入手机号'
+      message = '请输入手机号';
     }
     if (data.address) {
-      obj.address = data.address
+      obj.address = data.address;
     } else {
-      message = '请选择所在地区'
+      message = '请选择所在地区';
     }
     if (data.region) {
-      obj.area = data.region
+      obj.area = data.region;
     } else {
-      message = '请输入详细地址'
+      message = '请输入详细地址';
     }
 
 
@@ -320,14 +320,14 @@ Page({
         title: message,
         icon: 'none',
         duration: 3000
-      })
+      });
       return ;
     } else if (this.validate()) {
       wx.showToast({
         title: this.validate(),
         icon: 'none',
         duration: 3000
-      })
+      });
       return;
     }
     
@@ -338,7 +338,7 @@ Page({
     }, 'POST').then(res => {
       this.setData({
         submitted: true,
-      })
+      });
       wx.showModal({
         title: '提示',
         content: '我们已收到您的收货地址，预计将在1-3个工作日内发货，请留意物流信息。',
@@ -349,14 +349,14 @@ Page({
           if (res.confirm) {
           } 
         }
-      })
+      });
     }).catch(e => {
       wx.showToast({
         title: e,
         icon: 'none',
         duration: 1500
-      })
-    })
+      });
+    });
   },
 
   logout () {
@@ -375,7 +375,7 @@ Page({
           }, 1000);
         } 
       }
-    })
+    });
   }
 
-})
+});

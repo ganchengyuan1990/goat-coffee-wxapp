@@ -1,14 +1,14 @@
-import model from '../../../utils/model.js'
+import model from '../../../utils/model.js';
 const OCLASSIFY = {
   default: 1,
   normal: 1,
   group: 2
-}
+};
 const OSTATUS = {
   default: -1,
   unfinish: 0,
   finished: 1
-}
+};
 Page({
 
   /**
@@ -39,33 +39,33 @@ Page({
     currentPanel: 'order',
     addressList: [],
     filterList: [{
-        tab: 'order',
+      tab: 'order',
+      tt: '普通订单',
+      cls: 'category',
+      list: [{
         tt: '普通订单',
-        cls: 'category',
-        list: [{
-          tt: '普通订单',
-          code: OCLASSIFY.normal,
-          active: true
-        }, {
-          tt: '团购订单',
-          code: OCLASSIFY.group,
-          active: false
-        }]
-      },
-      {
-        tab: 'state',
-        tt: '状态',
-        cls: 'type',
-        list: [{
-          tt: '已完成',
-          code: OSTATUS.finished,
-          active: false
-        }, {
-          tt: '未完成',
-          code: OSTATUS.unfinish,
-          active: false
-        }]
-      }
+        code: OCLASSIFY.normal,
+        active: true
+      }, {
+        tt: '团购订单',
+        code: OCLASSIFY.group,
+        active: false
+      }]
+    },
+    {
+      tab: 'state',
+      tt: '状态',
+      cls: 'type',
+      list: [{
+        tt: '已完成',
+        code: OSTATUS.finished,
+        active: false
+      }, {
+        tt: '未完成',
+        code: OSTATUS.unfinish,
+        active: false
+      }]
+    }
     ],
     originalObj: {},
     index: 1,
@@ -81,14 +81,14 @@ Page({
     let configData = wx.getStorageSync('configData');
     this.setData({
       phoneCall: configData['customer-service-tel'] || '17821410731'
-    })
+    });
     
   }, 
 
   onClickAvatar () {
     wx.navigateTo({
       url: '/pages/login/login'
-    })
+    });
   },
   
 
@@ -99,7 +99,7 @@ Page({
         let sum = 0;
         res.data.carts && res.data.carts.forEach(item => {
           sum += item.num;
-        })
+        });
         wx.setStorageSync('cartSum', sum);
         if (sum) {
           wx.setTabBarBadge({
@@ -132,27 +132,27 @@ Page({
       this.getTabBar()) {
       this.getTabBar().setData({
         selected: 4
-      })
+      });
     }
-    let userInfo = wx.getStorageSync('token')
+    let userInfo = wx.getStorageSync('token');
     // console.log(userInfo);
     if (!userInfo.token) {
       this.setData({
         // curNav: 0,
         hasLogin: false
-      })
-      return
+      });
+      return;
     } else {
       this.setData({
         // curNav: 0,
         hasLogin: true
-      })
+      });
     }
     if (getApp().globalData.goAddress) {
       getApp().globalData.goAddress = null;
       this.setData({
         curNav: 1
-      })
+      });
     }
     if (this.data.curNav == 1) {
       model('my/address/list', {
@@ -168,9 +168,9 @@ Page({
     }
     this.setData({
       userInfo: userInfo
-    })
+    });
     // this.fetchOrderList(1)
-    this.refreshList()
+    this.refreshList();
     this.setTabStatus();
   },
 
@@ -181,18 +181,18 @@ Page({
     // console.log('fetching');
     this.setData({
       page: 1
-    })
+    });
     setTimeout(() => {
-      this.refreshList()
-    }, 1500)
+      this.refreshList();
+    }, 1500);
   },
   onReachBottom() {
-    let isCompleted = this.data.isCompleted
+    let isCompleted = this.data.isCompleted;
     if (isCompleted) {
-      return
+      return;
     }
-    let page = this.data.page
-    this.fetchOrderList(page + 1)
+    let page = this.data.page;
+    this.fetchOrderList(page + 1);
   },
 
   goInvice(e) {
@@ -202,7 +202,7 @@ Page({
       real_due: item.totalAmount
     }]);
     wx.navigateTo({
-      url: `/package/invoice/pages/open/open`
+      url: '/package/invoice/pages/open/open'
     });
   },
 
@@ -211,7 +211,7 @@ Page({
     var index = e.currentTarget.dataset.index;
     this.setData({
       curNav: index
-    })
+    });
     if (index == 1) {
       model('my/address/list', {
         userId: wx.getStorageSync('token').user.id,
@@ -235,23 +235,23 @@ Page({
       orderTypeId: index,
       isLoading: true,
       isCompleted: false
-    })
+    });
     let obj = {
       page: 1,
       userId: this.data.userInfo && this.data.userInfo.user.id,
       type: index
-    }
+    };
     model('order/detail/list', obj).then(res => {
       // console.log('order res', res)
       let {
         data
-      } = res
+      } = res;
       if (data && Array.isArray(data)) {
-        let uid = this.data.userInfo && this.data.userInfo.user.id
+        let uid = this.data.userInfo && this.data.userInfo.user.id;
 
-        let len = data.length
-        let list = this.data.orderList
-        let arr = []
+        let len = data.length;
+        let list = this.data.orderList;
+        let arr = [];
 
         console.log(len);
         // 因为没有判断数据总数量的字段
@@ -260,41 +260,41 @@ Page({
         if (len < 5) {
           this.setData({
             isCompleted: true
-          })
+          });
         }
         if (len === 0) {
           this.setData({
             isCompleted: true
-          })
-          arr = []
+          });
+          arr = [];
         } else {
           // 普通订单
           data = data.map(item => {
             if (item.order.orderState == '100' && item.order.isComment) {
-              item.order.orderState = '101'
+              item.order.orderState = '101';
             }
-            item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(1))
+            item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(1));
             return item;
-          })
-          arr = data
+          });
+          arr = data;
         }
         this.setData({
           orderList: arr,
           page: 1,
           currentPanelList: this.data.orderClassify
-        })
+        });
       }
       this.setData({
         isLoading: false
-      })
-      wx.stopPullDownRefresh()
+      });
+      wx.stopPullDownRefresh();
     }).catch(e => {
       this.setData({
         isLoading: false,
         isCompleted: true
       });
-      wx.stopPullDownRefresh()
-    })
+      wx.stopPullDownRefresh();
+    });
   },
   /**
    * 重设列表数据
@@ -303,41 +303,41 @@ Page({
     this.setData({
       orderList: [],
       isCompleted: false
-    })
-    this.fetchOrderList(1, true)
+    });
+    this.fetchOrderList(1, true);
   },
   fetchOrderList(page = 1, isResetList = false) {
     if (this.data.isLoading) {
-      return
+      return;
     }
     this.setData({
       isLoading: true
-    })
+    });
     let obj = {
       page: page,
       userId: this.data.userInfo && this.data.userInfo.user.id,
       // orderClassify: this.data.orderClassify || OCLASSIFY.normal,
       type: this.data.orderTypeId
-    }
+    };
     if (this.data.orderState > -1) {
-      obj.oStatus = this.data.orderState
+      obj.oStatus = this.data.orderState;
     }
     model('order/detail/list', obj).then(res => {
       // console.log('order res', res)
       let {
         data
-      } = res
+      } = res;
       if (data && Array.isArray(data)) {
-        let uid = this.data.userInfo && this.data.userInfo.user.id
+        let uid = this.data.userInfo && this.data.userInfo.user.id;
 
-        let len = data.length
-        let list = isResetList ? [] : this.data.orderList
-        let arr = []
+        let len = data.length;
+        let list = isResetList ? [] : this.data.orderList;
+        let arr = [];
 
         data = data.map(item => {
-          item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(1))
+          item.order.payAmount = (item.order.payAmount == parseInt(item.order.payAmount) ? parseInt(item.order.payAmount) : parseFloat(item.order.payAmount).toFixed(1));
           return item;
-        })
+        });
 
         console.log(len);
         // 因为没有判断数据总数量的字段
@@ -346,99 +346,99 @@ Page({
         if (len < 5 && page === 1) {
           this.setData({
             isCompleted: true
-          })
+          });
         }
         if (len === 0) {
           this.setData({
             isCompleted: true
-          })
-          arr = list
+          });
+          arr = list;
         } else {
           // 普通订单
           if (this.data.orderClassify === OCLASSIFY.normal) {
-            arr = list.concat(data)
+            arr = list.concat(data);
           }
           // 拼团订单
           if (this.data.orderClassify === OCLASSIFY.group) {
             arr = data.map(item => {
-              let groupList = item.group_user_order
-              let obj = groupList.find(i => i.userId === uid)
+              let groupList = item.group_user_order;
+              let obj = groupList.find(i => i.userId === uid);
               // obj.payAmount = item.group_order.payAmount
               // obj.state = item.group_order.state
-              obj = Object.assign({}, obj, item.group_order)
-              return obj
-            })
-            arr = list.concat(arr)
+              obj = Object.assign({}, obj, item.group_order);
+              return obj;
+            });
+            arr = list.concat(arr);
           }
         }
         this.setData({
           orderList: arr,
           page: page,
           currentPanelList: this.data.orderClassify
-        })
+        });
       }
       this.setData({
         isLoading: false
-      })
-      wx.stopPullDownRefresh()
+      });
+      wx.stopPullDownRefresh();
     }).catch(e => {
       this.setData({
         isLoading: false,
         isCompleted: true
       });
-      wx.stopPullDownRefresh()
-    })
+      wx.stopPullDownRefresh();
+    });
   },
   /*
    * 显示筛选面板
    */
   showCategory(e) {
-    let tab = e.currentTarget.dataset.tab
+    let tab = e.currentTarget.dataset.tab;
     // 备份选择前的数据
-    let originalState = JSON.stringify(this.data.filterList)
+    let originalState = JSON.stringify(this.data.filterList);
     let originalObj = {
       orderClassify: this.data.orderClassify,
       orderState: this.data.orderState,
       filterList: originalState
-    }
+    };
     this.setData({
       isFilterShow: true,
       currentPanel: tab,
       originalObj: originalObj
-    })
+    });
   },
   hideCategory(isRollBack = false) {
     if (isRollBack) {
-      let obj = this.data.originalObj
+      let obj = this.data.originalObj;
       this.setData({
         orderClassify: obj.orderClassify,
         orderState: obj.orderState,
         filterList: JSON.parse(obj.filterList),
         isFilterShow: false
-      })
+      });
     } else {
       this.setData({
         isFilterShow: false
-      })
+      });
     }
   },
   /**
    * handler 点击筛选
    */
   chooseFilterItem(e) {
-    let dataset = e.currentTarget.dataset
-    let code = dataset.code
-    let panel = this.data.currentPanel
+    let dataset = e.currentTarget.dataset;
+    let code = dataset.code;
+    let panel = this.data.currentPanel;
     if (panel === 'order') {
       this.setData({
         orderClassify: code
-      })
+      });
     } else if (panel === 'state') {
       this.setData({
         orderState: code
-      })
+      });
     }
-    this.setFilterState()
+    this.setFilterState();
   },
   /**
    * 重置筛选条件
@@ -447,57 +447,57 @@ Page({
     this.setData({
       orderClassify: OCLASSIFY.default,
       orderState: OSTATUS.default
-    })
-    this.setFilterState()
+    });
+    this.setFilterState();
   },
 
   setFilterState() {
-    let list = this.data.filterList
+    let list = this.data.filterList;
 
     list.forEach(i => {
-      let arr = i.list
+      let arr = i.list;
       arr.forEach(j => {
-        let code = ''
+        let code = '';
         if (i.tab === 'order') {
-          code = this.data.orderClassify
+          code = this.data.orderClassify;
         } else if (i.tab === 'state') {
-          code = this.data.orderState
-          code === OSTATUS.default ? i.tt = '状态' : ''
+          code = this.data.orderState;
+          code === OSTATUS.default ? i.tt = '状态' : '';
         }
         if (j.code === code) {
-          j.active = true
-          i.tt = j.tt
+          j.active = true;
+          i.tt = j.tt;
         } else {
-          j.active = false
+          j.active = false;
         }
-      })
-    })
+      });
+    });
     this.setData({
       filterList: list
-    })
+    });
   },
   goCheckout(e) {
-    let token = wx.getStorageSync('token').token
+    let token = wx.getStorageSync('token').token;
     if (!token) {
       wx.navigateTo({
         url: '/pages/login/login'
-      })
-      return
+      });
+      return;
     }
-    let item = e.currentTarget.dataset.item
-    let products = e.currentTarget.dataset.list
+    let item = e.currentTarget.dataset.item;
+    let products = e.currentTarget.dataset.list;
     if (!item || !products) {
       wx.showToast({
         title: '获取订单信息失败',
         icon: 'none'
-      })
-      return
+      });
+      return;
     }
     // console.log(item, products);
     products.forEach(i => {
-      i.spec = i.skuName + i.props
-      i.price = i.skuPrice
-    })
+      i.spec = i.skuName + i.props;
+      i.price = i.skuPrice;
+    });
     let obj = {
       storeId: item.storeId,
       userAddressId: item.userAddressId,
@@ -505,124 +505,124 @@ Page({
       payAmount: item.payAmount,
       orderType: item.orderType,
       product: products
-    }
+    };
     // return
     // item.product = item.orderDetail_list
     // item.product.forEach(i => {
     //   i.price = i.skuPrice
     // })
     // return
-    const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`
+    const url = `/pages/pay/checkout/checkout?data=${encodeURIComponent(JSON.stringify(obj))}`;
     wx.navigateTo({
       url: url
-    })
+    });
   },
   goPageGroup() {
     if (this.data.currentPanelList === OCLASSIFY.group) {
       wx.switchTab({
         url: '/pages/pin/pin_list/pin_list'
-      })
+      });
     }
   },
 
   goCancel (e) {
-    let order = e.currentTarget.dataset.item
-    let type = e.currentTarget.dataset.type
+    let order = e.currentTarget.dataset.item;
+    let type = e.currentTarget.dataset.type;
     if (!order) {
-      return
+      return;
     }
-    model(`order/detail/cancel`, {
+    model('order/detail/cancel', {
       id: order.id
     }, 'POST').then(res => {
       if (res.code == 'suc') {
         this.setData({
           errorToastShown: true,
           errorInfo: '取消订单成功'
-        })
+        });
         setTimeout(() => {
-          this.refreshList()
+          this.refreshList();
         }, 1500);
       }
     }).catch(e => {
-      console.log(e)
-    })
+      console.log(e);
+    });
   },
 
   goQrcode (e) {
-    let order = e.currentTarget.dataset.item.order
+    let order = e.currentTarget.dataset.item.order;
     wx.navigateTo({
       url: `/pages/order/varcode/detail?orderNo=${order.orderNo}&varCode=${order.varCode}`
     });
   },
 
   goPay(e) {
-    let order = e.currentTarget.dataset.item
-    let type = e.currentTarget.dataset.type
+    let order = e.currentTarget.dataset.item;
+    let type = e.currentTarget.dataset.type;
     if (!order) {
-      return
+      return;
     }
-    let userInfo = this.data.userInfo
+    let userInfo = this.data.userInfo;
     let {
       wxOpenid
-    } = userInfo.user
-    let target = type === 'group' ? 'pay/wx/wx-pre-pay-group' : 'pay/wx/wx-pre-pay'
+    } = userInfo.user;
+    let target = type === 'group' ? 'pay/wx/wx-pre-pay-group' : 'pay/wx/wx-pre-pay';
     model(target, {
       openId: wxOpenid,
       orderNo: order.id
       // orderMsg: ''
     }, 'POST').then(res => {
-      let obj = res.data
+      let obj = res.data;
       if (!obj.paySign) {
         // show model
-        return
+        return;
       }
-      let prepayId = obj.package.split('=')[1]
-      obj.msg = 'suc'
-      obj.package = prepayId
-      obj.prepayId = prepayId
-      obj.price = order.payAmount
-      obj.order = order.id
+      let prepayId = obj.package.split('=')[1];
+      obj.msg = 'suc';
+      obj.package = prepayId;
+      obj.prepayId = prepayId;
+      obj.price = order.payAmount;
+      obj.order = order.id;
       // let str = Object.entries(obj).map(i => `${i[0]&i[1]}`).join('&')
-      let str = Object.entries(obj).reduce((acc, arr) => acc + '&' + arr.join('='), '')
-      str = str.slice(1)
+      let str = Object.entries(obj).reduce((acc, arr) => acc + '&' + arr.join('='), '');
+      str = str.slice(1);
       // console.log(str);
       // return
       wx.navigateTo({
         url: `/pages/pay/normalPay/normalPay?${str}`
-      })
+      });
     }).catch(e => {
       // show model
       this.setData({
         errorToastShown: true,
         errorInfo: '支付失败'
-      })
-    })
+      });
+    });
     // return
 
   },
   confirm() {
-    this.refreshList()
-    this.hideCategory(false)
+    this.refreshList();
+    this.hideCategory(false);
   },
   cancel() {
-    this.hideCategory(true)
+    this.hideCategory(true);
   },
   /**
    * 跳转详情页
    */
   showDetail(e) {
-    let item = e.currentTarget.dataset.item
-    let list = e.currentTarget.dataset.list
-    item.detailList = list
-    let dtype = e.currentTarget.dataset.dtype
+    let item = e.currentTarget.dataset.item;
+    let list = e.currentTarget.dataset.list;
+    item.detailList = list;
+    let dtype = e.currentTarget.dataset.dtype;
     // console.log(item, 'show detail item');
 
     if (item) {
-      item.dtype = dtype
+      item.dtype = dtype;
       wx.navigateTo({
         /// url: `/pages/order/detail/detail?id=21121&orderClassify=${this.data.orderClassify}`
         url: `/pages/order/detail/detail?id=${item.id}&orderClassify=${this.data.orderClassify}`
-      })
+      });
     }
   },
 
@@ -654,19 +654,19 @@ Page({
 
   goOpen () {
     wx.navigateTo({
-      url: `/package/invoice/pages/chooseOrder/chooseOrder?type=1`
+      url: '/package/invoice/pages/chooseOrder/chooseOrder?type=1'
     });
   },
 
   goRechargeOpen() {
     wx.navigateTo({
-      url: `/package/invoice/pages/chooseOrder/chooseOrder?type=2`
+      url: '/package/invoice/pages/chooseOrder/chooseOrder?type=2'
     });
   },
 
   goTaitou() {
     wx.navigateTo({
-      url: `/package/invoice/pages/taitou-list/taitou-list`
+      url: '/package/invoice/pages/taitou-list/taitou-list'
     });
   },
 
@@ -678,8 +678,8 @@ Page({
 
   goState() {
     let config = wx.getStorageSync('config');
-    let url = config.baseUrl[config.env]
-    url += 'statement/invoice.html'
+    let url = config.baseUrl[config.env];
+    url += 'statement/invoice.html';
     wx.navigateTo({
       url: `/pages/webview/webview?url=${encodeURIComponent(url)}`
     });
@@ -687,7 +687,7 @@ Page({
 
   goList () {
     wx.navigateTo({
-      url: `/package/invoice/pages/list/list`
+      url: '/package/invoice/pages/list/list'
     });
   },
 
@@ -698,18 +698,18 @@ Page({
   goAddAddress() {
     if (wx.getStorageSync('token')) {
       wx.navigateTo({
-        url: `/pages/my/address/address`
+        url: '/pages/my/address/address'
       });
     } else {
       wx.redirectTo({
-        url: `/pages/login/login?fromTransport=1`
+        url: '/pages/login/login?fromTransport=1'
       });
     }
 
   },
 
   goComment(e) {
-    let item = e.currentTarget.dataset.item
+    let item = e.currentTarget.dataset.item;
     wx.navigateTo({
       url: `/package/orderComment/pages/comment/remark?orderId=${item.id}`
     });
@@ -737,7 +737,7 @@ Page({
             wx.getUserInfo({
               withCredentials: true,
               success: function (res) {
-                var userInfo = res.userInfo
+                var userInfo = res.userInfo;
                 let iv = res.iv;
                 let encryptedData = res.encryptedData;
                 console.log(session_key);
@@ -755,14 +755,14 @@ Page({
                 self.onClickAvatar();
                 self.setData({
                   auth: true
-                })
+                });
               }
-            })
-          })
+            });
+          });
         } else {
-          console.log('登录失败！' + res.errMsg)
+          console.log('登录失败！' + res.errMsg);
         }
       }
     });
   },
-})
+});

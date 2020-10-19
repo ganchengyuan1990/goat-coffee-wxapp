@@ -2,17 +2,17 @@
 const ENV_KEY = 'ENV';
 
 const ENV_ARRAY = [{
-    name: '线上',
-    value: 'prod',
-  },
-  {
-    name: '测试环境',
-    value: 'test',
-  },
-  {
-    name: '开发环境',
-    value: 'dev',
-  }
+  name: '线上',
+  value: 'prod',
+},
+{
+  name: '测试环境',
+  value: 'test',
+},
+{
+  name: '开发环境',
+  value: 'dev',
+}
 ];
 
 const getQueryVariable = function (url, variable) {
